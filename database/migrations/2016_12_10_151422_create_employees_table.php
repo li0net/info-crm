@@ -17,7 +17,7 @@ class CreateEmployeesTable extends Migration
             $table->increments('employee_id');
             $table->string('name', 150)->index();
             $table->string('email', 70)->unique();
-            $table->string('phone', 14);
+            $table->string('phone', 25);
             $table->integer('organization_id')->unsigned();
             $table->integer('position_id')->unsigned();
             $table->timestamps();

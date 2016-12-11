@@ -15,14 +15,14 @@ class CreateSuperOrganizationsTable extends Migration
     {
         Schema::create('super_organizations', function (Blueprint $table) {
             $table->increments('super_organization_id');
-            $table->string('name', 120);
+            $table->string('name', 150);
             $table->integer('trarif_id')->unsigned();       // TODO: foreign key
             $table->timestamps();
             $table->string('shortinfo')->nullable();
             $table->mediumText('info')->nullable();
-            $table->string('website', 45)->nullable();
-            $table->string('primary_phone', 14)->nullable();
-            $table->string('secondary_phone', 14)->nullable();
+            $table->string('website', 100)->nullable();
+            $table->string('primary_phone', 25)->nullable();
+            $table->string('secondary_phone', 25)->nullable();
         });
     }
 

@@ -17,7 +17,7 @@ class CreateClientsTable extends Migration
             $table->increments('client_id');
             $table->integer('organization_id')->unsigned();
             $table->string('name', 120);
-            $table->string('phone', 14)->nullable();
+            $table->string('phone', 25)->nullable();
             $table->string('email', 70)->nullable()->unique();
             $table->char('password', 60)->nullable();
             $table->boolean('gender')->nullable();
