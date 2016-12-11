@@ -19,11 +19,11 @@ class ServiceCategory extends Model
 
     public function organization()
     {
-        $this->belongsTo(Organization::class);
+        return $this->belongsTo(Organization::class);
     }
 
     public function service()
     {
-        $this->hasMany(Service::class);
+        return $this->hasMany(Service::class);
     }
 }

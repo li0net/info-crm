@@ -28,32 +28,32 @@ class Organization extends Model
 
     public function superOrganization()
     {
-        $this->belongsTo(SuperOrganization::class);
+        return $this->belongsTo(SuperOrganization::class);
     }
 
     public function users()
     {
-        $this->hasMany(User::class);
+        return $this->hasMany(User::class);
     }
 
     public function positions()
     {
-        $this->hasMany(Position::class);
+        return $this->hasMany(Position::class);
     }
 
     public function clients()
     {
-        $this->hasMany(Client::class);
+        return $this->hasMany(Client::class);
     }
 
     public function serviceCategories()
     {
-        $this->hasMany(ServiceCategory::class);
+        return $this->hasMany(ServiceCategory::class);
     }
 
     public function transactions()
     {
-        $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class);
     }
 
 }

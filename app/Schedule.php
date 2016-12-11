@@ -16,6 +16,6 @@ class Schedule extends Model
 
     public function employee()
     {
-        $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employee::class);
     }
 }

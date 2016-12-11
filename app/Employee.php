@@ -17,27 +17,27 @@ class Employee extends Model
 
     public function organization()
     {
-        $this->belongsTo(Organization::class);
+        return $this->belongsTo(Organization::class);
     }
 
     public function position()
     {
-        $this->belongsTo(Position::class);
+        return $this->belongsTo(Position::class);
     }
 
     public function appointments()
     {
-        $this->hasMany(Appointment::class);
+        return $this->hasMany(Appointment::class);
     }
 
     public function schedules()
     {
-        $this->hasMany(Schedule::class);
+        return $this->hasMany(Schedule::class);
     }
 
     public function transactions()
     {
-        $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class);
     }
 
     // defining M:N relationship

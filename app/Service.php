@@ -19,11 +19,11 @@ class Service extends Model
 
     public function serviceCategory()
     {
-        $this->belongsTo(ServiceCategory::class);
+        return $this->belongsTo(ServiceCategory::class);
     }
 
     public function transactions() {
-        $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class);
     }
 
     // defining M:N relationship

@@ -22,6 +22,6 @@ class SuperOrganization extends Model
     // 1:N relationship to organizations
     public function organizations()
     {
-        $this->hasMany(Organization::class);
+        return $this->hasMany(Organization::class);
     }
 }

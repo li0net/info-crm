@@ -34,12 +34,12 @@ class Client extends Model
 
     public function organization()
     {
-        $this->belongsTo(Organization::class);
+        return $this->belongsTo(Organization::class);
     }
 
     public function appointments()
     {
-        $this->hasMany(Appointment::class);
+        return $this->hasMany(Appointment::class);
     }
 
 }

@@ -16,16 +16,16 @@ class Transaction extends Model
     ];
 
     public function organization() {
-        $this->belongsTo(Organization::class);
+        return $this->belongsTo(Organization::class);
     }
 
     public function employee()
     {
-        $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employee::class);
     }
 
     public function service()
     {
-        $this->belongsTo(Service::class);
+        return $this->belongsTo(Service::class);
     }
 }
