@@ -5066,7 +5066,7 @@ button.close {
   background-clip: padding-box;
   outline: 0; }
 
-.modal-backdrop {
+/* .modal-backdrop {
   position: fixed;
   top: 0;
   right: 0;
@@ -5079,7 +5079,7 @@ button.close {
     filter: alpha(opacity=0); }
   .modal-backdrop.in {
     opacity: 0.5;
-    filter: alpha(opacity=50); }
+    filter: alpha(opacity=50); } */
 
 .modal-header {
   padding: 15px;
@@ -16707,10 +16707,16 @@ table.text-center th {
 }
 .login-box-msg,
 .register-box-msg {
+  font-size: 22px;
   margin: 0;
   text-align: center;
   padding: 0 20px 20px 20px;
 }
+
+.login-box-subtitle {
+  font-size: 14px;
+}
+
 .social-auth-links {
   margin: 10px 0;
 }

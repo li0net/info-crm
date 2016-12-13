@@ -67,7 +67,6 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         </div>
     </div>
 
-
     <section id="home" name="home"></section>
     <div id="headerwrap">
         <div class="container">

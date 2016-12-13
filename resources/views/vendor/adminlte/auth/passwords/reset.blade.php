@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.auth')
 
 @section('htmlheader_title')
-    Password reset
+    Восстановление пароля
 @endsection
 
 @section('content')
@@ -11,7 +11,7 @@
     <div id="app">
         <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url('/home') }}"><b>Admin</b>LTE</a>
+            <a href="{{ url('/home') }}"><b>Barcelona</b>Info</a>
         </div><!-- /.login-logo -->
 
         @if (session('status'))
@@ -32,12 +32,13 @@
         @endif
 
         <div class="login-box-body">
+            <p>Jopa</p>
             <p class="login-box-msg">{{ trans('adminlte_lang::message.passwordreset') }}</p>
             <form action="{{ url('/password/reset') }}" method="post">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="token" value="{{ $token }}">
                 <div class="form-group has-feedback">
-                    <input type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}"/>
+                    <input type="email" class="form-control" placeholder="Email или номер телефона" name="email" value="{{ old('email') }}"/>
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
 
