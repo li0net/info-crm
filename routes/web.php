@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/serviceCategories', 'ServiceCategoriesController@index');
+
+Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
