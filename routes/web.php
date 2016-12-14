@@ -18,3 +18,5 @@ Route::get('/', function () {
 Route::get('/serviceCategories', 'ServiceCategoriesController@index');
 
 Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
+
+Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
