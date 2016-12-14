@@ -13,7 +13,7 @@ class ServiceCategoriesController extends Controller
         // TODO: убрать после доработки логина
         auth()->loginUsingId(1);
 
-        //$this->middleware('auth');
+        $this->middleware('auth');
     }
 
 
@@ -117,5 +117,43 @@ class ServiceCategoriesController extends Controller
         $data->total = ceil($data->records/$numRows);
 
         echo json_encode($data);
+
+		/*
+		// фильтры - образец
+		$search = Input::instance()->get('_search', 'false');
+		$searchField = Input::instance()->get('searchField');
+		$searchOper = Input::instance()->get('searchOper');
+		$searchString = Input::instance()->get('searchString','');
+		$filters = Input::instance()->get('filters');
+		// Обрабатываем поисковые параметры
+		if ($search == 'true') {
+			if(isset($filters) AND ! empty($filters)) {
+				// Если фильтр задан через параметр filters (например jqGrid Smart Search)
+				$filters = json_decode($filters);
+				$rules = $filters->rules;
+				$operation = ($filters->groupOp=="AND") ? 'and' : 'or';
+				$this->db->and_open();
+				foreach($rules as $rule) {
+					if(in_array($rule->field, $this->dateFields)) {
+						$this->addDateFilter($rule, $operation);
+					} else {
+						$this->addFilter($rule, $operation);
+					}
+				}
+				$this->db->close();
+			}
+			if(!empty($searchField)) {
+				// Если задан фильтр через searchField, searchOper, searchString
+				$this->db->and_open();
+				$rule = array (
+					'field' => $searchField,
+					'op' => $searchOper,
+					'data' => $searchString
+				);
+				$this->addFilter((object) $rule);
+				$this->db->close();
+			}
+		}
+		*/
     }
 }

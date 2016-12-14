@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Organization;
+use App\SuperOrganization;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class RegisterController
@@ -62,10 +65,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            // 'password' => 'required|min:6|confirmed',
-            'terms' => 'required',
+            'orgname' => 'required',
+            'name' => 'required|max:110',
+            'phone' => 'max:25',
+            'email' => 'required|email|max:70|unique:users',
+            'password' => 'required|min:5|confirmed',
+            'terms' => 'required'
         ]);
     }
 
@@ -77,10 +82,32 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $userData = [
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+
+        ];
+        if (isset($data['phone']) AND trim($data['phone'])!=='') {
+            $userData['phone'] = trim($data['phone']);
+        }
+
+        DB::beginTransaction();
+        $su = SuperOrganization::forceCreate([
+            'name' => $data['orgname']
         ]);
+
+        $org = Organization::forceCreate([
+            'name' => $data['orgname'],
+            'super_organization_id' => $su->super_organization_id,
+            'email' => $data['email']
+        ]);
+
+        $usr = User::create($userData);
+        $usr->organization_id = $org->organization_id;      // устанавливаем отдельно, т.к. пакетная установка этого поля запрещена
+        $usr->save();
+        DB::commit();
+
+        return $usr;
     }
 }
