@@ -13,8 +13,7 @@ return [
     |
     */
 
-    'service_categories'    => [
-        'list_page_header'  => 'Service categories'
-    ]
+    'service_category:list_page_header'  => 'Service categories',
 
+    'service:list_page_header'             => 'Services',
 ];

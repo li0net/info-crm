@@ -11,12 +11,29 @@
 |
 */
 
+use Illuminate\Support\Facades\Input;
+use App\ServiceCategoriesGridRepository;
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/serviceCategories', 'ServiceCategoriesController@index');
 
-Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
+/*
+ * Гриды
+ */
+Route::get('/serviceCategories', 'ServiceCategoriesController@index');
+Route::get('/services', 'ServicesController@index');
+
+//Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
+Route::get('/serviceCategories/gridData', function()
+{
+    GridEncoder::encodeRequestedData(new \App\GridRepositories\ServiceCategoriesGridRepository(), Input::all());
+});
+Route::get('/services/gridData', function()
+{
+    GridEncoder::encodeRequestedData(new \App\GridRepositories\ServicesGridRepository(), Input::all());
+});
+
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
