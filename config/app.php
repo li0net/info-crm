@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -161,6 +161,11 @@ return [
          * Acacha AdminLTE template provider
          */
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
+
+        /*
+         * Laravel jqGrid provider
+         */
+        Mgallegos\LaravelJqgrid\LaravelJqgridServiceProvider::class,
     ],
 
     /*
@@ -213,6 +218,11 @@ return [
          */
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
 
+        /*
+         * Laravel jqGrid aliases
+         */
+        'GridRender' => Mgallegos\LaravelJqgrid\Facades\GridRender::class,
+        'GridEncoder' => Mgallegos\LaravelJqgrid\Facades\GridEncoder::class
     ],
 
 ];

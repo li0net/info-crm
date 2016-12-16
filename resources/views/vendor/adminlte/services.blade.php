@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-    @lang('main.service_category:list_page_header')
+    @lang('main.service:list_page_header')
 @endsection
 
 
@@ -10,13 +10,13 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">@lang('main.service_category:list_page_header')</div>
+                    <div class="panel-heading">@lang('main.service:list_page_header')</div>
 
                     <div class="panel-body">
 
-                        <div style="margin-left:20px">
-                            <table id="service_categories_grid"></table>
-                            <div id="service_categories_grid_pager"></div>
+                        <div>
+                            <table id="services_grid"></table>
+                            <div id="services_grid_pager"></div>
                         </div>
 
                     </div>

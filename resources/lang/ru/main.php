@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'service_categories'    => [
-        'list_page_header'  => 'Категории услуг'
-    ]
+    'service_category:list_page_header'  => 'Категории услуг',
+
+    'service:list_page_header'             => 'Услуги',
 
 ];
