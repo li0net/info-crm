@@ -36,4 +36,8 @@ Route::get('/services/gridData', function()
 });
 
 
+Route::get('/serviceCategories/create', 'ServiceCategoriesController@create');
+Route::get('/serviceCategories/edit/{serviceCategory}', 'ServiceCategoriesController@edit');
+Route::post('/serviceCategories/save', 'ServiceCategoriesController@save');
+
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
