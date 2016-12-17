@@ -10,14 +10,30 @@ use Illuminate\Support\Facades\DB;
 class ServiceCategoriesController extends Controller
 {
 
+    protected $genderOptions;
+
     public function __construct()
     {
         // TODO: убрать после доработки логина
         auth()->loginUsingId(1);
 
         $this->middleware('auth');
-    }
 
+        $this->genderOptions = [
+            [
+                'value' => 'null',
+                'label' => trans('main.service_category:gender_all')
+            ],
+            [
+                'value' => '1',
+                'label' => trans('main.service_category:gender_men')
+            ],
+            [
+                'value' => '0',
+                'label' => trans('main.service_category:gender_woman')
+            ],
+        ];
+    }
 
     /**
      * Show the service categories list
@@ -127,25 +143,16 @@ class ServiceCategoriesController extends Controller
 
     // форма создания Категории услуг
     public function create() {
-        $genderOptions = [
-            [
-                'value' => 'null',
-                'label' => trans('main.service_category:gender_all')
-            ],
-            [
-                'value' => '1',
-                'label' => trans('main.service_category:gender_men')
-            ],
-            [
-                'value' => '0',
-                'label' => trans('main.service_category:gender_woman')
-            ],
-        ];
-        return view('adminlte::servicecategoryform', compact('genderOptions'));
+        return view('adminlte::servicecategoryform', ['genderOptions' => $this->genderOptions]);
     }
 
-    public function edit(ServiceCategory $serviceCategory) {
-
+    // форма редактирования Категории услуг
+    public function edit(Request $request, ServiceCategory $serviceCategory) {
+        // TODO: выводить ошибку в красивом шаблоне
+        if ($request->user()->organization_id != $serviceCategory->organization_id) {
+            return 'You don\'t have access to this item';
+        }
+        return view('adminlte::servicecategoryform', ['genderOptions' => $this->genderOptions, 'serviceCategory' => $serviceCategory]);
     }
 
     public function save(Request $request) {
@@ -170,13 +177,22 @@ class ServiceCategoriesController extends Controller
         // определить создание это или редактирование (по наличию поля service_category_id)
         // если редактирвоание - проверить что объект принадлежить текущему пользователю
         if (!is_null($scId)) {  // редактирование
-            // update
+            $sc = ServiceCategory::
+                where('organization_id', $request->user()->organization_id)
+                ->where('service_category_id', $scId)
+                ->first();
+            if (is_null($sc)) {
+                return 'Record doesn\'t exist';
+            }
+
+            $gender = $request->input('gender');
+            if (in_array($gender, ['null', '1', '0'])) {
+                $sc->gender = $gender;
+            }
 
         } else {
             $sc = new ServiceCategory();
             $sc->organization_id = $request->user()->organization_id;      // curr users's org id
-            $sc->name = $request->input('name');
-            $sc->online_reservation_name = $request->input('online_reservation_name');
 
             $gender = $request->input('gender');
             if ($gender !== 'null') {
@@ -186,8 +202,12 @@ class ServiceCategoriesController extends Controller
                     $sc->gender = 0;
                 }
             }
-            $sc->save();
         }
+
+        $sc->name = $request->input('name');
+        $sc->online_reservation_name = $request->input('online_reservation_name');
+
+        $sc->save();
 
         return redirect()->to('/serviceCategories');
     }
