@@ -78,7 +78,8 @@ class ServicesController extends Controller
      */
     public function index()
     {
-        return view('adminlte::services');
+        $newServiceUrl = action('ServicesController@create');
+        return view('adminlte::services', compact('newServiceUrl'));
     }
 
     // форма создания услуги

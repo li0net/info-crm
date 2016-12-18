@@ -13,6 +13,7 @@ class ServicesGridRepository extends EloquentRepositoryAbstract {
             ->join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id');
 
         $this->visibleColumns = [
+            'services.service_id',
             'services.name',
             'service_categories.name AS service_category_id',
             'services.description',

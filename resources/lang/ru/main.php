@@ -26,6 +26,7 @@ return [
     'service_category:name_label'           => 'Название',
     'service_category:online_reservation_name_label' => 'Название для онлайн регистрации',
     'service_category:gender_label'         => 'Пол',
+    'service_category:create_new_btn_label' => 'Новая категория',
 
     'service:create_form_header'            => 'Создать услугу',
     'service:edit_form_header'              => 'Редактировать услугу',
@@ -35,5 +36,6 @@ return [
     'service:price_min_label'               => 'Минимальная цена',
     'service:price_max_label'               => 'Максимальная цена',
     'service:description_label'             => 'Описание',
-    'service:duration_label'                => 'Длительность'
+    'service:duration_label'                => 'Длительность',
+    'service:create_new_btn_label'          => 'Новая услуга'
 ];

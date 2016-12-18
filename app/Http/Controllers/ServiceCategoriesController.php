@@ -42,7 +42,9 @@ class ServiceCategoriesController extends Controller
      */
     public function index()
     {
-        return view('adminlte::servicecategories');
+        $newScUrl = action('ServiceCategoriesController@create');
+
+        return view('adminlte::servicecategories', compact('newScUrl'));
     }
 
     /*
@@ -187,6 +189,7 @@ class ServiceCategoriesController extends Controller
 
             $gender = $request->input('gender');
             if (in_array($gender, ['null', '1', '0'])) {
+                if ($gender == 'null') $gender = NULL;
                 $sc->gender = $gender;
             }
 
