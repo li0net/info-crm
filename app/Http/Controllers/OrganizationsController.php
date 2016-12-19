@@ -97,7 +97,7 @@ class OrganizationsController extends Controller
 
         // Проверяем, действительно ли загруженный файл - изображение
         if(isset($_FILES["logo_image"]["tmp_name"]) AND trim($_FILES["logo_image"]["tmp_name"]) != '') {
-            $targetDir = realpath("../storage/uploaded_images/logo/");
+            $targetDir = public_path()."/uploaded_images/logo/";
             $imageUploadErrors = array();
             $imageFileType = pathinfo($targetDir.basename($_FILES["logo_image"]["name"]), PATHINFO_EXTENSION);
             $targetFile = $targetDir.$organization->organization_id.'.'.$imageFileType;
