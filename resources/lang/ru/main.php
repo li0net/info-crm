@@ -37,5 +37,16 @@ return [
     'service:price_max_label'               => 'Максимальная цена',
     'service:description_label'             => 'Описание',
     'service:duration_label'                => 'Длительность',
-    'service:create_new_btn_label'          => 'Новая услуга'
+    'service:create_new_btn_label'          => 'Новая услуга',
+
+    'organization:form_page_header'         => 'Основные настройки',
+    'organization:edit_form_header'         => 'Редактировать настройки',
+    'organization:name_label'               => 'Название',
+    'organization:category_label'           => 'Категория',
+    'organization:timezone_label'           => 'Текущее время',
+    'organization:country_label'            => 'Страна',
+    'organization:city_label'               => 'Город',
+    'organization:logo_label'               => 'Логотип',
+    'organization:info_label'               => 'Описание'
+
 ];

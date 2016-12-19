@@ -45,5 +45,6 @@ Route::get('/services/edit/{service}', 'ServicesController@edit');
 Route::post('/services/save', 'ServicesController@save');
 
 Route::get('/organization/edit', 'OrganizationsController@edit');
+Route::post('/organization/save', 'OrganizationsController@save');
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');

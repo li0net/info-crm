@@ -152,6 +152,8 @@
                                     <button type="submit" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
                                 </div>
 
+
+                            </div>
                         </form>
 
                     </div>

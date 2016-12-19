@@ -68,6 +68,10 @@ $(document).ready(function () {
         rowNum: 10,
         pager: "#services_grid_pager"
     });
+
+    // Replace the <textarea id="o_info"> with a CKEditor
+    // instance, using default configuration.
+    CKEDITOR.replace( 'o_info');
 });
 
 function ServiceCategoryFormatEditColumn(cellvalue, options, rowObject)
