@@ -166,6 +166,8 @@ return [
          * Laravel jqGrid provider
          */
         Mgallegos\LaravelJqgrid\LaravelJqgridServiceProvider::class,
+
+        'Collective\Html\HtmlServiceProvider'
     ],
 
     /*
@@ -193,6 +195,8 @@ return [
         'Eloquent'  => Illuminate\Database\Eloquent\Model::class,
         'Event'     => Illuminate\Support\Facades\Event::class,
         'File'      => Illuminate\Support\Facades\File::class,
+        'Form'      => 'Collective\Html\FormFacade',
+        'Html'      => 'Collective\Html\HtmlFacade',
         'Gate'      => Illuminate\Support\Facades\Gate::class,
         'Hash'      => Illuminate\Support\Facades\Hash::class,
         'Lang'      => Illuminate\Support\Facades\Lang::class,

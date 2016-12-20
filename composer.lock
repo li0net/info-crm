@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b6e9b4f3d9d505cbdcdf33ff10936a6",
+    "content-hash": "a5eceaca761038270c752bf6add46b98",
     "packages": [
         {
             "name": "acacha/admin-lte-template-laravel",
-            "version": "3.1.12",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/acacha/adminlte-laravel.git",
-                "reference": "77a3c4447613aed1c8a277cb8e96a1573fb63ce8"
+                "reference": "515813c9b0e1f56b8443f0ec0e5aa1f86f89be06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/acacha/adminlte-laravel/zipball/77a3c4447613aed1c8a277cb8e96a1573fb63ce8",
-                "reference": "77a3c4447613aed1c8a277cb8e96a1573fb63ce8",
+                "url": "https://api.github.com/repos/acacha/adminlte-laravel/zipball/515813c9b0e1f56b8443f0ec0e5aa1f86f89be06",
+                "reference": "515813c9b0e1f56b8443f0ec0e5aa1f86f89be06",
                 "shasum": ""
             },
             "require": {
@@ -68,20 +68,20 @@
                 "template",
                 "theme"
             ],
-            "time": "2016-12-14T13:46:33+00:00"
+            "time": "2016-12-18T18:15:03+00:00"
         },
         {
             "name": "acacha/helpers",
-            "version": "0.1.0",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/acacha/helpers.git",
-                "reference": "2628bc8ede26fc3fd52bdd5c333cf2bb911a5945"
+                "reference": "35a60fe05d8007a77833b530479daa7ab7e5794f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/acacha/helpers/zipball/2628bc8ede26fc3fd52bdd5c333cf2bb911a5945",
-                "reference": "2628bc8ede26fc3fd52bdd5c333cf2bb911a5945",
+                "url": "https://api.github.com/repos/acacha/helpers/zipball/35a60fe05d8007a77833b530479daa7ab7e5794f",
+                "reference": "35a60fe05d8007a77833b530479daa7ab7e5794f",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
                 "helpers",
                 "laravel"
             ],
-            "time": "2016-12-07T14:12:12+00:00"
+            "time": "2016-12-19T11:05:08+00:00"
         },
         {
             "name": "acacha/user",
@@ -647,6 +647,60 @@
                 "laravel"
             ],
             "time": "2016-12-15T18:03:17+00:00"
+        },
+        {
+            "name": "laravelcollective/html",
+            "version": "v5.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LaravelCollective/html.git",
+                "reference": "961ce141c16c6b085128f209496c26efd3e681ca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/961ce141c16c6b085128f209496c26efd3e681ca",
+                "reference": "961ce141c16c6b085128f209496c26efd3e681ca",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "5.3.*",
+                "illuminate/routing": "5.3.*",
+                "illuminate/session": "5.3.*",
+                "illuminate/support": "5.3.*",
+                "illuminate/view": "5.3.*",
+                "php": ">=5.6.4"
+            },
+            "require-dev": {
+                "illuminate/database": "5.3.*",
+                "mockery/mockery": "~0.9.4",
+                "phpunit/phpunit": "~5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Collective\\Html\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                },
+                {
+                    "name": "Adam Engebretson",
+                    "email": "adam@laravelcollective.com"
+                }
+            ],
+            "description": "HTML and Form Builders for the Laravel Framework",
+            "homepage": "http://laravelcollective.com",
+            "time": "2016-08-27T23:52:43+00:00"
         },
         {
             "name": "league/flysystem",

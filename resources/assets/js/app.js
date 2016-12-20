@@ -19,9 +19,8 @@ const app = new Vue({
 	el: '#app'
 });
 
-
 $(document).ready(function () {
-   $("#service_categories_grid").jqGrid({
+   	$("#service_categories_grid").jqGrid({
 		url: '/index.php/serviceCategories/gridData',
 		mtype: "GET",
 		styleUI : 'Bootstrap',

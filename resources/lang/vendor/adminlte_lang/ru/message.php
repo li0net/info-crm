@@ -54,7 +54,7 @@ return [
 	'seecode'                 => 'See code at',
 	'online'                  => 'Online',
 	'home'                    => 'Home',
-	'header'                  => 'HEADER',
+	'header'                  => '',
 	'anotherlink'             => 'Another Link',
 	'multilevel'              => 'Multilevel',
 	'linklevel2'              => 'Link in level2',
@@ -143,5 +143,8 @@ return [
 	'balance'				  => 'Баланс',
 	'backoffice'			  => 'Бэк-офис',
 	'profile'				  => 'Личый кабинет',
-	'support'				  => 'Служба поддержки'
+	'support'				  => 'Служба поддержки',
+	'employees'				  => 'Все сотрудники',
+	'employee_edit'			  => 'Редактирование сотрудника',
+	'employee_create'		  => 'Создание нового сотрудника'
 ];

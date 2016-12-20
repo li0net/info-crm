@@ -25,6 +25,11 @@ Route::get('/', function () {
 Route::get('/serviceCategories', 'ServiceCategoriesController@index');
 Route::get('/services', 'ServicesController@index');
 
+// Route::get('/employee', 'EmployeeController@index');
+// Route::get('/employee/{id}', 'EmployeeController@show');
+
+Route::resource('/employee', 'EmployeeController');
+
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
 Route::get('/serviceCategories/gridData', function()
 {
@@ -34,6 +39,5 @@ Route::get('/services/gridData', function()
 {
     GridEncoder::encodeRequestedData(new \App\GridRepositories\ServicesGridRepository(), Input::all());
 });
-
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');

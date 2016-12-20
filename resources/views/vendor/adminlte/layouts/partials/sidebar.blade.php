@@ -33,8 +33,8 @@
 		<ul class="sidebar-menu">
 			<li class="header">{{ trans('adminlte_lang::message.header') }}</li>
 			<!-- Optionally, you can add icons to the links -->
-			<li class="active"><a href="{{ url('home') }}"><i class='fa fa-black-tie'></i> <span>{{ trans('adminlte_lang::message.employeers') }}</span></a></li>
-			<li><a href="#"><i class='fa fa-users'></i> <span>{{ trans('adminlte_lang::message.clients') }}</span></a></li>
+			<li class="active"><a href="{{ url('/employee') }}"><i class='fa fa-black-tie'></i> <span>{{ trans('adminlte_lang::message.employeers') }}</span></a></li>
+			<li><a href="{{ url('home') }}"><i class='fa fa-users'></i> <span>{{ trans('adminlte_lang::message.clients') }}</span></a></li>
 			<li><a href="#"><i class='fa fa-newspaper-o'></i> <span>{{ trans('adminlte_lang::message.review') }}</span></a></li>
 			<li><a href="#"><i class='fa fa-line-chart'></i> <span>{{ trans('adminlte_lang::message.stats') }}</span></a></li>
 			<li><a href="#"><i class='fa fa-rub'></i> <span>{{ trans('adminlte_lang::message.finance') }}</span></a></li>
