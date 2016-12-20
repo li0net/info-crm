@@ -84,4 +84,3 @@ function ServiceFormatEditColumn(cellvalue, options, rowObject)
     var url = window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue;
     return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
 }
->>>>>>> 7fee95af4a7524aa4769f182b3a601a87aa53260
