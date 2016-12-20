@@ -40,4 +40,15 @@ Route::get('/services/gridData', function()
     GridEncoder::encodeRequestedData(new \App\GridRepositories\ServicesGridRepository(), Input::all());
 });
 
+Route::get('/serviceCategories/create', 'ServiceCategoriesController@create');
+Route::get('/serviceCategories/edit/{serviceCategory}', 'ServiceCategoriesController@edit');
+Route::post('/serviceCategories/save', 'ServiceCategoriesController@save');
+
+Route::get('/services/create', 'ServicesController@create');
+Route::get('/services/edit/{service}', 'ServicesController@edit');
+Route::post('/services/save', 'ServicesController@save');
+
+Route::get('/organization/edit', 'OrganizationsController@edit');
+Route::post('/organization/save', 'OrganizationsController@save');
+
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');

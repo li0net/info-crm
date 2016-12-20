@@ -12,7 +12,12 @@ class ServiceCategoriesGridRepository extends EloquentRepositoryAbstract {
         $this->Database = DB::table('service_categories');
             //->join('table_2', 'table_1.id', '=', 'table_2.id');
 
-        $this->visibleColumns = ['name', 'online_reservation_name', 'gender'];
+        $this->visibleColumns = [
+            'service_category_id',
+            'name',
+            'online_reservation_name',
+            'gender'
+        ];
 
         $this->orderBy = [
             array('service_categories.name', 'asc'),

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\ServiceCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ServiceCategoriesController extends Controller
 {
+
+    protected $genderOptions;
 
     public function __construct()
     {
@@ -14,8 +18,22 @@ class ServiceCategoriesController extends Controller
         auth()->loginUsingId(1);
 
         $this->middleware('auth');
-    }
 
+        $this->genderOptions = [
+            [
+                'value' => 'null',
+                'label' => trans('main.service_category:gender_all')
+            ],
+            [
+                'value' => '1',
+                'label' => trans('main.service_category:gender_men')
+            ],
+            [
+                'value' => '0',
+                'label' => trans('main.service_category:gender_woman')
+            ],
+        ];
+    }
 
     /**
      * Show the service categories list
@@ -24,7 +42,9 @@ class ServiceCategoriesController extends Controller
      */
     public function index()
     {
-        return view('adminlte::servicecategories');
+        $newScUrl = action('ServiceCategoriesController@create');
+
+        return view('adminlte::servicecategories', compact('newScUrl'));
     }
 
     /*
@@ -117,43 +137,81 @@ class ServiceCategoriesController extends Controller
         $data->total = ceil($data->records/$numRows);
 
         echo json_encode($data);
+    }
 
-		/*
-		// фильтры - образец
-		$search = Input::instance()->get('_search', 'false');
-		$searchField = Input::instance()->get('searchField');
-		$searchOper = Input::instance()->get('searchOper');
-		$searchString = Input::instance()->get('searchString','');
-		$filters = Input::instance()->get('filters');
-		// Обрабатываем поисковые параметры
-		if ($search == 'true') {
-			if(isset($filters) AND ! empty($filters)) {
-				// Если фильтр задан через параметр filters (например jqGrid Smart Search)
-				$filters = json_decode($filters);
-				$rules = $filters->rules;
-				$operation = ($filters->groupOp=="AND") ? 'and' : 'or';
-				$this->db->and_open();
-				foreach($rules as $rule) {
-					if(in_array($rule->field, $this->dateFields)) {
-						$this->addDateFilter($rule, $operation);
-					} else {
-						$this->addFilter($rule, $operation);
-					}
-				}
-				$this->db->close();
-			}
-			if(!empty($searchField)) {
-				// Если задан фильтр через searchField, searchOper, searchString
-				$this->db->and_open();
-				$rule = array (
-					'field' => $searchField,
-					'op' => $searchOper,
-					'data' => $searchString
-				);
-				$this->addFilter((object) $rule);
-				$this->db->close();
-			}
-		}
-		*/
+    public function view(ServiceCategory $serviceCategory) {
+        return view('adminlte::servicecategoryview', compact('serviceCategory'));
+    }
+
+    // форма создания Категории услуг
+    public function create() {
+        return view('adminlte::servicecategoryform', ['genderOptions' => $this->genderOptions]);
+    }
+
+    // форма редактирования Категории услуг
+    public function edit(Request $request, ServiceCategory $serviceCategory) {
+        // TODO: выводить ошибку в красивом шаблоне
+        if ($request->user()->organization_id != $serviceCategory->organization_id) {
+            return 'You don\'t have access to this item';
+        }
+        return view('adminlte::servicecategoryform', ['genderOptions' => $this->genderOptions, 'serviceCategory' => $serviceCategory]);
+    }
+
+    public function save(Request $request) {
+        /*$request->all()
+
+        Array
+        (
+            [_token] => 6Dsrc6u9SdMlj2Owzp1XxEPtrkTQBkz7YaHGYotp
+            [name] => Спа
+            [online_reservation_name] => Спа эксклюзив
+            [gender] => 1
+        )
+        */
+
+        $this->validate($request, [
+            'name' => 'required|max:140',
+            'online_reservation_name' => 'max:140',
+            'gender' => 'required'
+        ]);
+
+        $scId = $request->input('service_category_id');
+        // определить создание это или редактирование (по наличию поля service_category_id)
+        // если редактирвоание - проверить что объект принадлежить текущему пользователю
+        if (!is_null($scId)) {  // редактирование
+            $sc = ServiceCategory::
+                where('organization_id', $request->user()->organization_id)
+                ->where('service_category_id', $scId)
+                ->first();
+            if (is_null($sc)) {
+                return 'Record doesn\'t exist';
+            }
+
+            $gender = $request->input('gender');
+            if (in_array($gender, ['null', '1', '0'])) {
+                if ($gender == 'null') $gender = NULL;
+                $sc->gender = $gender;
+            }
+
+        } else {
+            $sc = new ServiceCategory();
+            $sc->organization_id = $request->user()->organization_id;      // curr users's org id
+
+            $gender = $request->input('gender');
+            if ($gender !== 'null') {
+                if ($gender == '1') {
+                    $sc->gender = 1;
+                } elseif ($gender == '0') {
+                    $sc->gender = 0;
+                }
+            }
+        }
+
+        $sc->name = $request->input('name');
+        $sc->online_reservation_name = $request->input('online_reservation_name');
+
+        $sc->save();
+
+        return redirect()->to('/serviceCategories');
     }
 }
