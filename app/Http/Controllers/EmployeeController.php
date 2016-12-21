@@ -25,7 +25,7 @@ class EmployeeController extends Controller
 		$employees = Employee::select('employee_id', 'name', 'email', 'phone', 'position_id')->with(['position' => function($query) { $query->select('position_id', 'title'); }])->get()->all();
 
 		$page = Input::get('page', 1);
-		$paginate = 5;
+		$paginate = 10;
 		 
 		$offset = ($page * $paginate) - $paginate;
 		$itemsForCurrentPage = array_slice($employees, $offset, $paginate, true);
