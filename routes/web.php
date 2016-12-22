@@ -40,6 +40,9 @@ Route::get('/services/gridData', function()
     GridEncoder::encodeRequestedData(new \App\GridRepositories\ServicesGridRepository(), Input::all());
 });
 
+/*
+ * Формы
+ */
 Route::get('/serviceCategories/create', 'ServiceCategoriesController@create');
 Route::get('/serviceCategories/edit/{serviceCategory}', 'ServiceCategoriesController@edit');
 Route::post('/serviceCategories/save', 'ServiceCategoriesController@save');
@@ -50,5 +53,11 @@ Route::post('/services/save', 'ServicesController@save');
 
 Route::get('/organization/edit', 'OrganizationsController@edit');
 Route::post('/organization/save', 'OrganizationsController@save');
+
+Route::get('/appointments/create', 'AppointmentsController@create');
+Route::get('/appointments/edit/{appt}', 'AppointmentsController@edit');
+Route::post('/appointments/save', 'AppointmentsController@save');
+Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
+Route::get('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');

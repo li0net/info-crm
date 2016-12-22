@@ -14,6 +14,8 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <link href="{{ asset('/plugins/datepicker/datepicker3.css') }}" rel="stylesheet" type="text/css" />
+
     <script>
         window.Laravel = <?php echo json_encode([
                 'csrfToken' => csrf_token(),
