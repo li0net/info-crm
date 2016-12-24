@@ -28,7 +28,7 @@ class CreateAppointmentHistoryTable extends Migration
             $table->timestamp('updated_at');
             $table->integer('updated_by')->unsigned();      // не ставлю FK, т.к. юзер может быть удален
 
-            $table->foreign('appointment_id')->references('appointment_id')->on('appointment');
+            $table->foreign('appointment_id')->references('appointment_id')->on('appointments');
         });
     }
 
