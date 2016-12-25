@@ -69,6 +69,7 @@ class AppointmentsController extends Controller
             "time_from" => "11:30"
             "duration_hours" => "00"
             "duration_minutes" => "45"
+            "note" => "Может опоздать на 20 минут"
         ]
         */
 
@@ -77,9 +78,9 @@ class AppointmentsController extends Controller
             'client_phone' => 'required|phone_crm', // custom validation rule
             'client_email' => 'email',
             'service_id' => 'required|max:10|exists:services',
-            'employee_id' => 'max:10|exists:employees',
-            'date_from' => 'required|date',
-            'time_from' => "required|date_format:'H:i:s'",
+            'employee_id' => 'required|max:10|exists:employees',
+            'date_from' => 'required|date_format:"Y-m-d"',    // date
+            'time_from' => 'required',      // date_format:'H:i'
             'duration_hours' => "required",
             'duration_minutes' => "required"
         ]);
@@ -152,6 +153,9 @@ class AppointmentsController extends Controller
             if (is_null($appointment)) {
                 return 'Record doesn\'t exist';
             }
+            if (empty($request->input('note'))) {
+                $appointment->note = NULL;
+            }
 
         } else {    // создание
 
@@ -167,6 +171,10 @@ class AppointmentsController extends Controller
         // преобразовываем duration_hours, duration_minutes в timestamp end
         $endTs = strtotime($appointment->start.' + '.$request->input('duration_hours').' hours '.$request->input('duration_minutes').' minutes');
         $appointment->end = date('Y-m-d H:i:s', $endTs);
+        $appointment->employee_id = $request->input('employee_id');
+        if (!empty($request->input('note'))) {
+            $appointment->note = $request->input('note');
+        }
 
         $appointment->save();
 
@@ -341,5 +349,44 @@ class AppointmentsController extends Controller
         }
 
         return $phoneNum;
+    }
+
+    /**
+     * Метод для ajax получения информации о клиенте (в интерфейсе создания/редактирования Записи)
+     * @param Request $request
+     *
+     */
+    public function getClientInfo(Request $request) {
+        /*
+        $cId = $request->input('client_id');
+        if (empty($cId)) {
+            echo '';
+        }
+        */
+
+        // будем искать клиента по номеру телефона
+        // TODO: искать по email и комбинации phone+email
+        $phone = $request->input('phone');
+        if (empty($phone)) {
+            echo '';
+        }
+
+        $phone = $this->normalizePhoneNumber($phone);
+
+        //"SELECT count(*) AS num_visits, MAX(start) AS last_visit FROM appointments a JOIN clients c ON a.client_id=c.client_id WHERE c.phone=:phone AND a.start<=NOW()";
+        $clientData = DB::table('appointments')
+            ->select(DB::raw('count(*) AS num_visits, MAX(appointments.start) AS last_visit'))
+            ->join('clients', 'appointments.client_id', '=', 'clients.client_id')
+            ->where('clients.phone', $phone)
+            ->whereRaw('appointments.start <= NOW()')
+            ->get();
+        $clientData = $clientData->first();
+        if ($clientData->num_visits == 0) {
+            echo '';
+            exit;
+        }
+        //echo print_r($clientData, TRUE); exit;
+
+        echo view('appointment.tpl.clientinfo', ['clientData' => $clientData])->render();
     }
 }

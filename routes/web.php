@@ -59,5 +59,6 @@ Route::get('/appointments/edit/{appt}', 'AppointmentsController@edit');
 Route::post('/appointments/save', 'AppointmentsController@save');
 Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::get('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
+Route::post('/appointments/getClientInfo', 'AppointmentsController@getClientInfo');
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');

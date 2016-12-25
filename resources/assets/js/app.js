@@ -80,11 +80,17 @@ $(document).ready(function () {
         CKEDITOR.replace('o_info');
     }
 
+    // Datepicker defaults
+    $.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd',
+        firstDay: 1,
+        autoclose: true
+    });
+
     // APPOINTMENT FORM
-    //Date picker
     $('#app_date_from').datepicker({
         autoclose: true,
-        dateFormat: "yy-mm-dd",
+        dateFormat: 'yy-mm-dd',
         firstDay: 1
     });
     // Service dropdown change event
@@ -113,6 +119,25 @@ $(document).ready(function () {
                 alert('Server error:'+textStatus);
             }
         });
+    });
+    $('#app_client_phone').blur(function() {
+        $('#app_client_info_container').html('');
+        var that = this;
+        $.ajax({
+            type: "POST",
+            dataType: 'html',
+            url: "/appointments/getClientInfo/",
+            data: {phone: $(that).val()},
+            success: function(data) {
+                if (data.length>0) {
+                    $('#app_client_info_container').html(data);
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('Server error:'+textStatus);
+            }
+        });
+
     });
 
 

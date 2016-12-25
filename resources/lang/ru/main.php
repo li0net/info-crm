@@ -58,5 +58,8 @@ return [
     'appointment:service_id_label'     => 'Услуга',
     'appointment:employee_id_label'    => 'Сотрудник',
     'appointment:date_time_from'       => 'Дата и время',
-    'appointment:duration'             => 'Длительность'
+    'appointment:duration'             => 'Длительность',
+    'appointment:note_label'           => 'Примечания',
+    'appointment:client_num_visits'    => 'Количество визитов',
+    'appointment:client_last_visit_date' => 'Последний визит'
 ];

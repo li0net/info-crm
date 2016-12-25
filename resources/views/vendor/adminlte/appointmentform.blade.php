@@ -102,6 +102,24 @@
                                     @endforeach
                                 </div>
 
+                                <div class="col-md-6">
+                                    <label for="app_note">@lang('main.appointment:note_label')</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    $old = old('note');
+                                    if (!is_null($old)) {
+                                        $value = $old;
+                                    } elseif (isset($appointment)) {
+                                        $value = $appointment->note;
+                                    } else {
+                                        $value = '';
+                                    }?>
+                                    <input type="text" name="note" id="app_note" value="{{$value}}">
+                                    @foreach ($errors->get('note') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
 
 
 
@@ -201,6 +219,9 @@
                                 <div class="col-md-12">
                                     <hr/>
                                     <button type="submit" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
+                                </div>
+
+                                <div class="col-md-4 col-md-offset-4" id="app_client_info_container">
                                 </div>
 
                             </div>
