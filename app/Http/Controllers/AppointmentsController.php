@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
+//use Illuminate\Support\Facades\App;
+//use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Appointment;
 use App\Service;
@@ -73,6 +74,7 @@ class AppointmentsController extends Controller
         ]
         */
 
+        /*
         $this->validate($request, [
             'client_name' => 'required|max:120',
             'client_phone' => 'required|phone_crm', // custom validation rule
@@ -81,9 +83,46 @@ class AppointmentsController extends Controller
             'employee_id' => 'required|max:10|exists:employees',
             'date_from' => 'required|date_format:"Y-m-d"',    // date
             'time_from' => 'required',      // date_format:'H:i'
-            'duration_hours' => "required",
-            'duration_minutes' => "required"
+            'duration_hours' => 'required',
+            'duration_minutes' => 'required'
         ]);
+        */
+
+        $validator = Validator::make($request->all(), [
+            'client_name' => 'required|max:120',
+            'client_phone' => 'required|phone_crm', // custom validation rule
+            'client_email' => 'email',
+            'service_id' => 'required|max:10|exists:services',
+            'employee_id' => 'required|max:10|exists:employees',
+            'date_from' => 'required|date_format:"Y-m-d"',    // date
+            'time_from' => 'required',      // date_format:'H:i'
+            'duration_hours' => 'required',
+            'duration_minutes' => 'required'
+        ]);
+        if ($validator->fails()) {
+            // Нужно подготовить массив для заполнения селекта с Сотрудниками предоставляющими выбранную услугу
+            $employesOptions = array();
+            if ($request->input('service_id')) {
+                $service = Service::find($request->input('service_id'));
+                if (!is_null($service)) {
+                    $employees = $service->employees()->limit(1000)->get();
+                    if ($employees->count()>0) {
+                        foreach ($employees AS $employee) {
+                            $employesOptions[] = [
+                                'value' => $employee->employee_id,
+                                'label' => $employee->name
+                            ];
+                        }
+                    }
+                }
+            }
+//dd($employesOptions);
+
+            return redirect('/appointments/create')
+                ->withErrors($validator)
+                ->with('employesOptions', $employesOptions)
+                ->withInput();
+        }
 
         // валидация duration_minutes и duration_hours (проверяем что они есть в списке из prepareDurationSelects())
         $durationSelects = $this->prepareDurationSelects();

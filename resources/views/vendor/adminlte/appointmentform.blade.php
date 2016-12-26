@@ -31,7 +31,7 @@
 
                             <!-- Содержимое таба Ожидание клиента -->
                             <div class="tab-pane fade in active" id="tab_client_wait">
-                                <form method="post" action="{{ url('/appointments/save')}}">
+                                <form method="post" action="/appointments/save">
                                     {{csrf_field()}}
                                     @if (isset($appointment))
                                         <input type="hidden" name="appointment_id" id="sc_appointment_id" value="{{$appointment->appointment_id}}">
@@ -101,8 +101,10 @@
                                             <select name="service_id" id="app_service_id">
                                                 @foreach($servicesOptions AS $service)
                                                     <option
-                                                        @if (isset($appointment) AND $appointment->service_id == $service['value'])
-                                                        selected="selected"
+                                                        @if (old('service_id') AND old('service_id') == $service['value'])
+                                                            selected="selected"
+                                                        @elseif (!old('service_id') AND isset($appointment) AND $appointment->service_id == $service['value'])
+                                                            selected="selected"
                                                         @endif
                                                         value="{{$service['value']}}">{{$service['label']}}
                                                     </option>
@@ -140,6 +142,19 @@
                                         </div>
                                         <div class="col-md-6">
                                             <select name="employee_id" id="app_employee_id">
+                                                @if (session()->has('employesOptions'))
+                                                    <?php $employesOptions = session('employesOptions');?>
+                                                    @foreach($employesOptions AS $employee)
+                                                    <option
+                                                            @if (old('employee_id') AND old('employee_id') == $employee['value'])
+                                                                selected="selected"
+                                                            @elseif (!old('employee_id') AND isset($appointment) AND $appointment->employee_id == $employee['value'])
+                                                                selected="selected"
+                                                            @endif
+                                                            value="{{$employee['value']}}">{{$employee['label']}}
+                                                    </option>
+                                                    @endforeach
+                                                @endif
                                             </select>
                                             @foreach ($errors->get('employee_id') as $message)
                                                 <br/>{{$message}}
