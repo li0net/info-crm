@@ -117,8 +117,8 @@
 			<li class="treeview">
 				<a href="#"><i class='fa fa-cogs'></i> <span>{{ trans('adminlte_lang::message.settings') }}</span><i class="fa fa-angle-left pull-right"></i></a>
 					<ul class="treeview-menu">
-						<li><a href="#">{{ trans('adminlte_lang::message.basic_settings') }}</a></li>
-						<li><a href="#">{{ trans('adminlte_lang::message.services') }}</a></li>
+						<li><a href="{{ url('/organization/edit')}}">{{ trans('adminlte_lang::message.basic_settings') }}</a></li>
+						<li><a href="{{ url('/services')}}">{{ trans('adminlte_lang::message.services') }}</a></li>
 						<li><a href="#">{{ trans('adminlte_lang::message.schedule') }}</a></li>
 						<li><a href="#">{{ trans('adminlte_lang::message.resources') }}</a></li>
 						<li><a href="#">{{ trans('adminlte_lang::message.linking') }}</a></li>

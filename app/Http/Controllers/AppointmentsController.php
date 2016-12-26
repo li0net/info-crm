@@ -125,16 +125,15 @@ class AppointmentsController extends Controller
         $clientFound = FALSE;
 
         if (is_null($client)) {
-            $client = Client::create(
-                [
-                    'name'  => $request->input('client_name'),      // TODO: нормализовать
-                    'phone' => $clientPhone
-                ]
-            );
+            $client = new Client();
+            $client->name = $request->input('client_name');      // TODO: нормализовать
+            $client->phone = $clientPhone;
             if ($request->input('client_email')) {
                 $client->email = $request->input('client_email');
             }
+            $client->organization_id = $request->user()->organization_id;
             $client->save();
+
         } else {
             if (empty($client->email) AND !empty($request->input('client_email'))) {
                 $client->email = $request->input('client_email');
