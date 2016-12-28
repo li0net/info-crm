@@ -137,7 +137,7 @@
 			<li><a href="#"><i class='fa fa-book'></i> <span>{{ trans('adminlte_lang::message.backoffice') }}</span></a></li>
 			<li><a href="#"><i class='fa fa-user'></i> <span>{{ trans('adminlte_lang::message.profile') }}</span></a></li>
 			<li><a href="#"><i class='fa fa-question'></i> <span>{{ trans('adminlte_lang::message.support') }}</span></a></li>
-			<li><a href="#"><i class='fa fa-exit'></i> <span>{{ trans('adminlte_lang::message.exit') }}</span></a></li>
+			<li><a href="#"><i class='fa fa-sign-out'></i> <span>{{ trans('adminlte_lang::message.exit') }}</span></a></li>
 
 			{{-- <li class="treeview">
 				<a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.multilevel') }}</span> <i class="fa fa-angle-left pull-right"></i></a>

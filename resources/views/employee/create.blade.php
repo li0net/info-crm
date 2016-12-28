@@ -23,26 +23,34 @@
 					</ul>
 				</div>
 			@endif
+			<div class="well">
+				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
+				{!! Form::open(['route' => 'employee.store']) !!}
+					{{-- {{ 	Form::label('employee_id', 'ID сотрудника:') }}
+					{{ 	Form::text('employee_id', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '3']) }} --}}
+					<div class="form-group">
+						{{ Form::label('name', 'ФИО:', ['class' => 'form-spacing-top']) }}
+						{{ Form::text('name', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '70']) }}
+					</div>
 
-			{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-			{!! Form::open(['route' => 'employee.store']) !!}
-				{{-- {{ 	Form::label('employee_id', 'ID сотрудника:') }}
-				{{ 	Form::text('employee_id', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '3']) }} --}}
+					<div class="form-group">
+						{{ Form::label('email', "Email: ", ['class' => 'form-spacing-top']) }}
+						{{ Form::text('email', null, ['class' => 'form-control', 'email' => '']) }}
+					</div>
 
-				{{ Form::label('name', 'ФИО:', ['class' => 'form-spacing-top']) }}
-				{{ Form::text('name', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '70']) }}
+					<div class="form-group">
+						{{ 	Form::label('phone', 'Номер телефона: ') }}
+						{{ 	Form::text('phone', null, ['class' => 'form-control', 'required' => '']) }}
+					</div>
+			
+					<div class="form-group">
+						{{ 	Form::label('position_id', 'Должность: ') }}
+						{{	Form::select('position_id', [1 => 'Парикмахер', 2 => 'Мастер манюкюра', 3 => 'Визажист'], 1, ['class' => 'form-control', 'required' => '']) }}
+					</div>
 
-				{{ Form::label('email', "Email: ", ['class' => 'form-spacing-top']) }}
-				{{ Form::text('email', null, ['class' => 'form-control', 'email' => '']) }}
-
-				{{ 	Form::label('phone', 'Номер телефона: ') }}
-				{{ 	Form::text('phone', null, ['class' => 'form-control', 'required' => '']) }}
-		
-				{{ 	Form::label('position_id', 'Должность: ') }}
-				{{	Form::select('position_id', [1 => 'Парикмахер', 2 => 'Мастер манюкюра', 3 => 'Визажист'], 1, ['class' => 'form-control', 'required' => '']) }}
-
-				{{	Form::submit('Создать нового сотрудника', ['class' => 'btn btn-success btn-lg btn-block', 'style' => 'margin-top:20px;']) }}
-			{!! Form::close() !!}	
+					{{	Form::submit('Создать нового сотрудника', ['class' => 'btn btn-success btn-lg btn-block', 'style' => 'margin-top:20px;']) }}
+				{!! Form::close() !!}	
+			</div>
 		</div>
 	</div>
 

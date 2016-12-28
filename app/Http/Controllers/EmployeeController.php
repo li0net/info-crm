@@ -57,16 +57,18 @@ class EmployeeController extends Controller
 	{
 		$this->validate($request, [
 			'name' => 'required',
-			'email' => 'required',
-			'phone' => 'required'
+			// 'email' => 'required',
+			// 'phone' => 'required'
 		]);
 
 		$employee = new Employee;
 
 		$employee->employee_id = $request->employee_id;
 		$employee->name = $request->name;
-		$employee->email = $request->email;
-		$employee->phone = $request->phone;
+		// $employee->email = $request->email;
+		// $employee->phone = $request->phone;
+		$employee->spec = $request->spec;
+		$employee->descr = $request->descr;
 		$employee->organization_id = 2;
 		$employee->position_id = $request->position_id;
 
@@ -113,16 +115,18 @@ class EmployeeController extends Controller
 	public function update(Request $request, $id)
 	{
 		$this->validate($request, [
-			'name' => 'required',
-			'email' => 'required',
-			'phone' => 'required'
+			'name' => 'required'
+			// 'email' => 'required',
+			// 'phone' => 'required'
 		]);
 
 		$employee = Employee::find($id);
 
 		$employee->name = $request->input('name');
-		$employee->email = $request->input('email');
-		$employee->phone = $request->input('phone');
+		$employee->email = '';
+		$employee->phone = '';
+		$employee->spec = $request->input('spec');
+		$employee->descr = $request->input('descr');
 		$employee->position_id = $request->position_id;
 
 		$employee->save();

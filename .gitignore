@@ -3,6 +3,9 @@
 /storage/*.key
 /vendor
 /.idea
+/.phpintel
+/public
 Homestead.json
 Homestead.yaml
+gulpfile.*
 .env
