@@ -14,7 +14,7 @@ class ChangeUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //$table->renameColumn('id', 'user_id');
+            $table->renameColumn('id', 'user_id');
             $table->integer('organization_id')->unsigned()->nullable(false)->change();
         });
     }
@@ -27,7 +27,7 @@ class ChangeUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //$table->renameColumn('user_id', 'id');
+            $table->renameColumn('user_id', 'id');
             $table->integer('organization_id')->unsigned()->nullable()->change();
         });
     }

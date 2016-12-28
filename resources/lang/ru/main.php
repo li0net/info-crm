@@ -12,6 +12,8 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'hours_in_day'                          => '{0} часов|{1} час|[2,4] часа|[5,20] часов|{21} час|[22,24] часа',
+    'minutes_short'                         => 'мин',
     'btn_submit_label'                      => 'Сохранить',
 
     'service_category:list_page_header'     => 'Категории услуг',
@@ -47,6 +49,21 @@ return [
     'organization:country_label'            => 'Страна',
     'organization:city_label'               => 'Город',
     'organization:logo_label'               => 'Логотип',
-    'organization:info_label'               => 'Описание'
+    'organization:info_label'               => 'Описание',
 
+    'appointment:client_wait_tab_label'     => 'Ожидание клиента',
+    'appointment:client_came_tab_label'     => 'Клиент пришел',
+    'appointment:client_didnt_came_tab_label' => 'Клиент не пришел',
+    'appointment:client_confirm_tab_label' => 'Клиент подтвердил',
+    'appointment:create_form_header'        => 'Создать запись',
+    'appointment:client_name_label'         => 'Имя Клиента',
+    'appointment:client_phone_label'        => 'Телефон',
+    'appointment:client_email_label'        => 'Email адрес',
+    'appointment:service_id_label'          => 'Услуга',
+    'appointment:employee_id_label'         => 'Сотрудник',
+    'appointment:date_time_from'            => 'Дата и время',
+    'appointment:duration'                  => 'Длительность',
+    'appointment:note_label'                => 'Примечания',
+    'appointment:client_num_visits'         => 'Количество визитов',
+    'appointment:client_last_visit_date'    => 'Последний визит'
 ];

@@ -19,6 +19,13 @@ require('./bootstrap');
 // 	el: '#app'
 // });
 
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
 $(document).ready(function () {
     $("#service_categories_grid").jqGrid({
         url: '/serviceCategories/gridData',
@@ -68,9 +75,72 @@ $(document).ready(function () {
         pager: "#services_grid_pager"
     });
 
-    // Replace the <textarea id="o_info"> with a CKEditor
-    // instance, using default configuration.
-    CKEDITOR.replace( 'o_info');
+    // Replace the <textarea id="o_info"> with a CKEditor instance, using default configuration.
+    if ($('#o_info').length ) {
+        CKEDITOR.replace('o_info');
+    }
+
+    // Datepicker defaults
+    $.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd',
+        firstDay: 1,
+        autoclose: true
+    });
+
+    // APPOINTMENT FORM
+    $('#app_date_from').datepicker({
+        autoclose: true,
+        dateFormat: 'yy-mm-dd',
+        firstDay: 1
+    });
+    // Service dropdown change event
+    $('#app_service_id').change(function() {
+        // удаляем все опции из селекта с сотрудниками
+        $("#app_employee_id option").each(function() {
+            $(this).remove();
+        });
+
+        var that = this;
+        $.ajax({
+            type: "POST",
+            url: "/appointments/getEmployeesForService/"+$(that).val(),
+            data: {},
+            success: function(data) {
+                var data = $.parseJSON(data);
+                //if ( console && console.log ) {
+                    //console.log( "Employees data:", data);
+                //}
+
+                for (var i in data) {
+                    $('<option>').val(data[i].value).text(data[i].label).appendTo('#app_employee_id');
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('Server error:'+textStatus);
+            }
+        });
+    });
+    $('#app_client_phone').blur(function() {
+        $('#app_client_info_container').html('');
+        var that = this;
+        $.ajax({
+            type: "POST",
+            dataType: 'html',
+            url: "/appointments/getClientInfo/",
+            data: {phone: $(that).val()},
+            success: function(data) {
+                if (data.length>0) {
+                    $('#app_client_info_container').html(data);
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('Server error:'+textStatus);
+            }
+        });
+
+    });
+
+
 });
 
 function ServiceCategoryFormatEditColumn(cellvalue, options, rowObject)
