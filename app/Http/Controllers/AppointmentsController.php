@@ -47,12 +47,36 @@ class AppointmentsController extends Controller
             return 'You don\'t have access to this item';
         }
 
-        $appt->client->load();
-
         $servicesOptions = $this->prepareServicesSelectData($request);
-        //$employeesOptions = prepareEmployeesSelectData($request);
+        $timeOptions = $this->prepareTimesSelectData();
+        $durationSelects = $this->prepareDurationSelects();
 
-        return view('adminlte::servicecategoryform', ['servicesOptions' => $servicesOptions, 'appointment' => $appt]);
+        /*
+        // закомментировано, т.к. преобразовываем в часы и минуты во вьюшке
+        // при добавлении таймзон, нужно будет делать это здесь
+        $dtStart = new \DateTime($appt->start);
+        $dtEnd = new \DateTime($appt->end);
+        $appInterval = $dtStart->diff($dtEnd);
+        if ($appInterval === FALSE) {
+            return 'Error 01';
+        }
+        */
+
+        $employees = $appt->service->employees()->get();
+        $employeesOptions = [];
+        foreach($employees AS $employee)
+        {
+            $employeesOptions[] = ['value' => $employee->employee_id, 'label' => $employee->name];
+        }
+
+        return view('adminlte::appointmentform', [
+            'appointment' => $appt,
+            'servicesOptions' => $servicesOptions,
+            'timeOptions' => $timeOptions,
+            'hoursOptions' => $durationSelects['hours'],
+            'minutesOptions' => $durationSelects['minutes'],
+            'employeesOptions' => $employeesOptions
+        ]);
     }
 
     public function save(Request $request) {
@@ -101,14 +125,14 @@ class AppointmentsController extends Controller
         ]);
         if ($validator->fails()) {
             // Нужно подготовить массив для заполнения селекта с Сотрудниками предоставляющими выбранную услугу
-            $employesOptions = array();
+            $employeesOptions = array();
             if ($request->input('service_id')) {
                 $service = Service::find($request->input('service_id'));
                 if (!is_null($service)) {
                     $employees = $service->employees()->limit(1000)->get();
                     if ($employees->count()>0) {
                         foreach ($employees AS $employee) {
-                            $employesOptions[] = [
+                            $employeesOptions[] = [
                                 'value' => $employee->employee_id,
                                 'label' => $employee->name
                             ];
@@ -116,11 +140,11 @@ class AppointmentsController extends Controller
                     }
                 }
             }
-//dd($employesOptions);
+//dd($employeesOptions);
 
             return redirect('/appointments/create')
                 ->withErrors($validator)
-                ->with('employesOptions', $employesOptions)
+                ->with('employeesOptions', $employeesOptions)
                 ->withInput();
         }
 
@@ -204,6 +228,7 @@ class AppointmentsController extends Controller
         // TODO: проверять что данный диапазон времени (start - end) не занят у работника (если работник не важен - искать хотябы одного свободного с этой услугой?)
 
         $appointment->client_id = $client->client_id;
+        $appointment->service_id = $request->input('service_id');
         // преобразовываем date_from, time_from в timestamp start
         $appointment->start = $request->input('date_from').' '.$request->input('time_from');
         // преобразовываем duration_hours, duration_minutes в timestamp end

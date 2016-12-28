@@ -56,6 +56,7 @@ return [
     'appointment:client_didnt_came_tab_label' => 'Клиент не пришел',
     'appointment:client_confirm_tab_label' => 'Клиент подтвердил',
     'appointment:create_form_header'        => 'Создать запись',
+    'appointment:edit_form_header'          => 'Редактировать запись на услугу',
     'appointment:client_name_label'         => 'Имя Клиента',
     'appointment:client_phone_label'        => 'Телефон',
     'appointment:client_email_label'        => 'Email адрес',

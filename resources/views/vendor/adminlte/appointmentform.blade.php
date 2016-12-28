@@ -142,9 +142,9 @@
                                         </div>
                                         <div class="col-md-6">
                                             <select name="employee_id" id="app_employee_id">
-                                                @if (session()->has('employesOptions'))
-                                                    <?php $employesOptions = session('employesOptions');?>
-                                                    @foreach($employesOptions AS $employee)
+                                                @if (isset($employeesOptions) OR session()->has('employeesOptions'))
+                                                    <?php if(!isset($employeesOptions)) $employeesOptions = session('employeesOptions');?>
+                                                    @foreach($employeesOptions AS $employee)
                                                     <option
                                                             @if (old('employee_id') AND old('employee_id') == $employee['value'])
                                                                 selected="selected"
@@ -209,7 +209,7 @@
                                                     <option
                                                         @if (old('duration_hours') AND old('duration_hours') == $hour['value'])
                                                         selected="selected"
-                                                        @elseif ( !old('duration_hours') AND isset($appointment) AND ((strtotime($appointment->end)-strtotime($appointment->start) % 3600) == $time['value']) )
+                                                        @elseif ( !old('duration_hours') AND isset($appointment) AND ( (int)floor((strtotime($appointment->end)-strtotime($appointment->start)) / 3600) == $time['value']) )
                                                         selected="selected"
                                                         @elseif (isset($hour['selected']) AND $hour['selected'] == true)
                                                         selected="selected"
@@ -228,7 +228,7 @@
                                                     <option
                                                         @if (old('duration_minutes') AND old('duration_minutes') == $minute['value'])
                                                         selected="selected"
-                                                        @elseif ( !old('duration_minutes') AND isset($appointment) AND (floor(strtotime($appointment->end)-strtotime($appointment->start)/60) == $minute['value']) )
+                                                        @elseif ( !old('duration_minutes') AND isset($appointment) AND ( ((strtotime($appointment->end)-strtotime($appointment->start))%3600) / 60 == $minute['value']) )
                                                         selected="selected"
                                                         @elseif (isset($minute['selected']) AND $minute['selected'] == true)
                                                         selected="selected"
