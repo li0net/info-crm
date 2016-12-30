@@ -19,6 +19,8 @@ class AppointmentsController extends Controller
         auth()->loginUsingId(1);
 
         $this->middleware('auth');
+
+        $this->middleware('permissions')->only(['create', 'edit', 'save']);
     }
 
 
