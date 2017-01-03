@@ -75,6 +75,29 @@ $(document).ready(function () {
         pager: "#services_grid_pager"
     });
 
+    $("#users_grid").jqGrid({
+        url: '/users/gridData',
+        mtype: "GET",
+        styleUI : 'Bootstrap',
+        datatype: "json",
+        colNames:['Имя', 'Телефон', 'Email', 'Права'],
+        colModel: [
+            { index: 'user_id', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn },
+            { index: 'name', name: 'name', width: 100 },
+            { index: 'phone', name: 'phone', width: 100 },
+            { index: 'email', name: 'email', width: 100 },
+            { index: 'access_permissions_text', name: 'access_permissions_text', sortable: false, width: 160 }
+        ],
+        sortname: 'name',
+        sortorder: 'asc',
+        viewrecords: true,
+        height: 600,
+        autowidth: true,
+        shrinkToFit: true,
+        rowNum: 10,
+        pager: "#users_grid_pager"
+    });
+
     // Replace the <textarea id="o_info"> with a CKEditor instance, using default configuration.
     if ($('#o_info').length ) {
         CKEDITOR.replace('o_info');
@@ -152,5 +175,11 @@ function ServiceCategoryFormatEditColumn(cellvalue, options, rowObject)
 function ServiceFormatEditColumn(cellvalue, options, rowObject)
 {
     var url = window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue;
+    return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
+}
+
+function UserFormatEditColumn(cellvalue, options, rowObject)
+{
+    var url = window.location.protocol + '//' + window.location.host + '/users/edit/' + cellvalue;
     return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
 }

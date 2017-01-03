@@ -11,6 +11,7 @@ use App\Appointment;
 use App\Service;
 use App\Employee;
 use App\Client;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class AppointmentsController extends Controller
 {
@@ -210,6 +211,12 @@ class AppointmentsController extends Controller
         // определить создание это или редактирование (по наличию поля service_category_id)
         // если редактирвоание - проверить что объект принадлежить текущему пользователю
         if (!is_null($appId)) {  // редактирование
+            // Проверяем есть ли у юзера права на редактирование Записи
+            $accessLevel = $request->user()->hasAccessTo('appointment', 'edit', 0);
+            if ($accessLevel < 1) {
+                throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+            }
+
             $appointment = Appointment::
                 where('organization_id', $request->user()->organization_id)
                 ->where('appointment_id', $appId)
@@ -222,6 +229,11 @@ class AppointmentsController extends Controller
             }
 
         } else {    // создание
+            // Проверяем есть ли у юзера права на создание Записи
+            $accessLevel = $request->user()->hasAccessTo('appointment', 'create', 0);
+            if ($accessLevel < 1) {
+                throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+            }
 
             $appointment = new Appointment();
             $appointment->organization_id = $request->user()->organization_id;

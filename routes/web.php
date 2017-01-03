@@ -39,6 +39,10 @@ Route::get('/services/gridData', function()
 {
     GridEncoder::encodeRequestedData(new \App\GridRepositories\ServicesGridRepository(), Input::all());
 });
+Route::get('/users/gridData', function()
+{
+    GridEncoder::encodeRequestedData(new \App\GridRepositories\UsersGridRepository(), Input::all());
+});
 
 /*
  * Формы

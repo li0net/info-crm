@@ -26,7 +26,7 @@ class CheckPermissions
                 'objectId'      => NULL,
                 'accessLevel'  => 1
             ],
-            'AppointmentsController'        => [
+            'AppointmentsController'        => [            // Окно записей в целом
                 'objectName'    => 'appointment_form',
                 'action'        => 'view',
                 'objectId'      => NULL,
@@ -38,7 +38,67 @@ class CheckPermissions
                 'action'        => 'create',
                 'objectId'      => 0,
                 'accessLevel'  => 1    // 1|0
+            ],
+            'AppointmentController@edit' => [
+                'objectName'    => 'appointment',
+                'action'        => 'edit',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+            'AppointmentController@delete' => [
+                'objectName'    => 'appointment',
+                'action'        => 'delete',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+
+            'AppointmentController@getClientInfo' => [      // Доступ к данным клиентов из Окна создания/редактирования Записи
+                'objectName'    => 'appointment_client_data',
+                'action'        => 'view',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+
+            'ServicesController@edit' => [      // Редактирование услуг
+                'objectName'    => 'service',
+                'action'        => 'edit',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+            'ServicesController@delete' => [      // Удаление услуг
+                'objectName'    => 'service',
+                'action'        => 'delete',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+
+            'EmployeeController@edit' => [      // Редактирование персонала
+                'objectName'    => 'employee',
+                'action'        => 'edit',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+            'EmployeeController@destroy' => [      // Удаление персонала
+                'objectName'    => 'employee',
+                'action'        => 'delete',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+
+            /*
+            object	= settings
+            object_id = NULL
+            action	= view
+            access_level = 1|0
+            */
+
+            'UsersController'        => [     // Управление пользователями (crud и форма прав доступа?)
+                'objectName'    => 'settings_manage_users',
+                'action'        => 'edit',
+                'objectId'      => 0,
+                'accessLevel'  => 1
             ]
+
         );
 
 
