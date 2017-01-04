@@ -6,8 +6,8 @@
 
 @section('main-content')
 	<div class="row">
-		{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "class" => "form-horizontal"]) !!}
-			<div class="col-md-8 col-md-offset-2">
+		{{-- {!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "class" => "hidden", "id" => "form228"]) !!} --}}
+			<div class="col-sm-8 col-sm-offset-2">
 				<div class="well">
 					<ul class="nav nav-tabs">
 						<li class="active">
@@ -28,39 +28,80 @@
 					</ul>
 				
 					<div class="tab-content">
-						<div id="menu1" class="tab-pane fade in active" style="margin-bottom: 15px">
+						<div id="menu1" class="tab-pane fade in active">
 							{{-- {{ Form::label('employee_id', 'Сотрудник:') }}
 							<p class="lead">#{{ $employee->employee_id }}</p> --}}
-							<div class="form-group">
-								{{ Form::label('name', 'Имя:', ['class' => 'form-spacing-top form-label']) }}
-								{{ Form::text('name', null, ['class' => 'form-control']) }}
-							</div>
+							<div class="row">
+								<div class="col-sm-8 b-r">
+									{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "class" => "hidden", "id" => "form228"]) !!}
+										<div class="form-group">
+											{{ Form::label('name', 'Имя:', ['class' => 'ctrl-label']) }}
+											{{ Form::text('name', null, ['class' => 'text-left form-control', 'placeholder' => 'Пример: Елена Кукушкина']) }}
+										</div>
 
-							<div class="form-group">
-								{{ Form::label('position_id', 'Должность:', ['class' => 'form-spacing-top form-label']) }}
-								{{ Form::select('position_id', [1 => 'Парикмахер', 2 => 'Мастер манюкюра', 3 => 'Визажист'], $employee->position_id, ['class' => 'form-control', 'required' => '']) }}
-							</div>							
+										<div class="form-group">
+											{{ Form::label('position_id', 'Должность:', ['class' => 'ctrl-label']) }}
+											{{ Form::select('position_id', [1 => 'Парикмахер', 2 => 'Мастер манюкюра', 3 => 'Визажист'], $employee->position_id, ['class' => 'form-control', 'required' => '']) }}
+										</div>
 
-							<div class="form-group">
-								{{ Form::label('spec', "Специализация: ", ['class' => 'form-spacing-top']) }}
-								{{ Form::text('spec', null, ['class' => 'form-control']) }}
-							</div>
-	
-							<div class="form-group">
-								{{ Form::label('descr', "Описание: ", ['class' => 'form-spacing-top']) }}
-								{{ Form::textarea('descr', null, ['class' => 'form-control']) }}
+										<div class="form-group">
+											{{ Form::label('spec', "Специализация: ", ['class' => 'ctrl-label']) }}
+											{{ Form::text('spec', null, ['class' => 'form-control', 'placeholder' => 'Пример: Парикмахер']) }}
+										</div>
+
+										<div class="form-group">
+											{{ Form::label('descr', "Описание: ", ['class' => 'ctrl-label']) }}
+											{{ Form::textarea('descr', null, ['class' => 'form-control']) }}
+										</div>
+										
+										{{-- <hr>
+						
+										<div class="row">
+											<div class="col-md-8 col-md-offset-2">
+												<div class="row">
+													<div class="col-md-6">
+														{!! Html::linkRoute('employee.show', 'Отмена', [$employee->employee_id], ['class'=>'btn btn-danger btn-block']) !!}
+													</div>
+													<div class="col-md-6">
+														{{ Form::submit('Сохранить', ['class'=>'btn btn-success btn-block']) }}
+													</div>
+												</div>
+											</div>
+										</div> --}}
+									{!! Form::close() !!}
+								</div>
+								<div class="col-sm-4 text-center">
+									{!! Form::open(array('route' => array('upload', $employee->employee_id), 'files' => true, 'method' => 'POST')) !!}
+										<label class="ctrl-label">Фотопортрет</label>
+										<div class="logo-block">
+											@if ($employee->email == '')
+												<img src="https://yclients.com/images/no-master.png" alt="">
+											@else
+												<img src="/images/{{ $settings[0]->email_for_notify }}" alt="">
+											@endif
+										</div>
+										<div>
+											<span class="btn btn-success btn-file">
+												Загрузить фото  {!! Form::file('image', null) !!}
+											</span>
+											{{ Form::submit('Upload', ['class'=>'btn btn-success']) }}
+										</div>
+									{!! Form::close() !!}
+								</div>
 							</div>
 						</div>
 
-						<div id="menu2" class="form-group tab-pane fade">
-
+						<div id="menu2" class="tab-pane fade">
+							<h4>Информация об услугах</h4>
+							<hr>
 						</div>
 						
-						<div id="menu3" class="form-group tab-pane fade">
-
+						<div id="menu3" class="tab-pane fade">
+							<h4>Информация о расписании</h4>
+							<hr>
 						</div>
 
-						<div id="menu4" class="tab-pane fade">
+						<div id="menu4" class="tab-pane fade form-horizontal">
 							<h4>Уведомления</h4>
 							<br>
 							<div class="form-group">
@@ -68,6 +109,9 @@
 								<label class="col-sm-7 text-left">
 									{{ Form::checkbox('online_reg_notify', 1, false, ['style' => 'margin-right: 10px']) }}
 									 Отправлять уведомления об онлайн записях 
+								</label>
+								<label class="col-sm-1 text-left">
+									<a class="fa fa-info-circle" id="'online_reg_notify" original-title="">&nbsp;</a>
 								</label>
 							</div>
 
@@ -77,14 +121,19 @@
 									{{ Form::checkbox('phone_reg_notify', 1, false, ['style' => 'margin-right: 10px']) }}
 									 Отправлять уведомления о записях по телефону 
 								</label>
+								<label class="col-sm-1 text-left">
+									<a class="fa fa-info-circle" id="phone_reg_notify" original-title="">&nbsp;</a>
+								</label>
 							</div>
-
 							
 							<div class="form-group">
 								{{ Form::label('online_reg_notify_del', 'Удаление онлайн записи', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 								<label class="col-sm-7 text-left">
 									{{ Form::checkbox('online_reg_notify_del', 1, false, ['style' => 'margin-right: 10px']) }}
 									 Отправлять уведомления об удалении онлайн записей 
+								</label>
+								<label class="col-sm-1 text-left">
+									<a class="fa fa-info-circle" id="online_reg_notify_del" original-title="">&nbsp;</a>
 								</label>
 							</div>
 
@@ -93,6 +142,9 @@
 								<div class="col-sm-7">
 									{{ Form::text('phone_for_notify', null, ['class' => 'text-left form-control', 'placeholder' => 'Пример: +7 495 123 45 67']) }}
 								</div>
+								<label class="col-sm-1 text-left">
+									<a class="fa fa-info-circle" id="phone_for_notify" original-title="">&nbsp;</a>
+								</label>
 							</div>
 
 							<div class="form-group">
@@ -100,6 +152,9 @@
 								<div class="col-sm-7">
 									{{ Form::text('email_for_notify', null, ['class' => 'text-left form-control', 'placeholder' => 'Пример: info@mail.com']) }}
 								</div>
+								<label class="col-sm-1 text-left">
+									<a class="fa fa-info-circle" id="email_for_notify" original-title="">&nbsp;</a>
+								</label>
 							</div>
 
 							<div class="form-group">
@@ -107,6 +162,9 @@
 								<label class="col-sm-7 text-left">
 									{{ Form::checkbox('client_data_notify', 1, false, ['style' => 'margin-right: 10px']) }}
 									 Отправлять имя и номер телефона клиента 
+								</label>
+								<label class="col-sm-1 text-left">
+									<a class="fa fa-info-circle" id="client_data_notify" original-title="">&nbsp;</a>
 								</label>
 							</div>
 
@@ -126,6 +184,9 @@
 										 Запретить онлайн-запись 
 									</label>
 								</div>
+								<label class="col-sm-1 text-left">
+									<a class="fa fa-info-circle" id="reg_permitted" original-title="">&nbsp;</a>
+								</label>
 							</div>
 
 							<div class="form-group">
@@ -193,6 +254,9 @@
 									{{ Form::checkbox('is_rejected', 1, false, ['style' => 'margin-right: 10px']) }}
 									 Сотрудник уволен
 								</label>
+								<label class="col-sm-1 text-left">
+									<a class="fa fa-info-circle" id="is_rejected" original-title="">&nbsp;</a>
+								</label>
 							</div>
 
 							<div class="form-group">
@@ -204,9 +268,10 @@
 							</div>
 
 							<div class="form-group">
-								{{ Form::label('revenue_pctg', 'Процент от выручки(%)', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<div class="col-sm-7">
+								{{ Form::label('revenue_pctg', 'Процент от выручки', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+								<div class="col-sm-7 input-group">
 									{{ Form::text('revenue_pctg', null, ['class' => 'text-left form-control', 'placeholder' => 'Используется для расчета зарплаты']) }}
+									<span class="input-group-addon">%</span>
 								</div>
 							</div>
 
@@ -230,8 +295,9 @@
 								</div>
 							<br>
 						</div>
-						<div id="menu5" class="form-group tab-pane fade">
-
+						<div id="menu5" class="tab-pane fade">
+							<h4>Информация о расчете ЗП</h4>
+							<hr>
 						</div>
 
 						<hr>
@@ -243,7 +309,7 @@
 										{!! Html::linkRoute('employee.show', 'Отмена', [$employee->employee_id], ['class'=>'btn btn-danger btn-block']) !!}
 									</div>
 									<div class="col-md-6">
-										{{ Form::submit('Сохранить', ['class'=>'btn btn-success btn-block']) }}
+										{{ Form::button('Сохранить', ['class'=>'btn btn-success btn-block', 'id' => 'form_submit']) }}
 									</div>
 								</div>
 							</div>
@@ -251,31 +317,24 @@
 					</div>
 				</div>
 			</div>
-
-			{{-- <div class="col-sm-4">
-				<div class="well">
-					<dl class="dl-horizontal">
-						<dt>Сотрудник создан:</dt>
-						<dd>{{ date('d-m-Y H:i:s', strtotime($employee->created_at))}}</dd>
-					</dl>
-
-					<dl class="dl-horizontal">
-						<dt>Данные сотрудника обновлены:</dt>
-						<dd>{{ date('d-m-Y H:i:s', strtotime($employee->updated_at))}}</dd>
-					</dl>
-					
-					<hr>
-
-					<div class="row">
-						<div class="col-sm-6">
-							{!! Html::linkRoute('employee.show', 'Отмена', [$employee->employee_id], ['class'=>'btn btn-danger btn-block']) !!}
-						</div>
-						<div class="col-sm-6">
-							{{ Form::submit('Сохранить', ['class'=>'btn btn-success btn-block']) }}
-						</div>
-					</div>
-				</div>
-			</div> --}}
-		{!! Form::close() !!}
+		{{-- {!! Form::close() !!} --}}
 	</div>
 @stop
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script>
+	$(document).ready(function () {
+		$('#form_submit').on('click', function() {
+			$('#form228').submit();
+		});
+
+		var hash = window.location.hash;
+
+		$('ul.nav.nav-tabs li a[href="' + hash + '"]').tab('show');
+
+		$('#form228').removeClass('hidden');
+
+		return false; 
+	});
+</script>

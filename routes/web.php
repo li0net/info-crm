@@ -61,4 +61,7 @@ Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsContr
 Route::get('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::post('/appointments/getClientInfo', 'AppointmentsController@getClientInfo');
 
+Route::post('/image-upload/{id}', ['as' => 'upload', 'uses' => 'UploadImageController@uploadImage']);
+Route::get('/image-upload', 'UploadImageController@uploadImage');
+
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');

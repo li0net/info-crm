@@ -44,4 +44,9 @@ class Employee extends Model
 	{
 		return $this->belongsToMany(Service::class, 'employee_provides_service', 'employee_id', 'service_id');
 	}
+
+	public function settings()
+	{
+		return $this->hasOne('App\EmployeeSetting', 'employee_id', 'employee_id');
+	}
 }
