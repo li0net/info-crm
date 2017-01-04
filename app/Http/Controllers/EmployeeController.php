@@ -11,6 +11,7 @@ use App\EmployeeSetting;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class EmployeeController extends Controller
 {
@@ -121,6 +122,12 @@ class EmployeeController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
+		// Проверяем есть ли у юзера права на редактирование Персонала
+		$accessLevel = $request->user()->hasAccessTo('employee', 'edit', 0);
+		if ($accessLevel < 1) {
+			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+		}
+
 		$this->validate($request, [
 			'name' => 'required'
 			// 'email' => 'required',

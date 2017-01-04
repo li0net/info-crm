@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\ServiceCategory;
 use App\Service;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class ServicesController extends Controller
 {
@@ -124,6 +125,12 @@ class ServicesController extends Controller
         // определить создание это или редактирование (по наличию поля service_id)
         // если редактирвоание - проверить что объект принадлежить текущему пользователю
         if (!is_null($sId)) {  // редактирование
+            // Проверяем есть ли у юзера права на редактирование Услуг
+            $accessLevel = $request->user()->hasAccessTo('service', 'edit', 0);
+            if ($accessLevel < 1) {
+                throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+            }
+
             $service = Service::find($sId);
             if (is_null($service)) {
                 return 'Record doesn\'t exist';
