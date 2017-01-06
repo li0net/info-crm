@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Employee;
+use App\EmployeeSetting;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
@@ -102,8 +103,14 @@ class EmployeeController extends Controller
 	public function edit($id)
 	{
 		$employee = Employee::find($id);
+		//$settings = Employee::where('employee_id', 8)->with(['settings' => function($query) { $query->select('employee_id', 'email_for_notify'); }])->get()->all();
+		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
 
-		return view('employee.edit')->withEmployee( $employee );
+		dump($settings[0]->email_for_notify);
+		dump($employee->employee_id);
+
+		//return view('employee.edit')->withEmployee( $employee );
+		return view('employee.edit', ['employee' => $employee, 'settings' => $settings]);
 	}
 
 	/**

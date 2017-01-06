@@ -21,9 +21,9 @@ require('./bootstrap');
 
 
 $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+	headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	}
 });
 
 $(document).ready(function () {
@@ -162,20 +162,18 @@ $(document).ready(function () {
         });
 
     });
-
-
 });
 
 function ServiceCategoryFormatEditColumn(cellvalue, options, rowObject)
 {
-    var url = window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue;
-    return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
+	var url = window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue;
+	return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
 }
 
 function ServiceFormatEditColumn(cellvalue, options, rowObject)
 {
-    var url = window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue;
-    return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
+	var url = window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue;
+	return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
 }
 
 function UserFormatEditColumn(cellvalue, options, rowObject)

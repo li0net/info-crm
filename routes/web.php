@@ -71,4 +71,7 @@ Route::get('/users/edit/{user}', 'UsersController@edit');
 Route::post('/users/save', 'UsersController@save');
 Route::post('/users/{user}/savePermissions', 'UsersController@savePermissions');
 
+Route::post('/image-upload/{id}', ['as' => 'upload', 'uses' => 'UploadImageController@uploadImage']);
+Route::get('/image-upload', 'UploadImageController@uploadImage');
+
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
