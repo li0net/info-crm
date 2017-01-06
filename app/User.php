@@ -246,4 +246,25 @@ class User extends Authenticatable
 
         return $hasAccess;
     }
+
+    public function normalizePhoneNumber($phoneNum) {
+        //' +7 (927) 342-23 45 '
+
+        $phoneNum = trim($phoneNum);
+        $phoneNum = str_replace(
+            [' ', '(', ')', '-', ''],
+            '',
+            $phoneNum
+        );
+
+        // Для России заменяем код страны 8 на +7
+        // могут быть проблемы с номерами где 8 это просто часть номера (городские, либо если указывают сразу код города без кода страны)
+        //  ограничение на длину должно помочь
+        if (substr($phoneNum, 0, 1) == '8' AND strlen($phoneNum) > 7) {
+            // Хардкод hardcode для России
+            $phoneNum = '+7'.substr($phoneNum, 1);
+        }
+
+        return $phoneNum;
+    }
 }

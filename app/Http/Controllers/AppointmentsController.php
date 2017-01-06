@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\App;
 //use Illuminate\Support\Facades\Auth;
@@ -181,7 +182,7 @@ class AppointmentsController extends Controller
         // Ищем клиента
         // TODO: искать клиента по комбинации имени-номера телефона-имейла ??
         //  имя и телефон нормализуем (имя - каждое слово с заглавной буквы, лишние пробелы между словами и до/после убираем, номер телефона - храним в стандартном формате)
-        $clientPhone = $this->normalizePhoneNumber($request->input('client_phone'));
+        $clientPhone = $request->user()->normalizePhoneNumber($request->input('client_phone'));
         $client = Client::where('organization_id', $request->user()->organization_id)
             ->where('phone', $clientPhone)
             ->first();
@@ -407,27 +408,6 @@ class AppointmentsController extends Controller
         echo json_encode($employeesOptions);
     }
 
-    protected function normalizePhoneNumber($phoneNum) {
-        //' +7 (927) 342-23 45 '
-
-        $phoneNum = trim($phoneNum);
-        $phoneNum = str_replace(
-            [' ', '(', ')', '-', ''],
-            '',
-            $phoneNum
-        );
-
-        // Для России заменяем код страны 8 на +7
-        // могут быть проблемы с номерами где 8 это просто часть номера (городские, либо если указывают сразу код города без кода страны)
-        //  ограничение на длину должно помочь
-        if (substr($phoneNum, 0, 1) == '8' AND strlen($phoneNum) > 7) {
-            // Хардкод hardcode для России
-            $phoneNum = '+7'.substr($phoneNum, 1);
-        }
-
-        return $phoneNum;
-    }
-
     /**
      * Метод для ajax получения информации о клиенте (в интерфейсе создания/редактирования Записи)
      * @param Request $request
@@ -448,7 +428,7 @@ class AppointmentsController extends Controller
             echo '';
         }
 
-        $phone = $this->normalizePhoneNumber($phone);
+        $phone = $request->user()->normalizePhoneNumber($phone);
 
         //"SELECT count(*) AS num_visits, MAX(start) AS last_visit FROM appointments a JOIN clients c ON a.client_id=c.client_id WHERE c.phone=:phone AND a.start<=NOW()";
         $clientData = DB::table('appointments')

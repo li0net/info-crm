@@ -24,6 +24,7 @@ Route::get('/', function () {
  */
 Route::get('/serviceCategories', 'ServiceCategoriesController@index');
 Route::get('/services', 'ServicesController@index');
+Route::get('/users', 'UsersController@index');
 
 // Route::get('/employee', 'EmployeeController@index');
 // Route::get('/employee/{id}', 'EmployeeController@show');
@@ -64,6 +65,11 @@ Route::post('/appointments/save', 'AppointmentsController@save');
 Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::get('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::post('/appointments/getClientInfo', 'AppointmentsController@getClientInfo');
+
+Route::get('/users/create', 'UsersController@create');
+Route::get('/users/edit/{user}', 'UsersController@edit');
+Route::post('/users/save', 'UsersController@save');
+Route::post('/users/{user}/savePermissions', 'UsersController@savePermissions');
 
 Route::post('/image-upload/{id}', ['as' => 'upload', 'uses' => 'UploadImageController@uploadImage']);
 Route::get('/image-upload', 'UploadImageController@uploadImage');

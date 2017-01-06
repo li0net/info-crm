@@ -6,14 +6,14 @@ use \Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\Request;
 use Mgallegos\LaravelJqgrid\Repositories\EloquentRepositoryAbstract;
 
-class ServicesGridRepository extends EloquentRepositoryAbstract {
+class UsersGridRepository extends EloquentRepositoryAbstract {
 
     public function __construct()
     {
         $orgId = Request::user()->organization_id;
 
         $this->Database = DB::table('users')
-            ->join('access_permissions', 'users.users_id', '=', 'access_permissions.user_id')
+            //->join('access_permissions', 'users.users_id', '=', 'access_permissions.user_id')
             ->where('users.organization_id', $orgId);
 
         $this->visibleColumns = [
@@ -22,8 +22,8 @@ class ServicesGridRepository extends EloquentRepositoryAbstract {
             'users.phone',
             'users.email',
 
-            'access_permissions.object',
-            'access_permissions.action'
+            //'access_permissions.object',
+            //'access_permissions.action'
         ];
         // TODO: не уверен что нужно делать эту выборку, будет множество строк на кадлого юзера (по кол-ву access_permissions для него)
         //  возможно, лучше делать запрос к access_permissions для каждого юзера
@@ -32,7 +32,7 @@ class ServicesGridRepository extends EloquentRepositoryAbstract {
         // TODO: process 'access_permissions.object', 'access_permissions.action' into one human readable description
 
         $this->orderBy = [
-            array('name', 'asc'),
+            array('users.name', 'asc'),
             //array('table_1.name', 'desc')
         ];
     }
