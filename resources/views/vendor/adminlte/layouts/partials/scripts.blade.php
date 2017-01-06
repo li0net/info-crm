@@ -6,7 +6,7 @@
 
 <script src="{{ asset('/js/jqgrid/i18n/grid.locale-ru.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/jqgrid/jquery.jqGrid.min.js') }}" type="text/javascript"></script>
-{{-- <script src="https://cdn.jsdelivr.net/vue/1.0.28/vue.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/vue/1.0.28/vue.js"></script>
 <script src="{{ asset('/plugins/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
 {{-- <script src="{{ asset('/plugins/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script> --}}
 <script src="{{ asset('/plugins/jQueryUI/jquery-ui.min.js') }}" type="text/javascript"></script>

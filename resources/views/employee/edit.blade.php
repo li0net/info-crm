@@ -71,10 +71,10 @@
 									{!! Form::close() !!}
 								</div>
 								<div class="col-sm-4 text-center">
-									{!! Form::open(array('route' => array('upload', $employee->employee_id), 'files' => true, 'method' => 'POST')) !!}
-										<label class="ctrl-label">Фотопортрет</label>
+									{{-- {!! Form::open(array('route' => array('upload', $employee->employee_id), 'files' => true, 'method' => 'POST', 'id' => 'avatar_upload_form')) !!}
+										<label class="ctrl-label">@{{message}}</label>
 										<div class="logo-block">
-											@if ($employee->email == '')
+											@if (!count($settings))
 												<img src="https://yclients.com/images/no-master.png" alt="">
 											@else
 												<img src="/images/{{ $settings[0]->email_for_notify }}" alt="">
@@ -82,11 +82,23 @@
 										</div>
 										<div>
 											<span class="btn btn-success btn-file">
-												Загрузить фото  {!! Form::file('image', null) !!}
+												Загрузить фото  {!! Form::file('image', ['id' => 'avatar_upload_form__filename']) !!}
 											</span>
-											{{ Form::submit('Upload', ['class'=>'btn btn-success']) }}
 										</div>
-									{!! Form::close() !!}
+									{!! Form::close() !!} --}}
+									
+									<label class="ctrl-label">@{{message}}</label>
+									<div class="logo-block">
+										<div v-if="!image">
+											<img src="https://yclients.com/images/no-master.png" />
+										</div>
+										<div v-else>
+											<img :src="image" />
+										</div>
+									</div>
+									<span class="btn btn-success btn-file">
+										Загрузить фото <input type="file" @change="onFileChange">
+									</span>
 								</div>
 							</div>
 						</div>
@@ -320,21 +332,3 @@
 		{{-- {!! Form::close() !!} --}}
 	</div>
 @stop
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-<script>
-	$(document).ready(function () {
-		$('#form_submit').on('click', function() {
-			$('#form228').submit();
-		});
-
-		var hash = window.location.hash;
-
-		$('ul.nav.nav-tabs li a[href="' + hash + '"]').tab('show');
-
-		$('#form228').removeClass('hidden');
-
-		return false; 
-	});
-</script>

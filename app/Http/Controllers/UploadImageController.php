@@ -11,7 +11,7 @@ class UploadImageController extends Controller
 	public function uploadImage(Request $request, $id) {
 		$this->validate($request, ['image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048']);
 
-		 $imageName = time().'.'.$request->file('image')->getClientOriginalExtension();
+		$imageName = time().'.'.$request->file('image')->getClientOriginalExtension();
 
 		$request->file('image')->move(public_path('images'), $imageName);
 

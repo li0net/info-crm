@@ -106,8 +106,8 @@ class EmployeeController extends Controller
 		//$settings = Employee::where('employee_id', 8)->with(['settings' => function($query) { $query->select('employee_id', 'email_for_notify'); }])->get()->all();
 		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
 
-		dump($settings[0]->email_for_notify);
-		dump($employee->employee_id);
+		// dump($settings[0]->email_for_notify);
+		// dump($employee->employee_id);
 
 		//return view('employee.edit')->withEmployee( $employee );
 		return view('employee.edit', ['employee' => $employee, 'settings' => $settings]);
@@ -123,10 +123,10 @@ class EmployeeController extends Controller
 	public function update(Request $request, $id)
 	{
 		// Проверяем есть ли у юзера права на редактирование Персонала
-		$accessLevel = $request->user()->hasAccessTo('employee', 'edit', 0);
-		if ($accessLevel < 1) {
-			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
-		}
+		// $accessLevel = $request->user()->hasAccessTo('employee', 'edit', 0);
+		// if ($accessLevel < 1) {
+		// 	throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+		// }
 
 		$this->validate($request, [
 			'name' => 'required'
