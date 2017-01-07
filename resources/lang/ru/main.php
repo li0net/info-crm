@@ -68,6 +68,8 @@ return [
     'appointment:client_num_visits'         => 'Количество визитов',
     'appointment:client_last_visit_date'    => 'Последний визит',
 
+    'user:list_page_header'                 => 'Список пользователей',
+
     'user:edit_form_header'                 => 'Редактировать пользователя',
     'user:create_form_header'               => 'Создать пользователя',
     'user:properties_tab_label'             => 'Настройки',

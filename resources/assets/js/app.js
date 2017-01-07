@@ -106,13 +106,12 @@ $(document).ready(function () {
 		mtype: "GET",
 		styleUI : 'Bootstrap',
 		datatype: "json",
-		colNames:['Имя', 'Телефон', 'Email', 'Права'],
+		colNames:['Редактировать', 'Имя', 'Телефон', 'Email'],
 		colModel: [
 			{ index: 'user_id', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn },
 			{ index: 'name', name: 'name', width: 100 },
 			{ index: 'phone', name: 'phone', width: 100 },
-			{ index: 'email', name: 'email', width: 100 },
-			{ index: 'access_permissions_text', name: 'access_permissions_text', sortable: false, width: 160 }
+			{ index: 'email', name: 'email', width: 100 }
 		],
 		sortname: 'name',
 		sortorder: 'asc',
