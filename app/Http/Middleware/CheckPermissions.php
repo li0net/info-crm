@@ -120,6 +120,7 @@ class CheckPermissions
         // TODO: такая схема может не подойти, нужна проверка (Журнал записей может состоять из нескольких контроллеров)
         //  в принципе ничего не мешает иметь в $protectedObjects несколько записей на одну защищаемую сущность
         if (isset($protectedObjects[$controller])) {
+
             $accessLevel = $user->hasAccessTo(
                 $protectedObjects[$controller]['objectName'],
                 $protectedObjects[$controller]['action'],

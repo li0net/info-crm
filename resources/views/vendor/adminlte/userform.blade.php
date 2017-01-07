@@ -190,7 +190,7 @@
                                                 }
                                             }
                                         }?>
-                                        <p><input type="checkbox" name="appointment_client_data_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_appointment_client_data_label')</strong></p>
+                                        <p><input type="checkbox" name="appointment_client_data_view" value="1" {{$selected}}>@lang('main.user:permissions_appointment_client_data_label')</p>
                                     </div>
 
                                     <!-- Права доступа к настройкам -->
@@ -215,7 +215,7 @@
                                                 }
                                             }
                                         }?>
-                                        <p><input type="checkbox" name="settings_manage_users_edit" value="1" {{$selected}}>@lang('main.user:permissions_settings_label')</p>
+                                        <p><input type="checkbox" name="settings_manage_users_edit" value="1" {{$selected}}>@lang('main.user:settings_manage_users_label')</p>
 
                                         <?php
                                         $selected = '';
@@ -271,6 +271,11 @@
                                             }
                                         }?>
                                         <p><input type="checkbox" name="schedule_edit" value="1" {{$selected}}>@lang('main.user:permissions_schedule_edit_label')</p>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <hr/>
+                                        <button type="submit" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
                                     </div>
                                 </form>
 

@@ -66,5 +66,27 @@ return [
     'appointment:duration'                  => 'Длительность',
     'appointment:note_label'                => 'Примечания',
     'appointment:client_num_visits'         => 'Количество визитов',
-    'appointment:client_last_visit_date'    => 'Последний визит'
+    'appointment:client_last_visit_date'    => 'Последний визит',
+
+    'user:edit_form_header'                 => 'Редактировать пользователя',
+    'user:create_form_header'               => 'Создать пользователя',
+    'user:properties_tab_label'             => 'Настройки',
+    'user:permissions_tab_label'            => 'Права доступа',
+    'user:name_label'                       => 'Имя пользователя',
+    'user:info_label'                       => 'Информация',
+    'user:email_label'                      => 'E-mail',
+    'user:phone_label'                      => 'Телефон',
+
+    'user:permissions_appointment_form_label' => 'Окно записи',
+    'user:permissions_appointment_create_label' => 'Создавать записи',
+    'user:permissions_appointment_edit_label' => 'Редактировать записи',
+    'user:permissions_appointment_delete_label' => 'Удалять записи',
+    'user:permissions_appointment_client_data_label' => 'Доступ к данным клиентов',
+    'user:permissions_settings_label'       => 'Настройки',
+    'user:settings_manage_users_label'      => 'Управлять пользователями',
+    'user:permissions_service_edit_label'   => 'Редактирование услуг',
+    'user:permissions_service_delete_label' => 'Удаление услуг',
+    'user:permissions_employee_edit_label'  => 'Редактирование персонала',
+    'user:permissions_employee_delete_label' => 'Удаление персонала',
+    'user:permissions_schedule_edit_label'  => 'Редактирование графика работы'
 ];

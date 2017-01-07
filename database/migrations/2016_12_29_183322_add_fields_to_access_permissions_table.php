@@ -15,7 +15,7 @@ class AddFieldsToAccessPermissionsTable extends Migration
     {
         Schema::table('access_permissions', function (Blueprint $table) {
             $table->integer('updated_by')->unsigned();
-            $table->enum('action', ['view', 'create', 'update', 'delete'])->after('object_id');
+            $table->enum('action', ['view', 'create', 'edit', 'delete'])->after('object_id');
             $table->text('additional_settings')->nullable()->after('access_level');
             $table->text('description')->nullable();
 

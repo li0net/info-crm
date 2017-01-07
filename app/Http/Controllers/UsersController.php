@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Input;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use App\User;
 use App\AccessPermission;
+use Illuminate\Support\Facades\Log;
 
 class UsersController extends Controller
 {
@@ -16,6 +17,7 @@ class UsersController extends Controller
         //auth()->loginUsingId(1);
 
         $this->middleware('auth');
+        $this->middleware('permissions');   //->only(['create', 'edit', 'save']);
     }
 
     // users grid
@@ -28,11 +30,12 @@ class UsersController extends Controller
     {
         // Проверяем есть ли у юзера права на управление пользователями
         $accessLevel = $request->user()->hasAccessTo('settings_manage_users', 'edit', 0);
+Log::info(__METHOD__.' $request->user()->user_id:'.$request->user()->user_id.' accessLevel:'.print_r($accessLevel, TRUE));
         if ($accessLevel < 1) {
             throw new AccessDeniedHttpException('You don\'t have permission to access this page');
         }
 
-        return view('adminlte::services', compact('user'));
+        return view('adminlte::userform', compact('user'));
     }
 
     public function create(Request $request)
@@ -43,7 +46,7 @@ class UsersController extends Controller
             throw new AccessDeniedHttpException('You don\'t have permission to access this page');
         }
 
-        return view('adminlte::services');
+        return view('adminlte::userform');
     }
 
     public function savePermissions(Request $request, User $user)
