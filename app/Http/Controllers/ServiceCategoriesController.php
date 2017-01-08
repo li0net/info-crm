@@ -40,11 +40,14 @@ class ServiceCategoriesController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $newScUrl = action('ServiceCategoriesController@create');
 
-        return view('adminlte::servicecategories', compact('newScUrl'));
+        return view('adminlte::servicecategories', [
+            'newScUrl' => $newScUrl,
+            'user' => $request->user()
+        ]);
     }
 
     /*
@@ -144,16 +147,29 @@ class ServiceCategoriesController extends Controller
     }
 
     // форма создания Категории услуг
-    public function create() {
+    public function create(Request $request) {
+        // проверяем, что у юзера есть права на Редактирование Услуг (в смысле 'управлния', т.е. создание сюда тоже входит)
+        $accessLevel = $request->user()->hasAccessTo('service', 'edit', 0);
+        if ($accessLevel < 1) {
+            throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+        }
+
         return view('adminlte::servicecategoryform', ['genderOptions' => $this->genderOptions]);
     }
 
     // форма редактирования Категории услуг
     public function edit(Request $request, ServiceCategory $serviceCategory) {
+        // проверяем, что у юзера есть права на Редактирование Услуг (в смысле 'управлния', т.е. создание сюда тоже входит)
+        $accessLevel = $request->user()->hasAccessTo('service', 'edit', 0);
+        if ($accessLevel < 1) {
+            throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+        }
+
         // TODO: выводить ошибку в красивом шаблоне
         if ($request->user()->organization_id != $serviceCategory->organization_id) {
             return 'You don\'t have access to this item';
         }
+
         return view('adminlte::servicecategoryform', ['genderOptions' => $this->genderOptions, 'serviceCategory' => $serviceCategory]);
     }
 

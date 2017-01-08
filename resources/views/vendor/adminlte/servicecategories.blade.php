@@ -16,9 +16,11 @@
                 </div>
             </div>
 
+            @if ($user->hasAccessTo('service', 'edit', 0) >= 1)
             <div class="col-md-2">
                 <p class="text-right"><a href="{{$newScUrl}}" class="btn btn-default">@lang('main.service_category:create_new_btn_label')</a></p>
             </div>
+            @endif
         </div>
 
         <div class="row">
@@ -36,4 +38,18 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        @if ($user->hasAccessTo('service', 'edit', 0) >= 1)
+            window.Settings = {permissions_service_edit: 1};
+        @else
+            window.Settings = {permissions_service_edit: 0};
+        @endif
+
+        @if ($user->hasAccessTo('service', 'delete', 0) >= 1)
+            window.Settings.permissions_service_delete = 1;
+        @else
+            window.Settings.permissions_service_delete = 0;
+        @endif
+    </script>
 @endsection

@@ -247,9 +247,10 @@
                                             <button type="submit" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
                                         </div>
 
-                                        <div class="col-md-4 col-md-offset-4" id="app_client_info_container">
-                                        </div>
-
+                                        @if ($user->hasAccessTo('appointment_client_data', 'view', 0) >= 1)
+                                            <div class="col-md-4 col-md-offset-4" id="app_client_info_container">
+                                            </div>
+                                        @endif
 
                                 </form>
                             </div>

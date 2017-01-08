@@ -40,7 +40,8 @@ class AppointmentsController extends Controller
             'servicesOptions' => $servicesOptions,
             'timeOptions' => $timeOptions,
             'hoursOptions' => $durationSelects['hours'],
-            'minutesOptions' => $durationSelects['minutes']
+            'minutesOptions' => $durationSelects['minutes'],
+            'user' => $request->user()
         ]);
     }
 
@@ -79,7 +80,8 @@ class AppointmentsController extends Controller
             'timeOptions' => $timeOptions,
             'hoursOptions' => $durationSelects['hours'],
             'minutesOptions' => $durationSelects['minutes'],
-            'employeesOptions' => $employeesOptions
+            'employeesOptions' => $employeesOptions,
+            'user' => $request->user()
         ]);
     }
 
@@ -414,18 +416,19 @@ class AppointmentsController extends Controller
      *
      */
     public function getClientInfo(Request $request) {
-        /*
-        $cId = $request->input('client_id');
-        if (empty($cId)) {
+        // Если юзеру не разрешено просматривать данные клиентов, возвращаем пустую строку
+        $accessLevel = $request->user()->hasAccessTo('appointment_client_data', 'view', 0);
+        if ($accessLevel < 1) {
             echo '';
+            return;
         }
-        */
 
         // будем искать клиента по номеру телефона
         // TODO: искать по email и комбинации phone+email
         $phone = $request->input('phone');
         if (empty($phone)) {
             echo '';
+            return;
         }
 
         $phone = $request->user()->normalizePhoneNumber($phone);

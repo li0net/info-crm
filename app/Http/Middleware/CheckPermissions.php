@@ -20,7 +20,7 @@ class CheckPermissions
     public function handle($request, Closure $next)
     {
         $protectedObjects = array(
-            'AppointmentsJournalController'        => [     // контроллер для работы с существующими Записями визитов (отображение на календаре и в расписании)
+            'AppointmentsJournalController'        => [     // TODO: актуализировать имя контроллера, когда он будет создан (контроллер для работы с существующими Записями визитов (отображение на календаре и в расписании))
                 'objectName'    => 'appointments',
                 'action'        => 'view',
                 'objectId'      => NULL,
@@ -59,12 +59,43 @@ class CheckPermissions
                 'accessLevel'  => 1    // 1|0
             ],
 
-            'ServicesController@edit' => [      // Редактирование услуг
+            'ServicesController@edit' => [          // Редактирование услуг - редактировагние, в смысле управления, т.е. создание сюда тоже входит
                 'objectName'    => 'service',
                 'action'        => 'edit',
                 'objectId'      => 0,
                 'accessLevel'  => 1    // 1|0
             ],
+            'ServicesController@create' => [
+                'objectName'    => 'service',
+                'action'        => 'edit',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+            'ServicesController@save' => [
+                'objectName'    => 'service',
+                'action'        => 'edit',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+            'ServiceCategoriesController@create' => [
+                'objectName'    => 'service',
+                'action'        => 'edit',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+            'ServiceCategoriesController@edit' => [
+                'objectName'    => 'service',
+                'action'        => 'edit',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+            'ServiceCategoriesController@save' => [
+                'objectName'    => 'service',
+                'action'        => 'edit',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+
             'ServicesController@delete' => [      // Удаление услуг
                 'objectName'    => 'service',
                 'action'        => 'delete',

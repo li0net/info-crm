@@ -58,7 +58,7 @@ $(document).ready(function () {
 		mtype: "GET",
 		styleUI : 'Bootstrap',
 		datatype: "json",
-		colNames:['Редактировать', 'Название', 'Название для онлайн регистрации', 'Пол'],
+		colNames:['Управление', 'Название', 'Название для онлайн регистрации', 'Пол'],
 		colModel: [
 			{ index: 'service_category_id', name: 'service_category_id', key: true, width: 50, formatter:ServiceCategoryFormatEditColumn },
 			{ index: 'name', name: 'name', width: 130 },
@@ -81,7 +81,7 @@ $(document).ready(function () {
 		mtype: "GET",
 		styleUI : 'Bootstrap',
 		datatype: "json",
-		colNames:['Редактировать', 'Название', 'Категория услуг', 'Описание', 'Мин. цена', 'Макс. цена', 'Длительность'],
+		colNames:['Управление', 'Название', 'Категория услуг', 'Описание', 'Мин. цена', 'Макс. цена', 'Длительность'],
 		colModel: [
 			{ index: 'service_id', name: 'service_id', key: true, width: 60, formatter:ServiceFormatEditColumn },
 			{ index: 'name', name: 'name', width: 110 },
@@ -106,7 +106,7 @@ $(document).ready(function () {
 		mtype: "GET",
 		styleUI : 'Bootstrap',
 		datatype: "json",
-		colNames:['Редактировать', 'Имя', 'Телефон', 'Email'],
+		colNames:['Управление', 'Имя', 'Телефон', 'Email'],
 		colModel: [
 			{ index: 'user_id', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn },
 			{ index: 'name', name: 'name', width: 100 },
@@ -169,6 +169,10 @@ $(document).ready(function () {
 		});
 	});
 	$('#app_client_phone').blur(function() {
+		if($("#app_client_info_container").length == 0) {
+			return;
+		}
+
 		$('#app_client_info_container').html('');
 		var that = this;
 		$.ajax({
@@ -212,18 +216,28 @@ $(document).ready(function () {
 
 function ServiceCategoryFormatEditColumn(cellvalue, options, rowObject)
 {
-	var url = window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue;
-	return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
+	var url = '';
+
+	if (window.Settings.permissions_service_edit !== undefined && window.Settings.permissions_service_edit == 1) {
+		url = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+	}
+
+	return url;
 }
 
 function ServiceFormatEditColumn(cellvalue, options, rowObject)
 {
-	var url = window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue;
-	return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
+	var url = '';
+
+	if (window.Settings.permissions_service_edit !== undefined && window.Settings.permissions_service_edit == 1) {
+		url = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+	}
+
+	return url;
 }
 
 function UserFormatEditColumn(cellvalue, options, rowObject)
 {
 	var url = window.location.protocol + '//' + window.location.host + '/users/edit/' + cellvalue;
-	return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
+	return '<a href="' + url + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 }
