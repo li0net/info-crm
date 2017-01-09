@@ -74,6 +74,22 @@ class AppointmentsController extends Controller
             $employeesOptions[] = ['value' => $employee->employee_id, 'label' => $employee->name];
         }
 
+        // Готовим данные клиента
+        $clientInfo = '';
+        $clientDataAccessLevel = $request->user()->hasAccessTo('appointment_client_data', 'view', 0);
+        if ($clientDataAccessLevel > 0) {
+            $clientData = DB::table('appointments')
+                ->select(DB::raw('count(*) AS num_visits, MAX(start) AS last_visit'))
+                ->where('organization_id', $request->user()->organization_id)
+                ->where('client_id', $appt->client_id)
+                ->whereRaw('appointments.start <= NOW()')
+                ->get();
+            $clientData = $clientData->first();
+            if ($clientData->num_visits > 0) {
+                $clientInfo = view('appointment.tpl.clientinfo', ['clientData' => $clientData])->render();
+            }
+        }
+
         return view('adminlte::appointmentform', [
             'appointment' => $appt,
             'servicesOptions' => $servicesOptions,
@@ -81,7 +97,8 @@ class AppointmentsController extends Controller
             'hoursOptions' => $durationSelects['hours'],
             'minutesOptions' => $durationSelects['minutes'],
             'employeesOptions' => $employeesOptions,
-            'user' => $request->user()
+            'user' => $request->user(),
+            'clientInfo' => $clientInfo
         ]);
     }
 
@@ -127,7 +144,8 @@ class AppointmentsController extends Controller
             'date_from' => 'required|date_format:"Y-m-d"',    // date
             'time_from' => 'required',      // date_format:'H:i'
             'duration_hours' => 'required',
-            'duration_minutes' => 'required'
+            'duration_minutes' => 'required',
+            'state' => 'alpha'
         ]);
         if ($validator->fails()) {
             // Нужно подготовить массив для заполнения селекта с Сотрудниками предоставляющими выбранную услугу
@@ -230,6 +248,7 @@ class AppointmentsController extends Controller
             if (empty($request->input('note'))) {
                 $appointment->note = NULL;
             }
+            $appointment->state = $request->input('state');
 
         } else {    // создание
             // Проверяем есть ли у юзера права на создание Записи
@@ -259,7 +278,8 @@ class AppointmentsController extends Controller
         $appointment->save();
 
         //return redirect()->to('/serviceCategories');
-        return redirect()->to('/');
+        //return redirect()->to('/');
+        echo json_encode(array('success' => true, 'error' => ''));
     }
 
     protected function prepareServicesSelectData($request)

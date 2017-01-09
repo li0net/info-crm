@@ -191,6 +191,66 @@ $(document).ready(function () {
 		});
 	});
 
+	// Appointment form submit
+	$("#appointment_form").on("submit", function (e) {
+		e.preventDefault();
+
+		if ($('#app_state').length) {
+			$('#app_state').remove();
+		}
+
+		var btnLabel = '';
+
+		var selectedTab = $('#appointment_tabs_header li.active a');
+		if (selectedTab.length > 0) {
+			var selectedTabId = $(selectedTab[0]).attr('href');
+			if (selectedTabId == '#tab_client_wait') {
+				var stateVal = 'created';
+			} else if (selectedTabId == '#tab_client_came') {
+				var stateVal = 'finished';
+			} else if (selectedTabId == '#tab_client_didnt_came') {
+				var stateVal = 'failed';
+			} else if (selectedTabId == '#tab_client_confirm') {
+				var stateVal = 'confirmed';
+			}
+		}
+
+		if (stateVal !== undefined) {
+			$('<input>').attr({
+				type: 'hidden',
+				id: 'app_state',
+				name: 'state',
+				value: stateVal
+			}).appendTo('#appointment_form');
+		}
+
+		$.ajax({
+			type: "POST",
+			url: "/appointments/save",
+			data: $("#appointment_form").serialize(),
+			beforeSend: function() {
+				//$('#result').html('<img src="loading.gif" />');
+				var btn = $('#btn_submit_app_form');
+				btnLabel = $(btn).val();
+				$(btn).prop('disabled', true);
+				$(btn).val("Сохранение...");	// localize
+			},
+			success: function(data) {
+				//$('#result').html(data);
+				var btn = $('#btn_submit_app_form');
+				$(btn).val(btnLabel);
+				$(btn).prop('disabled', false);
+				alert("Saved");
+			},
+			error: function(data) {
+				var btn = $('#btn_submit_app_form');
+				$(btn).val(btnLabel);
+				$(btn).prop('disabled', false);
+				alert("Error");
+			}
+		});
+	});
+
 	$('#form_submit').on('click', function() {
 		$('#form228').submit();
 	});
