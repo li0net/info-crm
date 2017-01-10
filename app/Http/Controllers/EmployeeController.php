@@ -15,12 +15,19 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class EmployeeController extends Controller
 {
+	public function __construct()
+	{
+		$this->middleware('auth');
+		$this->middleware('permissions')->only(['update', 'destroy']);
+	}
+
+
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		//$employees = Employee::OrderBy('employee_id', 'asc')->paginate(4);
 
@@ -36,7 +43,7 @@ class EmployeeController extends Controller
 		 
 		//return View::make('employee.index',compact('employees'));
 
-		return view('employee.index')->withEmployees($employees);
+		return view('employee.index', ['user' => $request->user()])->withEmployees($employees);
 	}
 
 	/**
@@ -89,9 +96,13 @@ class EmployeeController extends Controller
 	 */
 	public function show($id)
 	{
-		$employee = Employee::find($id);
+		$employee = Employee::where('organization_id', request()->user()->organization_id)->where('employee_id', $id)->first();
 
-		return view('employee.show')->withEmployee( $employee );
+		if (!$employee) {
+			return 'No such record';
+		}
+
+		return view('employee.show', ['user' => request()->user()])->withEmployee( $employee );
 	}
 
 	/**
@@ -134,7 +145,10 @@ class EmployeeController extends Controller
 			// 'phone' => 'required'
 		]);
 
-		$employee = Employee::find($id);
+		$employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $id)->first();
+		if (is_null($employee)) {
+			return 'No such record';
+		}
 
 		$employee->name = $request->input('name');
 		$employee->email = '';
@@ -158,12 +172,15 @@ class EmployeeController extends Controller
 	 */
 	public function destroy($id)
 	{
-		 $employee = Employee::find($id);
+		$employee = Employee::where('organization_id', request()->user()->organization_id)->where('employee_id', $id)->first();
 
-		 $employee->delete();
+		if ($employee) {
+			$employee->delete();
+			Session::flash('success', 'Сотрудник был успешно удален!');
+		} else {
+			Session::flash('error', 'Сотрудник не найден');
+		}
 
-		 Session::flash('success', 'Сотрудник был успешно удален!');
-
-		 return redirect()->route('employee.index');
+		return redirect()->route('employee.index');
 	}
 }

@@ -103,7 +103,7 @@ class CheckPermissions
                 'accessLevel'  => 1    // 1|0
             ],
 
-            'EmployeeController@edit' => [      // Редактирование персонала
+            'EmployeeController@update' => [      // Редактирование персонала
                 'objectName'    => 'employee',
                 'action'        => 'edit',
                 'objectId'      => 0,
