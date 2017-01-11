@@ -129,10 +129,13 @@ class EmployeeController extends Controller
 		// }
 
 		$this->validate($request, [
-			'name' => 'required'
+			'name' => 'required',
 			// 'email' => 'required',
 			// 'phone' => 'required'
+			'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
 		]);
+
+		// $this->validate($request, ['avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048']);
 
 		$employee = Employee::find($id);
 
@@ -142,6 +145,16 @@ class EmployeeController extends Controller
 		$employee->spec = $request->input('spec');
 		$employee->descr = $request->input('descr');
 		$employee->position_id = $request->position_id;
+
+		$imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
+
+		$request->file('avatar')->move(public_path('images'), $imageName);
+
+		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
+
+		$settings[0]->email_for_notify = $imageName;
+
+		$settings[0]->save();
 
 		$employee->save();
 

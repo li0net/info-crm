@@ -29,11 +29,11 @@
 				
 					<div class="tab-content">
 						<div id="menu1" class="tab-pane fade in active">
-							{{-- {{ Form::label('employee_id', 'Сотрудник:') }}
-							<p class="lead">#{{ $employee->employee_id }}</p> --}}
+							<h4>Информация о пользователе</h4>
+							<hr>
 							<div class="row">
-								<div class="col-sm-8 b-r">
-									{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "class" => "hidden", "id" => "form228"]) !!}
+								{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "class" => "hidden", "id" => "form228", "files" => "true"]) !!}
+									<div class="col-sm-8 b-r">
 										<div class="form-group">
 											{{ Form::label('name', 'Имя:', ['class' => 'ctrl-label']) }}
 											{{ Form::text('name', null, ['class' => 'text-left form-control', 'placeholder' => 'Пример: Елена Кукушкина']) }}
@@ -41,7 +41,7 @@
 
 										<div class="form-group">
 											{{ Form::label('position_id', 'Должность:', ['class' => 'ctrl-label']) }}
-											{{ Form::select('position_id', [1 => 'Парикмахер', 2 => 'Мастер манюкюра', 3 => 'Визажист'], $employee->position_id, ['class' => 'form-control', 'required' => '']) }}
+											{{ Form::select('position_id', [1 => 'Парикмахер', 2 => 'Мастер маникюра', 3 => 'Визажист'], $employee->position_id, ['class' => 'form-control', 'required' => '']) }}
 										</div>
 
 										<div class="form-group">
@@ -53,53 +53,27 @@
 											{{ Form::label('descr', "Описание: ", ['class' => 'ctrl-label']) }}
 											{{ Form::textarea('descr', null, ['class' => 'form-control']) }}
 										</div>
-										
-										{{-- <hr>
-						
-										<div class="row">
-											<div class="col-md-8 col-md-offset-2">
-												<div class="row">
-													<div class="col-md-6">
-														{!! Html::linkRoute('employee.show', 'Отмена', [$employee->employee_id], ['class'=>'btn btn-danger btn-block']) !!}
-													</div>
-													<div class="col-md-6">
-														{{ Form::submit('Сохранить', ['class'=>'btn btn-success btn-block']) }}
-													</div>
-												</div>
-											</div>
-										</div> --}}
-									{!! Form::close() !!}
-								</div>
-								<div class="col-sm-4 text-center">
-									{{-- {!! Form::open(array('route' => array('upload', $employee->employee_id), 'files' => true, 'method' => 'POST', 'id' => 'avatar_upload_form')) !!}
+									</div>
+
+									<div class="col-sm-4 text-center">
 										<label class="ctrl-label">@{{message}}</label>
 										<div class="logo-block">
-											@if (!count($settings))
-												<img src="https://yclients.com/images/no-master.png" alt="">
-											@else
-												<img src="/images/{{ $settings[0]->email_for_notify }}" alt="">
-											@endif
+											<div v-if="!image">
+												@if( $settings[0]->email_for_notify != NULL)
+													<img src="/images/{{ $settings[0]->email_for_notify }}" />
+												@else
+													<img src="/images/no-master.png" alt="">
+												@endif													
+											</div>
+											<div v-else>
+												<img :src="image" />
+											</div>
 										</div>
-										<div>
-											<span class="btn btn-success btn-file">
-												Загрузить фото  {!! Form::file('image', ['id' => 'avatar_upload_form__filename']) !!}
-											</span>
-										</div>
-									{!! Form::close() !!} --}}
-									
-									<label class="ctrl-label">@{{message}}</label>
-									<div class="logo-block">
-										<div v-if="!image">
-											<img src="https://yclients.com/images/no-master.png" />
-										</div>
-										<div v-else>
-											<img :src="image" />
-										</div>
+										<span class="btn btn-success btn-file">
+											Загрузить фото <input type="file" name="avatar" @change="onFileChange">
+										</span>
 									</div>
-									<span class="btn btn-success btn-file">
-										Загрузить фото <input type="file" @change="onFileChange">
-									</span>
-								</div>
+								{!! Form::close() !!}
 							</div>
 						</div>
 

@@ -9,11 +9,11 @@ use App\EmployeeSetting;
 class UploadImageController extends Controller
 {
 	public function uploadImage(Request $request, $id) {
-		$this->validate($request, ['image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048']);
+		//$this->validate($request, ['avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048']);
 
-		$imageName = time().'.'.$request->file('image')->getClientOriginalExtension();
+		$imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
 
-		$request->file('image')->move(public_path('images'), $imageName);
+		$request->file('avatar')->move(public_path('images'), $imageName);
 
 		$employee = Employee::find($id);
 		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();

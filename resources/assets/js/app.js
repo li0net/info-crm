@@ -19,13 +19,14 @@ const app = new Vue({
 	el: '#app',
 	data: {
 		message: 'Фотопортрет',
-		image: ''
+		image: '',
 	},
+	
 	methods: {
 		onFileChange(e) {
 			var files = e.target.files || e.dataTransfer.files;
 			if (!files.length)
-			return;
+				return;
 			this.createImage(files[0]);
 		},
 		
@@ -43,7 +44,7 @@ const app = new Vue({
 		removeImage: function (e) {
 			this.image = '';
 		}
-  	}
+	}
 });
 
 $.ajaxSetup({
@@ -189,6 +190,7 @@ $(document).ready(function () {
 	});
 
 	$('#form_submit').on('click', function() {
+		console.log(app.imageName);
 		$('#form228').submit();
 	});
 
