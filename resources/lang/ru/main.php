@@ -78,6 +78,8 @@ return [
     'user:info_label'                       => 'Информация',
     'user:email_label'                      => 'E-mail',
     'user:phone_label'                      => 'Телефон',
+    'user:create_new_btn_label'             => 'Создать пользователя',
+    'user:creation_success_message'         => 'Пользовтель был успешно создан!',
 
     'user:permissions_appointment_form_label' => 'Окно записи',
     'user:permissions_appointment_create_label' => 'Создавать записи',

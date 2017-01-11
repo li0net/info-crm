@@ -14,6 +14,10 @@
                 </div>
             </div>
 
+            <div class="col-md-2">
+                <p class="text-right"><a href="{{$newUserUrl}}" class="btn btn-default">@lang('main.user:create_new_btn_label')</a></p>
+            </div>
+
         </div>
 
 
