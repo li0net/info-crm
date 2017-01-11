@@ -11,7 +11,7 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        @if (isset($user))
+                        @if (isset($crmuser))
                             @lang('main.user:edit_form_header')
                         @else
                             @lang('main.user:create_form_header')
@@ -22,7 +22,7 @@
 
                         <ul class="nav nav-pills nav-justified" id="user_tabs_header" role="tablist">
                             <li class="active"><a href="#tab_user_properties" role="tab" data-toggle="tab"><i class="fa address-book-o" aria-hidden="true"></i>&nbsp;@lang('main.user:properties_tab_label')</a></li>
-                            @if(isset($user))
+                            @if(isset($crmuser))
                             <li><a href="#tab_user_permissions" role="tab" data-toggle="pill"><i class="fa gears"></i>&nbsp;@lang('main.user:permissions_tab_label')</a></li>
                             @endif
                         </ul>
@@ -33,8 +33,8 @@
                             <div class="tab-pane fade in active" id="tab_user_properties">
                                 <form method="post" action="/users/save">
                                     <?php $csrfField = csrf_field(); echo $csrfField;?>
-                                    @if (isset($user))
-                                        <input type="hidden" name="user_id" id="sc_user_id" value="{{$user->user_id}}">
+                                    @if (isset($crmuser))
+                                        <input type="hidden" name="user_id" id="sc_user_id" value="{{$crmuser->user_id}}">
                                     @endif
 
                                     <div class="col-md-6">
@@ -45,8 +45,8 @@
                                         $old = old('name');
                                         if (!is_null($old)) {
                                             $value = $old;
-                                        } elseif (isset($user)) {
-                                            $value = $user->name;
+                                        } elseif (isset($crmuser)) {
+                                            $value = $crmuser->name;
                                         } else {
                                             $value = '';
                                         }?>
@@ -64,8 +64,8 @@
                                         $old = old('info');
                                         if (!is_null($old)) {
                                             $value = $old;
-                                        } elseif (isset($user)) {
-                                            $value = $user->info;
+                                        } elseif (isset($crmuser)) {
+                                            $value = $crmuser->info;
                                         } else {
                                             $value = '';
                                         }?>
@@ -83,8 +83,8 @@
                                         $old = old('email');
                                         if (!is_null($old)) {
                                             $value = $old;
-                                        } elseif (isset($user)) {
-                                            $value = $user->email;
+                                        } elseif (isset($crmuser)) {
+                                            $value = $crmuser->email;
                                         } else {
                                             $value = '';
                                         }?>
@@ -102,8 +102,8 @@
                                         $old = old('phone');
                                         if (!is_null($old)) {
                                             $value = $old;
-                                        } elseif (isset($user)) {
-                                            $value = $user->phone;
+                                        } elseif (isset($crmuser)) {
+                                            $value = $crmuser->phone;
                                         } else {
                                             $value = '';
                                         }?>
@@ -112,6 +112,18 @@
                                             <br/>{{$message}}
                                         @endforeach
                                     </div>
+
+                                    @if(!isset($crmuser))
+                                        <div class="col-md-6">
+                                            <label for="usr_phone">@lang('main.user:password_label')</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="password" id="usr_password">
+                                            @foreach ($errors->get('password') as $message)
+                                                <br/>{{$message}}
+                                            @endforeach
+                                        </div>
+                                    @endif
 
                                     <div class="col-md-12">
                                         <hr/>
@@ -128,19 +140,19 @@
 
 
                             <!-- Содержимое вкладки Права доступа -->
-                            @if(isset($user))
+                            @if(isset($crmuser))
                             <div class="tab-pane fade" id="tab_user_permissions">
-                                <form method="post" action="/users/{{$user->user_id}}/savePermissions">
+                                <form method="post" action="/users/{{$crmuser->user_id}}/savePermissions">
                                     {{$csrfField}}
 
-                                    <input type="hidden" name="user_id" id="permissions_user_id" value="{{$user->user_id}}">
+                                    <input type="hidden" name="user_id" id="permissions_user_id" value="{{$crmuser->user_id}}">
 
                                     <!-- Права доступа к форме Записей -->
                                     <div>
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'appointment_form' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }
@@ -150,8 +162,8 @@
 
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'appointment' AND $permission->action == 'create' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }
@@ -161,8 +173,8 @@
 
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'appointment' AND $permission->action == 'edit' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }
@@ -172,8 +184,8 @@
 
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'appointment' AND $permission->action == 'delete' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }
@@ -183,8 +195,8 @@
 
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'appointment_client_data' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }
@@ -197,8 +209,8 @@
                                     <div>
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'settings' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }
@@ -208,8 +220,8 @@
 
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'settings_manage_users' AND $permission->action == 'edit' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }
@@ -219,8 +231,8 @@
 
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'service' AND $permission->action == 'edit' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }
@@ -230,8 +242,8 @@
 
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'service' AND $permission->action == 'delete' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }
@@ -241,8 +253,8 @@
 
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'employee' AND $permission->action == 'edit' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }
@@ -252,8 +264,8 @@
 
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'employee' AND $permission->action == 'delete' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }
@@ -263,8 +275,8 @@
 
                                         <?php
                                         $selected = '';
-                                        if (isset($user)) {
-                                            foreach($user->accessPermissions()->get() AS $permission) {
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'schedule' AND $permission->action == 'edit' AND $permission->access_level == '1') {
                                                     $selected = "checked='checked'";
                                                 }

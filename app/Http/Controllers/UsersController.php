@@ -8,6 +8,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use App\User;
 use App\AccessPermission;
 use Illuminate\Support\Facades\Log;
+use Session;
 
 class UsersController extends Controller
 {
@@ -23,7 +24,8 @@ class UsersController extends Controller
     // users grid
     public function index()
     {
-        return view('adminlte::users');
+        $newUserUrl = action('UsersController@create');
+        return view('adminlte::users', compact('newUserUrl'));
     }
 
     public function edit(Request $request, User $user)
@@ -35,7 +37,7 @@ class UsersController extends Controller
             throw new AccessDeniedHttpException('You don\'t have permission to access this page');
         }
 
-        return view('adminlte::userform', compact('user'));
+        return view('adminlte::userform', ['crmuser' => $user]);
     }
 
     public function create(Request $request)
@@ -182,25 +184,36 @@ class UsersController extends Controller
 
     public function save(Request $request)
     {
+        // нужно подготовить (нормализовать) номер телефона, чтобы при дальнейшей валидации можно было проверить его уникальность
+        if ($request->input('phone')) {
+            $user = new User();
+            $request->merge(array('phone' => $user->normalizePhoneNumber($request->input('phone'))));
+        }
+
         $this->validate($request, [
             'name' => 'required|max:110',
             'info' => 'max:255',
-            'email' => 'required|max:70|email',
-            'phone' => 'required|phone_crm'
+            'email' => 'required|max:70|email|unique:users,email',
+            'phone' => 'required|phone_crm|unique:users,phone',
+            'password' => 'required_with:user_id|min:7'
         ]);
 
         $userId = $request->input('user_id');
         // определить создание это или редактирование (по наличию поля user_id)
 
+        $isCreating = FALSE;
         if (!is_null($userId)) {  // редактирование
-            $user = User::find($userId);
+            $user = User::where('organization_id', request()->user()->organization_id)->where('user_id', $userId)->first();
             if (is_null($user)) {
                 return 'Record doesn\'t exist';
             }
 
         } else {    // создание
+            $isCreating = TRUE;
             $user = new User();
+            $user->organization_id = $request->user()->organization_id;
             $user->is_admin = 0;
+            $user->password = bcrypt($request->input('password'));
         }
 
         $user->name = $request->input('name');
@@ -210,6 +223,10 @@ class UsersController extends Controller
         $user->save();
 
         // TODO: create default access right records?
+
+        if ($isCreating) {
+            Session::flash('success', trans('main.user:creation_success_message'));
+        }
         return redirect('/users');
     }
 }
