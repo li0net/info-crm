@@ -88,13 +88,13 @@
 						</div>
 
 						<div id="menu4" class="tab-pane fade form-horizontal">
-							{!! Form::open(['route' => ['employee.update', $employee->employee_id], "method" => 'POST', "class" => "hidden", "id" => "employee_form__settings"]) !!}
+							{!! Form::model($settings[0], ['route' => ['employee.update', $employee->employee_id], "method" => 'PUT', "id" => "employee_form__settings"]) !!}
 								<h4>Уведомления</h4>
 								<br>
 								<div class="form-group">
 									{{ Form::label('online_reg_notify', 'Онлайн-записи', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 									<label class="col-sm-7 text-left">
-										{{ Form::checkbox('online_reg_notify', 1, false, ['style' => 'margin-right: 10px']) }}
+										{{ Form::checkbox('online_reg_notify', 1, $settings[0]->online_reg_notify, ['style' => 'margin-right: 10px']) }}
 										 Отправлять уведомления об онлайн записях 
 									</label>
 									<label class="col-sm-1 text-left">
@@ -105,7 +105,7 @@
 								<div class="form-group">
 									{{ Form::label('phone_reg_notify', 'Записи по телефону', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 									<label class="col-sm-7 text-left">
-										{{ Form::checkbox('phone_reg_notify', 1, false, ['style' => 'margin-right: 10px']) }}
+										{{ Form::checkbox('phone_reg_notify', 1, $settings[0]->phone_reg_notify, ['style' => 'margin-right: 10px']) }}
 										 Отправлять уведомления о записях по телефону 
 									</label>
 									<label class="col-sm-1 text-left">
@@ -116,7 +116,7 @@
 								<div class="form-group">
 									{{ Form::label('online_reg_notify_del', 'Удаление онлайн записи', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 									<label class="col-sm-7 text-left">
-										{{ Form::checkbox('online_reg_notify_del', 1, false, ['style' => 'margin-right: 10px']) }}
+										{{ Form::checkbox('online_reg_notify_del', 1, $settings[0]->online_reg_notify_del, ['style' => 'margin-right: 10px']) }}
 										 Отправлять уведомления об удалении онлайн записей 
 									</label>
 									<label class="col-sm-1 text-left">
@@ -147,7 +147,7 @@
 								<div class="form-group">
 									{{ Form::label('client_data_notify', 'Данные клиентов', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 									<label class="col-sm-7 text-left">
-										{{ Form::checkbox('client_data_notify', 1, false, ['style' => 'margin-right: 10px']) }}
+										{{ Form::checkbox('client_data_notify', 1, $settings[0]->client_data_notify, ['style' => 'margin-right: 10px']) }}
 										 Отправлять имя и номер телефона клиента 
 									</label>
 									<label class="col-sm-1 text-left">
@@ -163,11 +163,11 @@
 									{{ Form::label('reg_permitted', 'Онлайн-запись', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 									<div class="col-sm-7 text-left">
 										<label style="width: 100%">
-											{{ Form::radio('reg_permitted', 1, true, ['style' => 'margin-right: 10px']) }}
+											{{ Form::radio('reg_permitted', 1, $settings[0]->reg_permitted ? true : false, ['style' => 'margin-right: 10px']) }}
 											 Разрешить онлайн-запись 
 										</label>
 										<label>
-											{{ Form::radio('reg_permitted', 1, false, ['style' => 'margin-right: 10px']) }}
+											{{ Form::radio('reg_permitted', 0, $settings[0]->reg_permitted ? true : false, ['style' => 'margin-right: 10px']) }}
 											 Запретить онлайн-запись 
 										</label>
 									</div>
@@ -180,11 +180,11 @@
 									{{ Form::label('reg_permitted_nomaster', 'Пропуск выбора', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 									<div class="col-sm-7 text-left">
 										<label style="width: 100%">
-											{{ Form::radio('reg_permitted_nomaster', 1, true, ['style' => 'margin-right: 10px']) }}
+											{{ Form::radio('reg_permitted_nomaster', 1, $settings[0]->reg_permitted_nomaster ? true : false, ['style' => 'margin-right: 10px']) }}
 											 Разрешить онлайн-запись при выборе опции "Мастер не важен"
 										</label>
 										<label>
-											{{ Form::radio('reg_permitted_nomaster', 1, false, ['style' => 'margin-right: 10px']) }}
+											{{ Form::radio('reg_permitted_nomaster', 0, $settings[0]->reg_permitted_nomaster ? true : false, ['style' => 'margin-right: 10px']) }}
 											 Запретить онлайн-запись при выборе опции "Мастер не важен"
 										</label>
 									</div>
@@ -218,7 +218,7 @@
 								<div class="form-group">
 									{{ Form::label('show_rating', 'Рейтинг', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 									<label class="col-sm-7 text-left">
-										{{ Form::checkbox('show_rating', 1, false, ['style' => 'margin-right: 10px']) }}
+										{{ Form::checkbox('show_rating', 1, $settings[0]->show_rating, ['style' => 'margin-right: 10px']) }}
 										 Показывать рейтинг в виджете онлайн-записи 
 									</label>
 								</div>
@@ -238,7 +238,7 @@
 								<div class="form-group">
 									{{ Form::label('is_rejected', 'Статус', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 									<label class="col-sm-7 text-left">
-										{{ Form::checkbox('is_rejected', 1, false, ['style' => 'margin-right: 10px']) }}
+										{{ Form::checkbox('is_rejected', 1, $settings[0]->is_rejected, ['style' => 'margin-right: 10px']) }}
 										 Сотрудник уволен
 									</label>
 									<label class="col-sm-1 text-left">
@@ -249,7 +249,7 @@
 								<div class="form-group">
 									{{ Form::label('is_in_occupancy', 'Учет в заполненности', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 									<label class="col-sm-7 text-left">
-										{{ Form::checkbox('is_in_occupancy', 1, false, ['style' => 'margin-right: 10px']) }}
+										{{ Form::checkbox('is_in_occupancy', 1, $settings[0]->is_in_occupancy, ['style' => 'margin-right: 10px']) }}
 										 Сотрудник учитывается в заполненности
 									</label>
 								</div>
@@ -268,7 +268,7 @@
 									<div class="form-group">
 										{{ Form::label('sync_with_google', 'Синхронизация с Google', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 										<label class="col-sm-7 text-left">
-											{{ Form::checkbox('sync_with_google', 1, false, ['style' => 'margin-right: 10px']) }}
+											{{ Form::checkbox('sync_with_google', 1, $settings[0]->sync_with_google, ['style' => 'margin-right: 10px']) }}
 											 Выгружать данные клиентов в Google
 										</label>
 									</div>
@@ -276,7 +276,7 @@
 									<div class="form-group">
 										{{ Form::label('sync_with_1c', 'Синхронизация с 1С', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 										<label class="col-sm-7 text-left">
-											{{ Form::checkbox('sync_with_1c', 1, false, ['style' => 'margin-right: 10px']) }}
+											{{ Form::checkbox('sync_with_1c', 1, $settings[0]->sync_with_1c, ['style' => 'margin-right: 10px']) }}
 											 Выгружать данные клиентов в 1С
 										</label>
 									</div>

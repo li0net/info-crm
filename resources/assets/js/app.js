@@ -253,8 +253,13 @@ $(document).ready(function () {
 	});
 
 	$('#form_submit').on('click', function() {
-
-		$('#form228').submit();
+		console.log($('ul.nav.nav-tabs li.active a').attr('href'));
+		if($('ul.nav.nav-tabs li.active a').attr('href') == '#menu1') {
+			$('#form228').submit();
+		}
+		else {
+			$('#employee_form__settings').submit();
+		}
 	});
 
 	$('#avatar_upload_form__filename').on('change', function() {

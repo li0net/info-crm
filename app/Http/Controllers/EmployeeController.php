@@ -125,6 +125,7 @@ class EmployeeController extends Controller
 	{
 		$employee = Employee::find($id);
 		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
+		//dd($settings);
 
 		return view('employee.edit', ['employee' => $employee, 'settings' => $settings]);
 	}
@@ -138,14 +139,14 @@ class EmployeeController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		// Проверяем есть ли у юзера права на редактирование Персонала
-		// $accessLevel = $request->user()->hasAccessTo('employee', 'edit', 0);
-		// if ($accessLevel < 1) {
-		// 	throw new AccessDeniedHttpException('You don\'t have permission to access this page');
-		// }
+		//Проверяем есть ли у юзера права на редактирование Персонала
+		$accessLevel = $request->user()->hasAccessTo('employee', 'edit', 0);
+		if ($accessLevel < 1) {
+			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+		}
 
 		$this->validate($request, [
-			'name' => 'required'
+			// 'name' => 'required'
 			// 'email' => 'required',
 			// 'phone' => 'required'
 			// 'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
@@ -153,7 +154,12 @@ class EmployeeController extends Controller
 
 		$employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $id)->first();
 		if (is_null($employee)) {
-			return 'No such record';
+			return 'No such employee';
+		}
+
+		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
+		if (is_null($settings)) {
+			return 'No such settings';
 		}
 
 		$employee->name = $request->input('name');
@@ -168,14 +174,36 @@ class EmployeeController extends Controller
 
 			$request->file('avatar')->move(public_path('images'), $imageName);
 
-			$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
+			//$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
 
 			$settings[0]->avatar_image_name = $imageName;
-
-			$settings[0]->save();
 		}
 
-		$employee->save();
+		//$employee->save();
+
+		$settings[0]->online_reg_notify = $request->input('online_reg_notify');
+		$settings[0]->phone_reg_notify = $request->input('phone_reg_notify');
+		$settings[0]->online_reg_notify_del = $request->input('online_reg_notify_del');
+		$settings[0]->phone_for_notify = $request->input('phone_for_notify');
+		$settings[0]->email_for_notify = $request->input('email_for_notify');
+		$settings[0]->online_reg_notify = $request->input('online_reg_notify');
+		$settings[0]->client_data_notify = $request->input('client_data_notify');
+		$settings[0]->reg_permitted = $request->input('reg_permitted');
+		$settings[0]->reg_permitted_nomaster = $request->input('reg_permitted_nomaster');
+		
+		//TODO: Обрабатывать значения этих полей
+		// $settings[0]->session_start = $request->input('session_start');
+		// $settings[0]->session_end = $request->input('session_end');
+		// $settings[0]->add_interval = $request->input('add_interval');
+
+		$settings[0]->show_rating = $request->input('show_rating');
+		$settings[0]->is_rejected = $request->input('is_rejected');
+		$settings[0]->is_in_occupancy = $request->input('is_in_occupancy');
+		$settings[0]->revenue_pctg = $request->input('revenue_pctg');
+		$settings[0]->sync_with_google = $request->input('sync_with_google');
+		$settings[0]->sync_with_1c = $request->input('sync_with_1c');
+
+		$settings[0]->save();
 
 		Session::flash('success', 'Данные сотрудника успешно сохранены!');
 
