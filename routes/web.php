@@ -26,10 +26,8 @@ Route::get('/serviceCategories', 'ServiceCategoriesController@index');
 Route::get('/services', 'ServicesController@index');
 Route::get('/users', 'UsersController@index');
 
-// Route::get('/employee', 'EmployeeController@index');
-// Route::get('/employee/{id}', 'EmployeeController@show');
-
 Route::resource('/employee', 'EmployeeController');
+Route::resource('position', 'PositionController');
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
 Route::get('/serviceCategories/gridData', function()

@@ -32,7 +32,7 @@
 							<h4>Информация о пользователе</h4>
 							<hr>
 							<div class="row">
-								{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "class" => "hidden", "id" => "form228", "files" => "true"]) !!}
+								{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "class" => "hidden", "id" => "employee_form__info", "files" => "true"]) !!}
 									<div class="col-sm-8 b-r">
 										<div class="form-group">
 											{{ Form::label('name', 'Имя:', ['class' => 'ctrl-label']) }}
@@ -80,11 +80,15 @@
 						<div id="menu2" class="tab-pane fade">
 							<h4>Информация об услугах</h4>
 							<hr>
+							{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "id" => "employee_form__services"]) !!}
+							{!! Form::close() !!}
 						</div>
 						
 						<div id="menu3" class="tab-pane fade">
 							<h4>Информация о расписании</h4>
 							<hr>
+							{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "id" => "employee_form__schedule"]) !!}
+							{!! Form::close() !!}
 						</div>
 
 						<div id="menu4" class="tab-pane fade form-horizontal">
@@ -286,6 +290,8 @@
 						<div id="menu5" class="tab-pane fade">
 							<h4>Информация о расчете ЗП</h4>
 							<hr>
+							{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "id" => "employee_form__wage"]) !!}
+							{!! Form::close() !!}
 						</div>
 
 						<hr>

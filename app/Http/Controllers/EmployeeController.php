@@ -21,7 +21,6 @@ class EmployeeController extends Controller
 		$this->middleware('permissions')->only(['update', 'destroy']);
 	}
 
-
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -162,48 +161,50 @@ class EmployeeController extends Controller
 			return 'No such settings';
 		}
 
-		$employee->name = $request->input('name');
-		// $employee->email = $request->input('email');
-		// $employee->phone = $request->input('phone');
-		$employee->spec = $request->input('spec');
-		$employee->descr = $request->input('descr');
-		$employee->position_id = $request->position_id;
+		if ($request->input('name') !== null) {
+			$employee->name = $request->input('name');
+			// $employee->email = $request->input('email');
+			// $employee->phone = $request->input('phone');
+			$employee->spec = $request->input('spec');
+			$employee->descr = $request->input('descr');
+			$employee->position_id = $request->position_id;
 
-		if($request->file('avatar') !== null) {
-			$imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
-
-			$request->file('avatar')->move(public_path('images'), $imageName);
-
-			//$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
-
-			$settings[0]->avatar_image_name = $imageName;
+			$employee->save();
 		}
 
-		//$employee->save();
+		if ($request->input('online_reg_notify') !== null) {
+			if ($request->file('avatar') !== null) {
+				$imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
 
-		$settings[0]->online_reg_notify = $request->input('online_reg_notify');
-		$settings[0]->phone_reg_notify = $request->input('phone_reg_notify');
-		$settings[0]->online_reg_notify_del = $request->input('online_reg_notify_del');
-		$settings[0]->phone_for_notify = $request->input('phone_for_notify');
-		$settings[0]->email_for_notify = $request->input('email_for_notify');
-		$settings[0]->online_reg_notify = $request->input('online_reg_notify');
-		$settings[0]->client_data_notify = $request->input('client_data_notify');
-		$settings[0]->reg_permitted = $request->input('reg_permitted');
-		$settings[0]->reg_permitted_nomaster = $request->input('reg_permitted_nomaster');
-		
-		//TODO: Обрабатывать значения этих полей
-		// $settings[0]->session_start = $request->input('session_start');
-		// $settings[0]->session_end = $request->input('session_end');
-		// $settings[0]->add_interval = $request->input('add_interval');
+				$request->file('avatar')->move(public_path('images'), $imageName);
 
-		$settings[0]->show_rating = $request->input('show_rating');
-		$settings[0]->is_rejected = $request->input('is_rejected');
-		$settings[0]->is_in_occupancy = $request->input('is_in_occupancy');
-		$settings[0]->revenue_pctg = $request->input('revenue_pctg');
-		$settings[0]->sync_with_google = $request->input('sync_with_google');
-		$settings[0]->sync_with_1c = $request->input('sync_with_1c');
+				$settings[0]->avatar_image_name = $imageName;
+			}
 
-		$settings[0]->save();
+			$settings[0]->online_reg_notify = $request->input('online_reg_notify');
+			$settings[0]->phone_reg_notify = $request->input('phone_reg_notify');
+			$settings[0]->online_reg_notify_del = $request->input('online_reg_notify_del');
+			$settings[0]->phone_for_notify = $request->input('phone_for_notify');
+			$settings[0]->email_for_notify = $request->input('email_for_notify');
+			$settings[0]->online_reg_notify = $request->input('online_reg_notify');
+			$settings[0]->client_data_notify = $request->input('client_data_notify');
+			$settings[0]->reg_permitted = $request->input('reg_permitted');
+			$settings[0]->reg_permitted_nomaster = $request->input('reg_permitted_nomaster');
+			
+			//TODO: Обрабатывать значения этих полей
+			// $settings[0]->session_start = $request->input('session_start');
+			// $settings[0]->session_end = $request->input('session_end');
+			// $settings[0]->add_interval = $request->input('add_interval');
+
+			$settings[0]->show_rating = $request->input('show_rating');
+			$settings[0]->is_rejected = $request->input('is_rejected');
+			$settings[0]->is_in_occupancy = $request->input('is_in_occupancy');
+			$settings[0]->revenue_pctg = $request->input('revenue_pctg');
+			$settings[0]->sync_with_google = $request->input('sync_with_google');
+			$settings[0]->sync_with_1c = $request->input('sync_with_1c');
+
+			$settings[0]->save();
+		}
 
 		Session::flash('success', 'Данные сотрудника успешно сохранены!');
 

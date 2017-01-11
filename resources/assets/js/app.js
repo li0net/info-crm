@@ -253,18 +253,32 @@ $(document).ready(function () {
 	});
 
 	$('#form_submit').on('click', function() {
-		console.log($('ul.nav.nav-tabs li.active a').attr('href'));
-		if($('ul.nav.nav-tabs li.active a').attr('href') == '#menu1') {
-			$('#form228').submit();
+		var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
+
+		if(activeTab == '#menu1') {
+			$('#employee_form__info').submit();
 		}
-		else {
+
+		if(activeTab == '#menu2') {
+			$('#employee_form__services').submit();
+		}
+		
+		if(activeTab == '#menu3') {
+			$('#employee_form__schedule').submit();
+		}
+
+		if(activeTab == '#menu4') {
 			$('#employee_form__settings').submit();
+		}
+
+		if(activeTab == '#menu5') {
+			$('#employee_form__wage').submit();
 		}
 	});
 
-	$('#avatar_upload_form__filename').on('change', function() {
-		$('#avatar_upload_form').submit();
-	});
+	// $('#avatar_upload_form__filename').on('change', function() {
+	// 	$('#avatar_upload_form').submit();
+	// });
 
 	$(function () {
 		$('#dp').datepicker(
@@ -276,7 +290,7 @@ $(document).ready(function () {
 
 	$('ul.nav.nav-tabs li a[href="' + hash + '"]').tab('show');
 
-	$('#form228').removeClass('hidden');
+	$('#employee_form__info').removeClass('hidden');
 
 	return false;
 });
