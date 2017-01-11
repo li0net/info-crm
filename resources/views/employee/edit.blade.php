@@ -59,8 +59,8 @@
 										<label class="ctrl-label">@{{message}}</label>
 										<div class="logo-block">
 											<div v-if="!image">
-												@if( $settings[0]->email_for_notify != NULL)
-													<img src="/images/{{ $settings[0]->email_for_notify }}" />
+												@if( $settings[0]->avatar_image_name != NULL)
+													<img src="/images/{{ $settings[0]->avatar_image_name }}" />
 												@else
 													<img src="/images/no-master.png" alt="">
 												@endif													
@@ -88,198 +88,200 @@
 						</div>
 
 						<div id="menu4" class="tab-pane fade form-horizontal">
-							<h4>Уведомления</h4>
-							<br>
-							<div class="form-group">
-								{{ Form::label('online_reg_notify', 'Онлайн-записи', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<label class="col-sm-7 text-left">
-									{{ Form::checkbox('online_reg_notify', 1, false, ['style' => 'margin-right: 10px']) }}
-									 Отправлять уведомления об онлайн записях 
-								</label>
-								<label class="col-sm-1 text-left">
-									<a class="fa fa-info-circle" id="'online_reg_notify" original-title="">&nbsp;</a>
-								</label>
-							</div>
-
-							<div class="form-group">
-								{{ Form::label('phone_reg_notify', 'Записи по телефону', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<label class="col-sm-7 text-left">
-									{{ Form::checkbox('phone_reg_notify', 1, false, ['style' => 'margin-right: 10px']) }}
-									 Отправлять уведомления о записях по телефону 
-								</label>
-								<label class="col-sm-1 text-left">
-									<a class="fa fa-info-circle" id="phone_reg_notify" original-title="">&nbsp;</a>
-								</label>
-							</div>
-							
-							<div class="form-group">
-								{{ Form::label('online_reg_notify_del', 'Удаление онлайн записи', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<label class="col-sm-7 text-left">
-									{{ Form::checkbox('online_reg_notify_del', 1, false, ['style' => 'margin-right: 10px']) }}
-									 Отправлять уведомления об удалении онлайн записей 
-								</label>
-								<label class="col-sm-1 text-left">
-									<a class="fa fa-info-circle" id="online_reg_notify_del" original-title="">&nbsp;</a>
-								</label>
-							</div>
-
-							<div class="form-group">
-								{{ Form::label('phone_for_notify', 'Номер телефона для уведомлений', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<div class="col-sm-7">
-									{{ Form::text('phone_for_notify', null, ['class' => 'text-left form-control', 'placeholder' => 'Пример: +7 495 123 45 67']) }}
-								</div>
-								<label class="col-sm-1 text-left">
-									<a class="fa fa-info-circle" id="phone_for_notify" original-title="">&nbsp;</a>
-								</label>
-							</div>
-
-							<div class="form-group">
-								{{ Form::label('email_for_notify', 'Email для уведомлений', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<div class="col-sm-7">
-									{{ Form::text('email_for_notify', null, ['class' => 'text-left form-control', 'placeholder' => 'Пример: info@mail.com']) }}
-								</div>
-								<label class="col-sm-1 text-left">
-									<a class="fa fa-info-circle" id="email_for_notify" original-title="">&nbsp;</a>
-								</label>
-							</div>
-
-							<div class="form-group">
-								{{ Form::label('client_data_notify', 'Данные клиентов', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<label class="col-sm-7 text-left">
-									{{ Form::checkbox('client_data_notify', 1, false, ['style' => 'margin-right: 10px']) }}
-									 Отправлять имя и номер телефона клиента 
-								</label>
-								<label class="col-sm-1 text-left">
-									<a class="fa fa-info-circle" id="client_data_notify" original-title="">&nbsp;</a>
-								</label>
-							</div>
-
-							<hr>
-							
-							<h4>Запись</h4>
-
-							<div class="form-group">
-								{{ Form::label('reg_permitted', 'Онлайн-запись', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<div class="col-sm-7 text-left">
-									<label style="width: 100%">
-										{{ Form::radio('reg_permitted', 1, true, ['style' => 'margin-right: 10px']) }}
-										 Разрешить онлайн-запись 
-									</label>
-									<label>
-										{{ Form::radio('reg_permitted', 1, false, ['style' => 'margin-right: 10px']) }}
-										 Запретить онлайн-запись 
-									</label>
-								</div>
-								<label class="col-sm-1 text-left">
-									<a class="fa fa-info-circle" id="reg_permitted" original-title="">&nbsp;</a>
-								</label>
-							</div>
-
-							<div class="form-group">
-								{{ Form::label('reg_permitted_nomaster', 'Пропуск выбора', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<div class="col-sm-7 text-left">
-									<label style="width: 100%">
-										{{ Form::radio('reg_permitted_nomaster', 1, true, ['style' => 'margin-right: 10px']) }}
-										 Разрешить онлайн-запись при выборе опции "Мастер не важен"
-									</label>
-									<label>
-										{{ Form::radio('reg_permitted_nomaster', 1, false, ['style' => 'margin-right: 10px']) }}
-										 Запретить онлайн-запись при выборе опции "Мастер не важен"
-									</label>
-								</div>
-							</div>
-
-							<div class="form-group">
-								{{ Form::label('session_start', 'Время начала и окончания поиска сеансов в виджете', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<div class="col-sm-7 text-left">
-									<div class="row">
-										<div class="col-sm-6">
-											{{ Form::select('session_start', ['0' => 'c 0:00', '1' => 'c 1:00', '2' => 'c 2:00'], '0', ['class' => 'form-control']) }}
-										</div>
-										<div class="col-sm-6">
-											{{ Form::select('session_end', ['0' => 'до 0:00', '1' => 'до 1:00', '2' => 'до 2:00'], '0', ['class' => 'form-control']) }}
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								{{ Form::label('add_interval', 'Дополнительная разметка в журнале', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<div class="col-sm-7 text-left">
-									<div class="row">
-										<div class="col-sm-6">
-											{{ Form::select('add_interval', ['0' => '---', '1' => '0:45', '2' => '1:00', '3' => '1:15'], '0', ['class' => 'form-control']) }}
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								{{ Form::label('show_rating', 'Рейтинг', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<label class="col-sm-7 text-left">
-									{{ Form::checkbox('show_rating', 1, false, ['style' => 'margin-right: 10px']) }}
-									 Показывать рейтинг в виджете онлайн-записи 
-								</label>
-							</div>
-							
-							{{-- <div class="form-group">
-								{{ Form::label('is_in_occupancy', 'Журнал записи', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<label class="col-sm-7 text-left">
-									{{ Form::checkbox('is_in_occupancy', 1, false, ['style' => 'margin-right: 10px']) }}
-									 Не отображать в журнале записи
-								</label>
-							</div> --}}
-
-							<hr>
-							
-							<h4>Статистика</h4>
-
-							<div class="form-group">
-								{{ Form::label('is_rejected', 'Статус', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<label class="col-sm-7 text-left">
-									{{ Form::checkbox('is_rejected', 1, false, ['style' => 'margin-right: 10px']) }}
-									 Сотрудник уволен
-								</label>
-								<label class="col-sm-1 text-left">
-									<a class="fa fa-info-circle" id="is_rejected" original-title="">&nbsp;</a>
-								</label>
-							</div>
-
-							<div class="form-group">
-								{{ Form::label('is_in_occupancy', 'Учет в заполненности', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<label class="col-sm-7 text-left">
-									{{ Form::checkbox('is_in_occupancy', 1, false, ['style' => 'margin-right: 10px']) }}
-									 Сотрудник учитывается в заполненности
-								</label>
-							</div>
-
-							<div class="form-group">
-								{{ Form::label('revenue_pctg', 'Процент от выручки', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-								<div class="col-sm-7 input-group">
-									{{ Form::text('revenue_pctg', null, ['class' => 'text-left form-control', 'placeholder' => 'Используется для расчета зарплаты']) }}
-									<span class="input-group-addon">%</span>
-								</div>
-							</div>
-
-							<hr>
-							
-							<h4>Интеграция</h4>
+							{!! Form::open(['route' => ['employee.update', $employee->employee_id], "method" => 'POST', "class" => "hidden", "id" => "employee_form__settings"]) !!}
+								<h4>Уведомления</h4>
+								<br>
 								<div class="form-group">
-									{{ Form::label('sync_with_google', 'Синхронизация с Google', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									{{ Form::label('online_reg_notify', 'Онлайн-записи', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 									<label class="col-sm-7 text-left">
-										{{ Form::checkbox('sync_with_google', 1, false, ['style' => 'margin-right: 10px']) }}
-										 Выгружать данные клиентов в Google
+										{{ Form::checkbox('online_reg_notify', 1, false, ['style' => 'margin-right: 10px']) }}
+										 Отправлять уведомления об онлайн записях 
+									</label>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="'online_reg_notify" original-title="">&nbsp;</a>
 									</label>
 								</div>
 
 								<div class="form-group">
-									{{ Form::label('sync_with_1c', 'Синхронизация с 1С', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									{{ Form::label('phone_reg_notify', 'Записи по телефону', ['class' => 'col-sm-4 text-right ctrl-label']) }}
 									<label class="col-sm-7 text-left">
-										{{ Form::checkbox('sync_with_1c', 1, false, ['style' => 'margin-right: 10px']) }}
-										 Выгружать данные клиентов в 1С
+										{{ Form::checkbox('phone_reg_notify', 1, false, ['style' => 'margin-right: 10px']) }}
+										 Отправлять уведомления о записях по телефону 
+									</label>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="phone_reg_notify" original-title="">&nbsp;</a>
 									</label>
 								</div>
-							<br>
+								
+								<div class="form-group">
+									{{ Form::label('online_reg_notify_del', 'Удаление онлайн записи', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<label class="col-sm-7 text-left">
+										{{ Form::checkbox('online_reg_notify_del', 1, false, ['style' => 'margin-right: 10px']) }}
+										 Отправлять уведомления об удалении онлайн записей 
+									</label>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="online_reg_notify_del" original-title="">&nbsp;</a>
+									</label>
+								</div>
+
+								<div class="form-group">
+									{{ Form::label('phone_for_notify', 'Номер телефона для уведомлений', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<div class="col-sm-7">
+										{{ Form::text('phone_for_notify', null, ['class' => 'text-left form-control', 'placeholder' => 'Пример: +7 495 123 45 67']) }}
+									</div>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="phone_for_notify" original-title="">&nbsp;</a>
+									</label>
+								</div>
+
+								<div class="form-group">
+									{{ Form::label('email_for_notify', 'Email для уведомлений', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<div class="col-sm-7">
+										{{ Form::text('email_for_notify', null, ['class' => 'text-left form-control', 'placeholder' => 'Пример: info@mail.com']) }}
+									</div>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="email_for_notify" original-title="">&nbsp;</a>
+									</label>
+								</div>
+
+								<div class="form-group">
+									{{ Form::label('client_data_notify', 'Данные клиентов', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<label class="col-sm-7 text-left">
+										{{ Form::checkbox('client_data_notify', 1, false, ['style' => 'margin-right: 10px']) }}
+										 Отправлять имя и номер телефона клиента 
+									</label>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="client_data_notify" original-title="">&nbsp;</a>
+									</label>
+								</div>
+
+								<hr>
+								
+								<h4>Запись</h4>
+
+								<div class="form-group">
+									{{ Form::label('reg_permitted', 'Онлайн-запись', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<div class="col-sm-7 text-left">
+										<label style="width: 100%">
+											{{ Form::radio('reg_permitted', 1, true, ['style' => 'margin-right: 10px']) }}
+											 Разрешить онлайн-запись 
+										</label>
+										<label>
+											{{ Form::radio('reg_permitted', 1, false, ['style' => 'margin-right: 10px']) }}
+											 Запретить онлайн-запись 
+										</label>
+									</div>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="reg_permitted" original-title="">&nbsp;</a>
+									</label>
+								</div>
+
+								<div class="form-group">
+									{{ Form::label('reg_permitted_nomaster', 'Пропуск выбора', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<div class="col-sm-7 text-left">
+										<label style="width: 100%">
+											{{ Form::radio('reg_permitted_nomaster', 1, true, ['style' => 'margin-right: 10px']) }}
+											 Разрешить онлайн-запись при выборе опции "Мастер не важен"
+										</label>
+										<label>
+											{{ Form::radio('reg_permitted_nomaster', 1, false, ['style' => 'margin-right: 10px']) }}
+											 Запретить онлайн-запись при выборе опции "Мастер не важен"
+										</label>
+									</div>
+								</div>
+
+								<div class="form-group">
+									{{ Form::label('session_start', 'Время начала и окончания поиска сеансов в виджете', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<div class="col-sm-7 text-left">
+										<div class="row">
+											<div class="col-sm-6">
+												{{ Form::select('session_start', ['0' => 'c 0:00', '1' => 'c 1:00', '2' => 'c 2:00'], '0', ['class' => 'form-control']) }}
+											</div>
+											<div class="col-sm-6">
+												{{ Form::select('session_end', ['0' => 'до 0:00', '1' => 'до 1:00', '2' => 'до 2:00'], '0', ['class' => 'form-control']) }}
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									{{ Form::label('add_interval', 'Дополнительная разметка в журнале', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<div class="col-sm-7 text-left">
+										<div class="row">
+											<div class="col-sm-6">
+												{{ Form::select('add_interval', ['0' => '---', '1' => '0:45', '2' => '1:00', '3' => '1:15'], '0', ['class' => 'form-control']) }}
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									{{ Form::label('show_rating', 'Рейтинг', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<label class="col-sm-7 text-left">
+										{{ Form::checkbox('show_rating', 1, false, ['style' => 'margin-right: 10px']) }}
+										 Показывать рейтинг в виджете онлайн-записи 
+									</label>
+								</div>
+								
+								{{-- <div class="form-group">
+									{{ Form::label('is_in_occupancy', 'Журнал записи', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<label class="col-sm-7 text-left">
+										{{ Form::checkbox('is_in_occupancy', 1, false, ['style' => 'margin-right: 10px']) }}
+										 Не отображать в журнале записи
+									</label>
+								</div> --}}
+
+								<hr>
+								
+								<h4>Статистика</h4>
+
+								<div class="form-group">
+									{{ Form::label('is_rejected', 'Статус', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<label class="col-sm-7 text-left">
+										{{ Form::checkbox('is_rejected', 1, false, ['style' => 'margin-right: 10px']) }}
+										 Сотрудник уволен
+									</label>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="is_rejected" original-title="">&nbsp;</a>
+									</label>
+								</div>
+
+								<div class="form-group">
+									{{ Form::label('is_in_occupancy', 'Учет в заполненности', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<label class="col-sm-7 text-left">
+										{{ Form::checkbox('is_in_occupancy', 1, false, ['style' => 'margin-right: 10px']) }}
+										 Сотрудник учитывается в заполненности
+									</label>
+								</div>
+
+								<div class="form-group">
+									{{ Form::label('revenue_pctg', 'Процент от выручки', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+									<div class="col-sm-7 input-group">
+										{{ Form::text('revenue_pctg', null, ['class' => 'text-left form-control', 'placeholder' => 'Используется для расчета зарплаты']) }}
+										<span class="input-group-addon">%</span>
+									</div>
+								</div>
+
+								<hr>
+								
+								<h4>Интеграция</h4>
+									<div class="form-group">
+										{{ Form::label('sync_with_google', 'Синхронизация с Google', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+										<label class="col-sm-7 text-left">
+											{{ Form::checkbox('sync_with_google', 1, false, ['style' => 'margin-right: 10px']) }}
+											 Выгружать данные клиентов в Google
+										</label>
+									</div>
+
+									<div class="form-group">
+										{{ Form::label('sync_with_1c', 'Синхронизация с 1С', ['class' => 'col-sm-4 text-right ctrl-label']) }}
+										<label class="col-sm-7 text-left">
+											{{ Form::checkbox('sync_with_1c', 1, false, ['style' => 'margin-right: 10px']) }}
+											 Выгружать данные клиентов в 1С
+										</label>
+									</div>
+								<br>
+							{!! Form::close() !!}
 						</div>
 						<div id="menu5" class="tab-pane fade">
 							<h4>Информация о расчете ЗП</h4>

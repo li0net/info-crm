@@ -253,7 +253,7 @@ $(document).ready(function () {
 	});
 
 	$('#form_submit').on('click', function() {
-		console.log(app.imageName);
+
 		$('#form228').submit();
 	});
 

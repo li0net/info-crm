@@ -66,22 +66,32 @@ class EmployeeController extends Controller
 	{
 		$this->validate($request, [
 			'name' => 'required',
-			// 'email' => 'required',
-			// 'phone' => 'required'
+			'email' => 'required',
+			'phone' => 'required'
 		]);
 
 		$employee = new Employee;
+		$settings = new EmployeeSetting;
 
-		$employee->employee_id = $request->employee_id;
+		//$employee->employee_id = $request->employee_id;
 		$employee->name = $request->name;
-		// $employee->email = $request->email;
-		// $employee->phone = $request->phone;
+		$employee->email = $request->email;
+		$employee->phone = $request->phone;
 		$employee->spec = $request->spec;
 		$employee->descr = $request->descr;
 		$employee->organization_id = 2;
 		$employee->position_id = $request->position_id;
 
 		$employee->save();
+
+		$settings->employee_id = $employee->employee_id;
+		$settings->session_start = date("Y-m-d H:i:s");
+		$settings->session_end = date("Y-m-d H:i:s");
+		$settings->revenue_pctg = 50;
+		$settings->wage_scheme_id = 0;
+		$settings->schedule_id = 0;
+
+		$settings->save();
 
 		Session::flash('success', 'Новый сотрудник успешно сохранен!');
 
@@ -114,13 +124,8 @@ class EmployeeController extends Controller
 	public function edit($id)
 	{
 		$employee = Employee::find($id);
-		//$settings = Employee::where('employee_id', 8)->with(['settings' => function($query) { $query->select('employee_id', 'email_for_notify'); }])->get()->all();
 		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
 
-		// dump($settings[0]->email_for_notify);
-		// dump($employee->employee_id);
-
-		//return view('employee.edit')->withEmployee( $employee );
 		return view('employee.edit', ['employee' => $employee, 'settings' => $settings]);
 	}
 
@@ -140,10 +145,10 @@ class EmployeeController extends Controller
 		// }
 
 		$this->validate($request, [
-			'name' => 'required',
+			'name' => 'required'
 			// 'email' => 'required',
 			// 'phone' => 'required'
-			'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+			// 'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
 		]);
 
 		$employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $id)->first();
@@ -152,21 +157,23 @@ class EmployeeController extends Controller
 		}
 
 		$employee->name = $request->input('name');
-		$employee->email = '';
-		$employee->phone = '';
+		// $employee->email = $request->input('email');
+		// $employee->phone = $request->input('phone');
 		$employee->spec = $request->input('spec');
 		$employee->descr = $request->input('descr');
 		$employee->position_id = $request->position_id;
 
-		$imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
+		if($request->file('avatar') !== null) {
+			$imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
 
-		$request->file('avatar')->move(public_path('images'), $imageName);
+			$request->file('avatar')->move(public_path('images'), $imageName);
 
-		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
+			$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
 
-		$settings[0]->email_for_notify = $imageName;
+			$settings[0]->avatar_image_name = $imageName;
 
-		$settings[0]->save();
+			$settings[0]->save();
+		}
 
 		$employee->save();
 
