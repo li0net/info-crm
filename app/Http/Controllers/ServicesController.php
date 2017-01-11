@@ -77,10 +77,13 @@ class ServicesController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $newServiceUrl = action('ServicesController@create');
-        return view('adminlte::services', compact('newServiceUrl'));
+        return view('adminlte::services', [
+            'newServiceUrl' => $newServiceUrl,
+            'user' => $request->user()
+        ]);
     }
 
     // форма создания услуги

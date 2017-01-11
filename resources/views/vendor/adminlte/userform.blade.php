@@ -32,7 +32,7 @@
                             <!-- Содержимое таба Настройки -->
                             <div class="tab-pane fade in active" id="tab_user_properties">
                                 <form method="post" action="/users/save">
-                                    {{csrf_field()}}
+                                    <?php $csrfField = csrf_field(); echo $csrfField;?>
                                     @if (isset($user))
                                         <input type="hidden" name="user_id" id="sc_user_id" value="{{$user->user_id}}">
                                     @endif
@@ -131,7 +131,7 @@
                             @if(isset($user))
                             <div class="tab-pane fade" id="tab_user_permissions">
                                 <form method="post" action="/users/{{$user->user_id}}/savePermissions">
-                                    {{csrf_field()}}
+                                    {{$csrfField}}
 
                                     <input type="hidden" name="user_id" id="permissions_user_id" value="{{$user->user_id}}">
 
@@ -140,9 +140,9 @@
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'appointment_form' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
@@ -151,9 +151,9 @@
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'appointment' AND $permission->action == 'create' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
@@ -162,9 +162,9 @@
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'appointment' AND $permission->action == 'edit' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
@@ -173,9 +173,9 @@
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'appointment' AND $permission->action == 'delete' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
@@ -184,13 +184,13 @@
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'appointment_client_data' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
-                                        <p><input type="checkbox" name="appointment_client_data_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_appointment_client_data_label')</strong></p>
+                                        <p><input type="checkbox" name="appointment_client_data_view" value="1" {{$selected}}>@lang('main.user:permissions_appointment_client_data_label')</p>
                                     </div>
 
                                     <!-- Права доступа к настройкам -->
@@ -198,9 +198,9 @@
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'settings' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
@@ -209,20 +209,20 @@
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'settings_manage_users' AND $permission->action == 'edit' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
-                                        <p><input type="checkbox" name="settings_manage_users_edit" value="1" {{$selected}}>@lang('main.user:permissions_settings_label')</p>
+                                        <p><input type="checkbox" name="settings_manage_users_edit" value="1" {{$selected}}>@lang('main.user:settings_manage_users_label')</p>
 
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'service' AND $permission->action == 'edit' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
@@ -231,9 +231,9 @@
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'service' AND $permission->action == 'delete' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
@@ -242,9 +242,9 @@
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'employee' AND $permission->action == 'edit' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
@@ -253,9 +253,9 @@
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'employee' AND $permission->action == 'delete' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
@@ -264,13 +264,18 @@
                                         <?php
                                         $selected = '';
                                         if (isset($user)) {
-                                            foreach($user->accessPermissions() AS $permission) {
+                                            foreach($user->accessPermissions()->get() AS $permission) {
                                                 if ($permission->object == 'schedule' AND $permission->action == 'edit' AND $permission->access_level == '1') {
-                                                    $selected = "selected='selected'";
+                                                    $selected = "checked='checked'";
                                                 }
                                             }
                                         }?>
                                         <p><input type="checkbox" name="schedule_edit" value="1" {{$selected}}>@lang('main.user:permissions_schedule_edit_label')</p>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <hr/>
+                                        <button type="submit" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
                                     </div>
                                 </form>
 

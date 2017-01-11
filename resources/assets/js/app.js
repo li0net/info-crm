@@ -59,7 +59,7 @@ $(document).ready(function () {
 		mtype: "GET",
 		styleUI : 'Bootstrap',
 		datatype: "json",
-		colNames:['Редактировать', 'Название', 'Название для онлайн регистрации', 'Пол'],
+		colNames:['Управление', 'Название', 'Название для онлайн регистрации', 'Пол'],
 		colModel: [
 			{ index: 'service_category_id', name: 'service_category_id', key: true, width: 50, formatter:ServiceCategoryFormatEditColumn },
 			{ index: 'name', name: 'name', width: 130 },
@@ -82,7 +82,7 @@ $(document).ready(function () {
 		mtype: "GET",
 		styleUI : 'Bootstrap',
 		datatype: "json",
-		colNames:['Редактировать', 'Название', 'Категория услуг', 'Описание', 'Мин. цена', 'Макс. цена', 'Длительность'],
+		colNames:['Управление', 'Название', 'Категория услуг', 'Описание', 'Мин. цена', 'Макс. цена', 'Длительность'],
 		colModel: [
 			{ index: 'service_id', name: 'service_id', key: true, width: 60, formatter:ServiceFormatEditColumn },
 			{ index: 'name', name: 'name', width: 110 },
@@ -107,13 +107,12 @@ $(document).ready(function () {
 		mtype: "GET",
 		styleUI : 'Bootstrap',
 		datatype: "json",
-		colNames:['Имя', 'Телефон', 'Email', 'Права'],
+		colNames:['Управление', 'Имя', 'Телефон', 'Email'],
 		colModel: [
 			{ index: 'user_id', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn },
 			{ index: 'name', name: 'name', width: 100 },
 			{ index: 'phone', name: 'phone', width: 100 },
-			{ index: 'email', name: 'email', width: 100 },
-			{ index: 'access_permissions_text', name: 'access_permissions_text', sortable: false, width: 160 }
+			{ index: 'email', name: 'email', width: 100 }
 		],
 		sortname: 'name',
 		sortorder: 'asc',
@@ -171,6 +170,10 @@ $(document).ready(function () {
 		});
 	});
 	$('#app_client_phone').blur(function() {
+		if($("#app_client_info_container").length == 0) {
+			return;
+		}
+
 		$('#app_client_info_container').html('');
 		var that = this;
 		$.ajax({
@@ -185,6 +188,66 @@ $(document).ready(function () {
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
 				alert('Server error:'+textStatus);
+			}
+		});
+	});
+
+	// Appointment form submit
+	$("#appointment_form").on("submit", function (e) {
+		e.preventDefault();
+
+		if ($('#app_state').length) {
+			$('#app_state').remove();
+		}
+
+		var btnLabel = '';
+
+		var selectedTab = $('#appointment_tabs_header li.active a');
+		if (selectedTab.length > 0) {
+			var selectedTabId = $(selectedTab[0]).attr('href');
+			if (selectedTabId == '#tab_client_wait') {
+				var stateVal = 'created';
+			} else if (selectedTabId == '#tab_client_came') {
+				var stateVal = 'finished';
+			} else if (selectedTabId == '#tab_client_didnt_came') {
+				var stateVal = 'failed';
+			} else if (selectedTabId == '#tab_client_confirm') {
+				var stateVal = 'confirmed';
+			}
+		}
+
+		if (stateVal !== undefined) {
+			$('<input>').attr({
+				type: 'hidden',
+				id: 'app_state',
+				name: 'state',
+				value: stateVal
+			}).appendTo('#appointment_form');
+		}
+
+		$.ajax({
+			type: "POST",
+			url: "/appointments/save",
+			data: $("#appointment_form").serialize(),
+			beforeSend: function() {
+				//$('#result').html('<img src="loading.gif" />');
+				var btn = $('#btn_submit_app_form');
+				btnLabel = $(btn).val();
+				$(btn).prop('disabled', true);
+				$(btn).val("Сохранение...");	// localize
+			},
+			success: function(data) {
+				//$('#result').html(data);
+				var btn = $('#btn_submit_app_form');
+				$(btn).val(btnLabel);
+				$(btn).prop('disabled', false);
+				alert("Saved");
+			},
+			error: function(data) {
+				var btn = $('#btn_submit_app_form');
+				$(btn).val(btnLabel);
+				$(btn).prop('disabled', false);
+				alert("Error");
 			}
 		});
 	});
@@ -215,18 +278,28 @@ $(document).ready(function () {
 
 function ServiceCategoryFormatEditColumn(cellvalue, options, rowObject)
 {
-	var url = window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue;
-	return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
+	var url = '';
+
+	if (window.Settings.permissions_service_edit !== undefined && window.Settings.permissions_service_edit == 1) {
+		url = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+	}
+
+	return url;
 }
 
 function ServiceFormatEditColumn(cellvalue, options, rowObject)
 {
-	var url = window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue;
-	return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
+	var url = '';
+
+	if (window.Settings.permissions_service_edit !== undefined && window.Settings.permissions_service_edit == 1) {
+		url = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+	}
+
+	return url;
 }
 
 function UserFormatEditColumn(cellvalue, options, rowObject)
 {
 	var url = window.location.protocol + '//' + window.location.host + '/users/edit/' + cellvalue;
-	return '<a href="' + url + '" class="btn btn-default">Редактировать</a>';
+	return '<a href="' + url + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 }

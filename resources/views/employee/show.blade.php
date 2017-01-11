@@ -41,16 +41,20 @@
 				<hr>
 
 				<div class="row">
-					<div class="col-sm-6">
-						{!! Html::linkRoute('employee.edit', 'Редактировать', [$employee->employee_id], ['class'=>'btn btn-primary btn-block']) !!}
-					</div>
-					<div class="col-sm-6">
-						{!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "method" => 'DELETE']) !!}
+					@if ($user->hasAccessTo('employee', 'edit', 0))
+						<div class="col-sm-6">
+							{!! Html::linkRoute('employee.edit', 'Редактировать', [$employee->employee_id], ['class'=>'btn btn-primary btn-block']) !!}
+						</div>
+					@endif
+					@if ($user->hasAccessTo('employee', 'delete', 0))
+						<div class="col-sm-6">
+							{!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "method" => 'DELETE']) !!}
 
-						{{ Form::submit('Удалить', ['class'=>'btn btn-danger btn-block']) }}
+							{{ Form::submit('Удалить', ['class'=>'btn btn-danger btn-block']) }}
 
-						{!! Form::close() !!}
-					</div>
+							{!! Form::close() !!}
+						</div>
+					@endif
 				</div>
 
 				<div class="row">

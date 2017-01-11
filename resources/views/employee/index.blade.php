@@ -51,13 +51,17 @@
 
 							<td class="text-right">
 								<a href="{{ route('employee.edit', $employee->employee_id) }}" class="btn btn-default btn-sm"><i class='fa fa-eye'></i></a> 
-								<a href="{{ route('employee.edit', $employee->employee_id) }}#menu1" id="employee_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+								@if ($user->hasAccessTo('employee', 'edit', 0))
+									<a href="{{ route('employee.edit', $employee->employee_id) }}#menu1" id="employee_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+								@endif
 								<a href="{{ route('employee.edit', $employee->employee_id) }}#menu2" class="btn btn-default btn-sm"><i class='fa fa-tags'></i></a> 
 								<a href="{{ route('employee.edit', $employee->employee_id) }}#menu3" class="btn btn-default btn-sm"><i class='fa fa-clock-o'></i></a>
 								<a href="{{ route('employee.edit', $employee->employee_id) }}#menu4" class="btn btn-default btn-sm"><i class='fa fa-cog'></i></a>
-								{!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "id" => 'form1', "style" => "display: inline-block", "method" => 'DELETE']) !!}
-									<a href="javascript: submitform('form1')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
-								{!! Form::close() !!}
+								@if ($user->hasAccessTo('employee', 'delete', 0))
+									{!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "id" => 'form1', "style" => "display: inline-block", "method" => 'DELETE']) !!}
+										<a href="javascript: submitform('form1')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+									{!! Form::close() !!}
+								@endif
 							</td>
 						</tr>
 					@endforeach
