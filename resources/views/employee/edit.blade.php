@@ -33,6 +33,7 @@
 							<hr>
 							<div class="row">
 								{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "class" => "hidden", "id" => "employee_form__info", "files" => "true"]) !!}
+									{!! Form::hidden('id', 'employee_form__info') !!}
 									<div class="col-sm-8 b-r">
 										<div class="form-group">
 											{{ Form::label('name', 'Имя:', ['class' => 'ctrl-label']) }}
@@ -41,7 +42,7 @@
 
 										<div class="form-group">
 											{{ Form::label('position_id', 'Должность:', ['class' => 'ctrl-label']) }}
-											{{ Form::select('position_id', [1 => 'Парикмахер', 2 => 'Мастер маникюра', 3 => 'Визажист'], $employee->position_id, ['class' => 'form-control', 'required' => '']) }}
+											{{ Form::select('position_id', $items, $employee->position_id, ['class' => 'form-control', 'required' => '']) }}
 										</div>
 
 										<div class="form-group">
@@ -59,8 +60,8 @@
 										<label class="ctrl-label">@{{message}}</label>
 										<div class="logo-block">
 											<div v-if="!image">
-												@if( $settings[0]->avatar_image_name != NULL)
-													<img src="/images/{{ $settings[0]->avatar_image_name }}" />
+												@if( $employee->avatar_image_name != null)
+													<img src="/images/{{ $employee->avatar_image_name }}" />
 												@else
 													<img src="/images/no-master.png" alt="">
 												@endif													
@@ -93,6 +94,7 @@
 
 						<div id="menu4" class="tab-pane fade form-horizontal">
 							{!! Form::model($settings[0], ['route' => ['employee.update', $employee->employee_id], "method" => 'PUT', "id" => "employee_form__settings"]) !!}
+								{!! Form::hidden('id', 'employee_form__settings') !!}
 								<h4>Уведомления</h4>
 								<br>
 								<div class="form-group">

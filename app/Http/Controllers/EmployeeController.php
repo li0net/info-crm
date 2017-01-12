@@ -8,10 +8,12 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Employee;
 use App\EmployeeSetting;
+use App\Position;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Validator;
 
 class EmployeeController extends Controller
 {
@@ -30,7 +32,7 @@ class EmployeeController extends Controller
 	{
 		//$employees = Employee::OrderBy('employee_id', 'asc')->paginate(4);
 
-		$employees = Employee::select('employee_id', 'name', 'email', 'phone', 'position_id')->with(['position' => function($query) { $query->select('position_id', 'title'); }])->get()->all();
+		$employees = Employee::select('employee_id', 'name', 'email', 'phone', 'position_id', 'avatar_image_name')->with(['position' => function($query) { $query->select('position_id', 'title'); }])->get()->all();
 
 		$page = Input::get('page', 1);
 		$paginate = 10;
@@ -50,9 +52,11 @@ class EmployeeController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function create()
+	public function create(Request $request)
 	{
-		return view('employee.create');
+		$items = Position::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'position_id');
+
+		return view('employee.create', ['items' => $items]);
 	}
 
 	/**
@@ -120,12 +124,14 @@ class EmployeeController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($id)
+	public function edit(Request $request, $id)
 	{
 		$employee = Employee::find($id);
 		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
 
-		return view('employee.edit', ['employee' => $employee, 'settings' => $settings]);
+		$items = Position::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'position_id');
+
+		return view('employee.edit', ['employee' => $employee, 'settings' => $settings, 'items' => $items]);
 	}
 
 	/**
@@ -150,6 +156,10 @@ class EmployeeController extends Controller
 			// 'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
 		]);
 
+		$validator = Validator::make($request->all(), [
+      		'online_reg_notify' => 'exists'
+    	]);
+
 		$employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $id)->first();
 		if (is_null($employee)) {
 			return 'No such employee';
@@ -160,7 +170,7 @@ class EmployeeController extends Controller
 			return 'No such settings';
 		}
 
-		if ($request->input('name') !== null) {
+		if ($request->input('id') == 'employee_form__info') {
 			$employee->name = $request->input('name');
 			// $employee->email = $request->input('email');
 			// $employee->phone = $request->input('phone');
@@ -168,18 +178,18 @@ class EmployeeController extends Controller
 			$employee->descr = $request->input('descr');
 			$employee->position_id = $request->position_id;
 
-			$employee->save();
-		}
-
-		if ($request->input('online_reg_notify') !== null) {
 			if ($request->file('avatar') !== null) {
 				$imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
 
 				$request->file('avatar')->move(public_path('images'), $imageName);
 
-				$settings[0]->avatar_image_name = $imageName;
+				$employee->avatar_image_name = $imageName;
 			}
 
+			$employee->save();
+		}
+
+		if ($request->input('id') == 'employee_form__settings') {
 			$settings[0]->online_reg_notify = $request->input('online_reg_notify');
 			$settings[0]->phone_reg_notify = $request->input('phone_reg_notify');
 			$settings[0]->online_reg_notify_del = $request->input('online_reg_notify_del');

@@ -33,6 +33,7 @@
 			<table class="table">
 				<thead>
 					<th>#</th>
+					<th></th>
 					<th>ФИО</th>
 					<th>Email</th>
 					<th>Номер телефона</th>
@@ -44,13 +45,14 @@
 					@foreach($employees as $employee)
 						<tr>
 							<th>{{ $employee->employee_id }}</th>
+							<td><img src="/images/{{ $employee->avatar_image_name }}" alt="image" style="width: 32px; height: 32px; border-radius: 50%;"></td>
 							<td>{{ $employee->name }}</td>
 							<td>{{ $employee->email }}</td>
 							<td>{{ $employee->phone }}</td>
 							<td>{{ $employee->position->title }}</td>
 
 							<td class="text-right">
-								<a href="{{ route('employee.edit', $employee->employee_id) }}" class="btn btn-default btn-sm"><i class='fa fa-eye'></i></a> 
+								<a href="{{ route('employee.show', $employee->employee_id) }}" class="btn btn-default btn-sm"><i class='fa fa-eye'></i></a> 
 								@if ($user->hasAccessTo('employee', 'edit', 0))
 									<a href="{{ route('employee.edit', $employee->employee_id) }}#menu1" id="employee_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
 								@endif

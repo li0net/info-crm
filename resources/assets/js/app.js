@@ -276,10 +276,6 @@ $(document).ready(function () {
 		}
 	});
 
-	// $('#avatar_upload_form__filename').on('change', function() {
-	// 	$('#avatar_upload_form').submit();
-	// });
-
 	$(function () {
 		$('#dp').datepicker(
 			{language: 'ru'}

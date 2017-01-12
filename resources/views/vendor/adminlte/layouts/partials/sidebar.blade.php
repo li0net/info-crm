@@ -127,7 +127,7 @@
 						<li><a href="#">{{ trans('adminlte_lang::message.networks') }}</a></li>
 						<li><a href="#">{{ trans('adminlte_lang::message.information') }}</a></li>
 						<li><a href="{{ url('/employee')}}">{{ trans('adminlte_lang::message.employees') }}</a></li>
-						<li><a href="#">{{ trans('adminlte_lang::message.positions') }}</a></li>
+						<li><a href="{{ url('/position')}}">{{ trans('adminlte_lang::message.positions') }}</a></li>
 						<li><a href="{{ url('/users')}}">{{ trans('adminlte_lang::message.users') }}</a></li>
 						<li><a href="#">{{ trans('adminlte_lang::message.notifications') }}</a></li>
 						<li><a href="#">{{ trans('adminlte_lang::message.actions') }}</a></li>

@@ -45,7 +45,7 @@
 			
 					<div class="form-group">
 						{{ 	Form::label('position_id', 'Должность: ') }}
-						{{	Form::select('position_id', [1 => 'Парикмахер', 2 => 'Мастер манюкюра', 3 => 'Визажист'], 1, ['class' => 'form-control', 'required' => '']) }}
+						{{	Form::select('position_id', $items, 1, ['class' => 'form-control', 'required' => '']) }}
 					</div>
 
 					{{	Form::submit('Создать нового сотрудника', ['class' => 'btn btn-success btn-lg btn-block', 'style' => 'margin-top:20px;']) }}
