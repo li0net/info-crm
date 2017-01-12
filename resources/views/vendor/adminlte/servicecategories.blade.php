@@ -40,13 +40,13 @@
     </div>
 
     <script type="text/javascript">
-        @if ($user->hasAccessTo('service', 'edit', 0) >= 1)
+        @if ($crmuser->hasAccessTo('service', 'edit', 0) >= 1)
             window.Settings = {permissions_service_edit: 1};
         @else
             window.Settings = {permissions_service_edit: 0};
         @endif
 
-        @if ($user->hasAccessTo('service', 'delete', 0) >= 1)
+        @if ($crmuser->hasAccessTo('service', 'delete', 0) >= 1)
             window.Settings.permissions_service_delete = 1;
         @else
             window.Settings.permissions_service_delete = 0;

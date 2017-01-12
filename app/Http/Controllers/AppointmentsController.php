@@ -18,7 +18,7 @@ class AppointmentsController extends Controller
 {
     public function __construct() {
         // TODO: убрать после доработки логина
-        auth()->loginUsingId(1);
+        //auth()->loginUsingId(1);
 
         $this->middleware('auth');
 
