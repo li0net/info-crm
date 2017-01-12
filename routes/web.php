@@ -18,6 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/stub', function () {
+    return view('stub');
+});
 
 /*
  * Гриды
@@ -27,7 +30,8 @@ Route::get('/services', 'ServicesController@index');
 Route::get('/users', 'UsersController@index');
 
 Route::resource('/employee', 'EmployeeController');
-Route::resource('position', 'PositionController');
+Route::put('/employee', 'EmployeeController@store');
+Route::resource('/position', 'PositionController');
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
 Route::get('/serviceCategories/gridData', function()

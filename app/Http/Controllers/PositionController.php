@@ -18,7 +18,7 @@ class PositionController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$positions = Position::select('position_id', 'title', 'description')->get()->all();
+		$positions = Position::select('position_id', 'title', 'description')->where('organization_id', $request->user()->organization_id)->get()->all();
 
 		$page = Input::get('page', 1);
 		$paginate = 10;

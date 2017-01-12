@@ -32,7 +32,7 @@
 							<h4>Информация о пользователе</h4>
 							<hr>
 							<div class="row">
-								{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "class" => "hidden", "id" => "employee_form__info", "files" => "true"]) !!}
+								{!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', 'class' => 'hidden', 'id' => 'employee_form__info', 'files' => 'true']) !!}
 									{!! Form::hidden('id', 'employee_form__info') !!}
 									<div class="col-sm-8 b-r">
 										<div class="form-group">

@@ -76,14 +76,20 @@ class EmployeeController extends Controller
 		$employee = new Employee;
 		$settings = new EmployeeSetting;
 
-		//$employee->employee_id = $request->employee_id;
 		$employee->name = $request->name;
 		$employee->email = $request->email;
 		$employee->phone = $request->phone;
 		$employee->spec = $request->spec;
 		$employee->descr = $request->descr;
-		$employee->organization_id = 2;
+		$employee->organization_id = $request->user()->organization_id;
 		$employee->position_id = $request->position_id;
+		if ($request->file('avatar') !== null) {
+			$imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
+
+			$request->file('avatar')->move(public_path('images'), $imageName);
+
+			$employee->avatar_image_name = $imageName;
+		}
 
 		$employee->save();
 
@@ -229,9 +235,11 @@ class EmployeeController extends Controller
 	public function destroy($id)
 	{
 		$employee = Employee::where('organization_id', request()->user()->organization_id)->where('employee_id', $id)->first();
+		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
 
 		if ($employee) {
 			$employee->delete();
+			$settings[0]->delete();
 			Session::flash('success', 'Сотрудник был успешно удален!');
 		} else {
 			Session::flash('error', 'Сотрудник не найден');
