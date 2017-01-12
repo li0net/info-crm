@@ -29,6 +29,9 @@ return [
     'service_category:online_reservation_name_label' => 'Название для онлайн регистрации',
     'service_category:gender_label'         => 'Пол',
     'service_category:create_new_btn_label' => 'Новая категория',
+    'service_category:delete_success_message' => 'Категория удалена!',
+    'service_category:delete_error_message' => 'Категория услуг не найдена.',
+    'service_category:delete_failed_has_services_message' => 'Невозможно удалить категорию, т.к. она содержит :cnt услуг',
 
     'service:create_form_header'            => 'Создать услугу',
     'service:edit_form_header'              => 'Редактировать услугу',
@@ -40,6 +43,8 @@ return [
     'service:description_label'             => 'Описание',
     'service:duration_label'                => 'Длительность',
     'service:create_new_btn_label'          => 'Новая услуга',
+    'service:delete_success_message'        => 'Услуга удалена!',
+    'service:delete_error_message'          => 'Услуга не найдена.',
 
     'organization:form_page_header'         => 'Основные настройки',
     'organization:edit_form_header'         => 'Редактировать настройки',

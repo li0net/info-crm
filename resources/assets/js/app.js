@@ -294,23 +294,31 @@ $(document).ready(function () {
 function ServiceCategoryFormatEditColumn(cellvalue, options, rowObject)
 {
 	var url = '';
+	var urlDel = '';
 
 	if (window.Settings.permissions_service_edit !== undefined && window.Settings.permissions_service_edit == 1) {
 		url = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 	}
+	if (window.Settings.permissions_service_delete !== undefined && window.Settings.permissions_service_delete == 1) {
+		urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/destroy/' + cellvalue + '" class="btn btn-default"><i class="fa fa-trash-o"></i></a>';
+	}
 
-	return url;
+	return url + urlDel;
 }
 
 function ServiceFormatEditColumn(cellvalue, options, rowObject)
 {
 	var url = '';
+	var urlDel = '';
 
 	if (window.Settings.permissions_service_edit !== undefined && window.Settings.permissions_service_edit == 1) {
 		url = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 	}
+	if (window.Settings.permissions_service_delete !== undefined && window.Settings.permissions_service_delete == 1) {
+		urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/destroy/' + cellvalue + '" class="btn btn-default"><i class="fa fa-trash-o"></i></a>';
+	}
 
-	return url;
+	return url + urlDel;
 }
 
 function UserFormatEditColumn(cellvalue, options, rowObject)

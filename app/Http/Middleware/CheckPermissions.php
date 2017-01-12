@@ -96,7 +96,13 @@ class CheckPermissions
                 'accessLevel'  => 1    // 1|0
             ],
 
-            'ServicesController@delete' => [      // Удаление услуг
+            'ServicesController@destroy' => [      // Удаление услуг
+                'objectName'    => 'service',
+                'action'        => 'delete',
+                'objectId'      => 0,
+                'accessLevel'  => 1    // 1|0
+            ],
+            'ServiceCategoriesController@destroy' => [
                 'objectName'    => 'service',
                 'action'        => 'delete',
                 'objectId'      => 0,

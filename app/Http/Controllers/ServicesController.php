@@ -5,6 +5,7 @@ use App\ServiceCategory;
 use App\Service;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Session;
 
 class ServicesController extends Controller
 {
@@ -14,9 +15,10 @@ class ServicesController extends Controller
     public function __construct()
     {
         // TODO: убрать после доработки логина
-        auth()->loginUsingId(1);
+        //auth()->loginUsingId(1);
 
         $this->middleware('auth');
+        $this->middleware('permissions');   //->only(['create', 'edit', 'save']);
 
         $this->durationOptions = [
             [
@@ -82,7 +84,7 @@ class ServicesController extends Controller
         $newServiceUrl = action('ServicesController@create');
         return view('adminlte::services', [
             'newServiceUrl' => $newServiceUrl,
-            'user' => $request->user()
+            'crmuser' => $request->user()
         ]);
     }
 
@@ -171,6 +173,28 @@ class ServicesController extends Controller
             ];
         }
         return $serviceCategoriesOptions;
+    }
+
+    /**
+     * Удаляет услугу из БД
+     *
+     * @param  int  $serviceId
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($serviceId)
+    {
+        $service = Service::join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id')
+            ->where('service_categories.organization_id', request()->user()->organization_id)->where('services.service_id', $serviceId)->first();
+
+        if ($service) {
+            $service->delete();
+            //Session::flash('success', 'Услуга удалена!');
+            Session::flash('success', trans('main.service:delete_success_message'));
+        } else {
+            Session::flash('error', trans('main.service:delete_error_message'));
+        }
+
+        return redirect()->to('/services');
     }
 
 }

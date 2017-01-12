@@ -6,6 +6,7 @@ use App\ServiceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Session;
 
 class ServiceCategoriesController extends Controller
 {
@@ -15,9 +16,10 @@ class ServiceCategoriesController extends Controller
     public function __construct()
     {
         // TODO: убрать после доработки логина
-        auth()->loginUsingId(1);
+        //auth()->loginUsingId(1);
 
         $this->middleware('auth');
+        $this->middleware('permissions');   //->only(['create', 'edit', 'save']);
 
         $this->genderOptions = [
             [
@@ -46,7 +48,7 @@ class ServiceCategoriesController extends Controller
 
         return view('adminlte::servicecategories', [
             'newScUrl' => $newScUrl,
-            'user' => $request->user()
+            'crmuser' => $request->user()
         ]);
     }
 
@@ -227,6 +229,32 @@ class ServiceCategoriesController extends Controller
         $sc->online_reservation_name = $request->input('online_reservation_name');
 
         $sc->save();
+
+        return redirect()->to('/serviceCategories');
+    }
+
+    /**
+     * Удаляет категорию услуг из БД
+     *
+     * @param  int  $scId
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($scId)
+    {
+        $sc = ServiceCategory::where('organization_id', request()->user()->organization_id)->where('service_category_id', $scId)->first();
+
+        if ($sc) {
+            // проверяем что у категории нет вложенных услуг
+            $servicesCnt = $sc->service()->count();
+            if ($servicesCnt > 0) {
+                Session::flash('error', trans('main.service_category:delete_failed_has_services_message', ['cnt' => $servicesCnt]));
+            } else {
+                $sc->delete();
+            }
+            Session::flash('success', trans('main.service_category:delete_success_message'));
+        } else {
+            Session::flash('error', trans('main.service_category:delete_error_message'));
+        }
 
         return redirect()->to('/serviceCategories');
     }
