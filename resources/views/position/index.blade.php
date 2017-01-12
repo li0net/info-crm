@@ -33,10 +33,8 @@
 			<table class="table">
 				<thead>
 					<th>#</th>
-					<th>ФИО</th>
-					<th>Email</th>
-					<th>Номер телефона</th>
-					<th>Должность</th>
+					<th>Название</th>
+					<th>Описание</th>
 					<th></th>
 				</thead>
 
@@ -52,8 +50,8 @@
 									<a href="{{ route('position.edit', $position->position_id) }}#menu1" id="employee_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
 								@endif
 								@if ($user->hasAccessTo('employee', 'delete', 0))
-									{!! Form::open(['route' => ['position.destroy', $position->employee_id], "id" => 'form1', "style" => "display: inline-block", "method" => 'DELETE']) !!}
-										<a href="javascript: submitform('form1')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+									{!! Form::open(['route' => ['position.destroy', $position->position_id], "id" => 'form'.$position->position_id, "style" => "display: inline-block", "method" => 'DELETE']) !!}
+											<a href="javascript: submitform('#form{{$position->position_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>
@@ -71,7 +69,7 @@
 @endsection
 
 <script>
-	function submitform(){
-		$('#form1').submit();
+	function submitform(form_id){
+		$(form_id).submit();
 	}
 </script>

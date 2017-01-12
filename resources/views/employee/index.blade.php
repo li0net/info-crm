@@ -58,8 +58,8 @@
 								<a href="{{ route('employee.edit', $employee->employee_id) }}#menu3" class="btn btn-default btn-sm"><i class='fa fa-clock-o'></i></a>
 								<a href="{{ route('employee.edit', $employee->employee_id) }}#menu4" class="btn btn-default btn-sm"><i class='fa fa-cog'></i></a>
 								@if ($user->hasAccessTo('employee', 'delete', 0))
-									{!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "id" => 'form1', "style" => "display: inline-block", "method" => 'DELETE']) !!}
-										<a href="javascript: submitform('form1')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+									{!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "id" => 'form'.$employee->employee_id, "style" => "display: inline-block", "method" => 'DELETE']) !!}
+										<a href="javascript: submitform('#form{{$employee->employee_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>
@@ -78,7 +78,7 @@
 @endsection
 
 <script>
-	function submitform(){
-		$('#form1').submit();
+	function submitform(form_id){
+		$(form_id).submit();
 	}
 </script>

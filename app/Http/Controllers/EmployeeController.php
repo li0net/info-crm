@@ -124,7 +124,6 @@ class EmployeeController extends Controller
 	{
 		$employee = Employee::find($id);
 		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
-		//dd($settings);
 
 		return view('employee.edit', ['employee' => $employee, 'settings' => $settings]);
 	}

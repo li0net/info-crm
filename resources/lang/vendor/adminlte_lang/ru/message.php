@@ -193,5 +193,7 @@ return [
 	'resources'					=> 'Ресурсы',
 	'schedule'					=> 'График работы',
 	'basic_settings'			=> 'Основные',
-	'exit'						=> 'Выход'
+	'exit'						=> 'Выход',
+	'knowledge_base'			=> 'База знаний',
+	'affiliate_program'			=> 'Партнерская программа'
 ];
