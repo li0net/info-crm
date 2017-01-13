@@ -94,8 +94,8 @@ class EmployeeController extends Controller
 		$employee->save();
 
 		$settings->employee_id = $employee->employee_id;
-		$settings->session_start = date("Y-m-d H:i:s");
-		$settings->session_end = date("Y-m-d H:i:s");
+		$settings->session_start = '0';
+		$settings->session_end = '0';
 		$settings->revenue_pctg = 50;
 		$settings->wage_scheme_id = 0;
 		$settings->schedule_id = 0;
