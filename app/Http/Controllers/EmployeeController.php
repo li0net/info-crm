@@ -132,12 +132,25 @@ class EmployeeController extends Controller
 	 */
 	public function edit(Request $request, $id)
 	{
+		$dash = '---';
 		$employee = Employee::find($id);
 		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
 
 		$items = Position::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'position_id');
 
-		return view('employee.edit', ['employee' => $employee, 'settings' => $settings, 'items' => $items]);
+		$sessionStart = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, 'c');
+		$sessionEnd = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, 'по');
+		$addInterval = $this->populateTimeIntervals(strtotime('00:45:00'), strtotime('04:00:00'), 15, '');
+		array_unshift($addInterval, $dash);
+
+		return view('employee.edit', [
+			'employee' => $employee, 
+			'settings' => $settings, 
+			'items' => $items, 
+			'sessionStart' => $sessionStart, 
+			'sessionEnd' => $sessionEnd,
+			'addInterval' => $addInterval
+		]);
 	}
 
 	/**
@@ -163,8 +176,8 @@ class EmployeeController extends Controller
 		]);
 
 		$validator = Validator::make($request->all(), [
-      		'online_reg_notify' => 'exists'
-    	]);
+			'online_reg_notify' => 'exists'
+		]);
 
 		$employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $id)->first();
 		if (is_null($employee)) {
@@ -207,9 +220,9 @@ class EmployeeController extends Controller
 			$settings[0]->reg_permitted_nomaster = $request->input('reg_permitted_nomaster');
 			
 			//TODO: Обрабатывать значения этих полей
-			// $settings[0]->session_start = $request->input('session_start');
-			// $settings[0]->session_end = $request->input('session_end');
-			// $settings[0]->add_interval = $request->input('add_interval');
+			$settings[0]->session_start = $request->input('session_start');
+			$settings[0]->session_end = $request->input('session_end');
+			$settings[0]->add_interval = $request->input('add_interval');
 
 			$settings[0]->show_rating = $request->input('show_rating');
 			$settings[0]->is_rejected = $request->input('is_rejected');
@@ -246,5 +259,18 @@ class EmployeeController extends Controller
 		}
 
 		return redirect()->route('employee.index');
+	}
+
+	protected function populateTimeIntervals($startTime, $endTime, $interval, $modifier) {
+		$timeIntervals = [];
+		
+		while ($startTime <= $endTime) {
+			$timeStr = date('H:i', $startTime);
+			$timeIntervals[] = $modifier.' '.$timeStr;
+
+			$startTime += 60*$interval; 
+		}
+		
+		return $timeIntervals;
 	}
 }

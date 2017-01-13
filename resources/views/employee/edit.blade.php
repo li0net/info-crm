@@ -201,10 +201,10 @@
 									<div class="col-sm-7 text-left">
 										<div class="row">
 											<div class="col-sm-6">
-												{{ Form::select('session_start', ['0' => 'c 0:00', '1' => 'c 1:00', '2' => 'c 2:00'], '0', ['class' => 'form-control']) }}
+												{{ Form::select('session_start', $sessionStart, null, ['class' => 'form-control']) }}
 											</div>
 											<div class="col-sm-6">
-												{{ Form::select('session_end', ['0' => 'до 0:00', '1' => 'до 1:00', '2' => 'до 2:00'], '0', ['class' => 'form-control']) }}
+												{{ Form::select('session_end', $sessionEnd, null, ['class' => 'form-control']) }}
 											</div>
 										</div>
 									</div>
@@ -215,7 +215,7 @@
 									<div class="col-sm-7 text-left">
 										<div class="row">
 											<div class="col-sm-6">
-												{{ Form::select('add_interval', ['0' => '---', '1' => '0:45', '2' => '1:00', '3' => '1:15'], '0', ['class' => 'form-control']) }}
+												{{ Form::select('add_interval', $addInterval, null, ['class' => 'form-control']) }}
 											</div>
 										</div>
 									</div>
