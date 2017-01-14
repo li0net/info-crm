@@ -16,10 +16,10 @@
             <span class="sr-only">{{ trans('adminlte_lang::message.togglenav') }}</span>
         </a>
         <!-- Navbar Right Menu -->
-        <div class="navbar-custom-menu">
+         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <!-- Messages: style can be found in dropdown.less-->
-                <li class="dropdown messages-menu">
+                {{--<li class="dropdown messages-menu">
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>
@@ -94,7 +94,7 @@
                                         </h3>
                                         <!-- The progress bar -->
                                         <div class="progress xs">
-                                            <!-- Change the css width attribute to simulate progress -->
+                                            Change the css width attribute to simulate progress
                                             <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                                                 <span class="sr-only">20% {{ trans('adminlte_lang::message.complete') }}</span>
                                             </div>
@@ -107,7 +107,7 @@
                             <a href="#">{{ trans('adminlte_lang::message.alltasks') }}</a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 @if (Auth::guest())
                     <li><a href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>
                     <li><a href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>
@@ -127,11 +127,11 @@
                                 <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" />
                                 <p>
                                     {{ Auth::user()->name }}
-                                    <small>{{ trans('adminlte_lang::message.login') }} Nov. 2012</small>
+                                    {{-- <small>{{ trans('adminlte_lang::message.login') }} Nov. 2012</small> --}}
                                 </p>
                             </li>
                             <!-- Menu Body -->
-                            <li class="user-body">
+                            {{-- <li class="user-body">
                                 <div class="col-xs-4 text-center">
                                     <a href="#">{{ trans('adminlte_lang::message.followers') }}</a>
                                 </div>
@@ -141,14 +141,14 @@
                                 <div class="col-xs-4 text-center">
                                     <a href="#">{{ trans('adminlte_lang::message.friends') }}</a>
                                 </div>
-                            </li>
+                            </li> --}}
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="{{ url('/settings') }}" class="btn btn-default btn-flat">{{ trans('adminlte_lang::message.profile') }}</a>
+                                    <a href="{{ url('organization/edit') }}" class="btn btn-default btn-block">{{ trans('adminlte_lang::message.profile') }}</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="{{ url('/logout') }}" class="btn btn-default btn-flat"
+                                    <a href="{{ url('/logout') }}" class="btn btn-default btn-block"
                                        onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
                                         {{ trans('adminlte_lang::message.signout') }}
@@ -166,10 +166,10 @@
                 @endif
 
                 <!-- Control Sidebar Toggle Button -->
-                <li>
+                {{--  <li>
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                </li>
+                </li> --}}
             </ul>
-        </div>
+        </div> 
     </nav>
 </header>
