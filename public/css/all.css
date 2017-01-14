@@ -29319,6 +29319,11 @@ a:hover {
   vertical-align: middle;
   font-size: 14px;
 }
+.datepicker table tr td,
+.datepicker table tr th {
+  font-size: 12px;
+  color: #fff;
+}
 
 /*# sourceMappingURL=adminlte-app.css.map */
 
