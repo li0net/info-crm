@@ -6509,7 +6509,7 @@ hr {
 }
 .fa {
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   text-decoration: none;
 }
 a:hover {
@@ -6533,11 +6533,20 @@ a:hover {
   padding-left: 15px;
   padding-right: 15px;
 }
-.datepicker {
+.datepicker.datepicker-inline {
   font-size: 12px;
 }
 .navbar-nav > .user-menu > .dropdown-menu > li.user-header {
   height: 150px;
+}
+.navbar-nav > .user-menu > .dropdown-menu > .user-footer .btn-default {
+  color: #fff;
+}
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > thead > tr > th {
+  vertical-align: middle;
+  font-size: 14px;
 }
 
 /*# sourceMappingURL=adminlte-app.css.map */

@@ -15,24 +15,24 @@
 		@endif
 	</div>
 	<div class="row">
-		<div class="col-md-10">
-			<h1>Все сотрудники</h1>
+		<div class="col-sm-10">
+			<h4>Все сотрудники</h4>
 		</div>	
 
-		<div class="col-md-2">
-			<a href="{{ route('employee.create') }}" class="btn btn-primary btn-lg btn-block btn-h1-spacing">Новый сотрудник</a>
+		<div class="col-sm-2">
+			<a href="{{ route('employee.create') }}" class="btn btn-primary btn-block">Новый сотрудник</a>
 		</div>
 
-		<div class="col-md-12">
+		<div class="col-sm-12">
 			<hr>	
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-sm-12">
 			<table class="table">
 				<thead>
-					<th>#</th>
+					<th class="text-center">#</th>
 					<th></th>
 					<th>ФИО</th>
 					<th>Email</th>
@@ -44,8 +44,8 @@
 				<tbody>
 					@foreach($employees as $employee)
 						<tr>
-							<th>{{ $employee->employee_id }}</th>
-							<td><img src="/images/{{ $employee->avatar_image_name }}" alt="image" style="width: 32px; height: 32px; border-radius: 50%;"></td>
+							<th class="text-center">{{ $employee->employee_id }}</th>
+							<td class="text-center"><img src="/images/{{ $employee->avatar_image_name }}" alt="image" style="width: 32px; height: 32px; border-radius: 50%;"></td>
 							<td>{{ $employee->name }}</td>
 							<td>{{ $employee->email }}</td>
 							<td>{{ $employee->phone }}</td>
@@ -60,7 +60,7 @@
 								<a href="{{ route('employee.edit', $employee->employee_id) }}#menu3" class="btn btn-default btn-sm"><i class='fa fa-clock-o'></i></a>
 								<a href="{{ route('employee.edit', $employee->employee_id) }}#menu4" class="btn btn-default btn-sm"><i class='fa fa-cog'></i></a>
 								@if ($user->hasAccessTo('employee', 'delete', 0))
-									{!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "id" => 'form'.$employee->employee_id, "style" => "display: inline-block", "method" => 'DELETE']) !!}
+									{!! Form::open(['route' => ['employee.destroy', $employee->employee_id], 'id' => 'form'.$employee->employee_id, 'style' => 'max-width: 32px; margin:0; padding:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
 										<a href="javascript: submitform('#form{{$employee->employee_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
@@ -72,11 +72,9 @@
 
 			<div class="text-center">
 				{!! $employees->render(); !!} 
-				{{-- {{ $employees->appends(Input::all())->render() }} --}}
 			</div>
 		</div>
 	</div>
-
 @endsection
 
 <script>

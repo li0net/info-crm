@@ -282,6 +282,10 @@ $(document).ready(function () {
 		);
 	});
 
+	$('#dp').on('changeDate', function() {
+    console.log($('#dp').datepicker('getFormattedDate'));
+	});
+
 	var hash = window.location.hash;
 
 	$('ul.nav.nav-tabs li a[href="' + hash + '"]').tab('show');
