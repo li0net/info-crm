@@ -124,6 +124,29 @@ $(document).ready(function () {
 		pager: "#users_grid_pager"
 	});
 
+	$("#clients_grid").jqGrid({
+		url: '/clients/gridData',
+		mtype: "GET",
+		styleUI : 'Bootstrap',
+		datatype: "json",
+		colNames:['ID', 'Имя', 'Контакты', 'Продано', 'Скидка'],
+		colModel: [
+			{ index: 'client_id', name: 'client_id', key: true, width: 60, hidden:true },
+			{ index: 'name', name: 'name', width: 120 },
+			{ index: 'phone', name: 'phone', width: 100 },
+			{ index: 'total_bought', name: 'total_bought', width: 70 },
+			{ index: 'discount', name: 'discount', width: 70 }
+		],
+		sortname: 'name',
+		sortorder: 'asc',
+		viewrecords: true,
+		height: 550,
+		autowidth: true,
+		shrinkToFit: true,
+		rowNum: 10,
+		pager: "#clients_grid_pager"
+	});
+
 	// Replace the <textarea id="o_info"> with a CKEditor instance, using default configuration.
 	if ($('#o_info').length ) {
 		CKEDITOR.replace('o_info');

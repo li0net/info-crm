@@ -97,5 +97,10 @@ return [
     'user:permissions_service_delete_label' => 'Удаление услуг',
     'user:permissions_employee_edit_label'  => 'Редактирование персонала',
     'user:permissions_employee_delete_label' => 'Удаление персонала',
-    'user:permissions_schedule_edit_label'  => 'Редактирование графика работы'
+    'user:permissions_schedule_edit_label'  => 'Редактирование графика работы',
+    'user:permissions_clients_label'        => 'Клиенты',
+
+    'client:list_header'                    => 'Клиенты',
+    'client:list_actions'                   => 'Действия',
+    'client:list_filters'                   => 'Фильтры'
 ];

@@ -132,6 +132,12 @@ class UsersController extends Controller
                 'action'        => 'edit',
                 'object_id'     => '0',
                 'access_level'  => 1
+            ],
+            'clients_view'      =>[
+                'object'        => 'clients',
+                'action'        => 'view',
+                'object_id'     => NULL,
+                'access_level'  => 1
             ]
         ];
 

@@ -129,13 +129,39 @@ class CheckPermissions
             access_level = 1|0
             */
 
-            'UsersController'        => [     // Управление пользователями (crud и форма прав доступа?)
+            'UsersController'        => [       // Управление пользователями (crud и форма прав доступа?)
                 'objectName'    => 'settings_manage_users',
                 'action'        => 'edit',
                 'objectId'      => 0,
                 'accessLevel'  => 1
+            ],
+
+            'ClientsController'     => [        // Клиенты (в целом, включая просмотр)
+                'objectName'    => 'clients',
+                'action'        => 'view',
+                'objectId'      => NULL,
+                'accessLevel'  => 1
             ]
 
+            /*
+            Показывать номера телефонов в списке клиентов
+            object	= clients_phone
+            object_id = NULL
+            action	= view
+            access_level = 1|0
+
+            Показывать номера телефонов в карточке клиента
+            object	= client_phone
+            object_id = 0
+            action	= view
+            access_level = 1|0
+
+            Выгружать список клиентов в xls
+            object	= clients_export_xls
+            object_id = NULL
+            action	= view
+            access_level = 1|0
+            */
         );
 
 

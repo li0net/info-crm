@@ -28,6 +28,7 @@ Route::get('/stub', function () {
 Route::get('/serviceCategories', 'ServiceCategoriesController@index');
 Route::get('/services', 'ServicesController@index');
 Route::get('/users', 'UsersController@index');
+Route::get('/clients', 'ClientsController@index');
 
 Route::resource('/employee', 'EmployeeController');
 Route::put('/employee', 'EmployeeController@store');
@@ -45,6 +46,10 @@ Route::get('/services/gridData', function()
 Route::get('/users/gridData', function()
 {
     GridEncoder::encodeRequestedData(new \App\GridRepositories\UsersGridRepository(), Input::all());
+});
+Route::get('/clients/gridData', function()
+{
+    GridEncoder::encodeRequestedData(new \App\GridRepositories\ClientsGridRepository(), Input::all());
 });
 
 /*
@@ -74,6 +79,8 @@ Route::get('/users/create', 'UsersController@create');
 Route::get('/users/edit/{user}', 'UsersController@edit');
 Route::post('/users/save', 'UsersController@save');
 Route::post('/users/{user}/savePermissions', 'UsersController@savePermissions');
+
+Route::get('/clients/create', 'ClientsController@create');
 
 Route::post('/image-upload/{id}', ['as' => 'upload', 'uses' => 'UploadImageController@uploadImage']);
 Route::get('/image-upload', 'UploadImageController@uploadImage');

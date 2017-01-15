@@ -285,6 +285,20 @@
                                         <p><input type="checkbox" name="schedule_edit" value="1" {{$selected}}>@lang('main.user:permissions_schedule_edit_label')</p>
                                     </div>
 
+                                    <!-- Права доступа к клиентам -->
+                                    <div>
+                                        <?php
+                                        $selected = '';
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
+                                                if ($permission->object == 'clients' AND $permission->access_level == '1') {
+                                                    $selected = "checked='checked'";
+                                                }
+                                            }
+                                        }?>
+                                        <p><input type="checkbox" name="clients_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_clients_label')</strong></p>
+                                    </div>
+
                                     <div class="col-md-12">
                                         <hr/>
                                         <button type="submit" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
