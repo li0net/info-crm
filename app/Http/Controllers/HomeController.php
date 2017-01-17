@@ -9,6 +9,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\Appointment;
+use App\Employee;
+use App\EmployeeSetting;
+use App\Service;
 
 /**
  * Class HomeController
@@ -31,8 +35,52 @@ class HomeController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('adminlte::home');
+        $appointments = Appointment::select('appointment_id', 'employee_id', 'client_id', 'service_id', 'start', 'end')->get();
+        $employees = Employee::select('name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'name');
+        $services = Service::select('name')->pluck('name', 'name');
+        $sessionStart = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
+        $sessionEnd = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
+
+        return view('adminlte::home', [
+            'appointments' => $appointments,
+            'employees' => $employees,
+            'services' => $services,
+            'sessionStart' => $sessionStart,
+            'sessionEnd' => $sessionEnd
+        ]);
+    }
+
+    public function indexFiltered(Request $request)
+    {
+        $appointments = Appointment::select('appointment_id', 'employee_id', 'client_id', 'service_id', 'start', 'end')->where('employee_id', 32)->get();
+        $employees = Employee::select('name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'name');
+        $services = Service::select('name')->pluck('name', 'name');
+        $sessionStart = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
+        $sessionEnd = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
+
+        // dump($request->input('filter_employee'), $request->input('filter_service'), $request->input('filter_start_time'), $request->input('filter_end_time'));
+
+        return view('adminlte::home', [
+            'appointments' => $appointments,
+            'employees' => $employees,
+            'services' => $services,
+            'sessionStart' => $sessionStart,
+            'sessionEnd' => $sessionEnd
+        ]);
+    }
+
+    protected function populateTimeIntervals($startTime, $endTime, $interval, $modifier) {
+        $timeIntervals = [];
+        
+        while ($startTime <= $endTime) {
+            $timeStr = date('H:i', $startTime);
+            $timeIntervals[] = $modifier.' '.$timeStr;
+
+            $startTime += 60*$interval; 
+        }
+        
+        return $timeIntervals;
     }
 }
