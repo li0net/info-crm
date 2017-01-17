@@ -14,12 +14,15 @@ require('./bootstrap');
  */
 
 // Vue.component('example', require('./components/Example.vue'));
-
 const app = new Vue({
 	el: '#app',
 	data: {
 		message: 'Фотопортрет',
 		image: '',
+		filter_employee: '',
+		filter_service: '',
+		filter_start_time: '',
+		filter_end_time: ''
 	},
 	
 	methods: {
@@ -43,9 +46,24 @@ const app = new Vue({
 		
 		removeImage: function (e) {
 			this.image = '';
+		},
+
+		onSelectChange(e) {
+			var formData = new FormData();
+
+			// console.log(this.filter_employee, this.filter_service, this.filter_start_time, this.filter_end_time);
+
+			formData.append('filter_employee', this.filter_employee);
+			formData.append('filter_service', this.filter_service);
+			formData.append('filter_start_time', this.filter_start_time);
+			formData.append('filter_end_time', this.filter_end_time);
+
+			this.$http.post('/home', formData)
 		}
 	}
 });
+
+// Vue.http.headers.common['X-CSRF-TOKEN'] = $('#token').attr('value');
 
 $.ajaxSetup({
 	headers: {
@@ -289,6 +307,7 @@ $(document).ready(function () {
 			weekStart: 1,
 	    monthsTitle: 'Месяцы'
 		};
+
 		$('#dp').datepicker(
 			{language: 'ru'}
 		);

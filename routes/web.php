@@ -32,6 +32,7 @@ Route::get('/users', 'UsersController@index');
 Route::resource('/employee', 'EmployeeController');
 Route::put('/employee', 'EmployeeController@store');
 Route::resource('/position', 'PositionController');
+Route::post('/home', 'homeController@indexFiltered');
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
 Route::get('/serviceCategories/gridData', function()
