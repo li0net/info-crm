@@ -58,12 +58,19 @@ const app = new Vue({
 			formData.append('filter_start_time', this.filter_start_time);
 			formData.append('filter_end_time', this.filter_end_time);
 
-			this.$http.post('/home', formData)
+			this.$http.post('/home', formData).then((response) => {
+					$('#result_container').html(response.body);
+					console.log('success', response);
+			}, (response) => {
+					$('#result_container').html(response.body);
+					console.log('error', response);
+			});
 		}
 	}
 });
 
-// Vue.http.headers.common['X-CSRF-TOKEN'] = $('#token').attr('value');
+Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+//$('#token').attr('value');
 
 $.ajaxSetup({
 	headers: {

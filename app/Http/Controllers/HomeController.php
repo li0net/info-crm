@@ -13,6 +13,7 @@ use App\Appointment;
 use App\Employee;
 use App\EmployeeSetting;
 use App\Service;
+use Response;
 
 /**
  * Class HomeController
@@ -43,6 +44,8 @@ class HomeController extends Controller
         $sessionStart = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
         $sessionEnd = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
 
+        //dump($request->input('filter_employee'), $request->input('filter_service'), $request->input('filter_start_time'), $request->input('filter_end_time'));
+
         return view('adminlte::home', [
             'appointments' => $appointments,
             'employees' => $employees,
@@ -69,6 +72,7 @@ class HomeController extends Controller
             'sessionStart' => $sessionStart,
             'sessionEnd' => $sessionEnd
         ]);
+        //return Response::json(array('jopa' => 'jopa'), 200);
     }
 
     protected function populateTimeIntervals($startTime, $endTime, $interval, $modifier) {
