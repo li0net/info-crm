@@ -14,6 +14,7 @@ use App\Employee;
 use App\EmployeeSetting;
 use App\Service;
 use Response;
+use View;
 
 /**
  * Class HomeController
@@ -39,7 +40,8 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $appointments = Appointment::select('appointment_id', 'employee_id', 'client_id', 'service_id', 'start', 'end')->get();
-        $employees = Employee::select('name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'name');
+        //$employees = Employee::select('name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'name');
+        $employees = Employee::select('employee_id', 'name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
         $services = Service::select('name')->pluck('name', 'name');
         $sessionStart = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
         $sessionEnd = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
@@ -57,22 +59,21 @@ class HomeController extends Controller
 
     public function indexFiltered(Request $request)
     {
-        $appointments = Appointment::select('appointment_id', 'employee_id', 'client_id', 'service_id', 'start', 'end')->where('employee_id', 32)->get();
-        $employees = Employee::select('name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'name');
-        $services = Service::select('name')->pluck('name', 'name');
-        $sessionStart = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
-        $sessionEnd = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
+        $appointments = Appointment::select('appointment_id', 
+                                            'employee_id', 
+                                            'client_id', 
+                                            'service_id', 
+                                            'start', 
+                                            'end')->where('employee_id', $request->input('filter_employee'))->get();
 
-        // dump($request->input('filter_employee'), $request->input('filter_service'), $request->input('filter_start_time'), $request->input('filter_end_time'));
+        // $employees = Employee::select('employee_id', 'name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
+        // $services = Service::select('name')->pluck('name', 'name');
+        // $sessionStart = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
+        // $sessionEnd = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, '');
 
-        return view('adminlte::home', [
-            'appointments' => $appointments,
-            'employees' => $employees,
-            'services' => $services,
-            'sessionStart' => $sessionStart,
-            'sessionEnd' => $sessionEnd
-        ]);
-        //return Response::json(array('jopa' => 'jopa'), 200);
+        //dump($request->input('filter_employee'), $request->input('filter_service'), $request->input('filter_start_time'), $request->input('filter_end_time'));
+
+        return View::make('adminlte::appointmentlist', ['appointments' => $appointments]);
     }
 
     protected function populateTimeIntervals($startTime, $endTime, $interval, $modifier) {

@@ -1,4 +1,3 @@
-<div id="result_container">
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
@@ -47,7 +46,7 @@
 						<th>Время окончания</th>
 					</thead>
 
-					<tbody>
+					<tbody id = 'result_container'>
 						@foreach($appointments as $appointment)
 							<tr>
 								<th>{{ $appointment->appointment_id }}</th>
@@ -63,4 +62,3 @@
 		</div>
 	</div>	
 @endsection
-</div>
