@@ -149,28 +149,72 @@ $(document).ready(function () {
 		pager: "#users_grid_pager"
 	});
 
-	$("#clients_grid").jqGrid({
-		url: '/clients/gridData',
-		mtype: "GET",
-		styleUI : 'Bootstrap',
-		datatype: "json",
-		colNames:['ID', 'Имя', 'Контакты', 'Продано', 'Скидка'],
-		colModel: [
-			{ index: 'client_id', name: 'client_id', key: true, width: 60, hidden:true },
-			{ index: 'name', name: 'name', width: 120 },
-			{ index: 'phone', name: 'phone', width: 100 },
-			{ index: 'total_bought', name: 'total_bought', width: 70 },
-			{ index: 'discount', name: 'discount', width: 70 }
-		],
-		sortname: 'name',
-		sortorder: 'asc',
-		viewrecords: true,
-		height: 550,
-		autowidth: true,
-		shrinkToFit: true,
-		rowNum: 10,
-		pager: "#clients_grid_pager"
-	});
+	if ($('#clients_grid').length ) {
+			$("#clients_grid").jqGrid({
+			url: '/clients/gridData',
+			mtype: "GET",
+			styleUI: 'Bootstrap',
+			datatype: "json",
+			colNames: ['ID', 'Имя', 'Контакты', 'Продано', 'Скидка'],
+			colModel: [
+				{index: 'client_id', name: 'client_id', key: true, width: 60, hidden: true, search: false},
+				{index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
+				{index: 'phone', name: 'phone', width: 100, search: true, stype: 'text'},
+				{index: 'total_bought', name: 'total_bought', width: 70, search: false},
+				{index: 'discount', name: 'discount', width: 70, search: false}
+			],
+			sortname: 'name',
+			sortorder: 'asc',
+			viewrecords: true,
+			height: 550,
+			autowidth: true,
+			shrinkToFit: true,
+			rowNum: 10,
+			pager: "#clients_grid_pager",
+			/*
+			 search : {
+			 caption: "Поиск по имени и номеру телефона",
+			 Find: "Найти",
+			 Reset: "Сбросить",
+			 odata : ['equal', 'contains'],
+			 groupOps: [ { op: "OR", text: "any" } ],
+			 matchText: " match",
+			 rulesText: " rules"
+			 },
+			 */
+		});
+
+		$("#client_main_search_field").keypress(function (e) {
+			var key = e.charCode || e.keyCode || 0;
+			if (key === $.ui.keyCode.ENTER) { // 13
+				$("#client_main_search_btn").click();
+			}
+		});
+		$("#client_main_search_btn").click(function () {
+			$clientsGrid = $("#clients_grid");
+			var rules = [], i, cm, postData = $clientsGrid.jqGrid("getGridParam", "postData"),
+				colModel = $clientsGrid.jqGrid("getGridParam", "colModel"),
+				searchText = $("#client_main_search_field").val(),
+				l = colModel.length;
+			for (i = 0; i < l; i++) {
+				cm = colModel[i];
+				if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
+					rules.push({
+						field: cm.name,
+						op: "cn",
+						data: searchText
+					});
+				}
+			}
+			postData.filters = JSON.stringify({
+				groupOp: "OR",
+				rules: rules
+			});
+			$clientsGrid.jqGrid("setGridParam", { search: true });
+			$clientsGrid.trigger("reloadGrid", [{page: 1, current: true}]);
+			return false;
+		});
+	}
 
 	// Replace the <textarea id="o_info"> with a CKEditor instance, using default configuration.
 	if ($('#o_info').length ) {
