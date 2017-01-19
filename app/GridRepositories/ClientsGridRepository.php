@@ -4,9 +4,11 @@ namespace App\GridRepositories;
 
 use \Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\Request;
-use Mgallegos\LaravelJqgrid\Repositories\EloquentRepositoryAbstract;
+//use Mgallegos\LaravelJqgrid\Repositories\EloquentRepositoryAbstract;
+use App\Libraries\EloquentGridRepositoryCustom;
 
-class ClientsGridRepository extends EloquentRepositoryAbstract {
+//class ClientsGridRepository extends EloquentRepositoryAbstract {
+class ClientsGridRepository extends EloquentGridRepositoryCustom {
 
     public function __construct()
     {

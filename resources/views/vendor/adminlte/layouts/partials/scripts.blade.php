@@ -12,7 +12,7 @@
 <script src="{{ asset('/plugins/jQueryUI/jquery-ui.min.js') }}" type="text/javascript"></script>
 
 <script src="http://momentjs.com/downloads/moment-with-locales.min.js" type="text/javascript"></script>
-<script src="{{ asset('/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/plugins/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
