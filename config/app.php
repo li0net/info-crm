@@ -166,6 +166,7 @@ return [
          * Laravel jqGrid provider
          */
         Mgallegos\LaravelJqgrid\LaravelJqgridServiceProvider::class,
+        App\Providers\LaravelJqgridServiceProviderCustom::class,
 
         'Collective\Html\HtmlServiceProvider'
     ],
@@ -226,7 +227,8 @@ return [
          * Laravel jqGrid aliases
          */
         'GridRender' => Mgallegos\LaravelJqgrid\Facades\GridRender::class,
-        'GridEncoder' => Mgallegos\LaravelJqgrid\Facades\GridEncoder::class
+        'GridEncoder' => Mgallegos\LaravelJqgrid\Facades\GridEncoder::class,
+        'GridEncoderCustom' => App\Libraries\GridEncoderCustom::class,
     ],
 
 ];

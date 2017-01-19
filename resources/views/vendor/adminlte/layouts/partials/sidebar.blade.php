@@ -42,7 +42,7 @@
 			<li class="treeview">
 				<a href="#"><i class='fa fa-users'></i> <span>{{ trans('adminlte_lang::message.clients') }}</span><i class="fa fa-angle-left pull-right"></i></a>
 					<ul class="treeview-menu">
-						<li><a href="/stub">{{ trans('adminlte_lang::message.client_list') }}</a></li>
+						<li><a href="/clients">{{ trans('adminlte_lang::message.client_list') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.loyality') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.electronic_cards') }}</a></li>
 					</ul>

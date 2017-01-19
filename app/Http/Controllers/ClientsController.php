@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Excel;
 use App\Client;
 use App\ClientCategory;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -34,5 +36,10 @@ class ClientsController extends Controller
     public function create(Request $request)
     {
         return 'Not implemented yet';
+    }
+
+    public function gridData() {
+        $je = new \App\Libraries\jqGridJsonEncoderCustom();
+        $je->encodeRequestedData(new \App\GridRepositories\ClientsGridRepository(), Input::all());
     }
 }

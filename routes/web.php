@@ -50,8 +50,10 @@ Route::get('/users/gridData', function()
 });
 Route::get('/clients/gridData', function()
 {
-    GridEncoder::encodeRequestedData(new \App\GridRepositories\ClientsGridRepository(), Input::all());
+    //GridEncoder::encodeRequestedData(new \App\GridRepositories\ClientsGridRepository(), Input::all());
+    GridEncoderCustom::encodeRequestedData(new \App\GridRepositories\ClientsGridRepository(), Input::all());
 });
+//Route::get('/clients/gridData', 'ClientsController@gridData');
 
 /*
  * Формы
