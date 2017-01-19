@@ -138,8 +138,8 @@ class EmployeeController extends Controller
 
 		$items = Position::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'position_id');
 
-		$sessionStart = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, 'c');
-		$sessionEnd = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, 'по');
+		$sessionStart = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, 'c ');
+		$sessionEnd = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, 'по ');
 		$addInterval = $this->populateTimeIntervals(strtotime('00:45:00'), strtotime('04:00:00'), 15, '');
 		array_unshift($addInterval, $dash);
 
@@ -266,7 +266,7 @@ class EmployeeController extends Controller
 		
 		while ($startTime <= $endTime) {
 			$timeStr = date('H:i', $startTime);
-			$timeIntervals[] = $modifier.' '.$timeStr;
+			$timeIntervals[$modifier.$timeStr] = $modifier.$timeStr;
 
 			$startTime += 60*$interval; 
 		}

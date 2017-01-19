@@ -19,10 +19,10 @@ const app = new Vue({
 	data: {
 		message: 'Фотопортрет',
 		image: '',
-		filter_employee: '',
-		filter_service: '',
-		filter_start_time: '',
-		filter_end_time: ''
+		filter_employee: 0,
+		filter_service: 0,
+		filter_start_time: '00:00',
+		filter_end_time: '23:45'
 	},
 	
 	methods: {
