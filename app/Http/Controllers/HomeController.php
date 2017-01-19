@@ -62,28 +62,47 @@ class HomeController extends Controller
 
 	public function indexFiltered(Request $request)
 	{
-		$filter_employee = $request->input('filter_employee');
-		$filter_service = $request->input('filter_service');
-		
-		$filter_start_time = date_create();
-		date_format($filter_start_time, 'U = Y-m-d H:i:s');
-		date_timestamp_set($filter_start_time, strtotime($request->input('filter_start_time')));
+		if(null !== ($request->input('date'))) {
+			$filter_start_time = date_create($request->input('date').'00:00:00');
+			date_format($filter_start_time, 'U = Y-m-d H:i:s');
 
-		$filter_end_time = date_create();
-		date_format($filter_end_time, 'U = Y-m-d H:i:s');
-		date_timestamp_set($filter_end_time, strtotime($request->input('filter_end_time')));
-		
-		$appointments = Appointment::select('appointment_id', 
-											'employee_id', 
-											'service_id', 
-											'client_id',
-											'start', 
-											'end')->whereBetween('employee_id', $filter_employee != 0 ? [$filter_employee, $filter_employee] : [1, 9999])
-												  ->whereBetween('service_id', $filter_service != 0 ? [$filter_service, $filter_service] : [1, 9999])
-												  ->whereBetween('start', [$filter_start_time, $filter_end_time])
-												  ->whereBetween('end', [$filter_start_time, $filter_end_time])->get();
+			$filter_end_time = date_create($request->input('date').'23:45:00');
+			date_format($filter_end_time, 'U = Y-m-d H:i:s');
 
-		return View::make('adminlte::appointmentlist', ['appointments' => $appointments]);
+			$appointments = Appointment::select('appointment_id', 
+												'employee_id', 
+												'service_id', 
+												'client_id',
+												'start', 
+												'end')->whereBetween('start', [$filter_start_time, $filter_end_time])
+													  ->whereBetween('end', [$filter_start_time, $filter_end_time])->get();
+
+			return View::make('adminlte::appointmentlist', ['appointments' => $appointments]);
+
+		} else {
+			$filter_employee = $request->input('filter_employee');
+			$filter_service = $request->input('filter_service');
+			
+			$filter_start_time = date_create();
+			date_format($filter_start_time, 'U = Y-m-d H:i:s');
+			date_timestamp_set($filter_start_time, strtotime($request->input('filter_start_time')));
+
+			$filter_end_time = date_create();
+			date_format($filter_end_time, 'U = Y-m-d H:i:s');
+			date_timestamp_set($filter_end_time, strtotime($request->input('filter_end_time')));
+			
+			$appointments = Appointment::select('appointment_id', 
+												'employee_id', 
+												'service_id', 
+												'client_id',
+												'start', 
+												'end')->whereBetween('employee_id', $filter_employee != 0 ? [$filter_employee, $filter_employee] : [1, 9999])
+													  ->whereBetween('service_id', $filter_service != 0 ? [$filter_service, $filter_service] : [1, 9999])
+													  ->whereBetween('start', [$filter_start_time, $filter_end_time])
+													  ->whereBetween('end', [$filter_start_time, $filter_end_time])->get();
+
+			return View::make('adminlte::appointmentlist', ['appointments' => $appointments]);
+		}
 	}
 
 	protected function populateTimeIntervals($startTime, $endTime, $interval, $modifier) {

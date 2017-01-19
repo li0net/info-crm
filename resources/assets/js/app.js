@@ -14,6 +14,7 @@ require('./bootstrap');
  */
 
 // Vue.component('example', require('./components/Example.vue'));
+
 const app = new Vue({
 	el: '#app',
 	data: {
@@ -22,9 +23,8 @@ const app = new Vue({
 		filter_employee: 0,
 		filter_service: 0,
 		filter_start_time: '00:00',
-		filter_end_time: '23:45'
+		filter_end_time: '23:45',
 	},
-	
 	methods: {
 		onFileChange(e) {
 			var files = e.target.files || e.dataTransfer.files;
@@ -51,8 +51,6 @@ const app = new Vue({
 		onSelectChange(e) {
 			var formData = new FormData();
 
-			// console.log(this.filter_employee, this.filter_service, this.filter_start_time, this.filter_end_time);
-
 			formData.append('filter_employee', this.filter_employee);
 			formData.append('filter_service', this.filter_service);
 			formData.append('filter_start_time', this.filter_start_time);
@@ -60,17 +58,14 @@ const app = new Vue({
 
 			this.$http.post('/home', formData).then((response) => {
 					$('#result_container').html(response.body);
-					console.log('success', response);
 			}, (response) => {
-					$('#result_container').html(response.body);
-					console.log('error', response);
+					$('#result_container').html('Error while processing data!');
 			});
-		}
+		},
 	}
 });
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
-//$('#token').attr('value');
 
 $.ajaxSetup({
 	headers: {
@@ -383,12 +378,31 @@ $(document).ready(function () {
 		};
 
 		$('#dp').datepicker(
-			{language: 'ru'}
+			{language: 'ru',
+			 format: 'yyyy-mm-dd',
+			 startDate: '19/01/2017'}
 		);
 	});
 
 	$('#dp').on('changeDate', function() {
     console.log($('#dp').datepicker('getFormattedDate'));
+     $('#my_hidden_input').val(
+        $('#dp').datepicker('getFormattedDate')
+    );
+
+    var me = this;
+		$.ajax({
+			type: "POST",
+			dataType: 'html',
+			url: "/home",
+			data: {date: $('#dp').datepicker('getFormattedDate')},
+			success: function(data) {
+					$('#result_container').html(data);
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log('Error while processing services data range!');
+			}
+		});
 	});
 
 	var hash = window.location.hash;

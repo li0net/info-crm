@@ -20,13 +20,17 @@
 
 		<!-- search form (Optional) -->
 		<form action="#" method="get" class="sidebar-form">
-			{{-- <div class="input-group"> --}}
 				{{-- <input type="text" name="q" class="form-control" placeholder="{{ trans('adminlte_lang::message.search') }}..."/>
 				<span class="input-group-btn">
 				<button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
 				</span> --}}
-				<div id="dp"></div>
-			{{-- </div> --}}
+				{{-- <div id="dp" @changeDate = 'onSelectDate'></div> --}}
+				{{-- <input type="text" id="dp" class="form-control" value="02-12-2018" @change = 'onSelectDate'> --}}
+				<div id="dp" data-date="12/03/2012"></div>
+				<input type="hidden" id="my_hidden_input">
+				{{-- <picker :value.sync="startDate"></picker> --}}
+				{{-- <picker></picker> --}}
+				{{-- <div class="datepicker" @changeDate = 'onSelectDate'> </div> --}}
 		</form>
 		<!-- /.search form -->
 
