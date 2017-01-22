@@ -144,8 +144,9 @@ $(document).ready(function () {
 		pager: "#users_grid_pager"
 	});
 
+	// Clients grid functions
 	if ($('#clients_grid').length ) {
-			$("#clients_grid").jqGrid({
+		$("#clients_grid").jqGrid({
 			url: '/clients/gridData',
 			mtype: "GET",
 			styleUI: 'Bootstrap',
@@ -211,33 +212,43 @@ $(document).ready(function () {
 		});
 
 		$("#a_export_filtered_clients_to_excel").click(function () {
-			var headers = [], rows = [], row, cellCounter, postData, groupingView, sidx, sord;
-
-			$clientsGrid = $("#clients_grid");
-
-			$("#clientsGridModel").val(JSON.stringify($clientsGrid.getGridParam("colModel")));
-			postData = $clientsGrid.getGridParam("postData");
-			if(postData["filters"] != undefined)
-			{
-				$("#clientsGridFilters").val(postData["filters"]);
-			}
-			groupingView = $clientsGrid.getGridParam("groupingView");
-			sidx = $clientsGrid.getGridParam("sortname");
-			if(sidx == null) sidx = "";
-			sord = $clientsGrid.getGridParam("sortorder");
-			if(sord == null) sord = "";
-			if(groupingView.groupField.length > 0)
-			{
-				$("#clientsGridSidx").val(groupingView.groupField[0] + " " + groupingView.groupOrder[0] + "," + " " + sidx);
-			}
-			else
-			{
-				$("#clientsGridSidx").val(sidx);
-			}
-			$("#clientsGridSord").val(sord);
-			$("#clientsGridExportFormat").val("xls");
-			$("#clientsGridExportForm").submit();
+			sendDownloadClientsXlsRequest(false);
 		});
+
+		$("#a_export_all_clients_to_excel").click(function () {
+			sendDownloadClientsXlsRequest(true);
+		});
+	}
+
+	function sendDownloadClientsXlsRequest(all) {
+		var headers = [], rows = [], row, cellCounter, postData, groupingView, sidx, sord;
+
+		$clientsGrid = $("#clients_grid");
+
+		$("#clientsGridModel").val(JSON.stringify($clientsGrid.getGridParam("colModel")));
+		postData = $clientsGrid.getGridParam("postData");
+		if(postData["filters"] != undefined && all != true)
+		{
+			$("#clientsGridFilters").val(postData["filters"]);
+		} else {
+			$("#clientsGridFilters").val("");
+		}
+		groupingView = $clientsGrid.getGridParam("groupingView");
+		sidx = $clientsGrid.getGridParam("sortname");
+		if(sidx == null) sidx = "";
+		sord = $clientsGrid.getGridParam("sortorder");
+		if(sord == null) sord = "";
+		if(groupingView.groupField.length > 0)
+		{
+			$("#clientsGridSidx").val(groupingView.groupField[0] + " " + groupingView.groupOrder[0] + "," + " " + sidx);
+		}
+		else
+		{
+			$("#clientsGridSidx").val(sidx);
+		}
+		$("#clientsGridSord").val(sord);
+		$("#clientsGridExportFormat").val("xls");
+		$("#clientsGridExportForm").submit();
 	}
 
 	// Replace the <textarea id="o_info"> with a CKEditor instance, using default configuration.
