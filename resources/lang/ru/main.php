@@ -104,5 +104,6 @@ return [
     'client:list_actions'                   => 'Действия',
     'client:list_filters'                   => 'Фильтры',
     'client:search_button_label'            => 'Искать',
-    'client:search_field_placeholder'       => 'Поиск (по имени или телефону)'
+    'client:search_field_placeholder'       => 'Поиск (по имени или телефону)',
+    'client:list_export_filtered_to_excel'  => 'Выгрузить найденных в Excel'
 ];
