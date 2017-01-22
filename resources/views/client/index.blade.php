@@ -52,24 +52,30 @@
                         @lang('main.client:list_export_filtered_to_excel')
                     </a>
                 </div>
-
-                <form method="POST" action="/clients/gridData" accept-charset="UTF-8" id="clientsGridExportForm">
-                    {{csrf_field()}}
-                    <input id="clientsGridName" name="name" type="hidden" value="clients_filtered">
-                    <input id="clientsGridModel" name="model" type="hidden">
-                    <input id="clientsGridSidx" name="sidx" type="hidden">
-                    <input id="clientsGridSord" name="sord" type="hidden">
-                    <input id="clientsGridExportFormat" name="exportFormat" type="hidden" value="xls">
-                    <input id="clientsGridFilters" name="filters" type="hidden">
-
-                    <input id="docGridPivotFlag" name="pivot" type="hidden" value="">
-                    <input id="docGridRows" name="pivotRows" type="hidden">
-                    <input name="fileProperties" type="hidden" value='[]'>
-                    <input name="sheetProperties" type="hidden" value='[]'>
-                    <input name="groupingView" type="hidden" value='[]'>
-                    <input name="groupHeaders" type="hidden" value=''>
-                </form>
+                <div class="row">
+                    <a id="a_export_all_clients_to_excel" href="#">
+                        <i class="fa fa-file-excel-o"></i>
+                        @lang('main.client:list_export_all_to_excel')
+                    </a>
+                </div>
             </div>
+
+            <form method="POST" action="/clients/gridData" accept-charset="UTF-8" id="clientsGridExportForm">
+                {{csrf_field()}}
+                <input id="clientsGridName" name="name" type="hidden" value="clients_filtered">
+                <input id="clientsGridModel" name="model" type="hidden">
+                <input id="clientsGridSidx" name="sidx" type="hidden">
+                <input id="clientsGridSord" name="sord" type="hidden">
+                <input id="clientsGridExportFormat" name="exportFormat" type="hidden" value="xls">
+                <input id="clientsGridFilters" name="filters" type="hidden">
+
+                <input id="docGridPivotFlag" name="pivot" type="hidden" value="">
+                <input id="docGridRows" name="pivotRows" type="hidden">
+                <input name="fileProperties" type="hidden" value='[]'>
+                <input name="sheetProperties" type="hidden" value='[]'>
+                <input name="groupingView" type="hidden" value='[]'>
+                <input name="groupHeaders" type="hidden" value=''>
+            </form>
 
         </div>
 
