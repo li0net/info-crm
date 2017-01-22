@@ -74,8 +74,8 @@ class HomeController extends Controller
 												'service_id', 
 												'client_id',
 												'start', 
-												'end')->whereBetween('start', [$filter_start_time, $filter_end_time])
-													  ->whereBetween('end', [$filter_start_time, $filter_end_time])->get();
+												'end') ->whereBetween('start', [$filter_start_time, $filter_end_time])
+													   ->whereBetween('end', [$filter_start_time, $filter_end_time])->get();
 
 			return View::make('adminlte::appointmentlist', ['appointments' => $appointments]);
 
