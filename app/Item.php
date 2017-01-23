@@ -4,19 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Partner extends Model
+class Item extends Model
 {
-	protected $primaryKey = 'partner_id';
+   protected $primaryKey = 'item_id';
 
 	protected $fillable = [
 		'title',
-		'inn',
-		'kpp',
-		'contacts',
-		'phone',
-		'email',
-		'address',
-		'descrption'
+		'type',
+		'description'
 	];
 
 	public function organization()

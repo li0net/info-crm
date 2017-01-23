@@ -73,7 +73,7 @@
 								@endif
 								@if ($user->hasAccessTo('partner', 'delete', 0))
 									{!! Form::open(['route' => ['partner.destroy', $partner->partner_id], 'id' => 'form'.$partner->partner_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$partner->account_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$partner->partner_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	
