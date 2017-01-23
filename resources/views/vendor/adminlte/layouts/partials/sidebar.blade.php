@@ -79,7 +79,7 @@
 						<li><a href="{{ url('/partner')}}">{{ trans('adminlte_lang::message.partners') }}</a></li>
 						<li><a href="{{ url('/item')}}">{{ trans('adminlte_lang::message.costs') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.services') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.schemes') }}</a></li>
+						<li><a href="{{ url('/wage_scheme')}}">{{ trans('adminlte_lang::message.schemes') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.wage') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.payments') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.documents') }}</a></li>

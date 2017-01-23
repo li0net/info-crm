@@ -16,12 +16,14 @@
 	</div>
 
 	<div class="row">
-		<div class="col-sm-10">
+		<div class="col-sm-8">
 			<h4>Все контрагенты</h4>
 		</div>	
 
-		<div class="col-sm-2">
-			<a href="{{ route('partner.create') }}" class="btn btn-primary btn-block">Новый контрагент</a>
+		<div class="col-sm-4">
+			<a href="{{ route('partner.create') }}" class="btn btn-primary pull-right">Новый контрагент</a>
+			<a href="#" class="btn btn-default m-r pull-right">Загрузить из Excel</a>
+			<a href="#" class="btn btn-default m-r pull-right">Выгрузить в Excel</a>
 		</div>
 
 		<div class="col-sm-12">
