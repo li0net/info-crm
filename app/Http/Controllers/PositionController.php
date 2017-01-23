@@ -101,7 +101,7 @@ class PositionController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		$accessLevel = $request->user()->hasAccessTo('employee', 'edit', 0);
+		$accessLevel = $request->user()->hasAccessTo('position', 'edit', 0);
 		if ($accessLevel < 1) {
 			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
 		}

@@ -43,10 +43,24 @@
 					@foreach($accounts as $account)
 						<tr>
 							<th class="text-center">{{ $account->account_id }}</th>
-							<td>{{ $account->title }}</td>
-							<td>{{ $account->balance }}</td>
-							<td>Это расчетное поле</td>
-							<td>Это расчетное поле</td> 
+							<td>
+								{{ $account->title }}
+								<br>
+								<small>{{ $account->comment }}</small>
+							</td>
+							<td>
+								{{ $account->balance }} &#8381
+								<br>
+								<small>Текущий остаток на счете(в кассе)</small>
+							</td>
+							<td><Это расчетное поле> &#8381
+								<br>
+								<small>Выручка за текущий месяц</small>
+							</td>
+							<td><Это расчетное поле> &#8381
+								<br> 
+								<small>Расходы за текущий месяц</small>
+							</td>
 							<td class="text-right">
 								@if ($user->hasAccessTo('account', 'edit', 0))
 									<a href="{{ route('account.edit', $account->account_id) }}" id="account_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
@@ -57,20 +71,6 @@
 									{!! Form::close() !!}
 								@endif
 							</td>	
-							{{-- <td class="text-right">
-								<a href="{{ route('account.show', $account->account_id) }}" class="btn btn-default btn-sm"><i class='fa fa-eye'></i></a> 
-								@if ($user->hasAccessTo('account', 'edit', 0))
-									<a href="{{ route('account.edit', $account->account_id) }}#menu1" id="account_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
-								@endif
-								<a href="{{ route('account.edit', $employee->account_id) }}#menu2" class="btn btn-default btn-sm"><i class='fa fa-tags'></i></a> 
-								<a href="{{ route('account.edit', $employee->account_id) }}#menu3" class="btn btn-default btn-sm"><i class='fa fa-clock-o'></i></a>
-								<a href="{{ route('account.edit', $employee->account_id) }}#menu4" class="btn btn-default btn-sm"><i class='fa fa-cog'></i></a>
-								@if ($user->hasAccessTo('account', 'delete', 0))
-									{!! Form::open(['route' => ['account.destroy', $account->account_id], 'id' => 'form'.$account->account_id, 'style' => 'max-width: 32px; margin:0; padding:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$account->account_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
-									{!! Form::close() !!}
-								@endif
-							</td> --}}
 						</tr>
 					@endforeach
 				</tbody>
