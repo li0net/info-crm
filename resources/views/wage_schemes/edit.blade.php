@@ -25,7 +25,6 @@
 			@endif
 			<div class="well">
 				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-				{{-- {!! Form::open(['route' => ['wage_scheme.store'], 'class' => 'form-horizontal']) !!} --}}
 				{!! Form::model($scheme, ['route' => ['wage_scheme.update', $scheme->scheme_id], 'class' => 'form-horizontal', 'method' => 'PUT']) !!}
 					<div class="row">
 						<div class="form-group">
@@ -77,7 +76,28 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
-								<a href="#" id="dop_o_services" class="btn btn-link btn-xs">Уточнить значение для категорий или отдельных услуг <i class="fa fa-caret-down"></i></a>
+								<a href="#detailed" class="btn btn-link btn-xs" data-toggle="collapse">Уточнить значение для категорий или отдельных услуг <i class="fa fa-caret-down"></i></a>
+							</div>
+						</div>
+
+						<div id="detailed" class="form-group collapse">
+							<div class="col-sm-2"></div>							
+							<div class="col-sm-8" style="padding:0">
+								<div class="col-sm-4">
+									{{ Form::select('services_cats_detailed', ['0' => 'Стрижки', '1' => 'Укладки'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+								</div>
+								<div class="col-sm-4">
+									{{ Form::select('services_detailed', ['0' => 'Полубокс', '1' => 'Модельная'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+								</div>
+								<div class="col-sm-2">
+									{{ Form::text('products_percent_detailed', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+								</div>
+								<div class="col-sm-2">
+									{{ Form::select('products_unit_detailed', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<input type="button" id="add-detailed-section" class="btn btn-default" value="Добавить">
 							</div>
 						</div>
 
@@ -139,6 +159,9 @@
 	</div>
 @endsection
 
+<script>
+
+</script>
 {{-- @section('scripts')
 	{!! Html::script('js/parsley.min.js') !!}
 @endsection --}}
