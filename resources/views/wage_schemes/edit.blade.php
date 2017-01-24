@@ -81,23 +81,25 @@
 						</div>
 
 						<div id="detailed" class="form-group collapse">
-							<div class="col-sm-2"></div>							
-							<div class="col-sm-8" style="padding:0">
-								<div class="col-sm-4">
-									{{ Form::select('services_cats_detailed', ['0' => 'Стрижки', '1' => 'Укладки'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-								</div>
-								<div class="col-sm-4">
-									{{ Form::select('services_detailed', ['0' => 'Полубокс', '1' => 'Модельная'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+							<div class="wrap-it">
+								<div class="col-sm-2"></div>							
+								<div class="col-sm-8" style="padding:0">
+									<div class="col-sm-4">
+										{{ Form::select('services_cats_detailed', ['0' => 'Стрижки', '1' => 'Укладки'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+									</div>
+									<div class="col-sm-4">
+										{{ Form::select('services_detailed', ['0' => 'Полубокс', '1' => 'Модельная'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+									</div>
+									<div class="col-sm-2">
+										{{ Form::text('products_percent_detailed', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+									</div>
+									<div class="col-sm-2">
+										{{ Form::select('products_unit_detailed', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+									</div>
 								</div>
 								<div class="col-sm-2">
-									{{ Form::text('products_percent_detailed', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-								</div>
-								<div class="col-sm-2">
-									{{ Form::select('products_unit_detailed', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-								</div>
-							</div>
-							<div class="col-sm-2">
 								<input type="button" id="add-detailed-section" class="btn btn-default" value="Добавить">
+							</div>
 							</div>
 						</div>
 
