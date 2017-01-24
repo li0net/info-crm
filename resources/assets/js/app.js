@@ -251,6 +251,27 @@ $(document).ready(function () {
 		$("#clientsGridExportForm").submit();
 	}
 
+	$("#client_categories_grid").jqGrid({
+		url: '/clientCategories/gridData',
+		mtype: "GET",
+		styleUI : 'Bootstrap',
+		datatype: "json",
+		colNames:['Категория', ' '],
+		colModel: [
+			{ index: 'title', name: 'title', width: 100 },
+			{ index: 'cc_id', name: 'cc_id', key: true, width: 20, align: 'right', formatter:ClientCategoryFormatEditColumn }
+		],
+		sortname: 'title',
+		sortorder: 'asc',
+		viewrecords: true,
+		height: 600,
+		//width: 800,
+		autowidth: true,
+		shrinkToFit: true,
+		rowNum: 500,
+		//pager: "#service_categories_grid_pager"
+	});
+
 	// Replace the <textarea id="o_info"> with a CKEditor instance, using default configuration.
 	if ($('#o_info').length ) {
 		CKEDITOR.replace('o_info');
@@ -513,5 +534,11 @@ function ServiceFormatEditColumn(cellvalue, options, rowObject)
 function UserFormatEditColumn(cellvalue, options, rowObject)
 {
 	var url = window.location.protocol + '//' + window.location.host + '/users/edit/' + cellvalue;
+	return '<a href="' + url + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+}
+
+function ClientCategoryFormatEditColumn(cellvalue, options, rowObject)
+{
+	var url = window.location.protocol + '//' + window.location.host + '/clientCategories/edit/' + cellvalue;
 	return '<a href="' + url + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 }

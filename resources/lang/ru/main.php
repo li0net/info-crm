@@ -107,4 +107,7 @@ return [
     'client:search_field_placeholder'       => 'Поиск (по имени или телефону)',
     'client:list_export_filtered_to_excel'  => 'Выгрузить найденных в Excel',
     'client:list_export_all_to_excel'       => 'Выгрузить всю базу в Excel',
+
+    'client_category:list_page_header'      => 'Категории клиентов',
+    'client_category:create_new_btn_label'  => 'Добавить новую категорию'
 ];
