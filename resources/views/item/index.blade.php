@@ -81,6 +81,9 @@
 					@endforeach
 				</tbody>
 			</table>
+			<div class="text-center">
+					{!! $items->render(); !!} 
+			</div>
 		</div>
 	</div>		
 @endsection

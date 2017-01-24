@@ -72,7 +72,7 @@ class PartnerController extends Controller
 
 		Session::flash('success', 'Новый контрагент успешно добавлен!');
 
-		return redirect()->route('partner.show', $partner->account_id);
+		return redirect()->route('partner.show', $partner->partner_id);
 	}
 
 	/**

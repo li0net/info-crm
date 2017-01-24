@@ -31,11 +31,6 @@
 					@endif
 				</p>
 			
-				{{-- <dl class="dl-horizontal">
-					<label>ИНН:</label>
-					<p class="lead">{{ $partner->inn }}</p>
-				</dl> --}}
-				
 				{{ Form::label('inn', "ИНН: ") }}
 				<p class="lead">{{ $partner->inn }}</p>
 
@@ -81,7 +76,6 @@
 							{{ Html::linkRoute('partner.index', 'Все контрагенты »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>

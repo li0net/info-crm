@@ -83,6 +83,9 @@
 					@endforeach
 				</tbody>
 			</table>
+			<div class="text-center">
+					{!! $partners->render(); !!} 
+			</div>
 		</div>
 	</div>		
 @endsection

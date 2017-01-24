@@ -38,16 +38,16 @@
 						
 						<div class="form-group">
 							<label class="col-sm-2 control-label">
-								{{ Form::label('service_cost', 'Услуги:', ['class' => 'form-spacing-top']) }}
+								{{ Form::label('services_percent', 'Услуги:', ['class' => 'form-spacing-top']) }}
 							</label>
 							<div class="col-sm-6">
-								{{ Form::text('service_cost', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+								{{ Form::text('services_percent', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
 							<div class="col-sm-2">
 								{{ Form::select('service_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
 							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="sevice_unit" original-title="">&nbsp;</a>
+								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
 							</label>
 						</div>
 
@@ -60,16 +60,16 @@
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label">
-								{{ Form::label('product_cost', 'Товары:', ['class' => 'form-spacing-top']) }}
+								{{ Form::label('products_percent', 'Товары:', ['class' => 'form-spacing-top']) }}
 							</label>
 							<div class="col-sm-6">
-								{{ Form::text('product_cost', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+								{{ Form::text('products_percent', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
 							<div class="col-sm-2">
-								{{ Form::select('product_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+								{{ Form::select('products_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
 							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="product_unit" original-title="">&nbsp;</a>
+								<a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
 							</label>
 						</div>
 

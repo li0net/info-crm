@@ -61,7 +61,6 @@
 							{{ Html::linkRoute('account.index', 'Все счета »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>

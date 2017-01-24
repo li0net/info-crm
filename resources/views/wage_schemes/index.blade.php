@@ -46,32 +46,31 @@
 							<td>
 								{{ $scheme->scheme_name }}
 							</td>
-							{{-- <td>
-								@php
-									switch ($item->type) {
-										case 'income':
-											echo 'Доходы'; break;
-										case 'exp_oncost':
-											echo 'Расходы', ' ', 'на', ' ', 'себестоимость'; break;
-										case 'sales_exp':
-											echo 'Коммерческие', ' ', 'расходы'; break;
-										case 'staff_exp':
-											echo 'Расходы', ' ', 'на', ' ', 'персонал'; break;
-										case 'admin_exp':
-											echo 'Административно-хозяйственные', ' ', 'расходы'; break;
-										case 'taxes':
-											echo 'Налоги', ' ', 'и', ' ', 'сборы'; break;
-										default:
-											echo 'Прочие'; break;
-									}
-								@endphp
-							</td> --}}
 							<td>
-								{{ $scheme->service_percent.' ' }}
+								{{ $scheme->services_percent }}
 								@if( $scheme->service_unit == 'rub')
 									&#8381
 								@else
 									%
+								@endif
+							</td>
+							<td>
+								{{ $scheme->products_percent }}
+								@if( $scheme->products_unit == 'rub')
+									&#8381
+								@else
+									%
+								@endif
+							</td>
+							<td>
+								{{ $scheme->wage_rate }}
+								<br>
+								@if( $scheme->wage_rate_period == 'hour')
+									<small>в час</small>
+								@elseif( $scheme->wage_rate_period == 'day' )
+									<small>в день</small>
+								@else
+									<small>в месяц</small>
 								@endif
 							</td>
 							<td class="text-right">
@@ -88,6 +87,9 @@
 					@endforeach
 				</tbody>
 			</table>
+			<div class="text-center">
+					{!! $schemes->render(); !!} 
+			</div>
 		</div>
 	</div>		
 @endsection

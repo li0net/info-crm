@@ -75,6 +75,9 @@
 					@endforeach
 				</tbody>
 			</table>
+			<div class="text-center">
+					{!! $accounts->render(); !!} 
+			</div>
 		</div>
 	</div>		
 @endsection
