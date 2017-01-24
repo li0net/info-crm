@@ -4,23 +4,23 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Position extends Model
+class Partner extends Model
 {
-
-	protected $primaryKey = 'position_id';
+	protected $primaryKey = 'partner_id';
 
 	protected $fillable = [
 		'title',
-		'description'
+		'inn',
+		'kpp',
+		'contacts',
+		'phone',
+		'email',
+		'address',
+		'descrption'
 	];
 
 	public function organization()
 	{
 		return $this->belongsTo(Organization::class);
-	}
-
-	public function employees()
-	{
-		return $this->hasMany(Employee::class);
 	}
 }

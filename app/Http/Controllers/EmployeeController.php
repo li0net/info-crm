@@ -30,8 +30,6 @@ class EmployeeController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		//$employees = Employee::OrderBy('employee_id', 'asc')->paginate(4);
-
 		$employees = Employee::select('employee_id', 'name', 'email', 'phone', 'position_id', 'avatar_image_name')->with(['position' => function($query) { $query->select('position_id', 'title'); }])->get()->all();
 
 		$page = Input::get('page', 1);
@@ -42,8 +40,6 @@ class EmployeeController extends Controller
 		$employees = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($employees), $paginate, $page);
 		$employees->setPath('employee');
 		 
-		//return View::make('employee.index',compact('employees'));
-
 		return view('employee.index', ['user' => $request->user()])->withEmployees($employees);
 	}
 

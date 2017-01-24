@@ -466,6 +466,13 @@ $(document).ready(function () {
 		});
 	});
 
+	$('#add-detailed-section').on('click', function(e) {
+		$('#detailed').append(
+															'<div class="col-sm-2"></div>' +						
+															'<div class="col-sm-8" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="services_cats_detailed" class="form-control"><option value="0" selected="selected">Стрижки</option><option value="1">Укладки</option></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="services_detailed" class="form-control"><option value="0" selected="selected">Полубокс</option><option value="1">Модельная</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="products_percent_detailed" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="products_unit_detailed" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
+															'<div class="col-sm-2"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-default"></div>');
+	});
+
 	var hash = window.location.hash;
 
 	$('ul.nav.nav-tabs li a[href="' + hash + '"]').tab('show');

@@ -15,21 +15,21 @@
 		@endif
 	</div>
 	<div class="row">
-		<div class="col-md-10">
-			<h1>Все должности</h1>
+		<div class="col-sm-10">
+			<h4>Все должности</h1>
 		</div>	
 
-		<div class="col-md-2">
-			<a href="{{ route('position.create') }}" class="btn btn-primary btn-lg btn-block btn-h1-spacing">Новая должность</a>
+		<div class="col-sm-2">
+			<a href="{{ route('position.create') }}" class="btn btn-primary btn-block">Новая должность</a>
 		</div>
 
-		<div class="col-md-12">
+		<div class="col-sm-12">
 			<hr>	
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-sm-12">
 			<table class="table">
 				<thead>
 					<th>#</th>
@@ -46,11 +46,11 @@
 							<td>{{ $position->description }}</td>
 
 							<td class="text-right">
-								@if ($user->hasAccessTo('employee', 'edit', 0))
-									<a href="{{ route('position.edit', $position->position_id) }}#menu1" id="employee_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+								@if ($user->hasAccessTo('position', 'edit', 0))
+									<a href="{{ route('position.edit', $position->position_id) }}#menu1" id="position_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
 								@endif
-								@if ($user->hasAccessTo('employee', 'delete', 0))
-									{!! Form::open(['route' => ['position.destroy', $position->position_id], "id" => 'form'.$position->position_id, "style" => "display: inline-block", "method" => 'DELETE']) !!}
+								@if ($user->hasAccessTo('position', 'delete', 0))
+									{!! Form::open(['route' => ['position.destroy', $position->position_id], "id" => 'form'.$position->position_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', "method" => 'DELETE']) !!}
 											<a href="javascript: submitform('#form{{$position->position_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif

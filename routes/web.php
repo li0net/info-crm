@@ -34,6 +34,10 @@ Route::get('/clientCategories', 'ClientCategoriesController@index');
 Route::resource('/employee', 'EmployeeController');
 Route::put('/employee', 'EmployeeController@store');
 Route::resource('/position', 'PositionController');
+Route::resource('/account', 'AccountController');
+Route::resource('/partner', 'PartnerController');
+Route::resource('/item', 'ItemController');
+Route::resource('/wage_scheme', 'WageSchemesController');
 Route::post('/home', 'homeController@indexFiltered');
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
