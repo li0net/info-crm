@@ -54,7 +54,7 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
-								<a href="#detailed-services" data-toggle="collapse" class="btn btn-link btn-xs">Уточнить значение для категорий или отдельных услуг <i class="fa fa-caret-down"></i></a>
+								<a href="#detailed-services" data-toggle="collapse" class="btn btn-link btn-xs"><span class="badge label-danger" v-model="detailed_services_count">@{{ detailed_services_count }}</span>&nbsp&nbspУточнить значение для категорий или отдельных услуг&nbsp&nbsp<i class="fa fa-caret-down"></i></a>
 							</div>
 						</div>
 
@@ -99,7 +99,7 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
-								<a href="#detailed-products" class="btn btn-link btn-xs" data-toggle="collapse">Уточнить значение для категорий или отдельных товаров <i class="fa fa-caret-down"></i></a>
+								<a href="#detailed-products" data-toggle="collapse" class="btn btn-link btn-xs"><span class="badge label-danger" v-model="detailed_products_count">@{{ detailed_products_count }}</span>&nbsp&nbspУточнить значение для категорий или отдельных товаров&nbsp&nbsp<i class="fa fa-caret-down"></i></a>
 							</div>
 						</div>
 
