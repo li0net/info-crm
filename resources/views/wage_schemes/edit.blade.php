@@ -54,7 +54,30 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
-								<a href="#" id="dop_o_services" class="btn btn-link btn-xs">Уточнить значение для категорий или отдельных услуг <i class="fa fa-caret-down"></i></a>
+								<a href="#detailed-services" data-toggle="collapse" class="btn btn-link btn-xs">Уточнить значение для категорий или отдельных услуг <i class="fa fa-caret-down"></i></a>
+							</div>
+						</div>
+
+						<div id="detailed-services" class="form-group collapse">
+							<div class="wrap-it">
+								<div class="col-sm-2"></div>							
+								<div class="col-sm-8" style="padding:0">
+									<div class="col-sm-4">
+										{{ Form::select('services_cats_detailed', ['0' => 'Стрижка', '1' => 'Окраска'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+									</div>
+									<div class="col-sm-4">
+										{{ Form::select('services_detailed', ['0' => 'Модельная', '1' => 'Полубокс'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+									</div>
+									<div class="col-sm-2">
+										{{ Form::text('services_percent_detailed', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+									</div>
+									<div class="col-sm-2">
+										{{ Form::select('services_unit_detailed', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+									</div>
+								</div>
+								<div class="col-sm-2" style="margin-bottom: 15px;">
+									<input type="button" id="add-detailed-section" class="btn btn-info" value="Добавить">
+								</div>
 							</div>
 						</div>
 
@@ -76,19 +99,19 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
-								<a href="#detailed" class="btn btn-link btn-xs" data-toggle="collapse">Уточнить значение для категорий или отдельных услуг <i class="fa fa-caret-down"></i></a>
+								<a href="#detailed-products" class="btn btn-link btn-xs" data-toggle="collapse">Уточнить значение для категорий или отдельных товаров <i class="fa fa-caret-down"></i></a>
 							</div>
 						</div>
 
-						<div id="detailed" class="form-group collapse">
+						<div id="detailed-products" class="form-group collapse">
 							<div class="wrap-it">
 								<div class="col-sm-2"></div>							
 								<div class="col-sm-8" style="padding:0">
 									<div class="col-sm-4">
-										{{ Form::select('services_cats_detailed', ['0' => 'Стрижки', '1' => 'Укладки'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+										{{ Form::select('products_cats_detailed', ['0' => 'Лаки', '1' => 'Краски'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 									</div>
 									<div class="col-sm-4">
-										{{ Form::select('services_detailed', ['0' => 'Полубокс', '1' => 'Модельная'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+										{{ Form::select('products_detailed', ['0' => 'LONDA', '1' => 'WELLA'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 									</div>
 									<div class="col-sm-2">
 										{{ Form::text('products_percent_detailed', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
@@ -97,9 +120,9 @@
 										{{ Form::select('products_unit_detailed', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 									</div>
 								</div>
-								<div class="col-sm-2">
-								<input type="button" id="add-detailed-section" class="btn btn-default" value="Добавить">
-							</div>
+								<div class="col-sm-2" style="margin-bottom: 15px;">
+									<input type="button" id="add-detailed-section" class="btn btn-info" value="Добавить">
+								</div>
 							</div>
 						</div>
 
