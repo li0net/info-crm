@@ -67,6 +67,14 @@ class WageSchemesController extends Controller
 		$scheme->is_client_discount_counted = $request->is_client_discount_counted;
 		$scheme->is_material_cost_counted = $request->is_material_cost_counted;
 		$scheme->organization_id = $request->user()->organization_id;
+		$scheme->services_custom_settings = json_encode(array($request->services_cats_detailed,
+																$request->services_detailed,
+																$request->services_percent_detailed,
+																$request->services_unit_detailed));
+		$scheme->products_custom_settings = json_encode(array($request->products_cats_detailed,
+																$request->products_detailed,
+																$request->products_percent_detailed,
+																$request->products_unit_detailed));
 
 		$scheme->save();
 
@@ -136,6 +144,14 @@ class WageSchemesController extends Controller
 		$scheme->is_client_discount_counted = $request->is_client_discount_counted;
 		$scheme->is_material_cost_counted = $request->is_material_cost_counted;
 		$scheme->organization_id = $request->user()->organization_id;
+		$scheme->services_custom_settings = json_encode(array($request->services_cats_detailed,
+																$request->services_detailed,
+																$request->services_percent_detailed,
+																$request->services_unit_detailed));
+		$scheme->products_custom_settings = json_encode(array($request->products_cats_detailed,
+																$request->products_detailed,
+																$request->products_percent_detailed,
+																$request->products_unit_detailed));
 
 		$scheme->save();
 
