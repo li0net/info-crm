@@ -29306,6 +29306,7 @@ a:hover {
 }
 .btn-link:focus {
   text-decoration: none;
+  border: none;
 }
 .btn-xs,
 .btn-group-xs > .btn {
@@ -29323,6 +29324,20 @@ a:hover {
 }
 .btn-xs:focus {
   text-decoration: none;
+  border: none;
+}
+#add-detailed-section:active {
+  text-decoration: none;
+}
+#add-detailed-section:focus {
+  text-decoration: none;
+  outline: none;
+}
+#add-detailed-section.btn-danger:focus {
+  background-color: #d9534f;
+}
+#add-detailed-section.btn-danger:hover {
+  background-color: #c9302c;
 }
 .logo-block {
   padding: 5px;

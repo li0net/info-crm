@@ -69,6 +69,7 @@ a:hover {
     }
     &:focus {
     	text-decoration: none;
+    	border: none;
     }
 }
 
@@ -86,6 +87,25 @@ a:hover {
     }
     &:focus {
     	text-decoration: none;
+    	border: none;
+    }
+}
+
+#add-detailed-section {
+	&:active {
+    	text-decoration: none;
+    }
+    &:focus {
+    	text-decoration: none;
+    	outline: none;
+    }
+    &.btn-danger {
+    	&:focus {
+    		background-color: #d9534f;
+    	}
+    	&:hover {
+    		background-color: #c9302c;
+    	}
     }
 }
 

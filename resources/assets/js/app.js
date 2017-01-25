@@ -64,6 +64,16 @@ const app = new Vue({
 					$('#result_container').html('Error while processing data!');
 			});
 		},
+	},
+	mounted: function () {
+		//TODO: вычислять количество тонких настроек в схеме расчета ЗП
+		if(this.detailed_services_count == 0) {
+			$('a[href="#detailed-services"] .badge.label-danger').addClass('hidden');
+		}
+
+		if(this.detailed_products_count == 0) {
+			$('a[href="#detailed-products"] .badge.label-danger').addClass('hidden');
+		}
 	}
 });
 
@@ -476,6 +486,7 @@ $(document).ready(function () {
 				'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info"></div></div>');
 
 			app.detailed_products_count++;
+			$('a[href="#detailed-products"] .badge.label-danger').removeClass('hidden');
 		}
 		$(e.target).val('Удалить');
 		$(e.target).toggleClass('btn-info btn-danger')
@@ -483,6 +494,9 @@ $(document).ready(function () {
 		$(e.target).on('click', function(e) {
 			$(e.target).parent().parent().remove();
 			app.detailed_products_count--;
+			if(app.detailed_products_count == 0) {
+				$('a[href="#detailed-products"] .badge.label-danger').addClass('hidden');
+			}
 		});
 	});
 
@@ -501,6 +515,7 @@ $(document).ready(function () {
 				'<div class="col-sm-8" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="services_cats_detailed" class="form-control"><option value="0" selected="selected">Стрижки</option><option value="1">Укладки</option></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="services_detailed" class="form-control"><option value="0" selected="selected">Полубокс</option><option value="1">Модельная</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="products_percent_detailed" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="products_unit_detailed" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
 				'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info"></div></div>');
 			app.detailed_services_count++;
+			$('a[href="#detailed-services"] .badge.label-danger').removeClass('hidden');
 		}
 		$(e.target).val('Удалить');
 		$(e.target).toggleClass('btn-info btn-danger')
@@ -508,6 +523,9 @@ $(document).ready(function () {
 		$(e.target).on('click', function(e) {
 			$(e.target).parent().parent().remove();
 			app.detailed_services_count--;
+			if(app.detailed_services_count == 0) {
+				$('a[href="#detailed-services"] .badge.label-danger').addClass('hidden');
+			}
 		});
 	});
 
