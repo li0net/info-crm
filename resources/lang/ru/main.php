@@ -15,6 +15,8 @@ return [
     'hours_in_day'                          => '{0} часов|{1} час|[2,4] часа|[5,20] часов|{21} час|[22,24] часа',
     'minutes_short'                         => 'мин',
     'btn_submit_label'                      => 'Сохранить',
+    'general_success'                       => 'Успешно',
+    'general_error'                         => 'Ошибка',
 
     'service_category:list_page_header'     => 'Категории услуг',
 
@@ -30,7 +32,7 @@ return [
     'service_category:gender_label'         => 'Пол',
     'service_category:create_new_btn_label' => 'Новая категория',
     'service_category:delete_success_message' => 'Категория удалена!',
-    'service_category:delete_error_message' => 'Категория услуг не найдена.',
+    'service_category:delete_error_message' => 'Категория услуг не найдена',
     'service_category:delete_failed_has_services_message' => 'Невозможно удалить категорию, т.к. она содержит :cnt услуг',
 
     'service:create_form_header'            => 'Создать услугу',
@@ -108,6 +110,18 @@ return [
     'client:list_export_filtered_to_excel'  => 'Выгрузить найденных в Excel',
     'client:list_export_all_to_excel'       => 'Выгрузить всю базу в Excel',
 
+    'client_category:form_page_header'      => 'Категории клиентов',
     'client_category:list_page_header'      => 'Категории клиентов',
-    'client_category:create_new_btn_label'  => 'Добавить новую категорию'
+    'client_category:create_new_btn_label'  => 'Добавить новую категорию',
+    'client_category:edit_form_header'      => 'Редактировать категорию клиентов',
+    'client_category:create_form_header'    => 'Новая категория клиентов',
+    'client_category:name_placeholder'      => 'Название категории..',
+    'client_category:btn_save'              => 'Сохранить',
+    'client_category:color_placeholder'     => 'Цвет..',
+    'client_category:delete_failed_has_clients_message' => 'Невозможно удалить категорию, т.к. она содержит :cnt услуг',
+    'client_category:delete_success_message' => 'Категория удалена!',
+    'client_category:delete_error_message'  => 'Категория клиентов не найдена',
+    'client_category:edit_success_message'  => 'Изменения сохранены',
+    'client_category:create_success_message'=> 'Категория создана',
+
 ];
