@@ -97,7 +97,7 @@ Route::post('/users/{user}/savePermissions', 'UsersController@savePermissions');
 Route::get('/clients/create', 'ClientsController@create');
 
 Route::get('/clientCategories/create', 'ClientCategoriesController@create');
-Route::get('/clientCategories/edit/{serviceCategory}', 'ClientCategoriesController@edit');
+Route::get('/clientCategories/edit/{clientCategory}', 'ClientCategoriesController@edit');
 Route::post('/clientCategories/save', 'ClientCategoriesController@save');
 Route::get('/clientCategories/destroy/{ccId}', 'ClientCategoriesController@destroy');
 

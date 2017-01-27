@@ -8,6 +8,7 @@
 
     <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/css/ui.jqgrid-bootstrap.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/plugins/colorpicker/bootstrap-colorpicker.min.css') }}" rel="stylesheet" type="text/css" />
     {{-- <link href="{{ asset('/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" /> --}}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

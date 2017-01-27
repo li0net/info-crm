@@ -583,6 +583,9 @@ $(document).ready(function () {
 
 	$('#employee_form__info').removeClass('hidden');
 
+	// bootstrap colorpicker init
+	$('#cc_cp_container').colorpicker();
+
 	return false;
 });
 
@@ -625,6 +628,8 @@ function UserFormatEditColumn(cellvalue, options, rowObject)
 
 function ClientCategoryFormatEditColumn(cellvalue, options, rowObject)
 {
-	var url = window.location.protocol + '//' + window.location.host + '/clientCategories/edit/' + cellvalue;
-	return '<a href="' + url + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+	var url = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/edit/' + cellvalue + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+	var urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/destroy/' + cellvalue + '" class="btn btn-default"><i class="fa fa-trash-o"></i></a>';
+
+	return  url + urlDel;
 }
