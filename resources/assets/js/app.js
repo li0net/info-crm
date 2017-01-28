@@ -293,6 +293,7 @@ $(document).ready(function () {
 
 	// Datepicker defaults
 	$.datepicker.setDefaults({
+		//language: 'ru',
 		dateFormat: 'yy-mm-dd',
 		firstDay: 1,
 		autoclose: true

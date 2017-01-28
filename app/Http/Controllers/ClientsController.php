@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use Maatwebsite\Excel\Excel;
 use App\Client;
 use App\ClientCategory;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -81,6 +80,21 @@ class ClientsController extends Controller
         ]);
     }
 
+    public function edit(Request $request, Client $client)
+    {
+        // TODO: выводить ошибку в красивом шаблоне
+        if ($client->organization_id != $request->user()->organization_id) {
+            return 'You don\'t have access to this item';
+        }
+
+        return view('client.form', [
+            'clientCategoriesOptions' => $this->prepareClientCategoriesOptions(),
+            'genderOptions' => $this->genderOptions,
+            'importanceOptions' => $this->importanceOptions,
+            'client' => $client
+        ]);
+    }
+
     /*
     public function gridData() {
         $je = new \App\Libraries\jqGridJsonEncoderCustom();
@@ -94,7 +108,7 @@ class ClientsController extends Controller
         //  т.е. pivot таблица вместо client.category_id
 
         /*$request->all()
-        array:14 [▼
+        array:14 [
           "_token" => "ygOp4keMmYgv9Y0E4qmvUS8pKY5qIATdWbMe3zHV"
           "name" => "Name"
           "phone" => 9992038844
@@ -117,7 +131,7 @@ class ClientsController extends Controller
             'name' => 'required|max:120',
             'phone' => 'required|phone_crm',  // custom validation rule
             'email' => 'email',
-            'discount' => 'regex:^\d{0,2}$',
+            'discount' => 'regex:/^\d{0,2}$/',
             'birthday' => 'date',
             'total_bought' => 'numeric',
             'total_paid' => 'numeric'
@@ -186,11 +200,11 @@ class ClientsController extends Controller
         $client->gender = ($gender == 'null') ? NULL : $gender;
         $client->importance = ($importance == 'null') ? NULL : $importance;
         $client->discount = $request->input('discount');
-        $client->birthday = (trim($birthday) === '') ? NULL : strtotime($birthday);
+        $client->birthday = (trim($birthday) === '') ? NULL : date('Y-m-d', strtotime($birthday));
         $client->comment = (trim($comment) === '') ? NULL : $comment;
         $client->birthday_sms = ($bSms) ? '1' : '0';
         $client->do_not_send_sms = ($doNotSendSms) ? '1' : '0';
-        $client->online_reservation_available = ($onlineResAv) ? '1' : '0';
+        $client->online_reservation_available = ($onlineResAv) ? '0' : '1';     // если чекбокс 'Запретить записываться онлайн' отмечен, в базу пишем false
         $client->total_bought = (is_null($totalBought)) ? NULL : round($totalBought, 4);
         $client->total_paid = (is_null($totalPaid)) ? NULL : round($totalPaid, 4);
 

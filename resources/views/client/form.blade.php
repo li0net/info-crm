@@ -229,11 +229,6 @@
                                     @endforeach
                                 </div>
 
-                                <!--
-                                SMS
-                                    v Поздравлять с днем рождения по SMS  birthday_sms
-                                    v Исключить из SMS рассылок  do_not_send_sms
-                                -->
                                 <div class="col-md-6">
                                     <label>@lang('main.client:sms_label')</label>
                                 </div>
@@ -247,7 +242,7 @@
                                     } else {
                                         $checked = "";
                                     }?>
-                                    <input type="checkbox" name="birthday_sms" id="c_birthday_sms" value="1">&nbsp;@lang('main.client:birthday_sms_label')
+                                    <input type="checkbox" name="birthday_sms" id="c_birthday_sms" {{$checked}} value="1">&nbsp;@lang('main.client:birthday_sms_label')
                                     <br>
 
                                     <?php
@@ -259,13 +254,9 @@
                                     } else {
                                         $checked = "";
                                     }?>
-                                    <input type="checkbox" name="do_not_send_sms" id="c_do_not_send_sms" value="1">&nbsp;@lang('main.client:do_not_send_sms_label')
+                                    <input type="checkbox" name="do_not_send_sms" id="c_do_not_send_sms" {{$checked}} value="1">&nbsp;@lang('main.client:do_not_send_sms_label')
                                 </div>
 
-                                <!--
-                                Онлайн запись
-                                    v Запретить записываться онлайн  online_reservation_available
-                                -->
                                 <div class="col-md-6">
                                     <label>@lang('main.client:online_record_label')</label>
                                 </div>
@@ -273,13 +264,13 @@
                                     <?php
                                     $old = old('online_reservation_available');
                                     if (!is_null($old)) {
-                                        if ($old == '1') { $checked = "checked"; } else { $checked = ""; }
+                                        if ($old == '0') { $checked = "checked"; } else { $checked = ""; }
                                     } elseif (isset($client)) {
-                                        if ($client->online_reservation_available == '1') { $checked = "checked"; } else { $checked = ""; }
+                                        if ($client->online_reservation_available == '0') { $checked = "checked"; } else { $checked = ""; }
                                     } else {
                                         $checked = "";
                                     }?>
-                                    <input type="checkbox" name="online_reservation_available" id="c_online_reservation_available" value="1">&nbsp;@lang('main.client:online_reservation_available')
+                                    <input type="checkbox" name="online_reservation_available" id="c_online_reservation_available" {{$checked}} value="1">&nbsp;@lang('main.client:online_reservation_available')
                                 </div>
 
                                 <div class="col-md-6">
