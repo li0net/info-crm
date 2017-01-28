@@ -103,12 +103,17 @@ return [
     'user:permissions_clients_label'        => 'Клиенты',
 
     'client:list_header'                    => 'Клиенты',
+    'client:list_page_header'               => 'Клиенты',
     'client:list_actions'                   => 'Действия',
     'client:list_filters'                   => 'Фильтры',
     'client:search_button_label'            => 'Искать',
     'client:search_field_placeholder'       => 'Поиск (по имени или телефону)',
     'client:list_export_filtered_to_excel'  => 'Выгрузить найденных в Excel',
     'client:list_export_all_to_excel'       => 'Выгрузить всю базу в Excel',
+    'client:create_new_btn_label'           => 'Добавить нового клиента',
+    'client:gender_unknown'                 => 'Неизвестен',
+    'client:gender_men'                     => 'Мужчина',
+    'client:gender_woman'                   => 'Женщина',
 
     'client_category:form_page_header'      => 'Категории клиентов',
     'client_category:list_page_header'      => 'Категории клиентов',

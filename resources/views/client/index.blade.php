@@ -7,10 +7,26 @@
 
 @section('main-content')
     <div class="container-fluid spark-screen">
+        <div class="row">
+            @if (Session::has('success'))
+                <div class="alert alert-success" role="alert">
+                    <strong>@lang('main.general_success'):</strong> {{ Session::get('success') }}
+                </div>
+            @endif
 
-        <div class="col-md-12">
-            <div class="row">
-                <h3>@lang('main.client:list_header')</h3>
+            @if (Session::has('error'))
+                <div class="alert alert-error" role="alert">
+                    <strong>@lang('main.general_error'):</strong> {{ Session::get('error') }}
+                </div>
+            @endif
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                    <h3>@lang('main.client:list_header')</h3>
+            </div>
+            <div class="col-md-2">
+                <p class="text-right"><a href="{{$newClientUrl}}" class="btn btn-default">@lang('main.client:create_new_btn_label')</a></p>
             </div>
         </div>
 

@@ -412,6 +412,25 @@ $(document).ready(function () {
 		});
 	});
 
+	// CLIENT from
+	$('#c_birthday').datepicker({
+		autoclose: true,
+		dateFormat: 'yy-mm-dd',
+		firstDay: 1
+	});
+	// select2 multiple select init
+	$(".js-select-basic-single").select2({
+		templateResult: formatClientCatColor
+	});
+	function formatClientCatColor(cat) {
+		if (!cat.id) { return cat.text; }
+		var $category = $(
+			'<span style="background-color:' + cat.element.getAttribute('data-color') + '">' + cat.text + '</span>'
+		);
+		return $category;
+	};
+
+
 	$('#form_submit').on('click', function() {
 		var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
 

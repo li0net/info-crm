@@ -30,11 +30,10 @@
                 </div>
             </div>
 
-            @if ($crmuser->hasAccessTo('service', 'edit', 0) >= 1)
-                <div class="col-md-2">
-                    <p class="text-right"><a href="{{$newCCUrl}}" class="btn btn-default">@lang('main.client_category:create_new_btn_label')</a></p>
-                </div>
-            @endif
+
+            <div class="col-md-2">
+                <p class="text-right"><a href="{{$newCCUrl}}" class="btn btn-default">@lang('main.client_category:create_new_btn_label')</a></p>
+            </div>
         </div>
 
         <div class="row">
