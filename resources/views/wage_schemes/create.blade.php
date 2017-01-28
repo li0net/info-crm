@@ -66,16 +66,16 @@
 								<div class="col-sm-2"></div>							
 								<div class="col-sm-8" style="padding:0">
 									<div class="col-sm-4">
-										{{ Form::select('services_cats_detailed', ['0' => 'Стрижка', '1' => 'Окраска'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+										{{ Form::select('services_cats_detailed[]', ['0' => 'Стрижка', '1' => 'Окраска'], '0', ['class' => 'form-control', 'maxlength' => '110']) }}
 									</div>
 									<div class="col-sm-4">
-										{{ Form::select('services_detailed', ['0' => 'Модельная', '1' => 'Полубокс'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+										{{ Form::select('services_detailed[]', ['0' => 'Модельная', '1' => 'Полубокс'], '0', ['class' => 'form-control', 'maxlength' => '110']) }}
 									</div>
 									<div class="col-sm-2">
-										{{ Form::text('services_percent_detailed', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+										{{ Form::text('services_percent_detailed[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
 									</div>
 									<div class="col-sm-2">
-										{{ Form::select('services_unit_detailed', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+										{{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'maxlength' => '110']) }}
 									</div>
 								</div>
 								<div class="col-sm-2" style="margin-bottom: 15px;">
@@ -114,16 +114,16 @@
 								<div class="col-sm-2"></div>							
 								<div class="col-sm-8" style="padding:0">
 									<div class="col-sm-4">
-										{{ Form::select('products_cats_detailed', ['0' => 'Лаки', '1' => 'Краски'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+										{{ Form::select('products_cats_detailed[]', ['0' => 'Лаки', '1' => 'Краски'], '0', ['class' => 'form-control', 'maxlength' => '110']) }}
 									</div>
 									<div class="col-sm-4">
-										{{ Form::select('products_detailed', ['0' => 'LONDA', '1' => 'WELLA'], '0', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+										{{ Form::select('products_detailed[]', ['0' => 'LONDA', '1' => 'WELLA'], '0', ['class' => 'form-control', 'maxlength' => '110']) }}
 									</div>
 									<div class="col-sm-2">
-										{{ Form::text('products_percent_detailed', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+										{{ Form::text('products_percent_detailed[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
 									</div>
 									<div class="col-sm-2">
-										{{ Form::select('products_unit_detailed', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+										{{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'maxlength' => '110']) }}
 									</div>
 								</div>
 								<div class="col-sm-2" style="margin-bottom: 15px;">
@@ -150,7 +150,7 @@
 						<div class="form-group">
 							{{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }}
 							<label class="col-sm-8 text-left">
-								{{ Form::checkbox('is_client_discount_counted', 1, false, ['style' => 'margin-right: 10px']) }}
+								{{ Form::checkbox('is_client_discount_counted', true, true, ['style' => 'margin-right: 10px']) }}
 								 Учитывать скидку клиенту при расчете ЗП 
 							</label>
 							<label class="col-sm-1 text-left">
@@ -161,7 +161,7 @@
 						<div class="form-group">
 							{{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }}
 							<label class="col-sm-8 text-left">
-								{{ Form::checkbox('is_material_cost_counted', 1, false, ['style' => 'margin-right: 10px']) }}
+								{{ Form::checkbox('is_material_cost_counted', true, true, ['style' => 'margin-right: 10px']) }}
 								 Учитывать себестоимость материалов при расчете ЗП 
 							</label>
 							<label class="col-sm-1 text-left">

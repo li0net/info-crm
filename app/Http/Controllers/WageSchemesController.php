@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\WageScheme;
+use App\ServiceCategory;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
@@ -57,6 +58,17 @@ class WageSchemesController extends Controller
 
 		$scheme = new WageScheme;
 
+		$input = $request->input();
+		
+		array_shift($input['services_cats_detailed']);
+		array_shift($input['services_detailed']);
+		array_shift($input['services_percent_detailed']);
+		array_shift($input['services_unit_detailed']);
+		array_shift($input['products_cats_detailed']);
+		array_shift($input['products_detailed']);
+		array_shift($input['products_percent_detailed']);
+		array_shift($input['products_unit_detailed']);
+
 		$scheme->scheme_name = $request->scheme_name;
 		$scheme->services_percent = $request->services_percent;
 		$scheme->service_unit = $request->service_unit;
@@ -64,17 +76,17 @@ class WageSchemesController extends Controller
 		$scheme->products_unit = $request->products_unit;
 		$scheme->wage_rate = $request->wage_rate;
 		$scheme->wage_rate_period = $request->wage_rate_period;
-		$scheme->is_client_discount_counted = $request->is_client_discount_counted;
-		$scheme->is_material_cost_counted = $request->is_material_cost_counted;
+		$scheme->is_client_discount_counted = ($request->is_client_discount_counted !== null );
+		$scheme->is_material_cost_counted = ($request->is_material_cost_counted !== null );
 		$scheme->organization_id = $request->user()->organization_id;
-		$scheme->services_custom_settings = json_encode(array($request->services_cats_detailed,
-																$request->services_detailed,
-																$request->services_percent_detailed,
-																$request->services_unit_detailed));
-		$scheme->products_custom_settings = json_encode(array($request->products_cats_detailed,
-																$request->products_detailed,
-																$request->products_percent_detailed,
-																$request->products_unit_detailed));
+		$scheme->services_custom_settings = json_encode(array($input['services_cats_detailed'],
+																$input['services_detailed'],
+																$input['services_percent_detailed'],
+																$input['services_unit_detailed']));
+		$scheme->products_custom_settings = json_encode(array($input['products_cats_detailed'],
+																$input['products_detailed'],
+																$input['products_percent_detailed'],
+																$input['products_unit_detailed']));
 
 		$scheme->save();
 
@@ -102,11 +114,31 @@ class WageSchemesController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($id)
+	public function edit(Request $request, $id)
 	{
 		$scheme = WageScheme::find($id);
+		$service_cats = ServiceCategory::where('organization_id', $request->user()->organization_id)->orderBy('name')->pluck('name', 'service_category_id');
 
-		return view('wage_schemes.edit', ['scheme' => $scheme]);
+		$services_custom_settings = array();
+		$products_custom_settings = array();
+
+		if(null !== $scheme->services_custom_settings) {
+			$services = json_decode($scheme->services_custom_settings);
+			
+			foreach ($services[0] as $key => $value) {
+				$services_custom_settings[] = array($value, $services[1][$key], $services[2][$key], $services[3][$key]);
+			}
+		}
+
+		if(null !== $scheme->products_custom_settings) {
+			$products = json_decode($scheme->products_custom_settings);
+			
+			foreach ($products[0] as $key => $value) {
+				$products_custom_settings[] = array($value, $products[1][$key], $products[2][$key], $products[3][$key]);
+			}
+		}
+
+		return view('wage_schemes.edit', ['scheme' => $scheme, 'service_cats' => $service_cats, 'services_custom_settings' => $services_custom_settings, 'products_custom_settings' => $products_custom_settings]);
 	}
 
 	/**
@@ -134,6 +166,17 @@ class WageSchemesController extends Controller
 			return 'No such scheme';
 		}
 
+		$input = $request->input();
+		
+		array_shift($input['services_cats_detailed']);
+		array_shift($input['services_detailed']);
+		array_shift($input['services_percent_detailed']);
+		array_shift($input['services_unit_detailed']);
+		array_shift($input['products_cats_detailed']);
+		array_shift($input['products_detailed']);
+		array_shift($input['products_percent_detailed']);
+		array_shift($input['products_unit_detailed']);	
+
 		$scheme->scheme_name = $request->scheme_name;
 		$scheme->services_percent = $request->services_percent;
 		$scheme->service_unit = $request->service_unit;
@@ -141,17 +184,17 @@ class WageSchemesController extends Controller
 		$scheme->products_unit = $request->products_unit;
 		$scheme->wage_rate = $request->wage_rate;
 		$scheme->wage_rate_period = $request->wage_rate_period;
-		$scheme->is_client_discount_counted = $request->is_client_discount_counted;
-		$scheme->is_material_cost_counted = $request->is_material_cost_counted;
+		$scheme->is_client_discount_counted = ( $request->is_client_discount_counted !== null );
+		$scheme->is_material_cost_counted = ( $request->is_material_cost_counted !== null );
 		$scheme->organization_id = $request->user()->organization_id;
-		$scheme->services_custom_settings = json_encode(array($request->services_cats_detailed,
-																$request->services_detailed,
-																$request->services_percent_detailed,
-																$request->services_unit_detailed));
-		$scheme->products_custom_settings = json_encode(array($request->products_cats_detailed,
-																$request->products_detailed,
-																$request->products_percent_detailed,
-																$request->products_unit_detailed));
+		$scheme->services_custom_settings = json_encode(array($input['services_cats_detailed'],
+																$input['services_detailed'],
+																$input['services_percent_detailed'],
+																$input['services_unit_detailed']));
+		$scheme->products_custom_settings = json_encode(array($input['products_cats_detailed'],
+																$input['products_detailed'],
+																$input['products_percent_detailed'],
+																$input['products_unit_detailed']));
 
 		$scheme->save();
 
