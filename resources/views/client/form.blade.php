@@ -115,7 +115,7 @@
                                             <option data-color="{{$clientCategory['color']}}"
                                                 @if (old('category_id') AND old('service_category_id') == $clientCategory['value'])
                                                 selected="selected"
-                                                @elseif (!old('category_id') AND isset($service) AND $client->category_id == $clientCategory['value'])
+                                                @elseif (!old('category_id') AND isset($client) AND $client->category_id == $clientCategory['value'])
                                                 selected="selected"
                                                 @elseif (isset($clientCategory['selected']) AND $clientCategory['selected'] == true)
                                                 selected="selected"

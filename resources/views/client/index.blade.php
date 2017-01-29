@@ -32,10 +32,6 @@
 
 
         <div class="col-md-8" style="min-height:600px">
-            <div class="ibox-title">
-                <h5>@lang('main.client:list_header')</h5>
-            </div>
-
             <div class="panel panel-default">
                 <!-- <div class="panel-heading">lang('main.service:list_page_header')</div> -->
                 <div style="margin-left:20px">
@@ -56,6 +52,54 @@
         <div class="col-md-4">
             <div class="ibox-title">
                 <h5>@lang('main.client:list_actions')</h5>
+            </div>
+
+            <div class="row">
+                <p>SMS</p>
+            </div>
+            <div class="panel panel-default">
+                <div class="row">
+                    <a id="a_send_sms_to_selected" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-paper-plane"></i>
+                        @lang('main.client:list_send_sms_to_selected')
+                    </a>
+                </div>
+                <div class="row">
+                    <a id="a_send_sms_to_all_found" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-paper-plane"></i>
+                        @lang('main.client:list_send_sms_to_all_found')
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <p>@lang('main.client:list_actions')</p>
+            </div>
+            <div class="panel panel-default">
+                <div class="row">
+                    <a id="a_clients_delete_selected" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-trash-o"></i>
+                        @lang('main.client:list_delete_selected')
+                    </a>
+                </div>
+                <div class="row">
+                    <a id="a_clients_delete_all_found" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-trash-o"></i>
+                        @lang('main.client:list_delete_all_found')
+                    </a>
+                </div>
+                <div class="row">
+                    <a id="a_clients_add_selected_to_category" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-users"></i>
+                        @lang('main.client:list_add_selected_to_category')
+                    </a>
+                </div>
+                <div class="row">
+                    <a id="a_clients_add_all_found_to_category" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-users"></i>
+                        @lang('main.client:list_add_all_found_to_category')
+                    </a>
+                </div>
             </div>
 
             <div class="row">

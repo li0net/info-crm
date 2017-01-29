@@ -95,6 +95,21 @@ class ClientsController extends Controller
         ]);
     }
 
+    public function show(Request $request, Client $client)
+    {
+        // TODO: выводить ошибку в красивом шаблоне
+        if ($client->organization_id != $request->user()->organization_id) {
+            return 'You don\'t have access to this item';
+        }
+
+        return view('client.show', [
+            'clientCategoriesOptions' => $this->prepareClientCategoriesOptions(),
+            'genderOptions' => $this->genderOptions,
+            'importanceOptions' => $this->importanceOptions,
+            'client' => $client
+        ]);
+    }
+
     /*
     public function gridData() {
         $je = new \App\Libraries\jqGridJsonEncoderCustom();
