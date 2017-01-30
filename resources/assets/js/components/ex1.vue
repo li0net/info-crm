@@ -4,7 +4,7 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <span class="badge label-danger" v-model="detailed_services_count">@{{ detailed_services_count }}</span>
+                        <span class="badge label-danger"> {{detailed_services_count}} </span>
                     </div>
 
                     <div class="panel-body">
@@ -18,8 +18,10 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
+        data () { 
+            return {
+              detailed_services_count: 0
+            };
         }
     }
 </script>
