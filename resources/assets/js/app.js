@@ -181,7 +181,32 @@ $(document).ready(function () {
 			shrinkToFit: true,
 			rowNum: 10,
 			pager: "#clients_grid_pager",
-			multiselect: true
+			multiselect: true,
+			onSelectRow: function(id, status, e){
+				//console.log(id, status, e);
+				var selRows = $('#clients_grid').getGridParam('selarrrow');
+				if (selRows.length > 0) {
+					$('#a_clients_delete_selected').removeClass("disabled");
+					$('#a_send_sms_to_selected').removeClass("disabled");
+					$('#a_clients_add_selected_to_category').removeClass("disabled");
+				} else {
+					$('#a_clients_delete_selected').addClass("disabled");
+					$('#a_send_sms_to_selected').addClass("disabled");
+					$('#a_clients_add_selected_to_category').addClass("disabled");
+				}
+			},
+			onSelectAll: function(aRowIds, status){
+				//console.log(aRowIds, status);
+				if (status == true) {
+					$('#a_clients_delete_selected').removeClass("disabled");
+					$('#a_send_sms_to_selected').removeClass("disabled");
+					$('#a_clients_add_selected_to_category').removeClass("disabled");
+				} else {
+					$('#a_clients_delete_selected').addClass("disabled");
+					$('#a_send_sms_to_selected').addClass("disabled");
+					$('#a_clients_add_selected_to_category').addClass("disabled");
+				}
+			}
 			/*
 			 search : {
 			 caption: "Поиск по имени и номеру телефона",
@@ -239,6 +264,38 @@ $(document).ready(function () {
 
 		$("#a_export_all_clients_to_excel").click(function () {
 			sendDownloadClientsXlsRequest(true);
+		});
+
+		$('#a_clients_delete_selected').click(function() {
+			var selIds = $("#clients_grid").getGridParam('selarrrow');
+			console.log('selIds', selIds);
+			if (selIds.length > 0) {	// $('#a_clients_delete_selected').hasClass("disabled");
+				if (! confirm('Вы действительно хотите удалить ' + selIds.length + ' запись(ей) клиентов?')) {
+					return false;
+				}
+
+				//var that = this;
+				$.ajax({
+					type: "POST",
+					url: "/clients/destroy/",
+					data: {'client_ids' : JSON.stringify(selIds)},
+					success: function(data) {
+						var data = $.parseJSON(data);
+						//if ( console && console.log ) {
+						//console.log( "Employees data:", data);
+						//}
+
+						if (data.success == true) {
+							$("#clients_grid").trigger("reloadGrid");
+						} else {
+							alert('Server error:' + data.error);
+						}
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						alert('Server error:'+textStatus);
+					}
+				});
+			}
 		});
 	}
 
@@ -423,7 +480,7 @@ $(document).ready(function () {
 		});
 	});
 
-	// CLIENT from
+	// CLIENT form
 	$('#c_birthday').datepicker({
 		autoclose: true,
 		dateFormat: 'yy-mm-dd',

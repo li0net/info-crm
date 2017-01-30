@@ -154,9 +154,13 @@
 
                                 <div class="col-md-12">
                                     <hr/>
-                                    <button class="btn btn-primary center-block" onclick="window.location='{{action('ClientsController@index')}}'">@lang('main.clients:btn_show_grid_label')</button>
                                 </div>
-
+                                <div class="col-md-6">
+                                    <button class="btn btn-info center-block" onclick="window.location='{{action('ClientsController@edit', [$client->client_id])}}'">@lang('main.clients:btn_edit_label')</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-info center-block" onclick="window.location='{{action('ClientsController@index')}}'">@lang('main.clients:btn_show_grid_label')</button>
+                                </div>
 
                             </div>
                     </div>

@@ -16,7 +16,8 @@ class ClientsGridRepository extends EloquentGridRepositoryCustom {
 
         $this->Database = DB::table('clients')
             //->join('access_permissions', 'users.users_id', '=', 'access_permissions.user_id')
-            ->where('organization_id', $orgId);
+            ->where('organization_id', $orgId)
+            ->where('is_active', true);
 
         $this->visibleColumns = [
             'client_id',
@@ -26,15 +27,6 @@ class ClientsGridRepository extends EloquentGridRepositoryCustom {
             'discount',
 
             'email',        // не отоюражается отдельной колонкой в гриде, но нужно для добавления в колонку Контакты вместе с телефоном
-            //'category_id',
-            //'importance',
-            //'gender',
-            //'birthday',
-            //'comment',
-            //'do_not_send_sms',
-            //'birthday_sms',
-            //'online_reservation_available',
-            //'total_paid'
         ];
 
         $this->orderBy = [
@@ -47,19 +39,6 @@ class ClientsGridRepository extends EloquentGridRepositoryCustom {
     public function getRows($limit, $offset, $orderBy = null, $sord = null, array $filters = array(), $nodeId = null, $nodeLevel = null, $exporting)
     {
         $rows = parent::getRows($limit, $offset, $orderBy, $sord, $filters, $nodeId, $nodeLevel, $exporting);
-
-        //Log::info(__METHOD__.' Rows:'.print_r($rows, TRUE));
-        /*
-        Array
-        (
-            [0] => Array
-                (
-                    [title] => Вип
-                    [cc_id] => 1
-                )
-
-        )
-        */
 
         foreach ($rows AS &$row) {
             if (trim($row['email']) != '') {

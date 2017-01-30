@@ -457,6 +457,7 @@ class AppointmentsController extends Controller
         $clientData = DB::table('appointments')
             ->select(DB::raw('count(*) AS num_visits, MAX(appointments.start) AS last_visit'))
             ->join('clients', 'appointments.client_id', '=', 'clients.client_id')
+            ->where('clients.is_active', true)
             ->where('clients.phone', $phone)
             ->whereRaw('appointments.start <= NOW()')
             ->get();
