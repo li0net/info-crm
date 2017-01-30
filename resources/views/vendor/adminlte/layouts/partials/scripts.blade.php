@@ -14,6 +14,7 @@
 
 <script src="https://cdn.jsdelivr.net/vue/1.0.28/vue.js"></script>
 <script src="{{ asset('/plugins/colorpicker/bootstrap-colorpicker.min.js') }}"></script>
+<script src="{{ asset('/plugins/select2/select2.full.min.js') }}"></script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
       user experience. Slimscroll is required when using the

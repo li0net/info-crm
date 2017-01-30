@@ -7,19 +7,31 @@
 
 @section('main-content')
     <div class="container-fluid spark-screen">
+        <div class="row">
+            @if (Session::has('success'))
+                <div class="alert alert-success" role="alert">
+                    <strong>@lang('main.general_success'):</strong> {{ Session::get('success') }}
+                </div>
+            @endif
 
-        <div class="col-md-12">
-            <div class="row">
-                <h3>@lang('main.client:list_header')</h3>
+            @if (Session::has('error'))
+                <div class="alert alert-error" role="alert">
+                    <strong>@lang('main.general_error'):</strong> {{ Session::get('error') }}
+                </div>
+            @endif
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                    <h3>@lang('main.client:list_header')</h3>
+            </div>
+            <div class="col-md-2">
+                <p class="text-right"><a href="{{$newClientUrl}}" class="btn btn-default">@lang('main.client:create_new_btn_label')</a></p>
             </div>
         </div>
 
 
         <div class="col-md-8" style="min-height:600px">
-            <div class="ibox-title">
-                <h5>@lang('main.client:list_header')</h5>
-            </div>
-
             <div class="panel panel-default">
                 <!-- <div class="panel-heading">lang('main.service:list_page_header')</div> -->
                 <div style="margin-left:20px">
@@ -40,6 +52,54 @@
         <div class="col-md-4">
             <div class="ibox-title">
                 <h5>@lang('main.client:list_actions')</h5>
+            </div>
+
+            <div class="row">
+                <p>SMS</p>
+            </div>
+            <div class="panel panel-default">
+                <div class="row">
+                    <a id="a_send_sms_to_selected" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-paper-plane"></i>
+                        @lang('main.client:list_send_sms_to_selected')
+                    </a>
+                </div>
+                <div class="row">
+                    <a id="a_send_sms_to_all_found" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-paper-plane"></i>
+                        @lang('main.client:list_send_sms_to_all_found')
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <p>@lang('main.client:list_actions')</p>
+            </div>
+            <div class="panel panel-default">
+                <div class="row">
+                    <a id="a_clients_delete_selected" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-trash-o"></i>
+                        @lang('main.client:list_delete_selected')
+                    </a>
+                </div>
+                <div class="row">
+                    <a id="a_clients_delete_all_found" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-trash-o"></i>
+                        @lang('main.client:list_delete_all_found')
+                    </a>
+                </div>
+                <div class="row">
+                    <a id="a_clients_add_selected_to_category" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-users"></i>
+                        @lang('main.client:list_add_selected_to_category')
+                    </a>
+                </div>
+                <div class="row">
+                    <a id="a_clients_add_all_found_to_category" href="#" onclick="alert('Not implemented yet');">
+                        <i class="fa fa-users"></i>
+                        @lang('main.client:list_add_all_found_to_category')
+                    </a>
+                </div>
             </div>
 
             <div class="row">

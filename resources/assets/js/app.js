@@ -215,7 +215,7 @@ $(document).ready(function () {
 				{index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
 				{index: 'phone', name: 'phone', width: 100, search: true, stype: 'text'},
 				{index: 'total_bought', name: 'total_bought', width: 70, search: false},
-				{index: 'discount', name: 'discount', width: 70, search: false}
+				{index: 'discount', name: 'discount', width: 60, search: false}
 			],
 			sortname: 'name',
 			sortorder: 'asc',
@@ -225,6 +225,7 @@ $(document).ready(function () {
 			shrinkToFit: true,
 			rowNum: 10,
 			pager: "#clients_grid_pager",
+			multiselect: true
 			/*
 			 search : {
 			 caption: "Поиск по имени и номеру телефона",
@@ -260,6 +261,13 @@ $(document).ready(function () {
 					});
 				}
 			}
+			// добавляю поиск по email вручную, т.к. это поле как такоевое в грид не присутсвует (email добавлеяется в поле с phone)
+			rules.push({
+				field: 'email',
+				op: "cn",
+				data: searchText
+			});
+
 			postData.filters = JSON.stringify({
 				groupOp: "OR",
 				rules: rules
@@ -337,6 +345,7 @@ $(document).ready(function () {
 
 	// Datepicker defaults
 	$.datepicker.setDefaults({
+		//language: 'ru',
 		dateFormat: 'yy-mm-dd',
 		firstDay: 1,
 		autoclose: true
@@ -457,6 +466,25 @@ $(document).ready(function () {
 			}
 		});
 	});
+
+	// CLIENT from
+	$('#c_birthday').datepicker({
+		autoclose: true,
+		dateFormat: 'yy-mm-dd',
+		firstDay: 1
+	});
+	// select2 multiple select init
+	$(".js-select-basic-single").select2({
+		templateResult: formatClientCatColor
+	});
+	function formatClientCatColor(cat) {
+		if (!cat.id) { return cat.text; }
+		var $category = $(
+			'<span style="background-color:' + cat.element.getAttribute('data-color') + '">' + cat.text + '</span>'
+		);
+		return $category;
+	};
+
 
 	$('#form_submit').on('click', function() {
 		var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');

@@ -96,6 +96,9 @@ Route::post('/users/save', 'UsersController@save');
 Route::post('/users/{user}/savePermissions', 'UsersController@savePermissions');
 
 Route::get('/clients/create', 'ClientsController@create');
+Route::get('/clients/edit/{client}', 'ClientsController@edit');
+Route::get('/client/{client}', 'ClientsController@show');
+Route::post('/clients/save', 'ClientsController@save');
 
 Route::get('/clientCategories/create', 'ClientCategoriesController@create');
 Route::get('/clientCategories/edit/{clientCategory}', 'ClientCategoriesController@edit');
