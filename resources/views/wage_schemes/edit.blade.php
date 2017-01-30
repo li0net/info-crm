@@ -13,6 +13,7 @@
 	<div class="row">
 		<div class="col-md-6 col-md-offset-3">
 			<h4>Информация о схеме расчета ЗП</h4>	
+			{{-- <ex1></ex1> --}}
 			<hr>	
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
@@ -87,7 +88,7 @@
 									<div class="col-sm-2"></div>							
 									<div class="col-sm-8" style="padding:0">
 										<div class="col-sm-4">
-											{{ Form::select('services_cats_detailed[]', ['0' => 'Стрижка', '1' => 'Окраска'], $service_setting[0], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+											{{ Form::select('services_cats_detailed[]', $service_cats, $service_setting[0], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 										</div>
 										<div class="col-sm-4">
 											{{ Form::select('services_detailed[]', ['0' => 'Модельная', '1' => 'Полубокс'], $service_setting[1], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
@@ -125,7 +126,7 @@
 							<label class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
 								<a href="#detailed-products" data-toggle="collapse" class="btn btn-link btn-xs">
-								<span class="badge label-danger" v-model="detailed_products_count">@{{ detailed_products_count }}</span>
+								<span id="jopa" class="badge label-danger" v-model="detailed_products_count">@{{ detailed_products_count }}</span>
 								&nbsp;&nbsp;Уточнить значение для категорий или отдельных товаров&nbsp;&nbsp;
 								<i class="fa fa-caret-down"></i></a>
 							</div>
@@ -234,9 +235,106 @@
 	</div>
 @endsection
 
-<script>
+@section('page-specific-scripts')
+	<script type="text/javascript">
+		$(document).ready(function($) {
+			$('#detailed-services').on('click', '#add-detailed-section', function(e) {
+				if($(e.target).val() !== 'Удалить') {
+					$('#detailed-services').prepend(
+						'<div class="wrap-it"><div class="col-sm-2"></div>' +						
+						'<div class="col-sm-8" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="services_cats_detailed[]" class="form-control"><option value="0" selected="selected">Стрижки</option><option value="1">Укладки</option></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="services_detailed[]" class="form-control"><option value="0" selected="selected">Полубокс</option><option value="1">Модельная</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="services_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="services_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
+						'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info"></div></div>');
+					app.detailed_services_count++;
+					$('a[href="#detailed-services"] .badge.label-danger').removeClass('hidden');
+					$(e.target).val('Удалить');
+					$(e.target).toggleClass('btn-info btn-danger')
+					$(e.target).off();
+					$(e.target).on('click', function(e) {
+						$(e.target).parent().parent().remove();
+						app.detailed_services_count--;
+						if(app.detailed_services_count == 0) {
+							$('a[href="#detailed-services"] .badge.label-danger').addClass('hidden');
+						}
+					});
+				} else {
+					$(e.target).parent().parent().remove();
+					app.detailed_services_count--;
+					if(app.detailed_services_count == 0) {
+						$('a[href="#detailed-services"] .badge.label-danger').addClass('hidden');
+					}
+				}
+			});
 
-</script>
+			$('#detailed-services').on('shown.bs.collapse', function(){
+				$('a[href="#detailed-services"] .fa.fa-caret-down').toggleClass('fa-caret-down fa-caret-up');
+			});
+
+			$('#detailed-services').on('hidden.bs.collapse', function(){
+				$('a[href="#detailed-services"] .fa.fa-caret-up').toggleClass('fa-caret-up fa-caret-down');
+			});
+
+			$('#detailed-products').on('click', '#add-detailed-section', function(e) {
+				if($(e.target).val() !== 'Удалить') {
+					$('#detailed-products').prepend(
+						'<div class="wrap-it"><div class="col-sm-2"></div>' +						
+						'<div class="col-sm-8" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="products_cats_detailed[]" class="form-control"><option value="0" selected="selected">Лаки</option><option value="1">Краски</option></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="products_detailed[]" class="form-control"><option value="0" selected="selected">LONDA</option><option value="1">WELLA</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="products_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="products_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
+						'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info"></div></div>');
+					
+					$('select.form-control[name="products_cats_detailed[]"]').first().find('option').remove();
+					$('select.form-control[name="products_cats_detailed[]"]').first().append(app.services_ctgs_options);
+					
+					app.detailed_products_count++;
+					
+					$('a[href="#detailed-products"] .badge.label-danger').removeClass('hidden');
+					$(e.target).val('Удалить');
+					$(e.target).toggleClass('btn-info btn-danger')
+					$(e.target).off();
+					$(e.target).on('click', function(e) {
+						$(e.target).parent().parent().remove();
+						app.detailed_products_count--;
+						if(app.detailed_products_count == 0) {
+							$('a[href="#detailed-products"] .badge.label-danger').addClass('hidden');
+						}
+					});
+				} else {
+					$(e.target).parent().parent().remove();
+					app.detailed_products_count--;
+					if(app.detailed_products_count == 0) {
+						$('a[href="#detailed-products"] .badge.label-danger').addClass('hidden');
+					}
+				}
+			});
+
+			$('#detailed-products').on('shown.bs.collapse', function(){
+				$('a[href="#detailed-products"] .fa.fa-caret-down').toggleClass('fa-caret-down fa-caret-up');
+			});
+
+			$('#detailed-products').on('hidden.bs.collapse', function(){
+				$('a[href="#detailed-products"] .fa.fa-caret-up').toggleClass('fa-caret-up fa-caret-down');
+			});
+
+			$.ajax({
+				type: "GET",
+				dataType: 'json',
+				url: '/serviceCategories/gridData',
+				data: {},
+				success: function(data) {
+					for (var i = 0; i < data.rows.length; i++) {
+						app.services_ctgs_options = app.services_ctgs_options + '<option value=' + data.rows[i].service_category_id + '>' + data.rows[i].name + '</option>';
+					}
+
+					$('select.form-control[name="products_cats_detailed[]"]').find('option').remove();
+					$('select.form-control[name="products_cats_detailed[]"]').append(app.services_ctgs_options);
+
+					console.log(app.services_ctgs_options);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log('Error while processing services data range!');
+				}
+			});
+		});
+	</script>
+@endsection
 {{-- @section('scripts')
 	{!! Html::script('js/parsley.min.js') !!}
 @endsection --}}
