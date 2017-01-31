@@ -55,19 +55,19 @@
 								<small>{{ $product->description }}</small>
 							</td>
 							<td>
-								{{ $product->price }} &#8381
+								{{ $product->price }} &#8381;
 								<br>
 								<small>Стоимость товара для продажи</small>
 							</td>
 							<td> 
 								@if($product->unit_for_sale = 'pcs') 
-									Штуки&nbsp 
+									Штуки&nbsp;
 								@else
 									Миллилитры
 								@endif
-								=&nbsp{{ $product->is_equal }}&nbsp
+								=&nbsp;{{ $product->is_equal }}&nbsp;
 								@if($product->unit_for_disposal = 'pcs')
-									Штуки&nbsp 
+									Штуки&nbsp; 
 								@else
 									Миллилитры
 								@endif
