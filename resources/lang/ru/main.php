@@ -139,6 +139,7 @@ return [
     'client:total_bought_label'             => 'Продано',
     'client:total_paid_label'               => 'Оплачено',
     'clients:btn_show_grid_label'           => 'Посмотреть всех клиентов',
+    'clients:btn_edit_label'                => 'Редактировать',
     'client:create_form_header'             => 'Создать карточку клиента',
     'client:edit_form_header'               => 'Редактировать клиента',
     'client:importance_no_category'         => 'Без класса важности',

@@ -9,6 +9,8 @@ use App\ClientCategory;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class ClientsController extends Controller
 {
@@ -247,5 +249,34 @@ class ClientsController extends Controller
         }
 
         return $clientCategoriesOptions;
+    }
+
+    /**
+     * Удаляет клиентов из БД
+     *
+     * @param $request Request
+     */
+    public function destroy(Request $request)
+    {
+        $cIds = $request->input('client_ids');
+        if (!empty($cIds)) {
+            $cIds = json_decode($cIds);
+        } else {
+            return json_encode(['success' => false, 'error' => 'Invalid data']);
+        }
+
+        //$clients = Client::where('organization_id', request()->user()->organization_id)->where('cc_id', 'IN', $cIds)->get();
+        $updRes = DB::table('clients')
+            ->where('organization_id', $request->user()->organization_id)
+            ->whereIn('client_id', $cIds)
+            ->update(['is_active' => 0]);
+Log::info(__METHOD__.' updRes:'.var_export($updRes, TRUE)." | cIds:".var_export($cIds, TRUE));
+
+
+        if (!$updRes) {
+            return json_encode(['success' => false, 'error' => 'No records to delete found']);
+        }
+
+        return json_encode(['success' => true, 'error' => '']);
     }
 }

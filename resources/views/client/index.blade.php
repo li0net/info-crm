@@ -59,7 +59,7 @@
             </div>
             <div class="panel panel-default">
                 <div class="row">
-                    <a id="a_send_sms_to_selected" href="#" onclick="alert('Not implemented yet');">
+                    <a id="a_send_sms_to_selected" href="#" class="disabled" onclick="alert('Not implemented yet');">
                         <i class="fa fa-paper-plane"></i>
                         @lang('main.client:list_send_sms_to_selected')
                     </a>
@@ -77,7 +77,7 @@
             </div>
             <div class="panel panel-default">
                 <div class="row">
-                    <a id="a_clients_delete_selected" href="#" onclick="alert('Not implemented yet');">
+                    <a id="a_clients_delete_selected" class="disabled" href="#">
                         <i class="fa fa-trash-o"></i>
                         @lang('main.client:list_delete_selected')
                     </a>
@@ -89,7 +89,7 @@
                     </a>
                 </div>
                 <div class="row">
-                    <a id="a_clients_add_selected_to_category" href="#" onclick="alert('Not implemented yet');">
+                    <a id="a_clients_add_selected_to_category" class="disabled" href="#" onclick="alert('Not implemented yet');">
                         <i class="fa fa-users"></i>
                         @lang('main.client:list_add_selected_to_category')
                     </a>
