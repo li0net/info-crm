@@ -16,12 +16,18 @@
 	</div>
 
 	<div class="row">
-		<div class="col-sm-10">
+		<div class="col-sm-8">
 			<h4>Все товары</h4>
 		</div>	
 
-		<div class="col-sm-2">
-			<a href="{{ route('product.create') }}" class="btn btn-primary btn-block">Новый товар</a>
+		<div class="col-sm-4">
+			<a href="{{ route('product.create') }}" class="btn btn-primary pull-right">Новый товар</a>
+			<a href="#" class="btn btn-default m-r pull-right">Загрузить из Excel</a>
+			<a href="#" class="btn btn-default m-r pull-right">Выгрузить в Excel</a>
+		</div>
+
+		<div class="col-sm-12">
+			<hr>	
 		</div>
 
 		<div class="col-sm-12">
@@ -53,7 +59,18 @@
 								<br>
 								<small>Стоимость товара для продажи</small>
 							</td>
-							<td>{{ $product->unit_for_sale }}&nbsp{{ $product->is_equal }}&nbsp{{ $product->unit_for_disposal }}
+							<td> 
+								@if($product->unit_for_sale = 'pcs') 
+									Штуки&nbsp 
+								@else
+									Миллилитры
+								@endif
+								=&nbsp{{ $product->is_equal }}&nbsp
+								@if($product->unit_for_disposal = 'pcs')
+									Штуки&nbsp 
+								@else
+									Миллилитры
+								@endif
 								<br>
 								<small>Формула расчета товара для списания</small>
 							</td>

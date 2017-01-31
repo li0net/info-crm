@@ -12,7 +12,7 @@
 
 	<div class="row">
 		<div class="col-md-6 col-md-offset-3">
-			<h4>Информация о схеме расчета ЗП</h4>	
+			<h4>Информация о товаре</h4>	
 			{{-- <ex1></ex1> --}}
 			<hr>	
 			@if (count($errors) > 0)

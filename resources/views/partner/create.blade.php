@@ -12,7 +12,7 @@
 
 	<div class="row">
 		<div class="col-md-6 col-md-offset-3">
-			<h1>Информация о контрагенте</h1>	
+			<h4>Создание нового контрагента</h4>	
 			<hr>	
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
@@ -71,7 +71,13 @@
 						{{ Form::textarea('description', null, ['class' => 'form-control']) }}
 					</div>
 
-					{{	Form::submit('Создать нового контрагента', ['class' => 'btn btn-success btn-lg btn-block', 'style' => 'margin-top:20px;']) }}
+					<hr>
+					
+					<div class="row">
+						<div class="col-sm-4 col-sm-offset-4">
+							{{	Form::submit('Создать нового контрагента', ['class' => 'btn btn-success btn-block', 'style' => 'margin-top:20px;']) }}
+						</div>
+					</div>
 				{!! Form::close() !!}	
 			</div>
 		</div>
