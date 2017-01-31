@@ -49,16 +49,22 @@
                                 </div>
                                 <div class="col-md-6">
                                     <?php
-                                    $value = "&nbsp;";
-                                    $style = "";
+                                    $hasCategories = FALSE;
                                     foreach($clientCategoriesOptions AS $clientCategory) {
-                                        if ($client->category_id == $clientCategory['value']) {
-                                            $value = $clientCategory['label'];
-                                            $style = "style=\"background-color:{$clientCategory['color']}\"";
+                                        foreach($client->categories()->get() AS $cat) {
+                                            if($cat->cc_id == $clientCategory['value']) {
+                                                $hasCategories = TRUE;
+                                                $value = $clientCategory['label'];
+                                                $style = "style=\"background-color:{$clientCategory['color']}\"";
+
+                                                echo "<span $style>".htmlentities($value)."</span>&nbsp;";
+                                            }
                                         }
                                     }
+                                    if (!$hasCategories) {
+                                        echo "<span>&nbsp;</span>";
+                                    }
                                     ?>
-                                    <span <?=$style?>>{{$value}}</span>
                                 </div>
 
                                 <div class="col-md-6">

@@ -121,16 +121,16 @@ class ClientsController extends Controller
 
     public function save(Request $request)
     {
-        // TODO: поддержка нескольких категорий для одного клиента
-        //  т.е. pivot таблица вместо client.category_id
-
         /*$request->all()
         array:14 [
           "_token" => "ygOp4keMmYgv9Y0E4qmvUS8pKY5qIATdWbMe3zHV"
           "name" => "Name"
           "phone" => 9992038844
           "email" => "email@site.com"
-          "category_id" => "2"
+          "category_id" => array:2 [
+            0 => "1"
+            1 => "4"
+          ]
           "gender" => "1"
           "importance" => "null"
           "discount" => "15"
@@ -190,6 +190,18 @@ class ClientsController extends Controller
         $onlineResAv = $request->input('online_reservation_available');
         $totalBought = $request->input('total_bought');
         $totalPaid = $request->input('total_paid');
+        $categories = $request->input('category_id');
+
+        $newCategories = [];
+        if (!is_null($categories)) {
+            foreach ($categories AS $categoryId) {
+                $cat = ClientCategory::where('cc_id', $categoryId)->where('organization_id', request()->user()->organization_id)->first();
+                if ($cat) {
+                    $newCategories[] = $cat->cc_id;
+                }
+            }
+        }
+        $categories = $newCategories;
 
         $cId = $request->input('client_id');
         // определить создание это или редактирование (по наличию поля client_id)
@@ -206,14 +218,11 @@ class ClientsController extends Controller
         } else {
             $client = new Client();
             $client->organization_id = $request->user()->organization_id;      // curr users's org id
-
         }
 
         $client->name = $request->input('name');
         $client->phone = $clientPhone;
         $client->email = $request->input('email');
-        // TODO: поменять на запись в pivot таблицу
-        $client->category_id = $request->input('category_id');
         $client->gender = ($gender == 'null') ? NULL : $gender;
         $client->importance = ($importance == 'null') ? NULL : $importance;
         $client->discount = $request->input('discount');
@@ -225,7 +234,16 @@ class ClientsController extends Controller
         $client->total_bought = (is_null($totalBought)) ? NULL : round($totalBought, 4);
         $client->total_paid = (is_null($totalPaid)) ? NULL : round($totalPaid, 4);
 
+        DB::beginTransaction();
         $client->save();
+
+        if (!is_null($cId)) {   // если редактирование, удалим все связи с категориями
+            $client->categories()->detach();
+        }
+        if (count($categories)>0) {
+            $client->categories()->attach($categories);
+        }
+        DB::commit();
 
         if (!is_null($cId)) {
             Session::flash('success', trans('main.client:edit_success_message'));
@@ -270,8 +288,7 @@ class ClientsController extends Controller
             ->where('organization_id', $request->user()->organization_id)
             ->whereIn('client_id', $cIds)
             ->update(['is_active' => 0]);
-Log::info(__METHOD__.' updRes:'.var_export($updRes, TRUE)." | cIds:".var_export($cIds, TRUE));
-
+            //Log::info(__METHOD__.' updRes:'.var_export($updRes, TRUE)." | cIds:".var_export($cIds, TRUE));
 
         if (!$updRes) {
             return json_encode(['success' => false, 'error' => 'No records to delete found']);
