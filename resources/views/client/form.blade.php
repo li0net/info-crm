@@ -109,17 +109,20 @@
                                     <label for="c_category_id">@lang('main.client:client_category_label')</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <!--<select name="category_id" id="c_category_id" class="js-select-basic-multiple" multiple="multiple">-->
-                                    <select name="category_id" id="c_category_id" class="js-select-basic-single" style="width: 160px">
+                                    <select name="category_id[]" id="c_category_id" class="js-select-basic-multiple" multiple="multiple" style="width: 170px">
                                         @foreach($clientCategoriesOptions AS $clientCategory)
                                             <option data-color="{{$clientCategory['color']}}"
-                                                @if (old('category_id') AND old('service_category_id') == $clientCategory['value'])
-                                                selected="selected"
-                                                @elseif (!old('category_id') AND isset($client) AND $client->category_id == $clientCategory['value'])
-                                                selected="selected"
-                                                @elseif (isset($clientCategory['selected']) AND $clientCategory['selected'] == true)
-                                                selected="selected"
+                                                @if(old('category_id') AND old('category_id') == $clientCategory['value'])
+                                                    selected="selected"
+
+                                                @elseif(!old('category_id') AND isset($client))
+                                                    @foreach($client->categories()->get() AS $cat)
+                                                        @if($cat->cc_id == $clientCategory['value'])
+                                                            selected="selected"
+                                                        @endif
+                                                    @endforeach
                                                 @endif
+
                                                 value="{{$clientCategory['value']}}">{{$clientCategory['label']}}</option>
                                         @endforeach
                                     </select>

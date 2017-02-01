@@ -42,4 +42,9 @@ class Client extends Model
         return $this->hasMany(Appointment::class);
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(ClientCategory::class, 'category_client', 'client_id', 'category_id');
+    }
+
 }

@@ -531,8 +531,10 @@ $(document).ready(function () {
 		firstDay: 1
 	});
 	// select2 multiple select init
-	$(".js-select-basic-single").select2({
-		templateResult: formatClientCatColor
+	$(".js-select-basic-multiple").select2({
+		placeholder: "Выберите категории",
+		templateResult: formatClientCatColor,
+		allowClear: true
 	});
 	function formatClientCatColor(cat) {
 		if (!cat.id) { return cat.text; }

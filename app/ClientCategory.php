@@ -20,8 +20,8 @@ class ClientCategory extends Model
         return $this->belongsTo(Organization::class);
     }
 
-    public function client()
+    public function clients()
     {
-        return $this->hasMany(Client::class, 'category_id');
+        return $this->belongsToMany(Client::class, 'category_client', 'category_id', 'client_id');
     }
 }
