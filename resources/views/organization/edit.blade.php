@@ -26,7 +26,7 @@
 							<div class="row">
 								{!! Form::model($organization, ['route' => 'info.save', 'method' => 'PUT', 'id' => 'organization_form__info', 'files' => 'true']) !!}
 									{!! Form::hidden('id', 'organization_form__info') !!}
-									{!! Form::hidden('coordinates', '', ['id' => 'coordinates']) !!}
+									{!! Form::hidden('coordinates', null, ['id' => 'coordinates']) !!}
 									<div class="col-sm-7 b-r">
 										<div class="form-group">
 											{{ Form::label('address', 'Адрес:', ['class' => 'ctrl-label']) }}
@@ -109,20 +109,20 @@
 @section('page-specific-scripts')
 	<script type="text/javascript">
 		$(document).ready(function($) {
-			var myMap, coordinates;
+			var myMap, coordinates, myCenter = $('#coordinates').val().split(',');
 
 			ymaps.ready(init);
 
 			function init () {
 				var myMap = new ymaps.Map("map", {
-					center: [54.83, 37.11],
+					center: myCenter,
 					zoom: 10
 				});
 
 				myMap.behaviors.enable('scrollZoom');
 
 				// Метка, содержимое балуна которой загружается с помощью AJAX.
-				placemark = new ymaps.Placemark([55.8, 37.72], {
+				placemark = new ymaps.Placemark(myCenter, {
 					iconContent: "Укажите адрес",
 					hintContent: "Перетащите метку и кликните, чтобы указать адрес"
 				}, {

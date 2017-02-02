@@ -153,9 +153,9 @@ class OrganizationsController extends Controller
         if ($request->input('id') == 'organization_form__info') {
             $org->address = $request->input('address');
             $org->post_index = $request->input('post_index');
-            // $org->phone_1 = $request->input('phone_1');
-            // $org->phone_2 = $request->input('phone_2');
-            // $org->phone_3 = $request->input('phone_3');
+            $org->phone_1 = $request->input('phone_1');
+            $org->phone_2 = $request->input('phone_2');
+            $org->phone_3 = $request->input('phone_3');
             $org->website = $request->input('website');
             $org->work_hours = $request->input('work_hours');
             $org->coordinates = $request->input('coordinates');
