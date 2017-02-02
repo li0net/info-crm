@@ -585,7 +585,6 @@ $(document).ready(function () {
 		return $category;
 	};
 
-
 	$('#form_submit').on('click', function() {
 		var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
 

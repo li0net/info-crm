@@ -84,6 +84,9 @@ Route::get('/services/destroy/{serviceId}', 'ServicesController@destroy');
 Route::get('/organization/edit', 'OrganizationsController@edit');
 Route::post('/organization/save', 'OrganizationsController@save');
 
+Route::get('/organization/info/edit', ['as' => 'info.edit', 'uses' => 'OrganizationsController@editInfo']);
+Route::put('/organization/info/save', ['as' => 'info.save', 'uses' => 'OrganizationsController@saveInfo']);
+
 Route::get('/appointments/create', 'AppointmentsController@create');
 Route::get('/appointments/edit/{appt}', 'AppointmentsController@edit');
 Route::post('/appointments/save', 'AppointmentsController@save');
