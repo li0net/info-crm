@@ -110,19 +110,36 @@
 	<script type="text/javascript">
 		$(document).ready(function($) {
 			var myMap, coordinates, myCenter = $('#coordinates').val().split(',');
-
-			ymaps.ready(init);
-
-			function init () {
-				var myMap = new ymaps.Map("map", {
-					center: myCenter,
+			
+			ymaps.ready(function () {
+				myMap = new ymaps.Map('map', {
+					center: (myCenter == '' || myCenter == null) ? [55.87, 37.66] : myCenter,
 					zoom: 10
 				});
+
+				// ymaps.geolocation.get({
+				// 	provider: 'yandex', 
+				// 	autoReverseGeocode: true
+				// }).then(function (result) {
+				// 	var $container = $('#map'),
+				// 		bounds = res.geoObjects.get(0).properties.get('boundedBy'),
+				// 		mapState = ymaps.util.bounds.getCenterAndZoom(
+				// 			bounds,
+				// 			[$container.width(), $container.height()]
+				// 		),
+				// 		myMap = new ymaps.Map('map', mapState);
+				// }, 
+				// function (e) {
+				// 	myMap = new ymaps.Map('map', {
+				// 		center: myCenter,
+				// 		zoom: 10
+				// 	});
+				// });
 
 				myMap.behaviors.enable('scrollZoom');
 
 				// Метка, содержимое балуна которой загружается с помощью AJAX.
-				placemark = new ymaps.Placemark(myCenter, {
+				placemark = new ymaps.Placemark((myCenter == '' || myCenter == null) ? [55.87, 37.66] : myCenter, {
 					iconContent: "Укажите адрес",
 					hintContent: "Перетащите метку и кликните, чтобы указать адрес"
 				}, {
@@ -155,7 +172,7 @@
 				});
 
 				myMap.geoObjects.add(placemark);
-			}
+			});
 
 			$('#form_submit').on('click', function() {
 				var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
@@ -175,3 +192,5 @@
 		});
 	</script>
 @endsection
+
+<script src="//api-maps.yandex.ru/2.0/?load=package.standard&lang=ru-RU" type="text/javascript"></script>
