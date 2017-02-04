@@ -98,7 +98,7 @@
 						<li><a href="/stub">{{ trans('adminlte_lang::message.storages') }}</a></li>
 						<li><a href="{{ url('product')}}">{{ trans('adminlte_lang::message.products') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.routings') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.units') }}</a></li>
+						<li><a href="{{ url('/unit')}}">{{ trans('adminlte_lang::message.units') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.operations') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.inventory') }}</a></li>
 						<li class="treeview"><a href="#">{{ trans('adminlte_lang::message.reports') }}<i class="fa fa-angle-left pull-right"></i></a>
