@@ -104,6 +104,7 @@ Route::get('/clients/edit/{client}', 'ClientsController@edit');
 Route::get('/client/{client}', 'ClientsController@show');
 Route::post('/clients/save', 'ClientsController@save');
 Route::post('/clients/destroy', 'ClientsController@destroy');
+Route::post('/clients/destroyFiltered/', 'ClientsController@destroyFiltered');
 
 Route::get('/clientCategories/create', 'ClientCategoriesController@create');
 Route::get('/clientCategories/edit/{clientCategory}', 'ClientCategoriesController@edit');
