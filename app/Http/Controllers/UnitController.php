@@ -131,7 +131,7 @@ class UnitController extends Controller
 
 		Session::flash('success', 'Новая единица измерения успешно сохранена!');
 
-		return redirect()->route('unit.show', $unit->product_id);
+		return redirect()->route('unit.show', $unit->unit_id);
 	}
 
 	/**

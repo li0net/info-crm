@@ -41,6 +41,7 @@ Route::resource('/partner', 'PartnerController');
 Route::resource('/item', 'ItemController');
 Route::resource('/wage_scheme', 'WageSchemesController');
 Route::resource('/unit', 'UnitController');
+Route::resource('/storage', 'StorageController');
 Route::post('/home', 'homeController@indexFiltered');
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
