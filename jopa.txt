@@ -1,0 +1,120 @@
++--------+-----------+-----------------------------------------------+---------------------------+------------------------------------------------------------------------+----------------------+
+| Domain | Method    | URI                                           | Name                      | Action                                                                 | Middleware           |
++--------+-----------+-----------------------------------------------+---------------------------+------------------------------------------------------------------------+----------------------+
+|        | GET|HEAD  | /                                             |                           | Closure                                                                | web                  |
+|        | POST      | account                                       | account.store             | App\Http\Controllers\AccountController@store                           | web                  |
+|        | GET|HEAD  | account                                       | account.index             | App\Http\Controllers\AccountController@index                           | web                  |
+|        | GET|HEAD  | account/create                                | account.create            | App\Http\Controllers\AccountController@create                          | web                  |
+|        | PUT|PATCH | account/{account}                             | account.update            | App\Http\Controllers\AccountController@update                          | web                  |
+|        | DELETE    | account/{account}                             | account.destroy           | App\Http\Controllers\AccountController@destroy                         | web                  |
+|        | GET|HEAD  | account/{account}                             | account.show              | App\Http\Controllers\AccountController@show                            | web                  |
+|        | GET|HEAD  | account/{account}/edit                        | account.edit              | App\Http\Controllers\AccountController@edit                            | web                  |
+|        | GET|HEAD  | api/user                                      |                           | Closure                                                                | api,auth:api         |
+|        | GET|HEAD  | appointments/create                           |                           | App\Http\Controllers\AppointmentsController@create                     | web,auth,permissions |
+|        | GET|HEAD  | appointments/edit/{appt}                      |                           | App\Http\Controllers\AppointmentsController@edit                       | web,auth,permissions |
+|        | POST      | appointments/getClientInfo                    |                           | App\Http\Controllers\AppointmentsController@getClientInfo              | web,auth             |
+|        | GET|HEAD  | appointments/getEmployeesForService/{service} |                           | App\Http\Controllers\AppointmentsController@getEmployeesForServices    | web,auth             |
+|        | POST      | appointments/getEmployeesForService/{service} |                           | App\Http\Controllers\AppointmentsController@getEmployeesForServices    | web,auth             |
+|        | POST      | appointments/save                             |                           | App\Http\Controllers\AppointmentsController@save                       | web,auth,permissions |
+|        | GET|HEAD  | client/{client}                               |                           | App\Http\Controllers\ClientsController@show                            | web,auth,permissions |
+|        | GET|HEAD  | clientCategories                              |                           | App\Http\Controllers\ClientCategoriesController@index                  | web,auth             |
+|        | GET|HEAD  | clientCategories/create                       |                           | App\Http\Controllers\ClientCategoriesController@create                 | web,auth             |
+|        | GET|HEAD  | clientCategories/destroy/{ccId}               |                           | App\Http\Controllers\ClientCategoriesController@destroy                | web,auth             |
+|        | GET|HEAD  | clientCategories/edit/{clientCategory}        |                           | App\Http\Controllers\ClientCategoriesController@edit                   | web,auth             |
+|        | GET|HEAD  | clientCategories/gridData                     |                           | Closure                                                                | web                  |
+|        | POST      | clientCategories/save                         |                           | App\Http\Controllers\ClientCategoriesController@save                   | web,auth             |
+|        | GET|HEAD  | clients                                       |                           | App\Http\Controllers\ClientsController@index                           | web,auth,permissions |
+|        | GET|HEAD  | clients/create                                |                           | App\Http\Controllers\ClientsController@create                          | web,auth,permissions |
+|        | POST      | clients/destroy                               |                           | App\Http\Controllers\ClientsController@destroy                         | web,auth,permissions |
+|        | GET|HEAD  | clients/edit/{client}                         |                           | App\Http\Controllers\ClientsController@edit                            | web,auth,permissions |
+|        | POST      | clients/gridData                              |                           | Closure                                                                | web                  |
+|        | GET|HEAD  | clients/gridData                              |                           | Closure                                                                | web                  |
+|        | POST      | clients/save                                  |                           | App\Http\Controllers\ClientsController@save                            | web,auth,permissions |
+|        | POST      | employee                                      | employee.store            | App\Http\Controllers\EmployeeController@store                          | web,auth             |
+|        | GET|HEAD  | employee                                      | employee.index            | App\Http\Controllers\EmployeeController@index                          | web,auth             |
+|        | PUT       | employee                                      |                           | App\Http\Controllers\EmployeeController@store                          | web,auth             |
+|        | GET|HEAD  | employee/create                               | employee.create           | App\Http\Controllers\EmployeeController@create                         | web,auth             |
+|        | DELETE    | employee/{employee}                           | employee.destroy          | App\Http\Controllers\EmployeeController@destroy                        | web,auth,permissions |
+|        | PUT|PATCH | employee/{employee}                           | employee.update           | App\Http\Controllers\EmployeeController@update                         | web,auth,permissions |
+|        | GET|HEAD  | employee/{employee}                           | employee.show             | App\Http\Controllers\EmployeeController@show                           | web,auth             |
+|        | GET|HEAD  | employee/{employee}/edit                      | employee.edit             | App\Http\Controllers\EmployeeController@edit                           | web,auth             |
+|        | GET|HEAD  | home                                          |                           | App\Http\Controllers\HomeController@index                              | web,auth             |
+|        | POST      | home                                          |                           | App\Http\Controllers\homeController@indexFiltered                      | web,auth             |
+|        | GET|HEAD  | image-upload                                  |                           | App\Http\Controllers\UploadImageController@uploadImage                 | web                  |
+|        | POST      | image-upload/{id}                             | upload                    | App\Http\Controllers\UploadImageController@uploadImage                 | web                  |
+|        | GET|HEAD  | item                                          | item.index                | App\Http\Controllers\ItemController@index                              | web                  |
+|        | POST      | item                                          | item.store                | App\Http\Controllers\ItemController@store                              | web                  |
+|        | GET|HEAD  | item/create                                   | item.create               | App\Http\Controllers\ItemController@create                             | web                  |
+|        | PUT|PATCH | item/{item}                                   | item.update               | App\Http\Controllers\ItemController@update                             | web                  |
+|        | GET|HEAD  | item/{item}                                   | item.show                 | App\Http\Controllers\ItemController@show                               | web                  |
+|        | DELETE    | item/{item}                                   | item.destroy              | App\Http\Controllers\ItemController@destroy                            | web                  |
+|        | GET|HEAD  | item/{item}/edit                              | item.edit                 | App\Http\Controllers\ItemController@edit                               | web                  |
+|        | POST      | login                                         |                           | App\Http\Controllers\Auth\LoginController@login                        | web,guest            |
+|        | GET|HEAD  | login                                         | login                     | App\Http\Controllers\Auth\LoginController@showLoginForm                | web,guest            |
+|        | POST      | logout                                        | logout                    | App\Http\Controllers\Auth\LoginController@logout                       | web                  |
+|        | GET|HEAD  | logout                                        |                           | \App\Http\Controllers\Auth\LoginController@logout                      | web                  |
+|        | GET|HEAD  | organization/edit                             |                           | App\Http\Controllers\OrganizationsController@edit                      | web,auth             |
+|        | GET|HEAD  | organization/info/edit                        | info.edit                 | App\Http\Controllers\OrganizationsController@editInfo                  | web,auth             |
+|        | PUT       | organization/info/save                        | info.save                 | App\Http\Controllers\OrganizationsController@saveInfo                  | web,auth             |
+|        | POST      | organization/save                             |                           | App\Http\Controllers\OrganizationsController@save                      | web,auth             |
+|        | POST      | partner                                       | partner.store             | App\Http\Controllers\PartnerController@store                           | web                  |
+|        | GET|HEAD  | partner                                       | partner.index             | App\Http\Controllers\PartnerController@index                           | web                  |
+|        | GET|HEAD  | partner/create                                | partner.create            | App\Http\Controllers\PartnerController@create                          | web                  |
+|        | GET|HEAD  | partner/{partner}                             | partner.show              | App\Http\Controllers\PartnerController@show                            | web                  |
+|        | DELETE    | partner/{partner}                             | partner.destroy           | App\Http\Controllers\PartnerController@destroy                         | web                  |
+|        | PUT|PATCH | partner/{partner}                             | partner.update            | App\Http\Controllers\PartnerController@update                          | web                  |
+|        | GET|HEAD  | partner/{partner}/edit                        | partner.edit              | App\Http\Controllers\PartnerController@edit                            | web                  |
+|        | POST      | password/email                                |                           | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web,guest            |
+|        | GET|HEAD  | password/reset                                |                           | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web,guest            |
+|        | POST      | password/reset                                |                           | App\Http\Controllers\Auth\ResetPasswordController@reset                | web,guest            |
+|        | GET|HEAD  | password/reset/{token}                        |                           | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web,guest            |
+|        | POST      | position                                      | position.store            | App\Http\Controllers\PositionController@store                          | web                  |
+|        | GET|HEAD  | position                                      | position.index            | App\Http\Controllers\PositionController@index                          | web                  |
+|        | GET|HEAD  | position/create                               | position.create           | App\Http\Controllers\PositionController@create                         | web                  |
+|        | GET|HEAD  | position/{position}                           | position.show             | App\Http\Controllers\PositionController@show                           | web                  |
+|        | DELETE    | position/{position}                           | position.destroy          | App\Http\Controllers\PositionController@destroy                        | web                  |
+|        | PUT|PATCH | position/{position}                           | position.update           | App\Http\Controllers\PositionController@update                         | web                  |
+|        | GET|HEAD  | position/{position}/edit                      | position.edit             | App\Http\Controllers\PositionController@edit                           | web                  |
+|        | POST      | product                                       | product.store             | App\Http\Controllers\ProductController@store                           | web                  |
+|        | GET|HEAD  | product                                       | product.index             | App\Http\Controllers\ProductController@index                           | web                  |
+|        | GET|HEAD  | product/create                                | product.create            | App\Http\Controllers\ProductController@create                          | web                  |
+|        | GET|HEAD  | product/{product}                             | product.show              | App\Http\Controllers\ProductController@show                            | web                  |
+|        | DELETE    | product/{product}                             | product.destroy           | App\Http\Controllers\ProductController@destroy                         | web                  |
+|        | PUT|PATCH | product/{product}                             | product.update            | App\Http\Controllers\ProductController@update                          | web                  |
+|        | GET|HEAD  | product/{product}/edit                        | product.edit              | App\Http\Controllers\ProductController@edit                            | web                  |
+|        | GET|HEAD  | productCategories                             | productCategories.index   | App\Http\Controllers\ProductCategoriesController@index                 | web                  |
+|        | POST      | productCategories                             | productCategories.store   | App\Http\Controllers\ProductCategoriesController@store                 | web                  |
+|        | GET|HEAD  | productCategories/create                      | productCategories.create  | App\Http\Controllers\ProductCategoriesController@create                | web                  |
+|        | DELETE    | productCategories/{productCategory}           | productCategories.destroy | App\Http\Controllers\ProductCategoriesController@destroy               | web                  |
+|        | PUT|PATCH | productCategories/{productCategory}           | productCategories.update  | App\Http\Controllers\ProductCategoriesController@update                | web                  |
+|        | GET|HEAD  | productCategories/{productCategory}           | productCategories.show    | App\Http\Controllers\ProductCategoriesController@show                  | web                  |
+|        | GET|HEAD  | productCategories/{productCategory}/edit      | productCategories.edit    | App\Http\Controllers\ProductCategoriesController@edit                  | web                  |
+|        | POST      | register                                      |                           | App\Http\Controllers\Auth\RegisterController@register                  | web,guest            |
+|        | GET|HEAD  | register                                      | register                  | App\Http\Controllers\Auth\RegisterController@showRegistrationForm      | web,guest            |
+|        | GET|HEAD  | serviceCategories                             |                           | App\Http\Controllers\ServiceCategoriesController@index                 | web,auth,permissions |
+|        | GET|HEAD  | serviceCategories/create                      |                           | App\Http\Controllers\ServiceCategoriesController@create                | web,auth,permissions |
+|        | GET|HEAD  | serviceCategories/destroy/{scId}              |                           | App\Http\Controllers\ServiceCategoriesController@destroy               | web,auth,permissions |
+|        | GET|HEAD  | serviceCategories/edit/{serviceCategory}      |                           | App\Http\Controllers\ServiceCategoriesController@edit                  | web,auth,permissions |
+|        | GET|HEAD  | serviceCategories/gridData                    |                           | Closure                                                                | web                  |
+|        | POST      | serviceCategories/save                        |                           | App\Http\Controllers\ServiceCategoriesController@save                  | web,auth,permissions |
+|        | GET|HEAD  | services                                      |                           | App\Http\Controllers\ServicesController@index                          | web,auth,permissions |
+|        | GET|HEAD  | services/create                               |                           | App\Http\Controllers\ServicesController@create                         | web,auth,permissions |
+|        | GET|HEAD  | services/destroy/{serviceId}                  |                           | App\Http\Controllers\ServicesController@destroy                        | web,auth,permissions |
+|        | GET|HEAD  | services/edit/{service}                       |                           | App\Http\Controllers\ServicesController@edit                           | web,auth,permissions |
+|        | GET|HEAD  | services/gridData                             |                           | Closure                                                                | web                  |
+|        | POST      | services/save                                 |                           | App\Http\Controllers\ServicesController@save                           | web,auth,permissions |
+|        | GET|HEAD  | stub                                          |                           | Closure                                                                | web                  |
+|        | GET|HEAD  | users                                         |                           | App\Http\Controllers\UsersController@index                             | web,auth,permissions |
+|        | GET|HEAD  | users/create                                  |                           | App\Http\Controllers\UsersController@create                            | web,auth,permissions |
+|        | GET|HEAD  | users/edit/{user}                             |                           | App\Http\Controllers\UsersController@edit                              | web,auth,permissions |
+|        | GET|HEAD  | users/gridData                                |                           | Closure                                                                | web                  |
+|        | POST      | users/save                                    |                           | App\Http\Controllers\UsersController@save                              | web,auth,permissions |
+|        | POST      | users/{user}/savePermissions                  |                           | App\Http\Controllers\UsersController@savePermissions                   | web,auth,permissions |
+|        | GET|HEAD  | wage_scheme                                   | wage_scheme.index         | App\Http\Controllers\WageSchemesController@index                       | web                  |
+|        | POST      | wage_scheme                                   | wage_scheme.store         | App\Http\Controllers\WageSchemesController@store                       | web                  |
+|        | GET|HEAD  | wage_scheme/create                            | wage_scheme.create        | App\Http\Controllers\WageSchemesController@create                      | web                  |
+|        | GET|HEAD  | wage_scheme/{wage_scheme}                     | wage_scheme.show          | App\Http\Controllers\WageSchemesController@show                        | web                  |
+|        | DELETE    | wage_scheme/{wage_scheme}                     | wage_scheme.destroy       | App\Http\Controllers\WageSchemesController@destroy                     | web                  |
+|        | PUT|PATCH | wage_scheme/{wage_scheme}                     | wage_scheme.update        | App\Http\Controllers\WageSchemesController@update                      | web                  |
+|        | GET|HEAD  | wage_scheme/{wage_scheme}/edit                | wage_scheme.edit          | App\Http\Controllers\WageSchemesController@edit                        | web                  |
++--------+-----------+-----------------------------------------------+---------------------------+------------------------------------------------------------------------+----------------------+

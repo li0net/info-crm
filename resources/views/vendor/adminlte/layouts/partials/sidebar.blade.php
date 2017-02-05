@@ -95,10 +95,10 @@
 			<li class="treeview">
 				<a href="#"><i class='fa fa-archive'></i> <span>{{ trans('adminlte_lang::message.stock') }}</span><i class="fa fa-angle-left pull-right"></i></a>
 					<ul class="treeview-menu">
-						<li><a href="/stub">{{ trans('adminlte_lang::message.storages') }}</a></li>
-						<li><a href="{{ url('product')}}">{{ trans('adminlte_lang::message.products') }}</a></li>
+						<li><a href="{{ url('/storage')}}">{{ trans('adminlte_lang::message.storages') }}</a></li>
+						<li><a href="{{ url('/product')}}">{{ trans('adminlte_lang::message.products') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.routings') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.units') }}</a></li>
+						<li><a href="{{ url('/unit')}}">{{ trans('adminlte_lang::message.units') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.operations') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.inventory') }}</a></li>
 						<li class="treeview"><a href="#">{{ trans('adminlte_lang::message.reports') }}<i class="fa fa-angle-left pull-right"></i></a>
@@ -123,6 +123,7 @@
 				<a href="#"><i class='fa fa-cogs'></i> <span>{{ trans('adminlte_lang::message.settings') }}</span><i class="fa fa-angle-left pull-right"></i></a>
 					<ul class="treeview-menu">
 						<li><a href="{{ url('/organization/edit')}}">{{ trans('adminlte_lang::message.basic_settings') }}</a></li>
+						<li><a href="{{ url('/organization/info/edit')}}">{{ trans('adminlte_lang::message.information') }}</a></li>
 						<li><a href="{{ url('/services')}}">{{ trans('adminlte_lang::message.services') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.schedule') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.resources') }}</a></li>

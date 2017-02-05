@@ -40,6 +40,8 @@ Route::resource('/productCategories', 'ProductCategoriesController');
 Route::resource('/partner', 'PartnerController');
 Route::resource('/item', 'ItemController');
 Route::resource('/wage_scheme', 'WageSchemesController');
+Route::resource('/unit', 'UnitController');
+Route::resource('/storage', 'StorageController');
 Route::post('/home', 'homeController@indexFiltered');
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
@@ -84,6 +86,9 @@ Route::get('/services/destroy/{serviceId}', 'ServicesController@destroy');
 Route::get('/organization/edit', 'OrganizationsController@edit');
 Route::post('/organization/save', 'OrganizationsController@save');
 
+Route::get('/organization/info/edit', ['as' => 'info.edit', 'uses' => 'OrganizationsController@editInfo']);
+Route::put('/organization/info/save', ['as' => 'info.save', 'uses' => 'OrganizationsController@saveInfo']);
+
 Route::get('/appointments/create', 'AppointmentsController@create');
 Route::get('/appointments/edit/{appt}', 'AppointmentsController@edit');
 Route::post('/appointments/save', 'AppointmentsController@save');
@@ -101,6 +106,7 @@ Route::get('/clients/edit/{client}', 'ClientsController@edit');
 Route::get('/client/{client}', 'ClientsController@show');
 Route::post('/clients/save', 'ClientsController@save');
 Route::post('/clients/destroy', 'ClientsController@destroy');
+Route::post('/clients/destroyFiltered/', 'ClientsController@destroyFiltered');
 
 Route::get('/clientCategories/create', 'ClientCategoriesController@create');
 Route::get('/clientCategories/edit/{clientCategory}', 'ClientCategoriesController@edit');

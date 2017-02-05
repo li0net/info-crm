@@ -273,6 +273,7 @@ class ClientsController extends Controller
      * Удаляет клиентов из БД
      *
      * @param $request Request
+     * @return string
      */
     public function destroy(Request $request)
     {
@@ -295,5 +296,19 @@ class ClientsController extends Controller
         }
 
         return json_encode(['success' => true, 'error' => '']);
+    }
+
+    /**
+     * Удаляет отфильтрованных клиентов из БД
+     *
+     * @return string XHR data
+     */
+    public function destroyFiltered() {
+        $db = DB::table('clients');
+        $mah = new \App\Libraries\MassActionsHandler($db);
+        $db = $mah->buildFiltersFromRequest();
+        $db->update(['is_active' => 0]);
+
+        return json_encode(array('success' => TRUE, 'error' => ''));
     }
 }

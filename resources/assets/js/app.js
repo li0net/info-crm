@@ -271,7 +271,7 @@ $(document).ready(function () {
 			}
 		});
 		$("#client_main_search_btn").click(function () {
-			$clientsGrid = $("#clients_grid");
+			var $clientsGrid = $("#clients_grid");
 			var rules = [], i, cm, postData = $clientsGrid.jqGrid("getGridParam", "postData"),
 				colModel = $clientsGrid.jqGrid("getGridParam", "colModel"),
 				searchText = $("#client_main_search_field").val(),
@@ -314,7 +314,8 @@ $(document).ready(function () {
 			var selIds = $("#clients_grid").getGridParam('selarrrow');
 			console.log('selIds', selIds);
 			if (selIds.length > 0) {	// $('#a_clients_delete_selected').hasClass("disabled");
-				if (! confirm('Вы действительно хотите удалить ' + selIds.length + ' запись(ей) клиентов?')) {
+				// TODO: localize
+				if (! confirm('Do you really want to delete ' + selIds.length + ' client record(s)?')) {
 					return false;
 				}
 
@@ -341,12 +342,52 @@ $(document).ready(function () {
 				});
 			}
 		});
+
+		// обработка клика по кнопке 'Удалить всех найденных' клиентов
+		$('#a_clients_delete_all_found').click(function() {
+			var postData;
+			var filters;
+			var $clientsGrid = $("#clients_grid");
+			var recordsNum = $clientsGrid.getGridParam("records");
+			// TODO: localize
+			if (!confirm("Do you really want to delete "+recordsNum+" clients?")) {
+				return FALSE;
+			}
+
+			$("#clientsGridModel").val(JSON.stringify($clientsGrid.getGridParam("colModel")));
+			postData = $clientsGrid.getGridParam("postData");
+			if(postData["filters"] != undefined) {
+				filters = postData["filters"];
+			} else {
+				filters = '';
+			}
+
+			$.ajax({
+				type: "POST",
+				url: "/clients/destroyFiltered/",
+				data: {'filters': filters},
+				success: function(data) {
+					var data = $.parseJSON(data);
+
+					if (data.success == true) {
+						// reset filters and refresh grid
+						$("#client_main_search_field").val('');
+						$("#clients_grid").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
+					} else {
+						alert('Server error:' + data.error);
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					alert('Server error:'+textStatus);
+				}
+			});
+		});
 	}
 
 	function sendDownloadClientsXlsRequest(all) {
 		var headers = [], rows = [], row, cellCounter, postData, groupingView, sidx, sord;
 
-		$clientsGrid = $("#clients_grid");
+		var $clientsGrid = $("#clients_grid");
 
 		$("#clientsGridModel").val(JSON.stringify($clientsGrid.getGridParam("colModel")));
 		postData = $clientsGrid.getGridParam("postData");
@@ -543,7 +584,6 @@ $(document).ready(function () {
 		);
 		return $category;
 	};
-
 
 	$('#form_submit').on('click', function() {
 		var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');

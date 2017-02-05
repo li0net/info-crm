@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Organization;
+use Session;
 use Illuminate\Support\MessageBag;
 
 class OrganizationsController extends Controller
@@ -134,6 +135,43 @@ class OrganizationsController extends Controller
         $organization->info = $request->input('info');
 
         $organization->save();
+
+        return redirect()->to('/');
+    }
+
+    public function editInfo(Request $request)
+    {
+        $org = Organization::find($request->user()->organization_id);
+
+        return view('organization.edit', ['organization' => $org]);
+    }
+
+    public function saveInfo(Request $request)
+    {
+        $org = Organization::find($request->user()->organization_id);
+
+        if ($request->input('id') == 'organization_form__info') {
+            $org->address = $request->input('address');
+            $org->post_index = $request->input('post_index');
+            $org->phone_1 = $request->input('phone_1');
+            $org->phone_2 = $request->input('phone_2');
+            $org->phone_3 = $request->input('phone_3');
+            $org->website = $request->input('website');
+            $org->work_hours = $request->input('work_hours');
+            $org->coordinates = $request->input('coordinates');
+        }
+
+        if ($request->input('id') == 'organization_form__description') {
+            $org->info = $request->input('info');
+        }
+
+        if ($request->input('id') == 'organization_form__gallery') {
+            //todo: save gallery images
+        }
+
+        $org->save();
+
+        Session::flash('success', 'Сведения об организации успешно сохранены!');
 
         return redirect()->to('/');
     }

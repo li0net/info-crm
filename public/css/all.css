@@ -22769,6 +22769,13 @@ fieldset[disabled] .btn-yahoo.active {
 
 /*# sourceMappingURL=adminlte-less.css.map */
 
+a.disabled {
+  pointer-events: none;
+  color: #cacaca;
+}
+
+/*# sourceMappingURL=form.css.map */
+
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;

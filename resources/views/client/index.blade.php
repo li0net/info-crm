@@ -83,7 +83,7 @@
                     </a>
                 </div>
                 <div class="row">
-                    <a id="a_clients_delete_all_found" href="#" onclick="alert('Not implemented yet');">
+                    <a id="a_clients_delete_all_found" href="#">
                         <i class="fa fa-trash-o"></i>
                         @lang('main.client:list_delete_all_found')
                     </a>
