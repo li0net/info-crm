@@ -252,7 +252,7 @@ class User extends Authenticatable
 
         $phoneNum = trim($phoneNum);
         $phoneNum = str_replace(
-            [' ', '(', ')', '-', ''],
+            [' ', '(', ')', '-', '—', '–', '-'],
             '',
             $phoneNum
         );
@@ -266,5 +266,17 @@ class User extends Authenticatable
         }
 
         return $phoneNum;
+    }
+
+    public function getAvatarUri() {
+        $avatarPath = public_path() . 'uploaded_images/avatar/' . $this->oranization_id . '/' . $this->user_id . 'jpg';
+        if (file_exists($avatarPath)) {
+            $avatarUri = asset('uploaded_images/avatar/' . $this->oranization_id . '/' . $this->user_id . 'jpg');
+        } else {
+            // дефолтный аватар
+            $avatarUri = asset('img/crm/avatar/avatar100.jpg');
+        }
+
+        return $avatarUri;
     }
 }

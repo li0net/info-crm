@@ -1,7 +1,11 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-    @lang('main.user:list_page_header')
+    @if (isset($crmuser))
+        @lang('main.user:edit_form_header')
+    @else
+        @lang('main.user:create_form_header')
+    @endif
 @endsection
 
 
