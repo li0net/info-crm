@@ -140,7 +140,7 @@ class StorageController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($id)
+	public function destroy(Request $request, $id)
 	{
 		$storage = Storage::where('organization_id', $request->user()->organization_id)->where('storage_id', $id)->first();
 
