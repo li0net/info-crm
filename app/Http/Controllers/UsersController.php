@@ -235,4 +235,10 @@ class UsersController extends Controller
         }
         return redirect('/users');
     }
+
+    public function editOwnSettings(Request $request) {
+        return view('user.cabinet', [
+            'crmuser' => $request->user()
+        ]);
+    }
 }

@@ -64,6 +64,7 @@ const app = new Vue({
 			detailed_services_count: 0,
 			detailed_products_count: 0,
 			services_ctgs_options: '',
+			storage_options: '',
 			ex1
 		}
 	},
