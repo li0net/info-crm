@@ -17,7 +17,6 @@
 				</div>
 			</div>
 		@endif
-
 		<!-- search form (Optional) -->
 		<form action="#" method="get" class="sidebar-form">
 				{{-- <input type="text" name="q" class="form-control" placeholder="{{ trans('adminlte_lang::message.search') }}..."/>

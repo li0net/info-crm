@@ -23,7 +23,8 @@ class Organization extends Model
         'address',
         'post_index',
         'coordinates',
-        'work_hours'
+        'work_hours',
+        'logo_image'
     ];
 
     public function superOrganization()
@@ -54,6 +55,24 @@ class Organization extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * получает путь к лого организации
+     * @return string
+     */
+    public function getLogoUri() {
+        $logoPath = public_path() . '/uploaded_images/logo/main/' . $this->logo_image;
+        //echo $logoPath;
+        //return $logoPath;
+        if (file_exists($logoPath)) {
+            $avatarUri = asset('uploaded_images/logo/main/' . $this->logo_image);
+        } else {
+            // дефолтный аватар
+            //TODO исправить на /crm/
+            $avatarUri = asset('uploaded_images/logo/logo100.jpg');
+        }
+        return $avatarUri;
     }
 
 }
