@@ -140,7 +140,7 @@ class StorageController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($id)
+	public function destroy(Request $request, $id)
 	{
 		$storage = Storage::where('organization_id', $request->user()->organization_id)->where('storage_id', $id)->first();
 
@@ -153,4 +153,12 @@ class StorageController extends Controller
 
 		return redirect()->route('storage.index');
 	}
+
+	public function getStorageData(Request $request)
+    {
+    	//$data = array(['a' => 1, 'b' => 2, 'c' => 3], ['a' => 1, 'b' => 2, 'c' => 3], ['a' => 1, 'b' => 2, 'c' => 3]);
+    	$storages = Storage::where('organization_id', $request->user()->organization_id)->get()->all();
+
+    	echo json_encode($storages);
+    }
 }

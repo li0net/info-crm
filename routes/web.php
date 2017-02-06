@@ -42,6 +42,8 @@ Route::resource('/item', 'ItemController');
 Route::resource('/wage_scheme', 'WageSchemesController');
 Route::resource('/unit', 'UnitController');
 Route::resource('/storage', 'StorageController');
+Route::get('/storageData', 'StorageController@getStorageData');
+Route::resource('/card', 'CardController');
 Route::post('/home', 'homeController@indexFiltered');
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
@@ -100,6 +102,7 @@ Route::get('/users/create', 'UsersController@create');
 Route::get('/users/edit/{user}', 'UsersController@edit');
 Route::post('/users/save', 'UsersController@save');
 Route::post('/users/{user}/savePermissions', 'UsersController@savePermissions');
+Route::get('/user/cabinet', 'UsersController@editOwnSettings');
 
 Route::get('/clients/create', 'ClientsController@create');
 Route::get('/clients/edit/{client}', 'ClientsController@edit');
