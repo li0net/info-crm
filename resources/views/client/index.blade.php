@@ -139,14 +139,16 @@
 
         </div>
 
+        <!--
         <div class="col-md-4">
             <div class="ibox-title">
-                <h5>@lang('main.client:list_filters')</h5>
+                <h5>@//lang('main.client:list_filters')</h5>
             </div>
             <div class="panel panel-default">
                 <p>Filters here</p>
             </div>
         </div>
+        -->
 
 
     </div>

@@ -102,6 +102,7 @@ Route::get('/users/create', 'UsersController@create');
 Route::get('/users/edit/{user}', 'UsersController@edit');
 Route::post('/users/save', 'UsersController@save');
 Route::post('/users/{user}/savePermissions', 'UsersController@savePermissions');
+Route::get('/user/cabinet', 'UsersController@editOwnSettings');
 
 Route::get('/clients/create', 'ClientsController@create');
 Route::get('/clients/edit/{client}', 'ClientsController@edit');

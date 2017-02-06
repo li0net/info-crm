@@ -88,6 +88,13 @@ return [
     'user:create_new_btn_label'             => 'Создать пользователя',
     'user:creation_success_message'         => 'Пользовтель был успешно создан!',
 
+    'user:title_personal_data_settings'     => 'Настройки персональных данных',
+    'user:title_section_personal_data'      => 'Личные данные',
+    'user:page_title_cabinet'               => 'Личный кабинет',
+    'user:title_section_settings'           => 'Настройки',
+    'user:title_section_mailings'           => 'Рассылки',
+    'user:btn_my_records'                   => 'Мои записи',
+
     'user:permissions_appointment_form_label' => 'Окно записи',
     'user:permissions_appointment_create_label' => 'Создавать записи',
     'user:permissions_appointment_edit_label' => 'Редактировать записи',
