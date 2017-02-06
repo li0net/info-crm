@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Card;
+use App\Storage;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
@@ -37,9 +38,11 @@ class CardController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function create()
+	public function create(Request $request)
 	{
-		return view('card.create');
+		$storages = Storage::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'storage_id');
+
+		return view('card.create', ['storages' => $storages]);
 	}
 
 	/**
@@ -59,11 +62,19 @@ class CardController extends Controller
 			'title' => 'required'
 		]);
 
+		$input = $request->input();
+
+		array_pop($input['product_id']);
+		array_pop($input['storage_id']);
+		array_pop($input['amount']);
+
 		$card = new Card;
 
 		$card->title = $request->title;
 		$card->description = $request->description;
-		$card->card_items = '';
+		$card->card_items = json_encode(array($input['product_id'],
+												$input['storage_id'],
+												$input['amount']));
 		$card->organization_id = $request->user()->organization_id;
 
 		$card->save();
@@ -92,11 +103,22 @@ class CardController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($id)
+	public function edit(Request $request, $id)
 	{
 		$card = Card::find($id);
+		$storages = Storage::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'storage_id');
 
-		return view('card.edit', ['card' => $card]);
+		$card_items = array();
+
+		if(null !== $card->card_items) {
+			$items = json_decode($card->card_items);
+			
+			foreach ($items[0] as $key => $value) {
+				$card_items[] = array($value, $items[1][$key], $items[2][$key]);
+			}
+		}
+
+		return view('card.edit', ['card' => $card, 'storages' => $storages, 'card_items' => $card_items]);
 	}
 
 	/**
@@ -117,13 +139,21 @@ class CardController extends Controller
 			'title' => 'required'
 		]);
 
+		$input = $request->input();
+
+		array_pop($input['product_id']);
+		array_pop($input['storage_id']);
+		array_pop($input['amount']);
+
 		$card = card::where('organization_id', $request->user()->organization_id)->where('card_id', $id)->first();
 		if (is_null($card)) {
 			return 'No such card';
 		}
 
 		$card->title = $request->title;
-		$card->card_items = '';
+		$card->card_items = json_encode(array($input['product_id'],
+												$input['storage_id'],
+												$input['amount']));
 		$card->description = $request->description;
 		$card->organization_id = $request->user()->organization_id;
 
