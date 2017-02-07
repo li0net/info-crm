@@ -45,8 +45,9 @@
 				<thead>
 					<th class="text-center">#</th>
 					<th>Наименование</th>
-					<th>Расходники</th>
-					<th>Количество</th>
+					<th>Описание</th>
+					<th></th>
+					<th></th>
 					<th></th>
 				</thead>
 				<tbody>
@@ -55,14 +56,49 @@
 							<th class="text-center">{{ $card->card_id }}</th>
 							<td>
 								{{ $card->title }}
-								<br>
-								<small>{{ $card->description }}</small>
 							</td>
 							<td>
-								{{-- {{ $card->card_items }} --}}
+								{{ $card->description }}
 							</td>
 							<td>
-								{{-- {{ $card->card_items }} --}}
+								@if( null !== $card->card_items )
+									<div class="row">
+										<div class="col-sm-12 text-center">
+											<div class="form-group">
+												<a href="#card-items-{{$card->card_id}}" data-toggle="collapse" class="btn btn-link btn-xs">
+												<span class="badge label-danger hidden" v-model="card_items_count">@{{ card_items_count }}</span>
+												Состав технологической карты
+												<i class="fa fa-caret-down"></i></a>
+											</div>
+										</div>
+									</div>
+									<div id="card-items-{{$card->card_id}}" class="collapse">
+										<div class="row">
+											<div class="col-sm-4 small"><strong>Наименование</strong></div>
+											<div class="col-sm-4 small"><strong>Склад</strong></div>
+											<div class="col-sm-4 small"><strong>Количество</strong></div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12"><hr></div>
+										</div>
+										
+										<div class="form-group">
+											@foreach($card->card_items as $card_item)
+												<div class="row">
+													<div class="col-sm-4 small">
+														{{ $card_item[0] }}
+													</div>
+													<div class="col-sm-4 small">
+														{{ $card_item[1] }}
+													</div>
+													<div class="col-sm-4 small">
+														{{ $card_item[2] }}
+													</div>
+												</div>
+											@endforeach
+										</div>
+									</div>
+								@endif
 							</td>
 							<td class="text-right">
 								@if ($user->hasAccessTo('card', 'edit', 0))
@@ -79,7 +115,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-					{!! $cards->render(); !!} 
+				{!! $cards->render(); !!} 
 			</div>
 		</div>
 	</div>		
