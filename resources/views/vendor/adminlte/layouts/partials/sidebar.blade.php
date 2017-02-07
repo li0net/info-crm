@@ -8,7 +8,7 @@
 		@if (! Auth::guest())
 			<div class="user-panel">
 				<div class="pull-left image">
-					<img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" />
+                    <img src="{{ $user->getAvatarUri() }}" class="img-circle" alt="User Image"/>
 				</div>
 				<div class="pull-left info">
 					<p>{{ Auth::user()->name }}</p>
@@ -140,9 +140,9 @@
 				</li>
 			<li><a href="/stub"><i class='fa fa-credit-card'></i> <span>{{ trans('adminlte_lang::message.balance') }}</span></a></li>
 			<li><a href="/stub"><i class='fa fa-book'></i> <span>{{ trans('adminlte_lang::message.backoffice') }}</span></a></li>
-			<li><a href="/stub"><i class='fa fa-user'></i> <span>{{ trans('adminlte_lang::message.profile') }}</span></a></li>
+			<li><a href="/user/cabinet"><i class='fa fa-user'></i> <span>{{ trans('adminlte_lang::message.profile') }}</span></a></li>
 			<li><a href="/stub"><i class='fa fa-question'></i> <span>{{ trans('adminlte_lang::message.support') }}</span></a></li>
-			<li><a href="/stub"><i class='fa fa-sign-out'></i> <span>{{ trans('adminlte_lang::message.exit') }}</span></a></li>
+			<li><a href="/logout"><i class='fa fa-sign-out'></i> <span>{{ trans('adminlte_lang::message.exit') }}</span></a></li>
 		</ul><!-- /.sidebar-menu -->
 	</section>
 	<!-- /.sidebar -->

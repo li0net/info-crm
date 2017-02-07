@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Creativeorange\Gravatar\Facades\Gravatar;
 
 class User extends Authenticatable
 {
@@ -274,7 +275,11 @@ class User extends Authenticatable
             $avatarUri = asset('uploaded_images/avatar/' . $this->oranization_id . '/' . $this->user_id . 'jpg');
         } else {
             // дефолтный аватар
-            $avatarUri = asset('img/crm/avatar/avatar100.jpg');
+            //$avatarUri = asset('img/crm/avatar/avatar100.jpg');
+
+            //TODO {Сергей} можно вместо этого получать автатарку через Gravatar::get($user->email)
+            //TODO {Сергей} он генерит ту же дефолтную картинку, елси аватарки у юзера нет
+            $avatarUri = Gravatar::get($this->email);
         }
 
         return $avatarUri;
