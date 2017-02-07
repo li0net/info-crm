@@ -59,20 +59,41 @@ class Organization extends Model
 
     /**
      * получает путь к лого организации
+     * если лого нет  - возвращает пустое значение
      * @return string
      */
     public function getLogoUri() {
-        $logoPath = public_path() . '/uploaded_images/logo/main/' . $this->logo_image;
-        //echo $logoPath;
-        //return $logoPath;
-        if (file_exists($logoPath)) {
-            $avatarUri = asset('uploaded_images/logo/main/' . $this->logo_image);
-        } else {
-            // дефолтный аватар
-            //TODO исправить на /crm/
-            $avatarUri = asset('uploaded_images/logo/logo100.jpg');
+        $logoUri = asset('uploaded_images/logo/logo200_50.png');
+        if ($this->logo_image){
+            $logoPath = public_path() . '/uploaded_images/logo/main/' . $this->logo_image;
+            if (file_exists($logoPath)) {
+                $logoUri = asset('uploaded_images/logo/main/' . $this->logo_image);
+            }
         }
-        return $avatarUri;
+        return $logoUri;
     }
+
+    public function getLogo() {
+//        $logoPath = public_path() . '/uploaded_images/logo/main/' . $this->logo_image;
+//        //echo $logoPath;
+//        //return $logoPath;
+//        if (file_exists($logoPath)) {
+//            $avatarUri = asset('uploaded_images/logo/main/' . $this->logo_image);
+//        } else {
+//            // дефолтный аватар
+//            //TODO исправить на /crm/
+//            $avatarUri = asset('uploaded_images/logo/logo200_50.png');
+//        }
+
+        /*@if ($organization->logo_image)
+
+                                            @else
+                                                {{$organization->logo_image}}
+                                            @endif
+         * */
+        $avatarUri = asset('uploaded_images/logo/logo200_50.png');
+        return "<img src='{$avatarUri}'>";
+    }
+
 
 }

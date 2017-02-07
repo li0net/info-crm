@@ -3,10 +3,16 @@
 
     <!-- Logo -->
     <a href="{{ url('/home') }}" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>BC</b>I</span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Barcelona</b>Info</span>
+        <span class="logo-mini"><b>BC</b></span>
+        <span class="logo-lg">
+            @if ($user->organization->logo_image)
+                <img src="{{$user->organization->getLogoUri()}}" class="">
+            @elseif ($user->organization->name)
+                {{$user->organization->name}}
+            @else
+                @lang('main.organization:default_name')
+            @endif
+        </span>
     </a>
 
     <!-- Header Navbar -->
