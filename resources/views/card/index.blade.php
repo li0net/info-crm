@@ -65,14 +65,14 @@
 									<div class="row">
 										<div class="col-sm-12 text-center">
 											<div class="form-group">
-												<a href="#card-items-{{$card->card_id}}" data-toggle="collapse" class="btn btn-link btn-xs">
+												<a href="#card-items-{{$card->card_id}}" data-toggle="collapse" class="btn btn-link btn-xs card-items-toggle">
 												<span class="badge label-danger hidden" v-model="card_items_count">@{{ card_items_count }}</span>
 												Состав технологической карты
 												<i class="fa fa-caret-down"></i></a>
 											</div>
 										</div>
 									</div>
-									<div id="card-items-{{$card->card_id}}" class="collapse">
+									<div id="card-items-{{$card->card_id}}" class="collapse card-items">
 										<div class="row">
 											<div class="col-sm-4 small"><strong>Наименование</strong></div>
 											<div class="col-sm-4 small"><strong>Склад</strong></div>
@@ -119,6 +119,20 @@
 			</div>
 		</div>
 	</div>		
+@endsection
+
+@section('page-specific-scripts')
+	<script type="text/javascript">
+		$(document).ready(function($) {
+			$('.card-items').on('shown.bs.collapse', function(e){
+				$('a[href="#' + e.target.id + '"] .fa.fa-caret-down').toggleClass('fa-caret-down fa-caret-up');
+			});
+
+			$('.card-items').on('hidden.bs.collapse', function(e){
+				$('a[href="#' + e.target.id + '"] .fa.fa-caret-up').toggleClass('fa-caret-up fa-caret-down');
+			});
+		});
+	</script>
 @endsection
 
 <script>

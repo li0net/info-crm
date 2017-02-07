@@ -50,8 +50,6 @@ class CardController extends Controller
 			$i++;
 		}
 
-		// dd($card_items);
-
 		$page = Input::get('page', 1);
 		$paginate = 10;
 		 
@@ -66,9 +64,7 @@ class CardController extends Controller
 			$i++;
 		}
 
-		// dd($cards);
-
-		return view('card.index', ['user' => $request->user(), 'card_items' => $card_items])->withcards($cards);
+		return view('card.index', ['user' => $request->user()])->withcards($cards);
 	}
 
 	/**
