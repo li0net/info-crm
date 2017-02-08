@@ -27,6 +27,8 @@
 			<div class="well">
 				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
 				{!! Form::model($scheme, ['route' => ['wage_scheme.update', $scheme->scheme_id], 'class' => 'form-horizontal', 'method' => 'PUT']) !!}
+					{{ Form::hidden('service_ctgs_options', null, ['id' => 'service_ctgs_options']) }}
+					{{ Form::hidden('product_ctgs_options', null, ['id' => 'product_ctgs_options']) }}
 					<div class="row">
 						<div class="form-group">
 							<div class="col-sm-2 control-label">
@@ -56,7 +58,8 @@
 							<label class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
 								<a href="#detailed-services" data-toggle="collapse" class="btn btn-link btn-xs">
-								<span class="badge label-danger" v-model="detailed_services_count">@{{ detailed_services_count }}</span>
+								<span class="badge label-danger">@{{ detailed_services_count }}</span>
+								{{-- <input v-model="detailed_services_count"> --}}
 								&nbsp;&nbsp;Уточнить значение для категорий или отдельных услуг&nbsp;&nbsp;
 								<i class="fa fa-caret-down"></i></a>
 							</div>
@@ -126,7 +129,7 @@
 							<label class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
 								<a href="#detailed-products" data-toggle="collapse" class="btn btn-link btn-xs">
-								<span id="jopa" class="badge label-danger" v-model="detailed_products_count">@{{ detailed_products_count }}</span>
+								<span class="badge label-danger">@{{ detailed_products_count }}</span>
 								&nbsp;&nbsp;Уточнить значение для категорий или отдельных товаров&nbsp;&nbsp;
 								<i class="fa fa-caret-down"></i></a>
 							</div>
@@ -238,80 +241,7 @@
 @section('page-specific-scripts')
 	<script type="text/javascript">
 		$(document).ready(function($) {
-			$('#detailed-services').on('click', '#add-detailed-section', function(e) {
-				if($(e.target).val() !== 'Удалить') {
-					$('#detailed-services').prepend(
-						'<div class="wrap-it"><div class="col-sm-2"></div>' +						
-						'<div class="col-sm-8" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="services_cats_detailed[]" class="form-control"><option value="0" selected="selected">Стрижки</option><option value="1">Укладки</option></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="services_detailed[]" class="form-control"><option value="0" selected="selected">Полубокс</option><option value="1">Модельная</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="services_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="services_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
-						'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info"></div></div>');
-					app.detailed_services_count++;
-					$('a[href="#detailed-services"] .badge.label-danger').removeClass('hidden');
-					$(e.target).val('Удалить');
-					$(e.target).toggleClass('btn-info btn-danger')
-					$(e.target).off();
-					$(e.target).on('click', function(e) {
-						$(e.target).parent().parent().remove();
-						app.detailed_services_count--;
-						if(app.detailed_services_count == 0) {
-							$('a[href="#detailed-services"] .badge.label-danger').addClass('hidden');
-						}
-					});
-				} else {
-					$(e.target).parent().parent().remove();
-					app.detailed_services_count--;
-					if(app.detailed_services_count == 0) {
-						$('a[href="#detailed-services"] .badge.label-danger').addClass('hidden');
-					}
-				}
-			});
-
-			$('#detailed-services').on('shown.bs.collapse', function(){
-				$('a[href="#detailed-services"] .fa.fa-caret-down').toggleClass('fa-caret-down fa-caret-up');
-			});
-
-			$('#detailed-services').on('hidden.bs.collapse', function(){
-				$('a[href="#detailed-services"] .fa.fa-caret-up').toggleClass('fa-caret-up fa-caret-down');
-			});
-
-			$('#detailed-products').on('click', '#add-detailed-section', function(e) {
-				if($(e.target).val() !== 'Удалить') {
-					$('#detailed-products').prepend(
-						'<div class="wrap-it"><div class="col-sm-2"></div>' +						
-						'<div class="col-sm-8" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="products_cats_detailed[]" class="form-control"><option value="0" selected="selected">Лаки</option><option value="1">Краски</option></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="products_detailed[]" class="form-control"><option value="0" selected="selected">LONDA</option><option value="1">WELLA</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="products_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="products_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
-						'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info"></div></div>');
-					
-					$('select.form-control[name="products_cats_detailed[]"]').first().find('option').remove();
-					$('select.form-control[name="products_cats_detailed[]"]').first().append(app.services_ctgs_options);
-					
-					app.detailed_products_count++;
-					
-					$('a[href="#detailed-products"] .badge.label-danger').removeClass('hidden');
-					$(e.target).val('Удалить');
-					$(e.target).toggleClass('btn-info btn-danger')
-					$(e.target).off();
-					$(e.target).on('click', function(e) {
-						$(e.target).parent().parent().remove();
-						app.detailed_products_count--;
-						if(app.detailed_products_count == 0) {
-							$('a[href="#detailed-products"] .badge.label-danger').addClass('hidden');
-						}
-					});
-				} else {
-					$(e.target).parent().parent().remove();
-					app.detailed_products_count--;
-					if(app.detailed_products_count == 0) {
-						$('a[href="#detailed-products"] .badge.label-danger').addClass('hidden');
-					}
-				}
-			});
-
-			$('#detailed-products').on('shown.bs.collapse', function(){
-				$('a[href="#detailed-products"] .fa.fa-caret-down').toggleClass('fa-caret-down fa-caret-up');
-			});
-
-			$('#detailed-products').on('hidden.bs.collapse', function(){
-				$('a[href="#detailed-products"] .fa.fa-caret-up').toggleClass('fa-caret-up fa-caret-down');
-			});
+			var options = '';
 
 			$.ajax({
 				type: "GET",
@@ -320,13 +250,34 @@
 				data: {},
 				success: function(data) {
 					for (var i = 0; i < data.rows.length; i++) {
-						app.services_ctgs_options = app.services_ctgs_options + '<option value=' + data.rows[i].service_category_id + '>' + data.rows[i].name + '</option>';
+						options += '<option value=' + data.rows[i].service_category_id + '>' + data.rows[i].name + '</option>';
 					}
 
-					$('select.form-control[name="products_cats_detailed[]"]').find('option').remove();
-					$('select.form-control[name="products_cats_detailed[]"]').append(app.services_ctgs_options);
+					$('#service_ctgs_options').val(options);
 
-					console.log(app.services_ctgs_options);
+					$('select.form-control[name="services_cats_detailed[]"]').find('option').remove();
+					$('select.form-control[name="services_cats_detailed[]"]').append(options);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log('Error while processing services data range!');
+				}
+			});
+
+			$.ajax({
+				type: "GET",
+				dataType: 'json',
+				url: '/productCategoriesData',
+				data: {},
+				success: function(data) {
+					options = '';
+					for (var i = 0; i < data.length; i++) {
+						options += '<option value=' + data[i].product_category_id + '>' + data[i].title + '</option>';
+					}
+
+					$('#product_ctgs_options').val(options);
+
+					$('select.form-control[name="products_cats_detailed[]"]').find('option').remove();
+					$('select.form-control[name="products_cats_detailed[]"]').append(options);
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
 					console.log('Error while processing services data range!');
