@@ -21,6 +21,34 @@ class CardController extends Controller
 	public function index(Request $request)
 	{
 		$cards = Card::where('organization_id', $request->user()->organization_id)->get()->all();
+		$items = array();
+		$cards_items = array();
+
+		foreach($cards as $card) {
+			$items[] = json_decode($card->card_items);
+		}
+
+		foreach ($items as &$item) {
+			foreach ($item[1] as $key => $value) {
+				$storage = Storage::where('storage_id', $item[1][$key])->get(['title'])->all();
+				$item[1][$key] = $storage[0]->title;
+			}
+		}
+
+		unset($item);
+
+		$i = 0;
+		foreach($items as $item) {
+			if(0 !== count($item[0])) {
+				foreach ($item[0] as $key => $value) {
+					$card_items[$i][] = array($value, $item[1][$key], $item[2][$key]);
+				}
+			}
+			else {
+				$card_items[$i] = null;
+			}
+			$i++;
+		}
 
 		$page = Input::get('page', 1);
 		$paginate = 10;
@@ -29,6 +57,12 @@ class CardController extends Controller
 		$itemsForCurrentPage = array_slice($cards, $offset, $paginate, true);
 		$cards = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($cards), $paginate, $page);
 		$cards->setPath('card');
+
+		$i = 0;
+		foreach ($cards as $card) {
+			$card->card_items = $card_items[$i];
+			$i++;
+		}
 
 		return view('card.index', ['user' => $request->user()])->withcards($cards);
 	}
@@ -110,9 +144,11 @@ class CardController extends Controller
 
 		$card_items = array();
 
+		// dd($card->card_items);
+
 		if(null !== $card->card_items) {
 			$items = json_decode($card->card_items);
-			
+
 			foreach ($items[0] as $key => $value) {
 				$card_items[] = array($value, $items[1][$key], $items[2][$key]);
 			}
