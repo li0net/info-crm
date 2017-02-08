@@ -12,7 +12,7 @@
 
 	<div class="row">
 		<div class="col-sm-6 col-sm-offset-3">
-			<h4>Новая технологическая карта</h4>	
+			<h4>Информация о технологической карте</h4>	
 			{{-- <ex1></ex1> --}}
 			<hr>	
 			@if (count($errors) > 0)

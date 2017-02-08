@@ -148,4 +148,11 @@ class ProductCategoriesController extends Controller
 
         return redirect()->route('productCategories.index');
     }
+
+    public function getProductCategoriesData(Request $request)
+    {
+        $productCategories = ProductCategory::where('organization_id', $request->user()->organization_id)->get()->all();
+
+        echo json_encode($productCategories);
+    }
 }

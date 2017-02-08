@@ -48,6 +48,7 @@ return [
     'service:delete_success_message'        => 'Услуга удалена!',
     'service:delete_error_message'          => 'Услуга не найдена.',
 
+    'organization:default_name'             => 'BarcelonaCRM',
     'organization:form_page_header'         => 'Основные настройки',
     'organization:edit_form_header'         => 'Редактировать настройки',
     'organization:name_label'               => 'Название',
@@ -56,6 +57,7 @@ return [
     'organization:country_label'            => 'Страна',
     'organization:city_label'               => 'Город',
     'organization:logo_label'               => 'Логотип',
+    'organization:logo_btn'                 => 'Загрузить фото',
     'organization:info_label'               => 'Описание',
 
     'appointment:client_wait_tab_label'     => 'Ожидание клиента',
@@ -87,6 +89,7 @@ return [
     'user:phone_label'                      => 'Телефон',
     'user:create_new_btn_label'             => 'Создать пользователя',
     'user:creation_success_message'         => 'Пользовтель был успешно создан!',
+    'user:logo_btn'                         => 'Загрузить фото',
 
     'user:title_personal_data_settings'     => 'Настройки персональных данных',
     'user:title_section_personal_data'      => 'Личные данные',
@@ -111,6 +114,7 @@ return [
     'user:permissions_employee_delete_label' => 'Удаление персонала',
     'user:permissions_schedule_edit_label'  => 'Редактирование графика работы',
     'user:permissions_clients_label'        => 'Клиенты',
+
 
     'client:list_header'                    => 'Клиенты',
     'client:list_page_header'               => 'Клиенты',

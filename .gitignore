@@ -1,5 +1,6 @@
 /node_modules
 /public/storage
+/public
 /storage/*.key
 /vendor
 /.idea
@@ -9,3 +10,4 @@ Homestead.json
 Homestead.yaml
 gulpfile.*
 .env
+composer.phar
