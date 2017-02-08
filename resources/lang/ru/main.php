@@ -94,6 +94,9 @@ return [
     'user:title_section_settings'           => 'Настройки',
     'user:title_section_mailings'           => 'Рассылки',
     'user:btn_my_records'                   => 'Мои записи',
+    'user:receive_news_emails'              => 'Получать новостные и информационные письма',
+    'user:receive_marketing_offer_emails'   => 'Получать маркетинговые письма с предложениями',
+    'user:receive_system_inf_emails'        => 'Получать письма о работе системы',
 
     'user:permissions_appointment_form_label' => 'Окно записи',
     'user:permissions_appointment_create_label' => 'Создавать записи',

@@ -16,6 +16,9 @@
 <script src="{{ asset('/plugins/colorpicker/bootstrap-colorpicker.min.js') }}"></script>
 <script src="{{ asset('/plugins/select2/select2.full.min.js') }}"></script>
 
+<!-- Dump all dynamic scripts into template -->
+@stack('scripts')
+
 {{-- <script src="//api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug" type="text/javascript"></script> --}}
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
