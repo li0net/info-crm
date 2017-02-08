@@ -8,7 +8,7 @@
 @section('main-content')
     <div class="container-fluid spark-screen">
         <div class="row">
-            <div class="col-md-9 col-md-offset-1">
+            <div class="col-sm-8 col-sm-offset-2">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">@lang('main.organization:edit_form_header')</h3>
@@ -138,16 +138,18 @@
                             <div class="col-sm-4">
                                 <div class="form-group text-center">
                                     <label for="o_logo_image" class="col-sm-2 control-label">@lang('main.organization:logo_label')</label>
-                                    <p class="help-block">@lang('main.organization:logo_help')</p>
                                     <div class="col-sm-12 text-center ">
                                         <div class="logo-block">
-                                            <img src="{{$organization->getLogoUri()}}" class="">
+                                            <div v-if="!image">
+                                                <img src="{{$organization->getLogoUri()}}">
+                                            </div>
+                                            <div v-else>
+                                                <img :src="image"/>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <span class="btn btn-success btn-file">
-                                                @lang('main.organization:logo_btn') <input type="file" name="logo_image" id="o_logo_image" accept=".jpg,.jpeg,.png,.bmp,.gif" class="">
-                                            </span>
-                                        </div>
+                                        <span class="btn btn-success btn-file">
+											@lang('main.user:logo_btn')<input type="file" @change="onFileChange" name="logo_image" id="o_logo_image" accept=".jpg,.jpeg,.png,.bmp,.gif" class="">
+										</span>
 
                                         @foreach ($errors->get('logo_image') as $message)
                                         <?='<br/>'?>{{$message}}

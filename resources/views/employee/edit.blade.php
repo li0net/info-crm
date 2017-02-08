@@ -71,7 +71,7 @@
 											</div>
 										</div>
 										<span class="btn btn-success btn-file">
-											Загрузить фото <input type="file" name="avatar" @change="onFileChange">
+											@lang('main.user:logo_btn')<input type="file" name="avatar" @change="onFileChange">
 										</span>
 									</div>
 								{!! Form::close() !!}
