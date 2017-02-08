@@ -3,10 +3,16 @@
 
     <!-- Logo -->
     <a href="{{ url('/home') }}" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>BC</b>I</span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Barcelona</b>Info</span>
+        <span class="logo-mini"><b>BC</b></span>
+        <span class="logo-lg">
+            @if ($user->organization->logo_image)
+                <img src="{{$user->organization->getLogoUri()}}" class="">
+            @elseif ($user->organization->name)
+                {{$user->organization->name}}
+            @else
+                @lang('main.organization:default_name')
+            @endif
+        </span>
     </a>
 
     <!-- Header Navbar -->
@@ -34,7 +40,7 @@
                                     <a href="#">
                                         <div class="pull-left">
                                             <!-- User Image -->
-                                            <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image"/>
+                                            <img src="{{ $user->getAvatarUri() }}" class="img-circle" alt="User Image"/>
                                         </div>
                                         <!-- Message title and timestamp -->
                                         <h4>
@@ -117,14 +123,14 @@
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <img src="{{ Gravatar::get($user->email) }}" class="user-image" alt="User Image"/>
+                            <img src="{{ $user->getAvatarUri() }}" class="user-image" alt="User Image"/>
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs">{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" />
+                                <img src="{{ $user->getAvatarUri() }}" class="img-circle" alt="User Image" />
                                 <p>
                                     {{ Auth::user()->name }}
                                     {{-- <small>{{ trans('adminlte_lang::message.login') }} Nov. 2012</small> --}}
@@ -145,7 +151,7 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="{{ url('organization/edit') }}" class="btn btn-default btn-block">{{ trans('adminlte_lang::message.profile') }}</a>
+                                    <a href="{{ url('user/cabinet') }}" class="btn btn-default btn-block">{{ trans('adminlte_lang::message.profile') }}</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="{{ url('/logout') }}" class="btn btn-default btn-block"

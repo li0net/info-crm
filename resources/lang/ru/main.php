@@ -48,6 +48,7 @@ return [
     'service:delete_success_message'        => 'Услуга удалена!',
     'service:delete_error_message'          => 'Услуга не найдена.',
 
+    'organization:default_name'             => 'BarcelonaCRM',
     'organization:form_page_header'         => 'Основные настройки',
     'organization:edit_form_header'         => 'Редактировать настройки',
     'organization:name_label'               => 'Название',
@@ -56,6 +57,8 @@ return [
     'organization:country_label'            => 'Страна',
     'organization:city_label'               => 'Город',
     'organization:logo_label'               => 'Логотип',
+    'organization:logo_help'                => 'Желательный размер: 200*50px',
+    'organization:logo_btn'                 => 'Выбрать логотип',
     'organization:info_label'               => 'Описание',
 
     'appointment:client_wait_tab_label'     => 'Ожидание клиента',

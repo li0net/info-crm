@@ -98,10 +98,11 @@ class OrganizationsController extends Controller
 
         // Проверяем, действительно ли загруженный файл - изображение
         if(isset($_FILES["logo_image"]["tmp_name"]) AND trim($_FILES["logo_image"]["tmp_name"]) != '') {
-            $targetDir = public_path()."/uploaded_images/logo/";
+            $targetDir = public_path()."/uploaded_images/logo/main/";
             $imageUploadErrors = array();
             $imageFileType = pathinfo($targetDir.basename($_FILES["logo_image"]["name"]), PATHINFO_EXTENSION);
-            $targetFile = $targetDir.$organization->organization_id.'.'.$imageFileType;
+            $fileName = $organization->organization_id.'.'.$imageFileType;
+            $targetFile = $targetDir.$fileName;
 
             $check = getimagesize($_FILES["logo_image"]["tmp_name"]);
             if($check === false) {
@@ -121,6 +122,9 @@ class OrganizationsController extends Controller
             } else {
                 if (!move_uploaded_file($_FILES["logo_image"]["tmp_name"], $targetFile)) {
                     Log::error('Failed to move uploaded file', ['targetFile' => $targetFile]);
+                } else {
+                    // if uploaded  - save file as logo
+                    $organization->logo_image = $fileName;
                 }
             }
         }
@@ -136,7 +140,7 @@ class OrganizationsController extends Controller
 
         $organization->save();
 
-        return redirect()->to('/');
+        return redirect()->to('/organization/edit')->with('status', 'Profile updated!');;
     }
 
     public function editInfo(Request $request)
