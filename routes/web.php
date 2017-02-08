@@ -42,6 +42,7 @@ Route::resource('/item', 'ItemController');
 Route::resource('/wage_scheme', 'WageSchemesController');
 Route::resource('/unit', 'UnitController');
 Route::resource('/storage', 'StorageController');
+Route::resource('/payment', 'PaymentController');
 Route::get('/storageData', 'StorageController@getStorageData');
 Route::get('/productCategoriesData', 'ProductCategoriesController@getProductCategoriesData');
 Route::resource('/card', 'CardController');
