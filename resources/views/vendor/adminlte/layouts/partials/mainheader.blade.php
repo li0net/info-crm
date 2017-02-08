@@ -5,9 +5,7 @@
     <a href="{{ url('/home') }}" class="logo">
         <span class="logo-mini"><b>BC</b></span>
         <span class="logo-lg">
-            @if ($user->organization->logo_image)
-                <img src="{{$user->organization->getLogoUri()}}" class="">
-            @elseif ($user->organization->name)
+            @if ($user->organization->name)
                 {{$user->organization->name}}
             @else
                 @lang('main.organization:default_name')

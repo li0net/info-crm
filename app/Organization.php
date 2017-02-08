@@ -72,28 +72,4 @@ class Organization extends Model
         }
         return $logoUri;
     }
-
-    public function getLogo() {
-//        $logoPath = public_path() . '/uploaded_images/logo/main/' . $this->logo_image;
-//        //echo $logoPath;
-//        //return $logoPath;
-//        if (file_exists($logoPath)) {
-//            $avatarUri = asset('uploaded_images/logo/main/' . $this->logo_image);
-//        } else {
-//            // дефолтный аватар
-//            //TODO исправить на /crm/
-//            $avatarUri = asset('uploaded_images/logo/logo200_50.png');
-//        }
-
-        /*@if ($organization->logo_image)
-
-                                            @else
-                                                {{$organization->logo_image}}
-                                            @endif
-         * */
-        $avatarUri = asset('uploaded_images/logo/logo200_50.png');
-        return "<img src='{$avatarUri}'>";
-    }
-
-
 }
