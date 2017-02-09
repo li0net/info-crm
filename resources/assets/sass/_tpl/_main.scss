@@ -30,3 +30,50 @@ label {
     }
   }
 }
+
+/** datepicker **/
+.datepicker{
+  &.datepicker-dropdown{
+    table{
+      th,
+      //td,
+      td{
+        color: #000000;
+        &.day.new{
+          color: #777;
+        }
+        &:hover{
+          background: #eee;
+        }
+      }
+    }
+  }
+  .datepicker-switch,
+  .next,
+  .prev{
+    cursor: pointer;
+    &:hover{
+      background: rgba(0,0,0,0.2);
+      //background: #eee;
+    }
+  }
+  &.dropdown-menu > div {
+    display: block;
+  }
+  &.days div.datepicker-days {
+    display: block;
+  }
+  &.months div.datepicker-months {
+    display: block;
+  }
+  &.years div.datepicker-years {
+    display: block;
+  }
+}
+
+.form-group{
+  .select2.select2-container{
+    width:100%;
+    border: 0;
+  }
+}

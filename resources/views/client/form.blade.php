@@ -102,7 +102,7 @@
                             <div class="form-group">
                                 <label for="c_category_id" class="col-sm-2 control-label">@lang('main.client:client_category_label')</label>
                                 <div class="col-md-10">
-                                    <select name="category_id[]" id="c_category_id" class="js-select-basic-multiple" multiple="multiple" style="width: 170px">
+                                    <select name="category_id[]" id="c_category_id" class="js-select-basic-multiple" multiple="multiple" style="width: 100%">
                                         @foreach($clientCategoriesOptions AS $clientCategory)
                                             <option data-color="{{$clientCategory['color']}}"
                                                 @if(old('category_id') AND old('category_id') == $clientCategory['value'])
@@ -236,9 +236,11 @@
                                     } else {
                                         $checked = "";
                                     }?>
-                                    <input type="checkbox" name="birthday_sms" id="c_birthday_sms" {{$checked}} value="1">&nbsp;@lang('main.client:birthday_sms_label')
-                                    <br>
-                                
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="birthday_sms" id="c_birthday_sms" {{$checked}} value="1">&nbsp;@lang('main.client:birthday_sms_label')
+                                        </label>
+                                    </div>
                                     <?php
                                     $old = old('do_not_send_sms');
                                     if (!is_null($old)) {
@@ -248,7 +250,10 @@
                                     } else {
                                         $checked = "";
                                     }?>
-                                    <input type="checkbox" name="do_not_send_sms" id="c_do_not_send_sms" {{$checked}} value="1">&nbsp;@lang('main.client:do_not_send_sms_label')
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" name="do_not_send_sms" id="c_do_not_send_sms" {{$checked}} value="1">&nbsp;@lang('main.client:do_not_send_sms_label')</label>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="form-group">
@@ -263,7 +268,10 @@
                                     } else {
                                         $checked = "";
                                     }?>
-                                    <input type="checkbox" name="online_reservation_available" id="c_online_reservation_available" {{$checked}} value="1">&nbsp;@lang('main.client:online_reservation_available')
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" name="online_reservation_available" id="c_online_reservation_available" {{$checked}} value="1">&nbsp;@lang('main.client:online_reservation_available')</label>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="form-group">
