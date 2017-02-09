@@ -42,6 +42,7 @@ Route::resource('/item', 'ItemController');
 Route::resource('/wage_scheme', 'WageSchemesController');
 Route::resource('/unit', 'UnitController');
 Route::resource('/storage', 'StorageController');
+Route::resource('/payment', 'PaymentController');
 Route::get('/storageData', 'StorageController@getStorageData');
 Route::get('/productCategoriesData', 'ProductCategoriesController@getProductCategoriesData');
 Route::resource('/card', 'CardController');
@@ -104,6 +105,8 @@ Route::get('/users/edit/{user}', 'UsersController@edit');
 Route::post('/users/save', 'UsersController@save');
 Route::post('/users/{user}/savePermissions', 'UsersController@savePermissions');
 Route::get('/user/cabinet', 'UsersController@editOwnSettings');
+Route::post('/user/saveAvatar', 'UsersController@saveAvatar');
+Route::post('/user/saveMailingSettings', 'UsersController@saveMailingSettings');
 
 Route::get('/clients/create', 'ClientsController@create');
 Route::get('/clients/edit/{client}', 'ClientsController@edit');

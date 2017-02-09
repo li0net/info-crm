@@ -241,4 +241,59 @@ class UsersController extends Controller
             'crmuser' => $request->user()
         ]);
     }
+
+    public function saveAvatar(Request $request) {
+        //dd($_FILES);
+        $data = $request->all();
+        dd($data);
+
+        //$request->input('avatar');
+        $result = ['success' => FALSE, 'error' => ''];
+
+        // Проверяем, действительно ли загруженный файл - изображение
+        if(isset($_FILES["avatar"]["tmp_name"]) AND trim($_FILES["avatar"]["tmp_name"]) != '') {
+            $targetDir = public_path()."/uploaded_images/avatar/";
+            $imageUploadErrors = array();
+            $imageFileType = pathinfo($targetDir.basename($_FILES["avatar"]["name"]), PATHINFO_EXTENSION);
+            $targetDir = $targetDir . $request->user()->organization_id . '/';
+            $targetFile = $targetDir . $request->user()->user_id . '.' .$imageFileType;
+
+            $check = getimagesize($_FILES["avatar"]["tmp_name"]);
+            if($check === false) {
+                $imageUploadErrors[] = "File is not an image";
+            }
+
+            // не более 5Мбайт
+            if ($_FILES["logo_image"]["size"] > 5242880) {
+                $imageUploadErrors[] = "Sorry, your file is too large (images smaller than 5Mb supported)";
+            }
+
+            if (count($imageUploadErrors) > 0) {
+                /*return back()
+                    ->withErrors( new MessageBag(array('logo_image' => $imageUploadErrors)) )
+                    ->withInput();
+                */
+                $result['error'] = implode("\n", $imageUploadErrors);
+                return json_encode($result);
+
+            } else {
+                // if everything is ok, try to upload file
+                if (!file_exists($targetDir)) {
+                    mkdir($targetDir, 0777, true);
+                }
+                if (!move_uploaded_file($_FILES["logo_image"]["tmp_name"], $targetFile)) {
+                    Log::error('Failed to move uploaded file', ['targetFile' => $targetFile]);
+                }
+            }
+
+            $result['success'] = true;
+        }
+
+        return json_encode($result);
+    }
+
+    public function saveMailingSettings(Request $request) {
+        $data = $request->all();
+        dd($data);
+    }
 }

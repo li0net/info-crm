@@ -23,6 +23,9 @@
     <![endif]-->
 
 
+    <!--Dynamic StyleSheets added from a view would be pasted here-->
+    @stack('styles')
+
     <script>
         window.Laravel = <?php echo json_encode([
                 'csrfToken' => csrf_token(),

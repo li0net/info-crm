@@ -11,7 +11,7 @@
 @section('main-content')
 	<div class="row">
 		<div class="col-md-6 col-md-offset-3">
-			<h1>Создание нового контрагента</h1>	
+			<h1>Информация о контрагенте</h1>	
 			<hr>	
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">

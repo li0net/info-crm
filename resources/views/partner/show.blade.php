@@ -73,7 +73,7 @@
 
 				<div class="row">
 					<div class="col-md-12">
-							{{ Html::linkRoute('partner.index', 'Все контрагенты »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
+						{{ Html::linkRoute('partner.index', 'Все контрагенты »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
 					</div>
 				</div>
 			</div>
