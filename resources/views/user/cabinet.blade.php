@@ -60,6 +60,15 @@
                         <h3 class="box-title">@lang('main.user:title_section_mailings')</h3>
                     </div>
                     <div class="box-body">
+                        <div class="alert alert-success" id="mailings_form_success_alert">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                            @lang('main.user:mailings_settings_saved_message')
+                        </div>
+                        <div class="alert alert-error" id="mailings_form_error_alert">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                            @lang('main.user:mailings_settings_save_error_message')
+                        </div>
+
                         <form id="mailings_form" method="post" action="/user/saveMailingSettings">
                             <?php
                             if ($crmuser->send_news_inf_emails == '1') {
@@ -107,16 +116,105 @@
                         <h3 class="box-title">@lang('main.user:title_section_settings')</h3>
                     </div>
                     <div class="box-body">
-                        <div class="form-group">
-                            <label>Date:</label>
+                        <div class="alert alert-success" id="main_info_form_success_alert">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                            @lang('main.user:main_info_settings_saved_message')
+                        </div>
+                        <div class="alert alert-error" id="main_info_form_error_alert">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                            <span id="main_info_error_container">@lang('main.user:main_info_save_error_message')</span>
+                        </div>
 
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="text" class="form-control pull-right" id="datepicker">
+                        <form id="usercabinet_main_info_form" methos="post" action="/user/saveMainInfo">
+                        <div class="row">
+                            <div class="form-group col-sm-3 text-right">
+                                <label>@lang('main.user:name_label')</label>
+                            </div>
+                            <div class="form-group col-sm-9">
+                                <?php
+                                $old = old('name');
+                                if (!is_null($old)) {
+                                    $value = $old;
+                                } else {
+                                    $value = $crmuser->name;
+                                }?>
+                                <input type="text" name="name" id="usr_name" value="{{$value}}" class="form-control">
+                                @foreach ($errors->get('name') as $message)
+                                    <br/>{{$message}}
+                                @endforeach
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-3 text-right">
+                                <label>@lang('main.user:lang_label_usercabinet')</label>
+                            </div>
+                            <div class="form-group col-sm-9">
+                                <select name="lang" id="usr_lang" class="form-control">
+                                    @foreach($langOptions AS $lang)
+                                        <option
+                                            @if (old('lang') AND old('lang') == $lang['value'])
+                                            selected="selected"
+                                            @elseif (!old('lang') AND $crmuser->lang == $lang['value'])
+                                            selected="selected"
+                                            @elseif (!old('lang') AND !$crmuser->lang AND isset($lang['selected']) AND $lang['selected'] == true)
+                                            selected="selected"
+                                            @endif
+                                        value="{{$lang['value']}}">{{$lang['label']}}</option>
+                                    @endforeach
+                                </select>
+                                @foreach ($errors->get('lang') as $message)
+                                    <br/>{{$message}}
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-3 text-right">
+                                <label>@lang('main.user:name_city_usercabinet')</label>
+                            </div>
+                            <div class="form-group col-sm-9">
+                                <?php
+                                $old = old('city');
+                                if (!is_null($old)) {
+                                    $value = $old;
+                                } else {
+                                    $value = $crmuser->city;
+                                }?>
+                                <input type="text" name="city" id="usr_name" value="{{$value}}" class="form-control">
+                                @foreach ($errors->get('city') as $message)
+                                    <br/>{{$message}}
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-3 text-right">
+                                <label>@lang('main.user:info_label_usercabinet')</label>
+                            </div>
+                            <div class="form-group col-sm-9">
+                                <?php
+                                $old = old('info');
+                                if (!is_null($old)) {
+                                    $value = $old;
+                                } else {
+                                    $value = $crmuser->info;
+                                }?>
+                                <textarea name="info" id="usr_info" class="form-control">{{$value}}</textarea>
+                                @foreach ($errors->get('info') as $message)
+                                    <br/>{{$message}}
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-3 text-right">
+                            </div>
+                            <div class="form-group col-sm-9">
+                                <p><a href="#" id="main_info_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_main_info')</a></p>
+                            </div>
+                        </div>
+                        </form>
                     </div>
                 </div>
 

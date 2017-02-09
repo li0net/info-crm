@@ -9,9 +9,12 @@ use App\User;
 use App\AccessPermission;
 use Illuminate\Support\Facades\Log;
 use Session;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
+
+    protected $langOptions;
 
     public function __construct()
     {
@@ -19,6 +22,18 @@ class UsersController extends Controller
 
         $this->middleware('auth');
         $this->middleware('permissions');   //->only(['create', 'edit', 'save']);
+
+        $this->langOptions = [
+            [
+                'value'     => 'en',
+                'label'     => 'en'
+            ],
+            [
+                'value'     => 'ru',
+                'label'     => 'ru',
+                'selected'  => true
+            ],
+        ];
     }
 
     // users grid
@@ -238,7 +253,8 @@ class UsersController extends Controller
 
     public function editOwnSettings(Request $request) {
         return view('user.cabinet', [
-            'crmuser' => $request->user()
+            'crmuser' => $request->user(),
+            'langOptions' => $this->langOptions
         ]);
     }
 
@@ -292,8 +308,76 @@ class UsersController extends Controller
         return json_encode($result);
     }
 
+    /**
+     * Апдейтит настройки рассылки информационных писем для пользователя
+     *
+     * @param $request Request
+     * @return string
+     * */
     public function saveMailingSettings(Request $request) {
-        $data = $request->all();
-        dd($data);
+        $formData = $request->all();
+
+        $valuesToSet = array(
+            'send_news_inf_emails' => 0,
+            'send_marketing_offer_emails' => 0,
+            'send_system_inf_emails' => 0
+        );
+        foreach($valuesToSet AS $fName=>$val) {
+            if (isset($formData[$fName]) AND $formData[$fName]) $valuesToSet[$fName] = 1;
+        }
+
+        $user = $request->user();
+        $user->fill($valuesToSet);
+        $user->save();
+
+        return json_encode([
+            'success'   => true,
+            'error'     => ''
+        ]);
+    }
+
+    /**
+     * Апдейтит основную инормацию пользователя
+     *
+     * @param $request Request
+     * @return string
+     * */
+    public function saveMainInfo(Request $request) {
+        $formData = $request->all();
+
+        $validator = Validator::make($formData, [
+            'name' => 'required|max:110',
+            'info' => 'max:255',
+            'city' => 'max:50',
+            'lang' => 'required|min:2|max:2'
+        ]);
+        if ($validator->fails()) {
+            $errors = '';
+            $mbErrors = $validator->errors();
+            foreach ($mbErrors->all() as $message) {
+                $errors .= $message.'<br>';
+            }
+        }
+        if (isset($errors)) {
+            return json_encode([
+                'success' => false,
+                'error'   => substr($errors, 0, -4)
+            ]);
+        }
+
+        $langFromList = false;
+        foreach ($this->langOptions AS $option) {
+            if ($option['value'] == $formData['lang']) $langFromList=true;
+        }
+        if (!$langFromList) unset($formData['lang']);
+
+        $user = $request->user();
+        $user->fill($formData);
+        $user->save();
+
+        return json_encode([
+            'success' => true,
+            'error'   => ''
+        ]);
     }
 }

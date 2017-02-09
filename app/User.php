@@ -22,7 +22,19 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        //'organization_id'
+        'name',
+        'lang',
+        'city',
+        'phone',
+        'send_news_inf_emails',
+        'send_marketing_offer_emails',
+        'send_system_inf_emails',
+        'info'
+        //'email',
+        //'password',
+        //'organization_id',
+        //'remember_token',
+        //'is_admin'
     ];
 
     /**

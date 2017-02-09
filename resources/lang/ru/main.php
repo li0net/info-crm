@@ -100,6 +100,14 @@ return [
     'user:receive_news_emails'              => 'Получать новостные и информационные письма',
     'user:receive_marketing_offer_emails'   => 'Получать маркетинговые письма с предложениями',
     'user:receive_system_inf_emails'        => 'Получать письма о работе системы',
+    'user:mailings_settings_saved_message'  => 'Настройки сохранены',
+    'user:mailings_settings_save_error_message' => 'Ошибка! Настройки не сохранены',
+    'user:info_label_usercabinet'           => 'Информация о себе',
+    'user:lang_label_usercabinet'           => 'Язык',
+    'user:name_city_usercabinet'            => 'Город',
+    'user:btn_update_main_info'             => 'Изменить данные',
+    'user:main_info_settings_saved_message' => 'Данные сохранены',
+    'user:main_info_save_error_message'     => 'Ошибка! Данные не сохранены',
 
     'user:permissions_appointment_form_label' => 'Окно записи',
     'user:permissions_appointment_create_label' => 'Создавать записи',
@@ -114,7 +122,6 @@ return [
     'user:permissions_employee_delete_label' => 'Удаление персонала',
     'user:permissions_schedule_edit_label'  => 'Редактирование графика работы',
     'user:permissions_clients_label'        => 'Клиенты',
-
 
     'client:list_header'                    => 'Клиенты',
     'client:list_page_header'               => 'Клиенты',

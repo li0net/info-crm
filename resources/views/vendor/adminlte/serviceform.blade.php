@@ -44,7 +44,7 @@
                                             value="{{$serviceCategory['value']}}">{{$serviceCategory['label']}}</option>
                                         @endforeach
                                     </select>
-                                    @foreach ($errors->get('duration') as $message)
+                                    @foreach ($errors->get('service_category_id') as $message)
                                         <br/>{{$message}}
                                     @endforeach
                                 </div>
