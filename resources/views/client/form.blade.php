@@ -9,24 +9,23 @@
     <div class="container-fluid spark-screen">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        @if (isset($client))
-                            @lang('main.client:edit_form_header')
-                        @else
-                            @lang('main.client:create_form_header')
-                        @endif
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            @if (isset($client))
+                                @lang('main.client:edit_form_header')
+                            @else
+                                @lang('main.client:create_form_header')
+                            @endif
+                        </h3>
                     </div>
-
-                    <div class="panel-body">
-
-                        <form method="post" action="/clients/save">
+                    <div class="box-body">
+                        <form method="post" action="/clients/save" class="form-horizontal">
                             {{csrf_field()}}
                             @if (isset($client))
                                 <input type="hidden" name="client_id" id="c_client_id" value="{{$client->client_id}}">
                             @endif
-                            <div class="row">
-
+                            <div class="form-group">
                                 <!--
                                 Имя (name)
                                 Сотовый (phone)
@@ -47,11 +46,8 @@
                                 Продано  total_bought
                                 Оплачено  total_paid
                                 -->
-
-                                <div class="col-md-6">
-                                    <label for="c_name">@lang('main.client:name_label')</label>
-                                </div>
-                                <div class="col-md-6">
+                                <label for="c_name" class="col-sm-2 control-label">@lang('main.client:name_label')</label>
+                                <div class="col-md-10">
                                     <?php
                                     $old = old('name');
                                     if (!is_null($old)) {
@@ -61,16 +57,15 @@
                                     } else {
                                         $value = '';
                                     }?>
-                                    <input type="text" name="name" id="c_name" value="{{$value}}">
+                                    <input type="text" class="form-control" name="name" id="c_name" value="{{$value}}">
                                     @foreach ($errors->get('name') as $message)
                                         <?='<br/>'?>{{$message}}
                                     @endforeach
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="c_phone">@lang('main.client:phone_label')</label>
-                                </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="form-group">
+                                <label for="c_phone" class="col-sm-2 control-label">@lang('main.client:phone_label')</label>
+                                <div class="col-md-10">
                                     <?php
                                     $old = old('phone');
                                     if (!is_null($old)) {
@@ -80,16 +75,15 @@
                                     } else {
                                         $value = '';
                                     }?>
-                                    <input type="text" name="phone" id="c_phone" value="{{$value}}">
+                                    <input type="text" class="form-control" name="phone" id="c_phone" value="{{$value}}">
                                     @foreach ($errors->get('phone') as $message)
                                         <br/>{{$message}}
                                     @endforeach
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="c_email">@lang('main.client:email_label')</label>
-                                </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="form-group">
+                                <label for="c_email" class="col-sm-2 control-label">@lang('main.client:email_label')</label>
+                                <div class="col-md-10">
                                     <?php
                                     $old = old('email');
                                     if (!is_null($old)) {
@@ -99,22 +93,21 @@
                                     } else {
                                         $value = '';
                                     }?>
-                                    <input type="text" name="email" id="c_email" value="{{$value}}">
+                                    <input type="text" class="form-control" name="email" id="c_email" value="{{$value}}">
                                     @foreach ($errors->get('email') as $message)
                                         <?='<br/>'?>{{$message}}
                                     @endforeach
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="c_category_id">@lang('main.client:client_category_label')</label>
-                                </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="form-group">
+                                <label for="c_category_id" class="col-sm-2 control-label">@lang('main.client:client_category_label')</label>
+                                <div class="col-md-10">
                                     <select name="category_id[]" id="c_category_id" class="js-select-basic-multiple" multiple="multiple" style="width: 170px">
                                         @foreach($clientCategoriesOptions AS $clientCategory)
                                             <option data-color="{{$clientCategory['color']}}"
                                                 @if(old('category_id') AND old('category_id') == $clientCategory['value'])
                                                     selected="selected"
-
+                                
                                                 @elseif(!old('category_id') AND isset($client))
                                                     @foreach($client->categories()->get() AS $cat)
                                                         @if($cat->cc_id == $clientCategory['value'])
@@ -122,7 +115,7 @@
                                                         @endif
                                                     @endforeach
                                                 @endif
-
+                                
                                                 value="{{$clientCategory['value']}}">{{$clientCategory['label']}}</option>
                                         @endforeach
                                     </select>
@@ -130,12 +123,11 @@
                                         <br/>{{$message}}
                                     @endforeach
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="c_gender">@lang('main.client:gender_label')</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <select name="gender" id="c_gender">
+                            </div>
+                            <div class="form-group">
+                                <label for="c_gender" class="col-sm-2 control-label">@lang('main.client:gender_label')</label>
+                                <div class="col-md-10">
+                                    <select name="gender" id="c_gender" class="form-control">
                                         @foreach($genderOptions AS $gender)
                                             <option
                                                     @if (old('gender') AND old('gender') == $gender['value'])
@@ -151,12 +143,11 @@
                                         <br/>{{$message}}
                                     @endforeach
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="c_importance">@lang('main.client:importance_label')</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <select name="importance" id="c_importance">
+                            </div>
+                            <div class="form-group">
+                                <label for="c_importance" class="col-sm-2 control-label">@lang('main.client:importance_label')</label>
+                                <div class="col-md-10">
+                                    <select name="importance" id="c_importance" class="form-control">
                                         @foreach($importanceOptions AS $importance)
                                             <option
                                                     @if (old('importance') AND old('importance') == $importance['value'])
@@ -172,11 +163,10 @@
                                         <br/>{{$message}}
                                     @endforeach
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="c_discount">@lang('main.client:discount_label')</label>
-                                </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="form-group">
+                                <label for="c_discount" class="col-sm-2 control-label">@lang('main.client:discount_label')</label>
+                                <div class="col-md-10">
                                     <?php
                                     $old = old('discount');
                                     if (!is_null($old)) {
@@ -186,37 +176,39 @@
                                     } else {
                                         $value = '';
                                     }?>
-                                    <input type="text" name="discount" id="c_discount" value="{{$value}}">
+                                    <input type="text" class="form-control" name="discount" id="c_discount" value="{{$value}}">
                                     @foreach ($errors->get('discount') as $message)
                                         <?='<br/>'?>{{$message}}
                                     @endforeach
                                 </div>
-
-                                <!-- Дата рождения  birthday -->
-                                <div class="col-md-6">
-                                    <label for="c_birthday">@lang('main.client:birthday_label')</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <?php
-                                    $old = old('birthday');
-                                    if (!is_null($old)) {
-                                        $value = $old;
-                                    } elseif (isset($client)) {
-                                        $value = date('Y-m-d', strtotime($client->birthday));
-                                    } else {
-                                        $value = '';
-                                    }?>
-                                    <input type="text" name="birthday" id="c_birthday" value="{{$value}}">
-                                    @foreach ($errors->get('birthday') as $message)
+                            </div>
+                            <!-- Дата рождения  birthday -->
+                            <div class="form-group">
+                                <label for="c_birthday" class="col-sm-2 control-label">@lang('main.client:birthday_label')</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <?php
+                                        $old = old('birthday');
+                                        if (!is_null($old)) {
+                                            $value = $old;
+                                        } elseif (isset($client)) {
+                                            $value = date('Y-m-d', strtotime($client->birthday));
+                                        } else {
+                                            $value = '';
+                                        }?>
+                                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        <input type="text" class="form-control" name="birthday" id="c_birthday" value="{{$value}}">
+                                        @foreach ($errors->get('birthday') as $message)
                                         <br/>{{$message}}
-                                    @endforeach
+                                        @endforeach
+                                        <!--<input type="text" class="form-control" name="birthday" id="c_birthday" value="{{$value}}">-->
+                                    </div>
                                 </div>
-
-                                <!-- Комментарий (textarea - comment) -->
-                                <div class="col-md-6">
-                                    <label for="c_comment">@lang('main.client:comment_label')</label>
-                                </div>
-                                <div class="col-md-6">
+                            </div>
+                            <!-- Комментарий (textarea - comment) -->
+                            <div class="form-group">
+                                <label for="c_comment" class="col-sm-2 control-label">@lang('main.client:comment_label')</label>
+                                <div class="col-md-10">
                                     <?php
                                     $old = old('comment');
                                     if (!is_null($old)) {
@@ -226,16 +218,15 @@
                                     } else {
                                         $value = '';
                                     }?>
-                                    <textarea name="comment" id="c_comment">{{$value}}</textarea>
+                                    <textarea name="comment" id="c_comment" class="form-control">{{$value}}</textarea>
                                     @foreach ($errors->get('comment') as $message)
                                         <?='<br/>'?>{{$message}}
                                     @endforeach
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label>@lang('main.client:sms_label')</label>
-                                </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="form-group">
+                                <label for="c_birthday_sms" class="col-sm-2 control-label">@lang('main.client:sms_label')</label>
+                                <div class="col-md-10">
                                     <?php
                                     $old = old('birthday_sms');
                                     if (!is_null($old)) {
@@ -247,7 +238,7 @@
                                     }?>
                                     <input type="checkbox" name="birthday_sms" id="c_birthday_sms" {{$checked}} value="1">&nbsp;@lang('main.client:birthday_sms_label')
                                     <br>
-
+                                
                                     <?php
                                     $old = old('do_not_send_sms');
                                     if (!is_null($old)) {
@@ -259,11 +250,10 @@
                                     }?>
                                     <input type="checkbox" name="do_not_send_sms" id="c_do_not_send_sms" {{$checked}} value="1">&nbsp;@lang('main.client:do_not_send_sms_label')
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label>@lang('main.client:online_record_label')</label>
-                                </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="form-group">
+                                <label for="c_online_reservation_available" class="col-sm-2 control-label">@lang('main.client:online_record_label')</label>
+                                <div class="col-md-10">
                                     <?php
                                     $old = old('online_reservation_available');
                                     if (!is_null($old)) {
@@ -275,11 +265,10 @@
                                     }?>
                                     <input type="checkbox" name="online_reservation_available" id="c_online_reservation_available" {{$checked}} value="1">&nbsp;@lang('main.client:online_reservation_available')
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="c_total_bought">@lang('main.client:total_bought_label')</label>
-                                </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="form-group">
+                                <label for="c_total_bought" class="col-sm-2 control-label">@lang('main.client:total_bought_label')</label>
+                                <div class="col-md-10">
                                     <?php
                                     $old = old('total_bought');
                                     if (!is_null($old)) {
@@ -289,16 +278,15 @@
                                     } else {
                                         $value = '';
                                     }?>
-                                    <input type="text" name="total_bought" id="c_total_bought" value="{{$value}}">
+                                    <input type="text" class="form-control" name="total_bought" id="c_total_bought" value="{{$value}}">
                                     @foreach ($errors->get('total_bought') as $message)
                                         <?='<br/>'?>{{$message}}
                                     @endforeach
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="c_total_paid">@lang('main.client:total_paid_label')</label>
-                                </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="form-group">
+                                <label for="c_total_paid" class="col-sm-2 control-label">@lang('main.client:total_paid_label')</label>
+                                <div class="col-md-10">
                                     <?php
                                     $old = old('total_paid');
                                     if (!is_null($old)) {
@@ -308,26 +296,19 @@
                                     } else {
                                         $value = '';
                                     }?>
-                                    <input type="text" name="total_paid" id="c_total_paid" value="{{$value}}">
+                                    <input type="text" class="form-control" name="total_paid" id="c_total_paid" value="{{$value}}">
                                     @foreach ($errors->get('total_paid') as $message)
                                         <?='<br/>'?>{{$message}}
                                     @endforeach
                                 </div>
-
-                                <div class="col-md-12">
-                                    <hr/>
-                                    <button type="submit" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
-                                </div>
-
-
+                            </div>
+                            <div class="col-md-12">
+                                <hr/>
+                                <button type="submit" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
                             </div>
                         </form>
-
                     </div>
-
-                </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection
