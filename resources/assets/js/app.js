@@ -703,17 +703,15 @@ $(document).ready(function () {
 		monthsTitle: 'Месяцы'
 		};
 
-		$('#dp').datepicker(
-			{language: 'ru',
-			 format: 'yyyy-mm-dd',
-			 startDate: '19/01/2017'}
-		);
+		$('#dp').datepicker({
+			language: 'ru',
+			format: 'yyyy-mm-dd',
+			startDate: '19/01/2017'
+		});
 	});
 
 	$('#dp').on('changeDate', function() {
 		
-		//console.log($('#dp').datepicker('getFormattedDate'));
-	
 		$('#my_hidden_input').val(
 			$('#dp').datepicker('getFormattedDate')
 		);

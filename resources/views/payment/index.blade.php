@@ -52,10 +52,10 @@
 							<th class="text-center">{{ $payment->payment_id }}</th>
 							<td>{{ $payment->date }}</td>
 							<td>{{ $payment->beneficiary_title }}</td>
-							<td>{{ $payment->item_title }}</td>
-							<td>{{ $payment->account_title }}</td>
+							<td>{{ $payment->item->title }}</td>
+							<td>{{ $payment->account->title }}</td>
 							<td>{{ $payment->description }}</td>
-							<td>{{ $payment->author_name }}</td>
+							<td>{{ $payment->user->name }}</td>
 							<td>{{ $payment->sum }}</td>
 							<td> <Это расчетное поле> </td>
 							<td></td>

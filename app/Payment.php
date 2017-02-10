@@ -23,4 +23,19 @@ class Payment extends Model
 	{
 		return $this->belongsTo(Organization::class);
 	}
+
+	public function item()
+	{
+		return $this->belongsTo(Item::class);
+	}
+
+	public function account()
+	{
+		return $this->belongsTo(Account::class);
+	}
+
+	public function user()
+	{
+		return $this->belongsTo(User::class, 'author_id');
+	}
 }

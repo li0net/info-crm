@@ -21,7 +21,7 @@ class PaymentController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$payments = Payment::where('organization_id', $request->user()->organization_id)->get()->all();
+		$payments = Payment::where('organization_id', $request->user()->organization_id)->with('account', 'item', 'user')->get()->all();
 
 		$page = Input::get('page', 1);
 		$paginate = 10;
@@ -31,16 +31,17 @@ class PaymentController extends Controller
 		$payments = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($payments), $paginate, $page);
 		$payments->setPath('payment');
 
-		foreach ($payments as &$payment) {
-			$item = Item::where('organization_id', $request->user()->organization_id)->where('item_id', $payment->item_id)->get()->first();
-			$account = Account::where('organization_id', $request->user()->organization_id)->where('account_id', $payment->account_id)->get()->first();
-			$author = User::where('organization_id', $request->user()->organization_id)->where('user_id', $payment->author_id)->get()->first();
-			$payment['item_title'] = $item->title;
-			$payment['account_title'] = $account->title;
-			$payment['author_name'] = $author->name;
-		}
+		// foreach ($payments as &$payment) {
+		// 	$item = Item::where('organization_id', $request->user()->organization_id)->where('item_id', $payment->item_id)->get()->first();
+		// 	$account = Account::where('organization_id', $request->user()->organization_id)->where('account_id', $payment->account_id)->get()->first();
+		// 	$author = User::where('organization_id', $request->user()->organization_id)->where('user_id', $payment->author_id)->get()->first();
+			
+		// 	$payment['item_title'] = $item->title;
+		// 	$payment['account_title'] = $account->title;
+		// 	$payment['author_name'] = $author->name;
+		// }
 
-		unset($payment);
+		// unset($payment);
 
 		return view('payment.index', ['user' => $request->user()])->withpayments($payments);
 	}
@@ -50,9 +51,20 @@ class PaymentController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function create()
+	public function create(Request $request)
 	{
-		return view('payment.create');
+		$items = Item::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'item_id');
+		$accounts = Account::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'account_id');
+
+		$payment_hours = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 60, '', ' ч', 'H');
+		$payment_minutes = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('00:59:00'), 1, '', ' мин', 'i');
+
+		return view('payment.create', [	
+										'items' => $items, 
+										'accounts' => $accounts, 
+										'payment_hours' => $payment_hours, 
+										'payment_minutes' => $payment_minutes
+									]);
 	}
 
 	/**
@@ -77,8 +89,9 @@ class PaymentController extends Controller
 		$payment->beneficiary_title = $request->beneficiary_title;
 		$payment->sum = $request->sum;
 		$payment->description = $request->description;
-		$payment->date = date_create($request->input('date').'00:00:00'); 	// Проверять дату
-		$payment->author_id = $request->user()->user_id;		// Автора брать из запроса
+		$payment->date = date_create($request->input('payment-date').$request->input('payment-hour').':'.$request->input('payment-minute'));
+		date_format($payment->date, 'U = Y-m-d H:i:s');
+		$payment->author_id = $request->user()->user_id;
 		$payment->organization_id = $request->user()->organization_id;
 
 		$payment->save();
@@ -116,7 +129,22 @@ class PaymentController extends Controller
 		$items = Item::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'item_id');
 		$accounts = Account::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'account_id');
 
-		return view('payment.edit', ['payment' => $payment, 'items' => $items, 'accounts' => $accounts]);
+		$payment_hours = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 60, '', ' ч', 'H');
+		$payment_minutes = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('00:59:00'), 1, '', ' мин', 'i');
+
+		$dt = date_parse($payment->date);
+		$payment_hour = $dt['hour'];
+		$payment_minute = $dt['minute'];
+
+		return view('payment.edit', [	
+										'payment' => $payment, 
+										'items' => $items, 
+										'accounts' => $accounts, 
+										'payment_hours' => $payment_hours, 
+										'payment_minutes' => $payment_minutes,
+										'payment_hour' => $payment_hour, 
+										'payment_minute' => $payment_minute,
+									]);
 	}
 
 	/**
@@ -150,8 +178,11 @@ class PaymentController extends Controller
 		$payment->beneficiary_title = $request->beneficiary_title;
 		$payment->sum = $request->sum;
 		$payment->description = $request->description;
-		$payment->date = $request->date;
-		$payment->author_id = $request->user()->user_id;											// Автора брать из запроса
+		
+		$payment->date = date_create($request->input('payment-date').$request->input('payment-hour').':'.$request->input('payment-minute'));
+		date_format($payment->date, 'U = Y-m-d H:i:s');
+
+		$payment->author_id = $request->user()->user_id;
 		$payment->organization_id = $request->user()->organization_id;
 
 		$payment->save();
@@ -179,5 +210,18 @@ class PaymentController extends Controller
 		}
 
 		return redirect()->route('payment.index');
+	}
+
+	protected function populateTimeIntervals($startTime, $endTime, $interval, $modifier_before, $modifier_after, $time_format) {
+		$timeIntervals = [];
+		
+		while ($startTime <= $endTime) {
+			$timeStr = date($time_format, $startTime);
+			$timeIntervals[$timeStr] = $modifier_before.$timeStr.$modifier_after;
+
+			$startTime += 60*$interval; 
+		}
+		
+		return $timeIntervals;
 	}
 }

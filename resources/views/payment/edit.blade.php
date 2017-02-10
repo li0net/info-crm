@@ -30,8 +30,14 @@
 						<div class="col-sm-3 control-label">
 							{{ Form::label('date', 'Дата и время:', ['class' => 'form-spacing-top']) }}
 						</div>
-						<div class="col-sm-8">
-							{{ Form::text('date', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+						<div class="col-sm-4">
+							{{ Form::text('payment-date', '10-02-2017', ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'id' => 'payment-date']) }}
+						</div>
+						<div class="col-sm-2">
+							{{ Form::select('payment-hour', $payment_hours, $payment_hour, ['class' => 'form-control', 'required' => '', 'id' => 'payment-hour']) }}
+						</div>
+						<div class="col-sm-2">
+							{{ Form::select('payment-minute', $payment_minutes, $payment_minute, ['class' => 'form-control', 'required' => '', 'id' => 'payment-minute']) }}
 						</div>
 						<label class="col-sm-1 text-left">
 							<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -142,7 +148,32 @@
 			</div>
 		</div>
 	</div>
+@endsection
 
+@section('page-specific-scripts')
+	<script>
+		$(function () {
+			$.fn.datepicker.dates['ru'] = {
+				days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
+				daysShort: ["Вск", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб"],
+				daysMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+				months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+				monthsShort: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+				today: "Сегодня",
+				clear: "Очистить",
+				format: "dd.mm.yyyy",
+				weekStart: 1,
+				monthsTitle: 'Месяцы'
+			};
+		});
+
+		$('#payment-date').datepicker({
+			autoclose: true,
+			orientation: 'auto',
+			format: 'dd-mm-yyyy',
+			firstDay: 1
+		});
+	</script>
 @endsection
 
 {{-- @section('scripts')
