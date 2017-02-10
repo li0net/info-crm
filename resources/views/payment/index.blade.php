@@ -51,12 +51,11 @@
 						<tr>
 							<th class="text-center">{{ $payment->payment_id }}</th>
 							<td>{{ $payment->date }}</td>
-							<td>{{ $payment->beneficiary_type }}</td>
 							<td>{{ $payment->beneficiary_title }}</td>
-							<td>{{ $payment->item_id }}</td>
-							<td>{{ $payment->account_id }}</td>
+							<td>{{ $payment->item_title }}</td>
+							<td>{{ $payment->account_title }}</td>
 							<td>{{ $payment->description }}</td>
-							<td>{{ $payment->author_id }}</td>
+							<td>{{ $payment->author_name }}</td>
 							<td>{{ $payment->sum }}</td>
 							<td> <Это расчетное поле> </td>
 							<td></td>
@@ -77,7 +76,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-					{!! $payments->render(); !!} 
+				{!! $payments->render(); !!} 
 			</div>
 		</div>
 	</div>		

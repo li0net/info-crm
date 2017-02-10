@@ -80,7 +80,7 @@
 						<li><a href="/stub">{{ trans('adminlte_lang::message.services') }}</a></li>
 						<li><a href="{{ url('/wage_scheme')}}">{{ trans('adminlte_lang::message.schemes') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.wage') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.payments') }}</a></li>
+						<li><a href="{{ url('/payment')}}">{{ trans('adminlte_lang::message.payments') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.documents') }}</a></li>
 						<li class="treeview"><a href="#">{{ trans('adminlte_lang::message.reports') }}<i class="fa fa-angle-left pull-right"></i></a>
 							<ul class="treeview-menu">

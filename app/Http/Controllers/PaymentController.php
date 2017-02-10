@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Item;
+use App\User;
+use App\Account;
 use App\Payment;
 use Session;
 use Illuminate\Support\Facades\Input;
@@ -27,6 +30,17 @@ class PaymentController extends Controller
 		$itemsForCurrentPage = array_slice($payments, $offset, $paginate, true);
 		$payments = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($payments), $paginate, $page);
 		$payments->setPath('payment');
+
+		foreach ($payments as &$payment) {
+			$item = Item::where('organization_id', $request->user()->organization_id)->where('item_id', $payment->item_id)->get()->first();
+			$account = Account::where('organization_id', $request->user()->organization_id)->where('account_id', $payment->account_id)->get()->first();
+			$author = User::where('organization_id', $request->user()->organization_id)->where('user_id', $payment->author_id)->get()->first();
+			$payment['item_title'] = $item->title;
+			$payment['account_title'] = $account->title;
+			$payment['author_name'] = $author->name;
+		}
+
+		unset($payment);
 
 		return view('payment.index', ['user' => $request->user()])->withpayments($payments);
 	}
@@ -64,7 +78,7 @@ class PaymentController extends Controller
 		$payment->sum = $request->sum;
 		$payment->description = $request->description;
 		$payment->date = date_create($request->input('date').'00:00:00'); 	// Проверять дату
-		$payment->author_id = 1; //$request->$request->user()->name;		// Автора брать из запроса
+		$payment->author_id = $request->user()->user_id;		// Автора брать из запроса
 		$payment->organization_id = $request->user()->organization_id;
 
 		$payment->save();
@@ -80,11 +94,14 @@ class PaymentController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show($id)
+	public function show(Request $request, $id)
 	{
 		$payment = Payment::find($id);
 
-		return view('payment.show', ['payment' => $payment]);
+		$item = Item::where('organization_id', $request->user()->organization_id)->where('item_id', $payment->item_id)->get()->first();
+		$account = Account::where('organization_id', $request->user()->organization_id)->where('account_id', $payment->account_id)->get()->first();
+
+		return view('payment.show', ['payment' => $payment, 'item' => $item, 'account' => $account]);
 	}
 
 	/**
@@ -93,11 +110,13 @@ class PaymentController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($id)
+	public function edit(Request $request, $id)
 	{
 		$payment = Payment::find($id);
+		$items = Item::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'item_id');
+		$accounts = Account::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'account_id');
 
-		return view('payment.edit', ['payment' => $payment]);
+		return view('payment.edit', ['payment' => $payment, 'items' => $items, 'accounts' => $accounts]);
 	}
 
 	/**
@@ -125,8 +144,6 @@ class PaymentController extends Controller
 			return 'No such payment';
 		}
 		
-		$payment = new Payment;
-
 		$payment->item_id = $request->item_id;
 		$payment->account_id = $request->account_id;
 		$payment->beneficiary_type = $request->beneficiary_type;
@@ -134,7 +151,7 @@ class PaymentController extends Controller
 		$payment->sum = $request->sum;
 		$payment->description = $request->description;
 		$payment->date = $request->date;
-		$payment->author_id = 1;											// Автора брать из запроса
+		$payment->author_id = $request->user()->user_id;											// Автора брать из запроса
 		$payment->organization_id = $request->user()->organization_id;
 
 		$payment->save();

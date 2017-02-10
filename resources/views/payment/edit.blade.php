@@ -43,7 +43,7 @@
 							{{ Form::label('item_id', "Статья платежа: ", ['class' => 'form-spacing-top']) }}
 						</div>
 						<div class="col-sm-8">
-							{{ Form::select('item_id', ['1'=>'Доход', '2'=>'Расход'], '1', ['class' => 'form-control', 'required' => '']) }}
+							{{ Form::select('item_id', $items, $payment->item_id, ['class' => 'form-control', 'required' => '']) }}
 						</div>
 						<label class="col-sm-1 text-left">
 							<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -55,7 +55,7 @@
 							{{ Form::label('account_id', "Счет: ", ['class' => 'form-spacing-top']) }}
 						</div>
 						<div class="col-sm-8">
-							{{ Form::select('account_id', ['1'=>'Касса', '2'=>'Расчетный счет'], '1', ['class' => 'form-control', 'required' => '']) }}
+							{{ Form::select('account_id', $accounts, $payment->account_id, ['class' => 'form-control', 'required' => '']) }}
 						</div>
 						<label class="col-sm-1 text-left">
 							<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -69,19 +69,19 @@
 						<div class="col-sm-8">
 							<div class="radio">
 								<label>
-									{{ Form::radio('beneficiary_type', 0, true, ['style' => 'margin-right: 10px']) }}
+									{{ Form::radio('beneficiary_type', 'partner', $payment->beneficiary_type == 'partner', ['style' => 'margin-right: 10px']) }}
 									 Контрагент 
 								</label>
 							</div>
 							<div class="radio">
 								<label>
-									{{ Form::radio('beneficiary_type', 1, false, ['style' => 'margin-right: 10px']) }}
+									{{ Form::radio('beneficiary_type', 'client', $payment->beneficiary_type == 'client', ['style' => 'margin-right: 10px']) }}
 									 Клиент 
 								</label>
 							</div>
 							<div class="radio">
 								<label>
-									{{ Form::radio('beneficiary_type', 2, false, ['style' => 'margin-right: 10px']) }}
+									{{ Form::radio('beneficiary_type', 'employee', $payment->beneficiary_type == 'employee', ['style' => 'margin-right: 10px']) }}
 									 Сотрудник 
 								</label>
 							</div>

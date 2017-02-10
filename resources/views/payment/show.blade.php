@@ -21,12 +21,12 @@
 				<p class="lead">{{ $payment->date }}</p>
 
 				{{ Form::label('item_id', "Статья платежа: ") }}
-				<p class="lead">{{ $payment->item_id }}</p>
+				<p class="lead">{{ $item->title }}</p>
 
 				{{ Form::label('account_id', "Счет: ") }}
-				<p class="lead">{{ $payment->account_id }}</p>
+				<p class="lead">{{ $account->title }}</p>
 
-				{{ Form::label('beneficiary_type', "Контрагент: ") }}
+				{{ Form::label('beneficiary_type', "Получатель: ") }}
 				<p class="lead">
 					@if ($payment->beneficiary_type == "partner")
 						Контрагент
