@@ -182,7 +182,7 @@
                                                 selected="selected"
                                                 @elseif (!old('time_from') AND isset($appointment) AND date('H:i', strtotime($appointment->start)) == $time['value'])
                                                 selected="selected"
-                                                @elseif (isset($time['selected']) AND $time['selected'] == true)
+                                                @elseif (!old('time_from') AND !isset($appointment) AND isset($time['selected']) AND $time['selected'] == true)
                                                 selected="selected"
                                                 @endif
                                                 value="{{$time['value']}}">{{$time['label']}}
@@ -206,7 +206,7 @@
                                                 selected="selected"
                                                 @elseif ( !old('duration_hours') AND isset($appointment) AND ( (int)floor((strtotime($appointment->end)-strtotime($appointment->start)) / 3600) == $time['value']) )
                                                 selected="selected"
-                                                @elseif (isset($hour['selected']) AND $hour['selected'] == true)
+                                                @elseif ( !old('duration_hours') AND !isset($appointment) AND isset($hour['selected']) AND $hour['selected'] == true)
                                                 selected="selected"
                                                 @endif
                                                 value="{{$hour['value']}}">{{$hour['label']}}
@@ -225,7 +225,7 @@
                                                 selected="selected"
                                                 @elseif ( !old('duration_minutes') AND isset($appointment) AND ( ((strtotime($appointment->end)-strtotime($appointment->start))%3600) / 60 == $minute['value']) )
                                                 selected="selected"
-                                                @elseif (isset($minute['selected']) AND $minute['selected'] == true)
+                                                @elseif ( !old('duration_minutes') AND !isset($appointment) AND isset($minute['selected']) AND $minute['selected'] == true)
                                                 selected="selected"
                                                 @endif
                                                 value="{{$minute['value']}}">{{$minute['label']}}

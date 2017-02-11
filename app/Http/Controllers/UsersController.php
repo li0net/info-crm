@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use App\User;
 use App\AccessPermission;
 use Illuminate\Support\Facades\Log;
-use Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
@@ -373,6 +372,63 @@ class UsersController extends Controller
 
         $user = $request->user();
         $user->fill($formData);
+        $user->save();
+
+        return json_encode([
+            'success' => true,
+            'error'   => ''
+        ]);
+    }
+
+    /**
+     * Апдейтит пароль пользователя
+     *
+     * @param $request Request
+     * @return string
+     * */
+    public function updatePassword(Request $request) {
+        //$formData = $request->all();
+        $formData = $request->only(
+            'old_password', 'new_password', 'new_password_confirmation'
+        );
+
+        $validator = Validator::make($formData, [
+            'old_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+            'new_password_confirmation' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = '';
+            $mbErrors = $validator->errors();
+            foreach ($mbErrors->all() as $message) {
+                $errors .= $message.'<br>';
+            }
+        }
+        if (isset($errors)) {
+            return json_encode([
+                'success' => false,
+                'error'   => substr($errors, 0, -4)
+            ]);
+        }
+
+        // проверка того, что старый и новый пароль не одинаковы
+        if ($formData['old_password'] == $formData['new_password']) {
+            return json_encode([
+                'success' => false,
+                'error'   => trans('main.user:same_new_password_error')
+            ]);
+        }
+
+        // проверка old_password пароля
+        if (! Auth::guard()->attempt(['email' => $request->user()->email, 'password' => $formData['old_password']])) {
+            return json_encode([
+                'success' => false,
+                'error'   => trans('main.user:wrong_password_error')
+            ]);
+        }
+
+        $user = $request->user();
+        $user->password = bcrypt($formData['new_password']);
         $user->save();
 
         return json_encode([

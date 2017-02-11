@@ -3,6 +3,8 @@ $(document).ready(function () {
     $("#mailings_form_error_alert").hide();
     $("#main_info_form_success_alert").hide();
     $("#main_info_form_error_alert").hide();
+    $("#password_form_success_alert").hide();
+    $("#password_form_error_alert").hide();
 
     $("#avatar_anchor").click(function () {
         $("#usercabinet_avatar").click();
@@ -71,6 +73,36 @@ $(document).ready(function () {
                     $("#main_info_form_error_alert").alert();
                     $("#main_info_form_error_alert").fadeTo(3000, 500).slideUp(500, function() {
                         $("#main_info_form_error_alert").slideUp(500);
+                    });
+                }
+            }
+        });
+    });
+
+    // форма изменения пароля
+    $("#password_submit").click(function(event) {
+        event.preventDefault();
+        $('#password_submit').addClass('disabled');
+        $('#password_error_container').html('');
+        $.ajax({
+            url: '/user/updatePassword',
+            type: 'post',
+            dataType: 'json',
+            data: $('form#usercabinet_password_form').serialize(),
+            success: function(data) {
+                $('#password_submit').removeClass('disabled');
+                //console.log(data);
+
+                if (data.success) {
+                    $("#password_form_success_alert").alert();
+                    $("#password_form_success_alert").fadeTo(2000, 500).slideUp(500, function() {
+                        $("#password_form_success_alert").slideUp(500);
+                    });
+                } else {
+                    $('#password_error_container').html(data.error);
+                    $("#password_form_error_alert").alert();
+                    $("#password_form_error_alert").fadeTo(3000, 500).slideUp(500, function() {
+                        $("#password_info_form_error_alert").slideUp(500);
                     });
                 }
             }

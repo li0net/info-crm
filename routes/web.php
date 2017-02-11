@@ -108,6 +108,7 @@ Route::get('/user/cabinet', 'UsersController@editOwnSettings');
 Route::post('/user/saveAvatar', 'UsersController@saveAvatar');
 Route::post('/user/saveMailingSettings', 'UsersController@saveMailingSettings');
 Route::post('/user/saveMainInfo', 'UsersController@saveMainInfo');
+Route::post('/user/updatePassword', 'UsersController@updatePassword');
 
 Route::get('/clients/create', 'ClientsController@create');
 Route::get('/clients/edit/{client}', 'ClientsController@edit');
