@@ -61,8 +61,9 @@ const app = new Vue({
 			filter_service: 0,
 			filter_start_time: '00:00',
 			filter_end_time: '23:45',
-			detailed_services_count: 2,
-			detailed_products_count: 2,
+			detailed_services_count: 0,
+			detailed_products_count: 0,
+			card_items_count: 0,
 			services_ctgs_options: '',
 			storage_options: ''
 		}
@@ -108,13 +109,18 @@ const app = new Vue({
 	mounted: function () {
 		this.detailed_services_count = $('#detailed-services').find('.wrap-it').length-1;
 		this.detailed_products_count = $('#detailed-products').find('.wrap-it').length-1;
+		this.card_items_count = $('#card-items').find('.wrap-it').length-1;
 
-		if(this.detailed_services_count == 0) {
-			$('a[href="#detailed-services"] .badge.label-danger').addClass('hidden');
+		if(this.detailed_services_count != 0) {
+			$('a[href="#detailed-services"] .badge.label-danger').removeClass('hidden');
 		}
 
-		if(this.detailed_products_count == 0) {
-			$('a[href="#detailed-products"] .badge.label-danger').addClass('hidden');
+		if(this.detailed_products_count != 0) {
+			$('a[href="#detailed-products"] .badge.label-danger').removeClass('hidden');
+		}
+
+		if(this.card_items_count != 0) {
+			$('a[href="#card-items"] .badge.label-danger').removeClass('hidden');
 		}
 	}
 });
@@ -584,6 +590,43 @@ $(document).ready(function () {
 		);
 		return $category;
 	};
+
+	$('#card-items').on('click', '#add-card-item', function(e) {
+		if($(e.target).val() !== 'Удалить') {
+			$('#card-items').append(
+				'<div class="wrap-it"><div class="col-sm-2"></div> <div class="col-sm-8" style="padding: 0px;"><div class="col-sm-5"><input maxlength="110" name="product_id[]" type="text" class="form-control"></div> <div class="col-sm-5"><select maxlength="110" name="storage_id[]" class="form-control"><option value="0" selected="selected">Новый</option><option value="1">Расходники</option><option value="2">Готовая продукция</option></select></div> <div class="col-sm-2"><input maxlength="110" name="amount[]" type="text" class="form-control"></div></div> <div class="col-sm-2" style="margin-bottom: 15px;"><input type="button" id="add-card-item" value="Добавить" class="btn btn-info"></div></div>');
+
+			$('select.form-control[name="storage_id[]"]').last().find('option').remove();
+			$('select.form-control[name="storage_id[]"]').last().append($('#storage_options').val());
+
+			app.card_items_count++;
+			$('a[href="#card-items"] .badge.label-danger').removeClass('hidden');
+			$(e.target).val('Удалить');
+			$(e.target).toggleClass('btn-info btn-danger')
+			$(e.target).off();
+			$(e.target).on('click', function(e) {
+				$(e.target).parent().parent().remove();
+				app.card_items_count--;
+				if(app.card_items_count == 0) {
+					$('a[href="#card-items"] .badge.label-danger').addClass('hidden');
+				}
+			});
+		} else {
+			$(e.target).parent().parent().remove();
+			app.card_items_count--;
+			if(app.card_items_count == 0) {
+				$('a[href="#card-items"] .badge.label-danger').addClass('hidden');
+			}
+		}
+	});
+
+	$('#card-items').on('shown.bs.collapse', function(){
+		$('a[href="#card-items"] .fa.fa-caret-down').toggleClass('fa-caret-down fa-caret-up');
+	});
+
+	$('#card-items').on('hidden.bs.collapse', function(){
+		$('a[href="#card-items"] .fa.fa-caret-up').toggleClass('fa-caret-up fa-caret-down');
+	});
 
 	$('#detailed-services').on('click', '#add-detailed-section', function(e) {
 		if($(e.target).val() !== 'Удалить') {

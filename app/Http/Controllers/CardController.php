@@ -43,8 +43,7 @@ class CardController extends Controller
 				foreach ($item[0] as $key => $value) {
 					$card_items[$i][] = array($value, $item[1][$key], $item[2][$key]);
 				}
-			}
-			else {
+			} else {
 				$card_items[$i] = null;
 			}
 			$i++;
