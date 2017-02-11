@@ -116,6 +116,12 @@ return [
     'user:password_settings_saved_message'  => 'Пароль изменен',
     'user:wrong_password_error'             => 'Неправильный пароль',
     'user:same_new_password_error'          => 'Новый пароль совпадает со старым',
+    'user:phone_saved_message'              => 'Номер телефона изменен',
+    'user:change_phone_heading'             => 'Изменить номер телефона',
+    'user:btn_update_phone'                 => 'Изменитиь номер',
+    'user:current_phone_label_usercabinet'  => 'Текущий номер',
+    'user:new_phone_label_usercabinet'      => 'Новый номер',
+    'user:help_text_phone_usercabinet'      => 'На новый номер будет выслано sms сообщение с кодом подтверждения',
 
     'user:permissions_appointment_form_label' => 'Окно записи',
     'user:permissions_appointment_create_label' => 'Создавать записи',

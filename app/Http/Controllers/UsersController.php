@@ -436,4 +436,49 @@ class UsersController extends Controller
             'error'   => ''
         ]);
     }
+
+    public function updatePhone(Request $request) {
+        // нужно подготовить (нормализовать) номер телефона, чтобы при дальнейшей валидации можно было проверить его уникальность
+        if ($request->input('new_phone')) {
+            $request->merge(array('new_phone' => $request->user()->normalizePhoneNumber($request->input('new_phone'))));
+        }
+        $formData = $request->only(
+            'new_phone'
+        );
+
+        $validator = Validator::make($formData, [
+            'new_phone' => 'required|phone_crm|unique:users,phone'
+        ]);
+        if ($validator->fails()) {
+            $errors = '';
+            $mbErrors = $validator->errors();
+            foreach ($mbErrors->all() as $message) {
+                $errors .= $message.'<br>';
+            }
+        }
+        if (isset($errors)) {
+            return json_encode([
+                'success' => false,
+                'error'   => substr($errors, 0, -4)
+            ]);
+        }
+
+
+
+return json_encode([
+    'success' => false,
+    'error'   => 'Not implemented'
+]);
+
+        // TODO: писать новый номер в users.new_phone, отсылать код по смс, открывать модальное окно, проверять код, только после этого менять
+        //  users.phone = users.new_phone и users.new_phone = NULL;
+        //$user = $request->user();
+        //$user->phone = $formData['new_phone'];
+        //$user->save();
+
+        return json_encode([
+            'success' => true,
+            'error'   => ''
+        ]);
+    }
 }

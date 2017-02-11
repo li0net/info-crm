@@ -5,6 +5,8 @@ $(document).ready(function () {
     $("#main_info_form_error_alert").hide();
     $("#password_form_success_alert").hide();
     $("#password_form_error_alert").hide();
+    $("#phone_form_success_alert").hide();
+    $("#phone_form_error_alert").hide();
 
     $("#avatar_anchor").click(function () {
         $("#usercabinet_avatar").click();
@@ -46,6 +48,10 @@ $(document).ready(function () {
                         $("#mailings_form_error_alert").slideUp(500);
                     });
                 }
+            },
+            error: function(jqXHR, errStr) {
+                $('#mailings_submit').removeClass('disabled');
+                console.log(errStr);
             }
         });
     });
@@ -75,6 +81,10 @@ $(document).ready(function () {
                         $("#main_info_form_error_alert").slideUp(500);
                     });
                 }
+            },
+            error: function(jqXHR, errStr) {
+                $('#main_info_submit').removeClass('disabled');
+                console.log(errStr);
             }
         });
     });
@@ -105,6 +115,44 @@ $(document).ready(function () {
                         $("#password_info_form_error_alert").slideUp(500);
                     });
                 }
+            },
+            error: function(jqXHR, errStr) {
+                $('#password_submit').removeClass('disabled');
+                console.log(errStr);
+            }
+        });
+    });
+
+    // форма изменения телефона
+    $("#phone_submit").click(function(event) {
+        event.preventDefault();
+        $('#phone_submit').addClass('disabled');
+        $('#phone_error_container').html('');
+        $.ajax({
+            url: '/user/updatePhone',
+            type: 'post',
+            dataType: 'json',
+            data: $('form#usercabinet_phone_form').serialize(),
+            success: function(data) {
+                $('#phone_submit').removeClass('disabled');
+                //console.log(data);
+
+                if (data.success) {
+                    $("#phone_form_success_alert").alert();
+                    $("#phone_form_success_alert").fadeTo(2000, 500).slideUp(500, function() {
+                        $("#phone_form_success_alert").slideUp(500);
+                    });
+                } else {
+                    $('#phone_form_error_alert').html(data.error);
+                    $("#phone_form_error_alert").alert();
+                    $("#phone_form_error_alert").fadeTo(3000, 500).slideUp(500, function() {
+                        $("#phone_form_error_alert").slideUp(500);
+                    });
+                }
+            },
+            error: function(jqXHR, errStr) {
+                $('#phone_submit').removeClass('disabled');
+                console.log(errStr);
             }
         });
     });
