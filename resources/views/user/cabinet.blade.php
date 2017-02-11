@@ -49,7 +49,7 @@
 
                         <div class="row">
                             <div class="col-sm-4">
-                                <a href="#" class="btn btn-primary btn-sm">@lang('main.user:btn_my_records')</a>
+                                <a href="javascript:void(0)" class="btn btn-primary btn-sm">@lang('main.user:btn_my_records')</a>
                             </div>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                             </label>
                             <br>
 
-                            <p><a href="#" id="mailings_submit" class="btn btn-primary btn-sm">@lang('main.btn_submit_label')</a></p>
+                            <p><a href="javascript:void(0)" id="mailings_submit" class="btn btn-primary btn-sm">@lang('main.btn_submit_label')</a></p>
                         </form>
                     </div>
                 </div>
@@ -126,95 +126,198 @@
                         </div>
 
                         <form id="usercabinet_main_info_form" methos="post" action="/user/saveMainInfo">
-                        <div class="row">
-                            <div class="form-group col-sm-3 text-right">
-                                <label>@lang('main.user:name_label')</label>
-                            </div>
-                            <div class="form-group col-sm-9">
-                                <?php
-                                $old = old('name');
-                                if (!is_null($old)) {
-                                    $value = $old;
-                                } else {
-                                    $value = $crmuser->name;
-                                }?>
-                                <input type="text" name="name" id="usr_name" value="{{$value}}" class="form-control">
-                                @foreach ($errors->get('name') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-sm-3 text-right">
-                                <label>@lang('main.user:lang_label_usercabinet')</label>
-                            </div>
-                            <div class="form-group col-sm-9">
-                                <select name="lang" id="usr_lang" class="form-control">
-                                    @foreach($langOptions AS $lang)
-                                        <option
-                                            @if (old('lang') AND old('lang') == $lang['value'])
-                                            selected="selected"
-                                            @elseif (!old('lang') AND $crmuser->lang == $lang['value'])
-                                            selected="selected"
-                                            @elseif (!old('lang') AND !$crmuser->lang AND isset($lang['selected']) AND $lang['selected'] == true)
-                                            selected="selected"
-                                            @endif
-                                        value="{{$lang['value']}}">{{$lang['label']}}</option>
+                            <div class="row">
+                                <div class="form-group col-sm-3 text-right">
+                                    <label>@lang('main.user:name_label')</label>
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <?php
+                                    $old = old('name');
+                                    if (!is_null($old)) {
+                                        $value = $old;
+                                    } else {
+                                        $value = $crmuser->name;
+                                    }?>
+                                    <input type="text" name="name" id="usr_name" value="{{$value}}" class="form-control">
+                                    @foreach ($errors->get('name') as $message)
+                                        <br/>{{$message}}
                                     @endforeach
-                                </select>
-                                @foreach ($errors->get('lang') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="form-group col-sm-3 text-right">
-                                <label>@lang('main.user:name_city_usercabinet')</label>
+                            <div class="row">
+                                <div class="form-group col-sm-3 text-right">
+                                    <label>@lang('main.user:lang_label_usercabinet')</label>
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <select name="lang" id="usr_lang" class="form-control">
+                                        @foreach($langOptions AS $lang)
+                                            <option
+                                                @if (old('lang') AND old('lang') == $lang['value'])
+                                                selected="selected"
+                                                @elseif (!old('lang') AND $crmuser->lang == $lang['value'])
+                                                selected="selected"
+                                                @elseif (!old('lang') AND !$crmuser->lang AND isset($lang['selected']) AND $lang['selected'] == true)
+                                                selected="selected"
+                                                @endif
+                                            value="{{$lang['value']}}">{{$lang['label']}}</option>
+                                        @endforeach
+                                    </select>
+                                    @foreach ($errors->get('lang') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
-                            <div class="form-group col-sm-9">
-                                <?php
-                                $old = old('city');
-                                if (!is_null($old)) {
-                                    $value = $old;
-                                } else {
-                                    $value = $crmuser->city;
-                                }?>
-                                <input type="text" name="city" id="usr_name" value="{{$value}}" class="form-control">
-                                @foreach ($errors->get('city') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
-                            </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="form-group col-sm-3 text-right">
-                                <label>@lang('main.user:info_label_usercabinet')</label>
+                            <div class="row">
+                                <div class="form-group col-sm-3 text-right">
+                                    <label>@lang('main.user:name_city_usercabinet')</label>
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <?php
+                                    $old = old('city');
+                                    if (!is_null($old)) {
+                                        $value = $old;
+                                    } else {
+                                        $value = $crmuser->city;
+                                    }?>
+                                    <input type="text" name="city" id="usr_name" value="{{$value}}" class="form-control">
+                                    @foreach ($errors->get('city') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
-                            <div class="form-group col-sm-9">
-                                <?php
-                                $old = old('info');
-                                if (!is_null($old)) {
-                                    $value = $old;
-                                } else {
-                                    $value = $crmuser->info;
-                                }?>
-                                <textarea name="info" id="usr_info" class="form-control">{{$value}}</textarea>
-                                @foreach ($errors->get('info') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
-                            </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="form-group col-sm-3 text-right">
+                            <div class="row">
+                                <div class="form-group col-sm-3 text-right">
+                                    <label>@lang('main.user:info_label_usercabinet')</label>
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <?php
+                                    $old = old('info');
+                                    if (!is_null($old)) {
+                                        $value = $old;
+                                    } else {
+                                        $value = $crmuser->info;
+                                    }?>
+                                    <textarea name="info" id="usr_info" class="form-control">{{$value}}</textarea>
+                                    @foreach ($errors->get('info') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
-                            <div class="form-group col-sm-9">
-                                <p><a href="#" id="main_info_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_main_info')</a></p>
+
+                            <div class="row">
+                                <div class="form-group col-sm-3 text-right">
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <p><a href="javascript:void(0)" id="main_info_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_main_info')</a></p>
+                                </div>
                             </div>
-                        </div>
                         </form>
+
+                        <form id="usercabinet_password_form" methos="post" action="/user/updatePassword">
+                            <div class="row">
+                                <div class="form-group col-sm-12 text-left">
+                                    <h4>@lang('main.user:change_password_heading')</h4>
+                                </div>
+
+                                <div class="form-group col-sm-12">
+                                    <div class="alert alert-success" id="password_form_success_alert">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        @lang('main.user:password_settings_saved_message')
+                                    </div>
+                                    <div class="alert alert-error" id="password_form_error_alert">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        <span id="password_error_container">@lang('main.user:main_info_save_error_message')</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-sm-3 text-right">
+                                    <label>@lang('main.user:old_password_label_usercabinet')</label>
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <input type="password" name="old_password" id="usr_old_password" value="" class="form-control">
+                                    @foreach ($errors->get('old_password') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
+                                <div class="form-group col-sm-3 text-right">
+                                    <label>@lang('main.user:new_password_label_usercabinet')</label>
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <input type="password" name="new_password" id="usr_new_password" value="" class="form-control">
+                                    @foreach ($errors->get('new_password') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
+                                <div class="form-group col-sm-3 text-right">
+                                    <label>@lang('main.user:new_password_confirmation_label_usercabinet')</label>
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <input type="password" name="new_password_confirmation" id="usr_new_password_confirmation" value="" class="form-control">
+                                    @foreach ($errors->get('new_password_confirmation') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-sm-3 text-right">
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <p><a href="javascript:void(0)" id="password_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_password')</a></p>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form id="usercabinet_phone_form" methos="post" action="/user/updatePhone">
+                            <div class="row">
+                                <div class="form-group col-sm-12 text-left">
+                                    <h4>@lang('main.user:change_phone_heading')</h4>
+                                </div>
+
+                                <div class="form-group col-sm-12">
+                                    <div class="alert alert-success" id="phone_form_success_alert">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        @lang('main.user:phone_saved_message')
+                                    </div>
+                                    <div class="alert alert-error" id="phone_form_error_alert">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        <span id="phone_error_container">@lang('main.user:main_info_save_error_message')</span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-sm-3 text-right">
+                                        <label>@lang('main.user:current_phone_label_usercabinet')</label>
+                                    </div>
+                                    <div class="form-group col-sm-9">
+                                        {{$crmuser->phone}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-sm-3 text-right">
+                                    <label>@lang('main.user:new_phone_label_usercabinet')</label>
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <input type="text" name="new_phone" id="usr_new_phone" value="" class="form-control">
+                                    <p class="help-block">@lang('main.user:help_text_phone_usercabinet')</p>
+                                    @foreach ($errors->get('new_phone') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-sm-3 text-right">
+                                    </div>
+                                    <div class="form-group col-sm-9">
+                                        <p><a href="javascript:void(0)" id="phone_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_phone')</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
 
