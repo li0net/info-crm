@@ -7,6 +7,8 @@ $(document).ready(function () {
     $("#password_form_error_alert").hide();
     $("#phone_form_success_alert").hide();
     $("#phone_form_error_alert").hide();
+    $("#email_form_success_alert").hide();
+    $("#email_form_error_alert").hide();
 
     $("#avatar_anchor").click(function () {
         $("#usercabinet_avatar").click();
@@ -152,6 +154,40 @@ $(document).ready(function () {
             },
             error: function(jqXHR, errStr) {
                 $('#phone_submit').removeClass('disabled');
+                console.log(errStr);
+            }
+        });
+    });
+
+    // форма изменения email
+    $("#email_submit").click(function(event) {
+        event.preventDefault();
+        $('#email_submit').addClass('disabled');
+        $('#email_error_container').html('');
+        $.ajax({
+            url: '/user/updateEmail',
+            type: 'post',
+            dataType: 'json',
+            data: $('form#usercabinet_email_form').serialize(),
+            success: function(data) {
+                $('#email_submit').removeClass('disabled');
+                //console.log(data);
+
+                if (data.success) {
+                    $("#email_form_success_alert").alert();
+                    $("#email_form_success_alert").fadeTo(10000, 500).slideUp(500, function() {
+                        $("#email_form_success_alert").slideUp(500);
+                    });
+                } else {
+                    $('#email_form_error_alert').html(data.error);
+                    $("#email_form_error_alert").alert();
+                    $("#email_form_error_alert").fadeTo(3000, 500).slideUp(500, function() {
+                        $("#email_form_error_alert").slideUp(500);
+                    });
+                }
+            },
+            error: function(jqXHR, errStr) {
+                $('#email_submit').removeClass('disabled');
                 console.log(errStr);
             }
         });

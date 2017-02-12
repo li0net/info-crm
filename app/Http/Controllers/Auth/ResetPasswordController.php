@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use App\User;
 
 class ResetPasswordController extends Controller
 {
@@ -45,5 +46,31 @@ class ResetPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    /**
+     * Проверяет код и производит смену email для юзера
+     *
+     * @param $uid string user id
+     * @param $code string secret code
+     */
+    public function confirmEmailChange($uid, $code) {
+        $user = User::where('user_id', $uid)->where('confirmation_code', $code)->first();
+        $isChanged = false;
+
+        if ($user) {
+            $user->email = $user->new_email;
+            $user->new_email = null;
+            $user->save();
+            $isChanged = TRUE;
+        }
+
+        return view(
+            'user::change_email_result',
+            [
+                'crmuser' => $user,
+                'isChanged' => $isChanged
+            ]
+        );
     }
 }

@@ -318,6 +318,53 @@
                             </div>
                         </form>
 
+                        <form id="usercabinet_email_form" methos="post" action="/user/updateEmail">
+                            <div class="row">
+                                <div class="form-group col-sm-12 text-left">
+                                    <h4>@lang('main.user:change_email_heading')</h4>
+                                </div>
+
+                                <div class="form-group col-sm-12">
+                                    <div class="alert alert-success" id="email_form_success_alert">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        @lang('main.user:email_saved_message')
+                                    </div>
+                                    <div class="alert alert-error" id="email_form_error_alert">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        <span id="email_error_container">@lang('main.user:main_info_save_error_message')</span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-sm-3 text-right">
+                                        <label>@lang('main.user:current_email_label_usercabinet')</label>
+                                    </div>
+                                    <div class="form-group col-sm-9">
+                                        {{$crmuser->email}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-sm-3 text-right">
+                                    <label>@lang('main.user:new_email_label_usercabinet')</label>
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <input type="text" name="new_email" id="usr_new_email" value="" class="form-control">
+                                    <p class="help-block">@lang('main.user:help_text_email_usercabinet')</p>
+                                    @foreach ($errors->get('new_email') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-sm-3 text-right">
+                                    </div>
+                                    <div class="form-group col-sm-9">
+                                        <p><a href="javascript:void(0)" id="email_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_email')</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
 
