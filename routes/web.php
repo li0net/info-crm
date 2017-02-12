@@ -111,6 +111,7 @@ Route::post('/user/saveMainInfo', 'UsersController@saveMainInfo');
 Route::post('/user/updatePassword', 'UsersController@updatePassword');
 Route::post('/user/updatePhone', 'UsersController@updatePhone');
 Route::post('/user/updateEmail', 'UsersController@updateEmail');
+Route::get('/user/confirmEmailChange/{uid}/{code}', 'SysConfirmActionsController@confirmEmailChange');
 
 Route::get('/clients/create', 'ClientsController@create');
 Route::get('/clients/edit/{client}', 'ClientsController@edit');

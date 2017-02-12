@@ -9,6 +9,7 @@ use App\AccessPermission;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -463,18 +464,17 @@ class UsersController extends Controller
             ]);
         }
 
-
-
-return json_encode([
-    'success' => false,
-    'error'   => 'Not implemented'
-]);
+        // временно разрешаем менять так, т.к. смс мы отправлять не можем
+        //return json_encode([
+        //    'success' => false,
+        //    'error'   => 'Not implemented'
+        //]);
 
         // TODO: писать новый номер в users.new_phone, отсылать код по смс, открывать модальное окно, проверять код, только после этого менять
         //  users.phone = users.new_phone и users.new_phone = NULL;
-        //$user = $request->user();
-        //$user->phone = $formData['new_phone'];
-        //$user->save();
+        $user = $request->user();
+        $user->phone = $formData['new_phone'];
+        $user->save();
 
         return json_encode([
             'success' => true,
@@ -488,7 +488,7 @@ return json_encode([
         );
 
         $validator = Validator::make($formData, [
-            'new_email' => 'required|email'
+            'new_email' => 'required|email|unique:users,email'
         ]);
         if ($validator->fails()) {
             $errors = '';
@@ -504,6 +504,16 @@ return json_encode([
             ]);
         }
 
+        $user = $request->user();
+        $user->confirmation_code = sha1(rand(1000000, 9999999).microtime().$user->email);
+        $user->new_email = $formData['new_email'];
+        $user->save();
 
+        Mail::to($user->new_email)->send(new \App\Mail\UserEmailChangeConfirmation($user));
+
+        return json_encode([
+            'success' => true,
+            'error'   => ''
+        ]);
     }
 }

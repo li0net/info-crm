@@ -159,35 +159,35 @@ $(document).ready(function () {
         });
     });
 
-    // форма изменения телефона
+    // форма изменения email
     $("#email_submit").click(function(event) {
         event.preventDefault();
         $('#email_submit').addClass('disabled');
         $('#email_error_container').html('');
         $.ajax({
-            url: '/user/updatePhone',
+            url: '/user/updateEmail',
             type: 'post',
             dataType: 'json',
-            data: $('form#usercabinet_phone_form').serialize(),
+            data: $('form#usercabinet_email_form').serialize(),
             success: function(data) {
-                $('#phone_submit').removeClass('disabled');
+                $('#email_submit').removeClass('disabled');
                 //console.log(data);
 
                 if (data.success) {
-                    $("#phone_form_success_alert").alert();
-                    $("#phone_form_success_alert").fadeTo(2000, 500).slideUp(500, function() {
-                        $("#phone_form_success_alert").slideUp(500);
+                    $("#email_form_success_alert").alert();
+                    $("#email_form_success_alert").fadeTo(10000, 500).slideUp(500, function() {
+                        $("#email_form_success_alert").slideUp(500);
                     });
                 } else {
-                    $('#phone_form_error_alert').html(data.error);
-                    $("#phone_form_error_alert").alert();
-                    $("#phone_form_error_alert").fadeTo(3000, 500).slideUp(500, function() {
-                        $("#phone_form_error_alert").slideUp(500);
+                    $('#email_form_error_alert').html(data.error);
+                    $("#email_form_error_alert").alert();
+                    $("#email_form_error_alert").fadeTo(3000, 500).slideUp(500, function() {
+                        $("#email_form_error_alert").slideUp(500);
                     });
                 }
             },
             error: function(jqXHR, errStr) {
-                $('#phone_submit').removeClass('disabled');
+                $('#email_submit').removeClass('disabled');
                 console.log(errStr);
             }
         });
