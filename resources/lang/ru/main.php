@@ -122,6 +122,12 @@ return [
     'user:current_phone_label_usercabinet'  => 'Текущий номер',
     'user:new_phone_label_usercabinet'      => 'Новый номер',
     'user:help_text_phone_usercabinet'      => 'На новый номер будет выслано sms сообщение с кодом подтверждения',
+    'user:change_email_heading'             => 'Изменить Email',
+    'user:email_saved_message'              => 'Email изменен',
+    'user:current_email_label_usercabinet'  => 'Текущий Email',
+    'user:new_email_label_usercabinet'      => 'Новый Email',
+    'user:help_text_email_usercabinet'      => 'На новый Email будет выслано письмо со ссылкой для подтверждения',
+    'user:btn_update_email'                 => 'Изменить Email',
 
     'user:permissions_appointment_form_label' => 'Окно записи',
     'user:permissions_appointment_create_label' => 'Создавать записи',

@@ -7,6 +7,8 @@ $(document).ready(function () {
     $("#password_form_error_alert").hide();
     $("#phone_form_success_alert").hide();
     $("#phone_form_error_alert").hide();
+    $("#email_form_success_alert").hide();
+    $("#email_form_error_alert").hide();
 
     $("#avatar_anchor").click(function () {
         $("#usercabinet_avatar").click();
@@ -128,6 +130,40 @@ $(document).ready(function () {
         event.preventDefault();
         $('#phone_submit').addClass('disabled');
         $('#phone_error_container').html('');
+        $.ajax({
+            url: '/user/updatePhone',
+            type: 'post',
+            dataType: 'json',
+            data: $('form#usercabinet_phone_form').serialize(),
+            success: function(data) {
+                $('#phone_submit').removeClass('disabled');
+                //console.log(data);
+
+                if (data.success) {
+                    $("#phone_form_success_alert").alert();
+                    $("#phone_form_success_alert").fadeTo(2000, 500).slideUp(500, function() {
+                        $("#phone_form_success_alert").slideUp(500);
+                    });
+                } else {
+                    $('#phone_form_error_alert').html(data.error);
+                    $("#phone_form_error_alert").alert();
+                    $("#phone_form_error_alert").fadeTo(3000, 500).slideUp(500, function() {
+                        $("#phone_form_error_alert").slideUp(500);
+                    });
+                }
+            },
+            error: function(jqXHR, errStr) {
+                $('#phone_submit').removeClass('disabled');
+                console.log(errStr);
+            }
+        });
+    });
+
+    // форма изменения телефона
+    $("#email_submit").click(function(event) {
+        event.preventDefault();
+        $('#email_submit').addClass('disabled');
+        $('#email_error_container').html('');
         $.ajax({
             url: '/user/updatePhone',
             type: 'post',

@@ -394,7 +394,7 @@ class UsersController extends Controller
 
         $validator = Validator::make($formData, [
             'old_password' => 'required',
-            'new_password' => 'required|min:8|confirmed',
+            'new_password' => 'required|min:5|confirmed',
             'new_password_confirmation' => 'required'
         ]);
         if ($validator->fails()) {
@@ -480,5 +480,30 @@ return json_encode([
             'success' => true,
             'error'   => ''
         ]);
+    }
+
+    public function updateEmail(Request $request) {
+        $formData = $request->only(
+            'new_email'
+        );
+
+        $validator = Validator::make($formData, [
+            'new_email' => 'required|email'
+        ]);
+        if ($validator->fails()) {
+            $errors = '';
+            $mbErrors = $validator->errors();
+            foreach ($mbErrors->all() as $message) {
+                $errors .= $message.'<br>';
+            }
+        }
+        if (isset($errors)) {
+            return json_encode([
+                'success' => false,
+                'error'   => substr($errors, 0, -4)
+            ]);
+        }
+
+
     }
 }

@@ -103,7 +103,8 @@ class RegisterController extends Controller
             'email' => $data['email']
         ]);
 
-        $usr = User::create($userData);
+        $usr = new User();
+        $usr->fill($userData);
         $usr->organization_id = $org->organization_id;      // устанавливаем отдельно, т.к. пакетная установка этого поля запрещена
         $usr->save();
         DB::commit();
