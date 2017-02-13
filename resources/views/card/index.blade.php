@@ -66,7 +66,7 @@
 										<div class="col-sm-12 text-center">
 											<div class="form-group">
 												<a href="#card-items-{{$card->card_id}}" data-toggle="collapse" class="btn btn-link btn-xs card-items-toggle">
-												<span class="badge label-danger hidden" v-model="card_items_count">@{{ card_items_count }}</span>
+												<span class="badge label-danger hidden">0</span>
 												Состав технологической карты
 												<i class="fa fa-caret-down"></i></a>
 											</div>
@@ -130,6 +130,13 @@
 
 			$('.card-items').on('hidden.bs.collapse', function(e){
 				$('a[href="#' + e.target.id + '"] .fa.fa-caret-up').toggleClass('fa-caret-up fa-caret-down');
+			});
+
+			$('.card-items').each(function() {
+			  	var id = $(this).attr('id');
+
+			  	$('a[href="#' + id + '"] .badge.label-danger').html($('#' + id + ' .form-group').children('.row').length);
+			  	$('a[href="#' + id + '"] .badge.label-danger').removeClass('hidden');
 			});
 		});
 	</script>

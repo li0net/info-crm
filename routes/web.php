@@ -48,6 +48,7 @@ Route::get('/storageData', 'StorageController@getStorageData');
 Route::get('/productCategoriesData', 'ProductCategoriesController@getProductCategoriesData');
 Route::resource('/card', 'CardController');
 Route::post('/home', 'homeController@indexFiltered');
+Route::post('/payment/list', ['as' => 'payment.list', 'uses' => 'PaymentController@indexFiltered']);
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
 Route::get('/serviceCategories/gridData', function()
@@ -110,6 +111,9 @@ Route::post('/user/saveAvatar', 'UsersController@saveAvatar');
 Route::post('/user/saveMailingSettings', 'UsersController@saveMailingSettings');
 Route::post('/user/saveMainInfo', 'UsersController@saveMainInfo');
 Route::post('/user/updatePassword', 'UsersController@updatePassword');
+Route::post('/user/updatePhone', 'UsersController@updatePhone');
+Route::post('/user/updateEmail', 'UsersController@updateEmail');
+Route::get('/user/confirmEmailChange/{uid}/{code}', 'SysConfirmActionsController@confirmEmailChange');
 
 Route::get('/clients/create', 'ClientsController@create');
 Route::get('/clients/edit/{client}', 'ClientsController@edit');

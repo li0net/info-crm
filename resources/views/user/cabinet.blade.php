@@ -49,7 +49,7 @@
 
                         <div class="row">
                             <div class="col-sm-4">
-                                <a href="#" class="btn btn-primary btn-sm">@lang('main.user:btn_my_records')</a>
+                                <a href="javascript:void(0)" class="btn btn-primary btn-sm">@lang('main.user:btn_my_records')</a>
                             </div>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                             </label>
                             <br>
 
-                            <p><a href="#" id="mailings_submit" class="btn btn-primary btn-sm">@lang('main.btn_submit_label')</a></p>
+                            <p><a href="javascript:void(0)" id="mailings_submit" class="btn btn-primary btn-sm">@lang('main.btn_submit_label')</a></p>
                         </form>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
                                 <div class="form-group col-sm-3 text-right">
                                 </div>
                                 <div class="form-group col-sm-9">
-                                    <p><a href="#" id="main_info_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_main_info')</a></p>
+                                    <p><a href="javascript:void(0)" id="main_info_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_main_info')</a></p>
                                 </div>
                             </div>
                         </form>
@@ -266,10 +266,105 @@
                                 <div class="form-group col-sm-3 text-right">
                                 </div>
                                 <div class="form-group col-sm-9">
-                                    <p><a href="#" id="password_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_password')</a></p>
+                                    <p><a href="javascript:void(0)" id="password_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_password')</a></p>
                                 </div>
                             </div>
                         </form>
+
+                        <form id="usercabinet_phone_form" methos="post" action="/user/updatePhone">
+                            <div class="row">
+                                <div class="form-group col-sm-12 text-left">
+                                    <h4>@lang('main.user:change_phone_heading')</h4>
+                                </div>
+
+                                <div class="form-group col-sm-12">
+                                    <div class="alert alert-success" id="phone_form_success_alert">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        @lang('main.user:phone_saved_message')
+                                    </div>
+                                    <div class="alert alert-error" id="phone_form_error_alert">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        <span id="phone_error_container">@lang('main.user:main_info_save_error_message')</span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-sm-3 text-right">
+                                        <label>@lang('main.user:current_phone_label_usercabinet')</label>
+                                    </div>
+                                    <div class="form-group col-sm-9">
+                                        {{$crmuser->phone}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-sm-3 text-right">
+                                    <label>@lang('main.user:new_phone_label_usercabinet')</label>
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <input type="text" name="new_phone" id="usr_new_phone" value="" class="form-control">
+                                    <p class="help-block">@lang('main.user:help_text_phone_usercabinet')</p>
+                                    @foreach ($errors->get('new_phone') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-sm-3 text-right">
+                                    </div>
+                                    <div class="form-group col-sm-9">
+                                        <p><a href="javascript:void(0)" id="phone_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_phone')</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form id="usercabinet_email_form" methos="post" action="/user/updateEmail">
+                            <div class="row">
+                                <div class="form-group col-sm-12 text-left">
+                                    <h4>@lang('main.user:change_email_heading')</h4>
+                                </div>
+
+                                <div class="form-group col-sm-12">
+                                    <div class="alert alert-success" id="email_form_success_alert">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        @lang('main.user:email_saved_message')
+                                    </div>
+                                    <div class="alert alert-error" id="email_form_error_alert">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        <span id="email_error_container">@lang('main.user:main_info_save_error_message')</span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-sm-3 text-right">
+                                        <label>@lang('main.user:current_email_label_usercabinet')</label>
+                                    </div>
+                                    <div class="form-group col-sm-9">
+                                        {{$crmuser->email}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-sm-3 text-right">
+                                    <label>@lang('main.user:new_email_label_usercabinet')</label>
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <input type="text" name="new_email" id="usr_new_email" value="" class="form-control">
+                                    <p class="help-block">@lang('main.user:help_text_email_usercabinet')</p>
+                                    @foreach ($errors->get('new_email') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-sm-3 text-right">
+                                    </div>
+                                    <div class="form-group col-sm-9">
+                                        <p><a href="javascript:void(0)" id="email_submit" class="btn btn-primary btn-sm">@lang('main.user:btn_update_email')</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
 

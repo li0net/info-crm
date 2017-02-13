@@ -30,6 +30,122 @@
 			<hr>	
 		</div>
 	</div>
+	<form method="post" action="/payment" class="form">
+		{{ csrf_field() }}
+		{{ Form::hidden('organization_id', $user->organization_id, ['id' => 'organization_id']) }}
+		<fieldset>
+			<div class="row m-b">
+				<div class="col-md-3">
+					<div class="input-group">
+						<span class="input-group-addon">c&nbsp;&nbsp;</span>
+						<input class="form-control hasDatepicker" name="start_date" data-days-offset="-1" type="text" id="date-from">
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="input-group">
+						<span class="input-group-addon">по</span>
+						<input class="form-control hasDatepicker" name="end_date" type="text" id="date-to">
+					</div>
+				</div>
+				<div class="col-md-3">
+					<select class="form-control" data-placeholder="Выберите вид платежа" name="balance_is">
+						<option selected="" value="0">Все виды платежей</option>
+						<option value="1">Доходы</option>
+						<option value="2">Расходы</option>
+						<option value="3">Перемещение</option>
+					</select>
+				</div>	    	
+				<div class="col-md-3">
+				{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '', 'id' => 'partner_id', 'placeholder' => 'Контрагент не выбран']) }}
+				</div>	
+			</div>
+			<div class="row m-b">
+				<div class="col-md-3">
+					{{ Form::select('account_id', $accounts, null, ['class' => 'form-control', 'required' => '', 'id' => 'account_id', 'placeholder' => 'Счет не выбран']) }}
+				</div>
+				<div class="col-md-3">
+					{{ Form::select('item_id', $items, null, ['class' => 'form-control', 'required' => '', 'id' => 'item_id', 'placeholder' => 'Статья платежа не выбрана']) }}			
+				</div>
+				<div class="col-md-3">
+					{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '', 'id' => 'employee_id', 'placeholder' => 'Сотрудник не выбран']) }}
+				</div>
+				<div class="col-md-3">
+					<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+					<input type="text" class="form-control ui-autocomplete-input" name="client" value="" placeholder="Поиск клиента (имя или телефон)" autocomplete="off">
+					<input type="hidden" class="form-control" name="client_id" value=""> 
+				</div>
+			</div>
+			<div class="row m-b">
+				<div class="col-md-3 transactions-multi-filters">
+					{{-- <select name="good_ids[]" data-placeholder="Выберите товары..." class="chosen-filter-goods small_select form-control" multiple="multiple" style="display: none;">
+						<option value="436655">111111111</option>
+						<option value="453399">rasas</option>
+					</select>
+					<div class="chosen-container chosen-container-multi" style="width: 376px;" title="">
+						<ul class="chosen-choices">
+							<li class="search-field">	
+								<input type="text" value="Выберите товары..." class="default" autocomplete="off" style="width: 158px;">
+							</li>
+						</ul>
+						<div class="chosen-drop">
+							<ul class="chosen-results">
+								<li class="no-results">Начните печатать для поиска товаров...</li>
+							</ul>
+						</div>
+					</div> --}}
+				</div>
+				<div class="col-md-3 transactions-multi-filters">
+					{{-- <select name="service_ids[]" class="form-control chosen-filter-services" data-placeholder="Выберите услуги..." multiple="multiple" style="display: none;">
+						<option value="508710">Стрижки и укладки</option>
+						<option value="508711">Полубокс</option>
+						<option value="529076">Маникюр</option>
+						<option value="529077">Стилистика</option>
+						<option value="529093">Модельная</option>
+						<option value="529094">Наголо</option>
+						<option value="529095">Ирокез</option>
+						<option value="529096">Французский</option>
+						<option value="529100">Со стразами</option>
+						<option value="529101">Профилактика</option>
+						<option value="529102">Свадебный</option>
+						<option value="529104">Деловой</option>
+						<option value="529105">Нарядный</option>
+					</select>
+					<div class="chosen-container chosen-container-multi" style="width: 376px;" title="">
+						<ul class="chosen-choices">
+							<li class="search-field">
+								<input type="text" value="Выберите услуги..." class="default" autocomplete="off" style="width: 151px;">
+							</li>
+						</ul>
+						<div class="chosen-drop">
+							<ul class="chosen-results">
+								<li class="no-results">Начните печатать для поиска услуг...</li>
+							</ul>
+						</div>
+					</div> --}}
+				</div>
+				<div class="col-md-3">
+					<select class="form-control" data-placeholder="Выберите статус платежа" name="deleted">
+						<option selected="" value="0">Не отмененные</option>
+						<option value="1">Отмененные</option>
+					</select>
+				</div>
+				<div class="form-inline">
+					<div class="col-md-3">
+						<select name="editable_length" aria-controls="editable" class="form-control input-sm">
+							<option selected="" value="25">25</option>
+							<option value="50">50</option>
+							<option value="100">100</option>
+						</select> платежей на странице            
+					</div>
+				</div>
+			</div>
+			<div class="row m-b ">
+				<div class="col-md-2 col-md-offset-10">
+					<input type="button" class="btn btn-success btn-sm pull-right" value="Показать" id='form_submit'>
+				</div>
+			</div>
+		</fieldset>
+	</form>
 	<div class="row">
 		<div class="col-sm-12">
 			<table class="table">
@@ -46,7 +162,7 @@
 					<th>Услуга/Товар</th>
 					<th>Визит</th>
 				</thead>
-				<tbody>
+				<tbody id = 'result_container'>
 					@foreach($payments as $payment)
 						<tr>
 							<th class="text-center">{{ $payment->payment_id }}</th>
@@ -80,6 +196,68 @@
 			</div>
 		</div>
 	</div>		
+@endsection
+
+@section('page-specific-scripts')
+<script>
+	$(document).ready(function(){
+		$('#date-from').datepicker({
+			autoclose: true,
+			orientation: 'auto',
+			format: 'dd-mm-yyyy',
+			weekStart: 1
+		});
+
+		var today = new Date();
+
+		$('#date-from').datepicker('update', today);
+
+		$('#date-to').datepicker({
+			autoclose: true,
+			orientation: 'auto',
+			format: 'dd-mm-yyyy',
+			weekStart: 1
+		});
+
+		$('#date-to').datepicker('update', today);
+
+		$('#date-from').datepicker()
+			.on('show', function(e) {
+				$('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
+				$('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
+			});
+
+		$('#date-to').datepicker()
+		    .on('show', function(e) {
+		        $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
+		        $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
+		    });
+
+		$('#form_submit').on('click', function(e){
+			var me = this;
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				data: {	'date_from'			: $('#date-from').val(),
+						'date_to'			: $('#date-to').val(),
+						'partner_id'		: $('#partner_id').val(),
+						'account_id'		: $('#account_id').val(),
+						'item_id'			: $('#item_id').val(),
+						'employee_id'		: $('#employee_id').val(),
+						'organization_id'	: $('#organization_id').val(),
+						},
+				url: "/payment/list",
+				success: function(data) {
+						$('#result_container').html(data);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+						console.log('Error while processing payments data range!');
+				}
+			});
+		});
+	});
+		
+</script>
 @endsection
 
 <script>

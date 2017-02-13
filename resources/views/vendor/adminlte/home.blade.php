@@ -15,11 +15,11 @@
 			{{ Form::open() }}
 				<div class="col-sm-3">
 					{{ Form::label('filter-employee', 'ФИО мастера:', ['class' => 'ctrl-label']) }}
-					{{ Form::select('filter-employee', $employees, null,  ['class' => 'form-control', '@change' => 'onSelectChange', 'v-model' => 'filter_employee']) }}
+					{{ Form::select('filter-employee', $employees, null,  ['class' => 'form-control', '@change' => 'onSelectChange', 'v-model' => 'filter_employee', 'placeholder' => '- все -']) }}
 				</div>
 				<div class="col-sm-3">
 					{{ Form::label('filter-service', 'Наименование услуги:', ['class' => 'ctrl-label']) }}
-					{{ Form::select('filter-service', $services, null,  ['class' => 'form-control', '@change' => 'onSelectChange', 'v-model' => 'filter_service']) }}
+					{{ Form::select('filter-service', $services, null,  ['class' => 'form-control', '@change' => 'onSelectChange', 'v-model' => 'filter_service', 'placeholder' => '- все -']) }}
 				</div>
 				<div class="col-sm-3">
 					{{ Form::label('filter-start-time', 'Время начала:', ['class' => 'ctrl-label']) }}
@@ -40,8 +40,9 @@
 				<table class="table">
 					<thead>
 						<th># назначения</th>
-						<th># мастера</th>
-						<th># клиента</th>
+						<th>Мастер</th>
+						<th>Клиент</th>
+						<th>Услуга</th>
 						<th>Время начала</th>
 						<th>Время окончания</th>
 					</thead>
@@ -50,8 +51,9 @@
 						@foreach($appointments as $appointment)
 							<tr>
 								<th>{{ $appointment->appointment_id }}</th>
-								<td>{{ $appointment->employee_id }}</td>
-								<td>{{ $appointment->client_id }}</td>
+								<td>{{ $appointment->employee->name }}</td>
+								<td>{{ $appointment->client->name }}</td>
+								<td>{{ $appointment->service->name }}</td>
 								<td>{{ $appointment->start }}</td>
 								<td>{{ $appointment->end }}</td>
 							</tr>
