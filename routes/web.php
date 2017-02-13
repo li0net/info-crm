@@ -47,6 +47,7 @@ Route::get('/storageData', 'StorageController@getStorageData');
 Route::get('/productCategoriesData', 'ProductCategoriesController@getProductCategoriesData');
 Route::resource('/card', 'CardController');
 Route::post('/home', 'homeController@indexFiltered');
+Route::post('/payment/list', ['as' => 'payment.list', 'uses' => 'PaymentController@indexFiltered']);
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
 Route::get('/serviceCategories/gridData', function()

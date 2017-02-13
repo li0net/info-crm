@@ -40,16 +40,16 @@ class HomeController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$dash = '- все -';
+		//$dash = '- все -';
 
-		$appointments = Appointment::select('appointment_id', 'employee_id', 'client_id', 'service_id', 'start', 'end')->get();
+		$appointments = Appointment::select('appointment_id', 'employee_id', 'client_id', 'service_id', 'start', 'end')->with('employee', 'client', 'service')->get();
 		$employees = Employee::select('employee_id', 'name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
 		$services = Service::select('service_id', 'name')->pluck('name', 'service_id');
 		$sessionStart = collect($this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, ''));
 		$sessionEnd = collect($this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, ''));
 
-		$employees = $employees->put(0, $dash)->sort();
-		$services = $services->put(0, $dash)->sort();
+		// $employees = $employees->put(0, $dash)->sort();
+		// $services = $services->put(0, $dash)->sort();
 
 		return view('adminlte::home', [
 			'appointments' => $appointments,

@@ -30,7 +30,9 @@
 			<hr>	
 		</div>
 	</div>
-	<form method="get" action="#" class="form">
+	<form method="post" action="/payment" class="form">
+		{{ csrf_field() }}
+		{{ Form::hidden('organization_id', $user->organization_id, ['id' => 'organization_id']) }}
 		<fieldset>
 			<div class="row m-b">
 				<div class="col-md-3">
@@ -54,48 +56,24 @@
 					</select>
 				</div>	    	
 				<div class="col-md-3">
-					<select class="form-control" data-placeholder="Выберите контрагента" name="supplier_id">
-						<option value="0">Контрагент не выбран</option>
-						<option value="11222">Пирожки</option>
-					</select>				
+				{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '', 'id' => 'partner_id', 'placeholder' => 'Контрагент не выбран']) }}
 				</div>	
 			</div>
 			<div class="row m-b">
 				<div class="col-md-3">
-					<select class="form-control" data-placeholder="Выберите кассу" name="account_id">
-						<option value="0">Касса не выбрана</option>
-						<option value="87128">Основная касса</option>
-						<option value="87129">Расчетный счет</option>
-					</select>
+					{{ Form::select('account_id', $accounts, null, ['class' => 'form-control', 'required' => '', 'id' => 'account_id', 'placeholder' => 'Счет не выбран']) }}
 				</div>
 				<div class="col-md-3">
-					<select class="form-control" data-placeholder="Выберите статью платежа" name="type">
-						<option value="0">Статья платежа не выбрана</option>
-						<option value="1">Закупка материалов</option>
-						<option value="2">Закупка товаров</option>
-						<option value="3">Зарплата персонала</option>
-						<option value="4">Налоги и сборы</option>
-						<option value="5">Оказание услуг</option>
-						<option value="6">Продажа абонементов</option>
-						<option value="7">Продажа товаров</option>
-						<option value="8">Прочие доходы</option>
-						<option value="9">Прочие расходы</option>
-					</select>				
+					{{ Form::select('item_id', $items, null, ['class' => 'form-control', 'required' => '', 'id' => 'item_id', 'placeholder' => 'Статья платежа не выбрана']) }}			
 				</div>
 				<div class="col-md-3">
-					<select class="form-control" data-placeholder="Выберите сотрудника" name="master_id">
-						<option value="0">Сотрудник не выбран</option>
-						<option value="106305">Роман Бакланов</option>
-						<option value="110867">Руслан Абдрашитов</option>
-						<option value="110871">Константин Дудукалов</option>
-					</select>
+					{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '', 'id' => 'employee_id', 'placeholder' => 'Сотрудник не выбран']) }}
 				</div>
 				<div class="col-md-3">
 					<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
 					<input type="text" class="form-control ui-autocomplete-input" name="client" value="" placeholder="Поиск клиента (имя или телефон)" autocomplete="off">
 					<input type="hidden" class="form-control" name="client_id" value=""> 
 				</div>
-				
 			</div>
 			<div class="row m-b">
 				<div class="col-md-3 transactions-multi-filters">
@@ -163,7 +141,7 @@
 			</div>
 			<div class="row m-b ">
 				<div class="col-md-2 col-md-offset-10">
-					<input type="submit" class="btn btn-success btn-sm pull-right" value="Показать">
+					<input type="button" class="btn btn-success btn-sm pull-right" value="Показать" id='form_submit'>
 				</div>
 			</div>
 		</fieldset>
@@ -184,7 +162,7 @@
 					<th>Услуга/Товар</th>
 					<th>Визит</th>
 				</thead>
-				<tbody>
+				<tbody id = 'result_container'>
 					@foreach($payments as $payment)
 						<tr>
 							<th class="text-center">{{ $payment->payment_id }}</th>
@@ -227,15 +205,21 @@
 			autoclose: true,
 			orientation: 'auto',
 			format: 'dd-mm-yyyy',
-			firstDay: 1,
+			weekStart: 1
 		});
+
+		var today = new Date();
+
+		$('#date-from').datepicker('update', today);
 
 		$('#date-to').datepicker({
 			autoclose: true,
 			orientation: 'auto',
 			format: 'dd-mm-yyyy',
-			firstDay: 1
+			weekStart: 1
 		});
+
+		$('#date-to').datepicker('update', today);
 
 		$('#date-from').datepicker()
 			.on('show', function(e) {
@@ -248,6 +232,29 @@
 		        $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
 		        $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
 		    });
+
+		$('#form_submit').on('click', function(e){
+			var me = this;
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				data: {	'date_from'			: $('#date-from').val(),
+						'date_to'			: $('#date-to').val(),
+						'partner_id'		: $('#partner_id').val(),
+						'account_id'		: $('#account_id').val(),
+						'item_id'			: $('#item_id').val(),
+						'employee_id'		: $('#employee_id').val(),
+						'organization_id'	: $('#organization_id').val(),
+						},
+				url: "/payment/list",
+				success: function(data) {
+						$('#result_container').html(data);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+						console.log('Error while processing payments data range!');
+				}
+			});
+		});
 	});
 		
 </script>

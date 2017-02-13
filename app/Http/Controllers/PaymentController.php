@@ -7,9 +7,12 @@ use App\Item;
 use App\User;
 use App\Account;
 use App\Payment;
+use App\Partner;
+use App\Employee;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class PaymentController extends Controller
@@ -22,6 +25,10 @@ class PaymentController extends Controller
 	public function index(Request $request)
 	{
 		$payments = Payment::where('organization_id', $request->user()->organization_id)->with('account', 'item', 'user')->get()->all();
+		$items = Item::where('organization_id', $request->user()->organization_id)->pluck('title', 'item_id');
+		$partners = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id');
+		$accounts = Account::where('organization_id', $request->user()->organization_id)->pluck('title', 'account_id');
+		$employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
 
 		$page = Input::get('page', 1);
 		$paginate = 10;
@@ -43,7 +50,40 @@ class PaymentController extends Controller
 
 		// unset($payment);
 
-		return view('payment.index', ['user' => $request->user()])->withpayments($payments);
+		return view('payment.index', ['user' => $request->user(), 'items' => $items, 'partners' => $partners, 'accounts' => $accounts, 'employees' => $employees])->withpayments($payments);
+	}
+
+
+	public function indexFiltered(Request $request)
+	{
+		$payments = Payment::where('organization_id', $request->organization_id);
+
+		if('' !== $request->account_id) {
+			$payments = $payments->where('account_id', $request->account_id);
+		}
+
+		if('' !== $request->item_id) {
+			$payments->where('item_id', $request->item_id);
+		}
+
+		if('' !== $request->employee_id) {
+			$payments->where('beneficiary_type', 'employee')->where('beneficiary_title', $request->employee_id);
+		}
+
+		if('' !== $request->partner_id) {
+			$payments->where('beneficiary_type', 'partner')->where('beneficiary_title', $request->partner_id);
+		}
+								
+		$payments = $payments->with('account', 'item', 'user')->get();
+
+		//dd($payments);
+
+		// $items = Item::where('organization_id', $request->user()->organization_id)->pluck('title', 'item_id');
+		// $partners = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id');
+		// $accounts = Account::where('organization_id', $request->user()->organization_id)->pluck('title', 'account_id');
+		// $employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
+
+		return View::make('payment.list', ['payments' => $payments]);
 	}
 
 	/**
