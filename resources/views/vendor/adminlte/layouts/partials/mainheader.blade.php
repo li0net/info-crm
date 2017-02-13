@@ -116,6 +116,20 @@
                     <li><a href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>
                     <li><a href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>
                 @else
+                    <li class="dropdown langs-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-language"></i><span class="label label-flag {{ App::getLocale() }}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            @foreach (Config::get('languages') as $lang => $language)
+                                @if ($lang != App::getLocale())
+                                    <li>
+                                        <a class="lang-flag {{$lang}}" href="/locale/{{$lang}}">{{$language}}</a>
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </li>
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
@@ -174,6 +188,6 @@
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                 </li> --}}
             </ul>
-        </div> 
+        </div>
     </nav>
 </header>

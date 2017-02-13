@@ -77,3 +77,59 @@ label {
     border: 0;
   }
 }
+
+.langs-menu{
+  .dropdown-menu{
+    min-width: 100px;
+    li{
+      padding-left: 5px;
+      &:hover{
+        background: #ECF0F5;
+      }
+      a{
+        &:hover{
+          background: #ECF0F5;
+        }
+      }
+
+      .lang-flag{
+        padding-left: 30px;
+        &.ru{
+          background: url(/img/crm/flags/ru.png) 0 0 no-repeat;
+        }
+        &.en{
+          background: url(/img/crm/flags/us.png) 0 0 no-repeat;
+        }
+        &.es{
+          background: url(/img/crm/flags/es.png) 0 0 no-repeat;
+        }
+        &.ca{
+          background: url(/img/crm/flags/ca.png) 0 0 no-repeat;
+        }
+      }
+    }
+  }
+}
+
+.main-header .navbar .nav > li > a > .label.label-flag{
+  width: 12px;
+  height: 12px;
+  display: block;
+  background-size: contain;
+  &.ru{
+    background: url(/img/crm/flags/ru.png) 0 0 no-repeat;
+    background-size: contain;
+  }
+  &.en{
+    background: url(/img/crm/flags/us.png) 0 0 no-repeat;
+    background-size: contain;
+  }
+  &.es{
+    background: url(/img/crm/flags/es.png) 0 0 no-repeat;
+    background-size: contain;
+  }
+  &.ca{
+    background: url(/img/crm/flags/ca.png) 0 0 no-repeat;
+    background-size: contain;
+  }
+}
