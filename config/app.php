@@ -230,5 +230,10 @@ return [
         'GridEncoder' => Mgallegos\LaravelJqgrid\Facades\GridEncoder::class,
         'GridEncoderCustom' => App\Libraries\GridEncoderCustom::class,
     ],
-
+    'languages' => [
+        'ru' => 'Русский',
+        'en' => 'English',
+        'ca' => 'Русский',
+        'es' => 'Русский',
+    ],
 ];

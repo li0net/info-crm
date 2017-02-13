@@ -13,6 +13,7 @@
 
 use Illuminate\Support\Facades\Input;
 use App\ServiceCategoriesGridRepository;
+use Carbon\Carbon;
 
 Route::get('/', function () {
     return view('welcome');
@@ -131,3 +132,15 @@ Route::post('/image-upload/{id}', ['as' => 'upload', 'uses' => 'UploadImageContr
 Route::get('/image-upload', 'UploadImageController@uploadImage');
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::post('changelocale', ['as' => 'changelocale', 'uses' => 'TranslationController@changeLocale']);
+
+Route::get('locale/{locale?}',
+    [
+        'as' => 'locale.setlocale',
+        'uses' => 'LocaleController@setLocale'
+    ]);
+//Route::get('locale/{locale}', function ($locale) {
+//    App::setLocale($locale);
+//    Cookie::queue('locale', $locale);
+//    return redirect(url(URL::previous()));
+//});

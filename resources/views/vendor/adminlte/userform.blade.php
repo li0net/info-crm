@@ -301,6 +301,52 @@
                                             }
                                         }?>
                                         <p><input type="checkbox" name="clients_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_clients_label')</strong></p>
+
+                                        <?php
+                                        $selected = '';
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
+                                                if ($permission->object == 'clients_phone' AND $permission->action == 'view' AND $permission->access_level == '1') {
+                                                    $selected = "checked='checked'";
+                                                }
+                                            }
+                                        }?>
+                                        <p><input type="checkbox" name="clients_phone_view" value="1" {{$selected}}>@lang('main.user:permissions_view_clients_phone_label')</p>
+
+                                        <?php
+                                        $selected = '';
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
+                                                if ($permission->object == 'client_phone' AND $permission->action == 'view' AND $permission->access_level == '1') {
+                                                    $selected = "checked='checked'";
+                                                }
+                                            }
+                                        }?>
+                                        <p><input type="checkbox" name="client_phone_view" value="1" {{$selected}}>@lang('main.user:permissions_view_client_phone_label')</p>
+
+                                        <?php
+                                        $selected = '';
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
+                                                if ($permission->object == 'clients_export_xls' AND $permission->action == 'view' AND $permission->access_level == '1') {
+                                                    $selected = "checked='checked'";
+                                                }
+                                            }
+                                        }?>
+                                        <p><input type="checkbox" name="clients_export_xls_view" value="1" {{$selected}}>@lang('main.user:permissions_clients_export_xls_label')</p>
+                                    </div>
+
+                                    <div>
+                                        <?php
+                                        $selected = '';
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
+                                                if ($permission->object == 'statistics' AND $permission->action == 'view' AND $permission->access_level == '1') {
+                                                    $selected = "checked='checked'";
+                                                }
+                                            }
+                                        }?>
+                                        <p><input type="checkbox" name="statistics_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_statistics_label')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
