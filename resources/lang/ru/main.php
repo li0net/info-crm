@@ -90,6 +90,7 @@ return [
     'user:create_new_btn_label'             => 'Создать пользователя',
     'user:creation_success_message'         => 'Пользовтель был успешно создан!',
     'user:logo_btn'                         => 'Загрузить фото',
+    'user:grid_phone_hidden_message'        => 'скрыт',
 
     'user:title_personal_data_settings'     => 'Настройки персональных данных',
     'user:title_section_personal_data'      => 'Личные данные',
@@ -146,7 +147,11 @@ return [
     'user:permissions_employee_edit_label'  => 'Редактирование персонала',
     'user:permissions_employee_delete_label' => 'Удаление персонала',
     'user:permissions_schedule_edit_label'  => 'Редактирование графика работы',
-    'user:permissions_clients_label'        => 'Клиенты',
+    'user:permissions_clients_label'        => 'Клиентская база',
+    'user:permissions_view_clients_phone_label' => 'Показывать номера телефонов в списке клиентов',
+    'user:permissions_view_client_phone_label' => 'Показывать номер телефона в карточке клиента',
+    'user:permissions_clients_export_xls_label' => 'Выгружать список клиентов в Excel',
+    'user:permissions_statistics_label'     => 'Статистика',
 
     'client:list_header'                    => 'Клиенты',
     'client:list_page_header'               => 'Клиенты',
