@@ -96,10 +96,16 @@
 
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
-							{{ Form::label('beneficiary_title', 'Контрагент:', ['class' => 'form-spacing-top']) }}
+							@if ($payment->beneficiary_type == 'partner')
+								{{ Form::label('beneficiary_title',  'Контрагент:', ['class' => 'form-spacing-top']) }}
+							@elseif ($payment->beneficiary_type == 'client')
+								{{ Form::label('beneficiary_title',  'Клиент:', ['class' => 'form-spacing-top']) }}
+							@else 
+								{{ Form::label('beneficiary_title',  'Сотрудник:', ['class' => 'form-spacing-top']) }} 
+							@endif
 						</div>
 						<div class="col-sm-8">
-							{{ Form::text('beneficiary_title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '15']) }}
+							{{ Form::select('beneficiary_title', [''=>''], null, ['class' => 'form-control', 'required' => '']) }}
 						</div>
 						<label class="col-sm-1 text-left">
 							<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -152,26 +158,51 @@
 
 @section('page-specific-scripts')
 	<script>
-		$(function () {
-			$.fn.datepicker.dates['ru'] = {
-				days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
-				daysShort: ["Вск", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб"],
-				daysMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-				months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-				monthsShort: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
-				today: "Сегодня",
-				clear: "Очистить",
-				format: "dd.mm.yyyy",
-				weekStart: 1,
-				monthsTitle: 'Месяцы'
-			};
-		});
+		$(document).ready(function(e){
+			$('#payment-date').datepicker({
+				autoclose: true,
+				orientation: 'auto',
+				format: 'dd-mm-yyyy',
+				weekStart: 1
+			});
 
-		$('#payment-date').datepicker({
-			autoclose: true,
-			orientation: 'auto',
-			format: 'dd-mm-yyyy',
-			firstDay: 1
+			var today = new Date();
+
+			$('#payment-date').datepicker('update', today);
+
+			$('#payment-date').datepicker()
+				.on('show', function(e) {
+					$('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
+					$('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
+				});
+
+			$('input[name="beneficiary_type"]').on('change', function() {
+				switch($(this).val()) {
+					case 'client':
+						$('label[for="beneficiary_title"]').html('Клиент:');
+							break;
+					case 'partner':
+						$('label[for="beneficiary_title"]').html('Контрагент:');
+							break;
+					case 'employee':
+						$('label[for="beneficiary_title"]').html('Сотрудник:');
+							break;
+				}
+
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					data: {'beneficiary_type' : $(this).val()},
+					url: "<?php echo route('payment.beneficiaryOptions') ?>",
+					success: function(data) {
+						$("select[name='beneficiary_title']").html('');
+						$("select[name='beneficiary_title']").html(data.options);
+					}
+				});
+			});
+			
+			var v = $('input[name="beneficiary_type"]').val();
+			$('input[name="beneficiary_type"]').filter('[value="' + v + '"]').trigger("change");
 		});
 	</script>
 @endsection
