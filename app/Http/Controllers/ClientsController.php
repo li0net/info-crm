@@ -108,7 +108,8 @@ class ClientsController extends Controller
             'clientCategoriesOptions' => $this->prepareClientCategoriesOptions(),
             'genderOptions' => $this->genderOptions,
             'importanceOptions' => $this->importanceOptions,
-            'client' => $client
+            'client' => $client,
+            'crmuser' => $request->user()
         ]);
     }
 

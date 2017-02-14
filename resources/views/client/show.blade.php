@@ -30,7 +30,11 @@
                                     <span>@lang('main.client:phone_label')</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <span>{{$client->phone}}</span>
+                                    @if ($crmuser->hasAccessTo('client_phone', 'view', 0))
+                                        <span>{{$client->phone}}</span>
+                                    @else
+                                        <span>@lang('main.user:grid_phone_hidden_message')</span>
+                                    @endif
                                 </div>
 
                                 <div class="col-md-6">

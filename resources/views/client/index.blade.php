@@ -102,23 +102,25 @@
                 </div>
             </div>
 
-            <div class="row">
-                <p>Excel</p>
-            </div>
-            <div class="panel panel-default">
+            @if ($crmuser->hasAccessTo('clients_export_xls', 'view', null))
                 <div class="row">
-                    <a id="a_export_filtered_clients_to_excel" href="#">
-                        <i class="fa fa-file-excel-o"></i>
-                        @lang('main.client:list_export_filtered_to_excel')
-                    </a>
+                    <p>Excel</p>
                 </div>
-                <div class="row">
-                    <a id="a_export_all_clients_to_excel" href="#">
-                        <i class="fa fa-file-excel-o"></i>
-                        @lang('main.client:list_export_all_to_excel')
-                    </a>
+                <div class="panel panel-default">
+                    <div class="row">
+                        <a id="a_export_filtered_clients_to_excel" href="#">
+                            <i class="fa fa-file-excel-o"></i>
+                            @lang('main.client:list_export_filtered_to_excel')
+                        </a>
+                    </div>
+                    <div class="row">
+                        <a id="a_export_all_clients_to_excel" href="#">
+                            <i class="fa fa-file-excel-o"></i>
+                            @lang('main.client:list_export_all_to_excel')
+                        </a>
+                    </div>
                 </div>
-            </div>
+            @endif
 
             <form method="POST" action="/clients/gridData" accept-charset="UTF-8" id="clientsGridExportForm">
                 {{csrf_field()}}

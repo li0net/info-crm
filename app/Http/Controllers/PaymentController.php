@@ -9,6 +9,7 @@ use App\Account;
 use App\Payment;
 use App\Partner;
 use App\Employee;
+use App\Client;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
@@ -85,6 +86,22 @@ class PaymentController extends Controller
 
 		return View::make('payment.list', ['payments' => $payments]);
 	}
+
+	public function populateBeneficiaryOptions(Request $request)
+    {
+    	if($request->ajax()){
+    		if ($request->beneficiary_type == 'partner') {
+    			$options = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id')->all();
+    		} elseif ($request->beneficiary_type == 'client') {
+    			$options = Client::where('organization_id', $request->user()->organization_id)->pluck('name', 'client_id')->all();
+    		} else {
+    			$options = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id')->all();
+    		}
+    		
+    		$data = view('payment.options', compact('options'))->render();
+    		return response()->json(['options' => $data]);
+    	}
+    }
 
 	/**
 	 * Show the form for creating a new resource.

@@ -153,6 +153,30 @@ class UsersController extends Controller
                 'action'        => 'view',
                 'object_id'     => NULL,
                 'access_level'  => 1
+            ],
+            'clients_phone_view' =>[
+                'object'        => 'clients_phone',
+                'action'        => 'view',
+                'object_id'     => NULL,
+                'access_level'  => 1
+            ],
+            'client_phone_view' =>[
+                'object'        => 'client_phone',
+                'action'        => 'view',
+                'object_id'     => 0,
+                'access_level'  => 1
+            ],
+            'clients_export_xls_view' =>[
+                'object'        => 'clients_export_xls',
+                'action'        => 'view',
+                'object_id'     => NULL,
+                'access_level'  => 1
+            ],
+            'statistics_view' =>[
+                'object'        => 'statistics',
+                'action'        => 'view',
+                'object_id'     => NULL,
+                'access_level'  => 1
             ]
         ];
 
