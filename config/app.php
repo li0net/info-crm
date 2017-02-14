@@ -233,7 +233,7 @@ return [
     'languages' => [
         'ru' => 'Русский',
         'en' => 'English',
-        'ca' => 'Русский',
-        'es' => 'Русский',
+        'ca' => 'Català',
+        'es' => 'Español',
     ],
 ];
