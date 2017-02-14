@@ -25,11 +25,14 @@ class PaymentController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$payments = Payment::where('organization_id', $request->user()->organization_id)->with('account', 'item', 'user')->get()->all();
+		$payments = Payment::where('organization_id', $request->user()->organization_id)
+							->with('account', 'item', 'partner', 'client', 'employee', 'user')
+							->get()->all();
 		$items = Item::where('organization_id', $request->user()->organization_id)->pluck('title', 'item_id');
 		$partners = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id');
 		$accounts = Account::where('organization_id', $request->user()->organization_id)->pluck('title', 'account_id');
 		$employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
+		$clients = Client::where('organization_id', $request->user()->organization_id)->pluck('name', 'client_id');
 
 		$page = Input::get('page', 1);
 		$paginate = 10;
@@ -51,9 +54,8 @@ class PaymentController extends Controller
 
 		// unset($payment);
 
-		return view('payment.index', ['user' => $request->user(), 'items' => $items, 'partners' => $partners, 'accounts' => $accounts, 'employees' => $employees])->withpayments($payments);
+		return view('payment.index', ['user' => $request->user(), 'items' => $items, 'partners' => $partners, 'accounts' => $accounts, 'employees' => $employees, 'clients' => $clients])->withpayments($payments);
 	}
-
 
 	public function indexFiltered(Request $request)
 	{
@@ -68,16 +70,27 @@ class PaymentController extends Controller
 		}
 
 		if('' !== $request->employee_id) {
-			$payments->where('beneficiary_type', 'employee')->where('beneficiary_title', $request->employee_id);
+			$payments->where('beneficiary_type', 'employee')->where('beneficiary_id', $request->employee_id);
 		}
 
 		if('' !== $request->partner_id) {
-			$payments->where('beneficiary_type', 'partner')->where('beneficiary_title', $request->partner_id);
+			$payments->where('beneficiary_type', 'partner')->where('beneficiary_id', $request->partner_id);
 		}
-								
-		$payments = $payments->with('account', 'item', 'user')->get();
 
-		//dd($payments);
+		if('' !== $request->client_id) {
+			$payments->where('beneficiary_type', 'client')->where('beneficiary_id', $request->client_id);
+		}
+		
+		$filter_start_time = date_create($request->date_from.'00:00:00');
+		date_format($filter_start_time, 'U = Y-m-d 0:0:0');
+
+		$filter_end_time = date_create($request->date_to.'23:59:59');
+		date_format($filter_end_time, 'U = Y-m-d 23:59:59');
+
+		$payments->whereBetween('date', [$filter_start_time, $filter_end_time]);
+
+		$payments = $payments->with('account', 'item', 'partner', 'client', 'employee', 'user')->get();
+
 
 		// $items = Item::where('organization_id', $request->user()->organization_id)->pluck('title', 'item_id');
 		// $partners = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id');
@@ -133,7 +146,7 @@ class PaymentController extends Controller
 	public function store(Request $request)
 	{
 		$this->validate($request, [
-			'beneficiary_title' => 'required',
+			'beneficiary_id' => 'required',
 			'item_id' => 'required',
 			'account_id' => 'required'
 		]);
@@ -143,7 +156,7 @@ class PaymentController extends Controller
 		$payment->item_id = $request->item_id;
 		$payment->account_id = $request->account_id;
 		$payment->beneficiary_type = $request->beneficiary_type;
-		$payment->beneficiary_title = $request->beneficiary_title;
+		$payment->beneficiary_id = $request->beneficiary_id;
 		$payment->sum = $request->sum;
 		$payment->description = $request->description;
 		$payment->date = date_create($request->input('payment-date').$request->input('payment-hour').':'.$request->input('payment-minute'));
@@ -219,7 +232,7 @@ class PaymentController extends Controller
 		}
 
 		$this->validate($request, [
-			'beneficiary_title' => 'required',
+			'beneficiary_id' => 'required',
 			'item_id' => 'required',
 			'account_id' => 'required'
 		]);
@@ -232,7 +245,7 @@ class PaymentController extends Controller
 		$payment->item_id = $request->item_id;
 		$payment->account_id = $request->account_id;
 		$payment->beneficiary_type = $request->beneficiary_type;
-		$payment->beneficiary_title = $request->beneficiary_title;
+		$payment->beneficiary_id = $request->beneficiary_id;
 		$payment->sum = $request->sum;
 		$payment->description = $request->description;
 		

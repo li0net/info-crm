@@ -26,6 +26,7 @@
 			<div class="well">
 				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
 				{!! Form::model($payment, ['route' => ['payment.update', $payment->payment_id], 'class' => 'form-horizontal', 'method' => 'PUT']) !!}
+					{{ Form::hidden('bene-id', $payment->beneficiary_id, ['id' => 'bene-id']) }}
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
 							{{ Form::label('date', 'Дата и время:', ['class' => 'form-spacing-top']) }}
@@ -97,15 +98,15 @@
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
 							@if ($payment->beneficiary_type == 'partner')
-								{{ Form::label('beneficiary_title',  'Контрагент:', ['class' => 'form-spacing-top']) }}
+								{{ Form::label('beneficiary_id',  'Контрагент:', ['class' => 'form-spacing-top']) }}
 							@elseif ($payment->beneficiary_type == 'client')
-								{{ Form::label('beneficiary_title',  'Клиент:', ['class' => 'form-spacing-top']) }}
+								{{ Form::label('beneficiary_id',  'Клиент:', ['class' => 'form-spacing-top']) }}
 							@else 
-								{{ Form::label('beneficiary_title',  'Сотрудник:', ['class' => 'form-spacing-top']) }} 
+								{{ Form::label('beneficiary_id',  'Сотрудник:', ['class' => 'form-spacing-top']) }} 
 							@endif
 						</div>
 						<div class="col-sm-8">
-							{{ Form::select('beneficiary_title', [''=>''], null, ['class' => 'form-control', 'required' => '']) }}
+							{{ Form::select('beneficiary_id', [''=>''], $payment->beneficiary_id, ['class' => 'form-control', 'required' => '', 'placeholder' => 'Не выбрано']) }}
 						</div>
 						<label class="col-sm-1 text-left">
 							<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -179,13 +180,13 @@
 			$('input[name="beneficiary_type"]').on('change', function() {
 				switch($(this).val()) {
 					case 'client':
-						$('label[for="beneficiary_title"]').html('Клиент:');
+						$('label[for="beneficiary_id"]').html('Клиент:');
 							break;
 					case 'partner':
-						$('label[for="beneficiary_title"]').html('Контрагент:');
+						$('label[for="beneficiary_id"]').html('Контрагент:');
 							break;
 					case 'employee':
-						$('label[for="beneficiary_title"]').html('Сотрудник:');
+						$('label[for="beneficiary_id"]').html('Сотрудник:');
 							break;
 				}
 
@@ -195,14 +196,24 @@
 					data: {'beneficiary_type' : $(this).val()},
 					url: "<?php echo route('payment.beneficiaryOptions') ?>",
 					success: function(data) {
-						$("select[name='beneficiary_title']").html('');
-						$("select[name='beneficiary_title']").html(data.options);
+						$('#beneficiary_id').html('');
+						$('#beneficiary_id').html(data.options);
+						
+						var id = $('#bene-id').val();
+						if( 0 != id ) {
+							$('#beneficiary_id').val(id);
+							$('#bene-id').val(0);
+						} else {
+							{{-- $('#beneficiary_id').val($('#beneficiary_id option:first').val()); --}}
+							$('#beneficiary_id option:first').attr('selected', true);
+						}
 					}
 				});
 			});
 			
-			var v = $('input[name="beneficiary_type"]').val();
-			$('input[name="beneficiary_type"]').filter('[value="' + v + '"]').trigger("change");
+			var t = $('input[name="beneficiary_type"]:checked').val();
+
+			$('input[name="beneficiary_type"]').filter('[value="' + t + '"]').trigger("change");
 		});
 	</script>
 @endsection

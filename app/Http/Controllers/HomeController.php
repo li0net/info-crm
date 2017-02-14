@@ -103,7 +103,9 @@ class HomeController extends Controller
 												'end')->whereBetween('employee_id', $filter_employee != 0 ? [$filter_employee, $filter_employee] : [1, 9999])
 													  ->whereBetween('service_id', $filter_service != 0 ? [$filter_service, $filter_service] : [1, 9999])
 													  ->whereBetween('start', [$filter_start_time, $filter_end_time])
-													  ->whereBetween('end', [$filter_start_time, $filter_end_time])->get();
+													  ->whereBetween('end', [$filter_start_time, $filter_end_time])
+													  ->with('employee', 'client', 'service')
+													  ->get();
 
 			return View::make('adminlte::appointmentlist', ['appointments' => $appointments]);
 		}

@@ -96,10 +96,10 @@
 
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
-							{{ Form::label('beneficiary_title',  'Контрагент:', ['class' => 'form-spacing-top']) }}
+							{{ Form::label('beneficiary_id',  'Контрагент:', ['class' => 'form-spacing-top']) }}
 						</div>
 						<div class="col-sm-8">
-							{{ Form::select('beneficiary_title', [''=>''], null, ['class' => 'form-control', 'required' => '']) }}
+							{{ Form::select('beneficiary_id', [''=>''], null, ['class' => 'form-control', 'required' => '']) }}
 						</div>
 						<label class="col-sm-1 text-left">
 							<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -156,6 +156,8 @@
 			var today = new Date();
 
 			$('#payment-date').datepicker('update', today);
+			$('#payment-hour').val(today.getHours());
+			$('#payment-minute').val(today.getMinutes());
 
 			$('#payment-date').datepicker()
 				.on('show', function(e) {
@@ -166,13 +168,13 @@
 			$('input[name="beneficiary_type"]').on('change', function() {
 				switch($(this).val()) {
 					case 'client':
-						$('label[for="beneficiary_title"]').html('Клиент:');
+						$('label[for="beneficiary_id"]').html('Клиент:');
 							break;
 					case 'partner':
-						$('label[for="beneficiary_title"]').html('Контрагент:');
+						$('label[for="beneficiary_id"]').html('Контрагент:');
 							break;
 					case 'employee':
-						$('label[for="beneficiary_title"]').html('Сотрудник:');
+						$('label[for="beneficiary_id"]').html('Сотрудник:');
 							break;
 				}
 
@@ -182,8 +184,8 @@
 					data: {'beneficiary_type' : $(this).val()},
 					url: "<?php echo route('payment.beneficiaryOptions')?>",
 						success: function(data) {
-							$("select[name='beneficiary_title']").html('');
-							$("select[name='beneficiary_title']").html(data.options);
+							$("select[name='beneficiary_id']").html('');
+							$("select[name='beneficiary_id']").html(data.options);
 					}
 				});
 			});

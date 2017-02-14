@@ -70,10 +70,13 @@
 					{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '', 'id' => 'employee_id', 'placeholder' => 'Сотрудник не выбран']) }}
 				</div>
 				<div class="col-md-3">
+					{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '', 'id' => 'client_id', 'placeholder' => 'Клиент не выбран']) }}
+				</div>
+				{{-- <div class="col-md-3">
 					<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
 					<input type="text" class="form-control ui-autocomplete-input" name="client" value="" placeholder="Поиск клиента (имя или телефон)" autocomplete="off">
 					<input type="hidden" class="form-control" name="client_id" value=""> 
-				</div>
+				</div> --}}
 			</div>
 			<div class="row m-b">
 				<div class="col-md-3 transactions-multi-filters">
@@ -148,7 +151,7 @@
 	</form>
 	<div class="row">
 		<div class="col-sm-12">
-			<table class="table">
+			<table class="table" id = 'result_container'>
 				<thead>
 					<th class="text-center">#</th>
 					<th>Дата</th>
@@ -162,12 +165,20 @@
 					<th>Услуга/Товар</th>
 					<th>Визит</th>
 				</thead>
-				<tbody id = 'result_container'>
+				<tbody>
 					@foreach($payments as $payment)
 						<tr>
 							<th class="text-center">{{ $payment->payment_id }}</th>
 							<td>{{ $payment->date }}</td>
-							<td>{{ $payment->beneficiary_title }}</td>
+							@if($payment->beneficiary_type == 'partner' && null !== $payment->partner)
+								<td>{{ $payment->partner->title }}</td>
+							@elseif($payment->beneficiary_type == 'client' && null !== $payment->client) 
+								<td>{{ $payment->client->name }}</td>
+							@elseif(null !== $payment->employee)
+								<td>{{ $payment->employee->name }}</td>
+							@else
+								<td></td>
+							@endif
 							<td>{{ $payment->item->title }}</td>
 							<td>{{ $payment->account->title }}</td>
 							<td>{{ $payment->description }}</td>
@@ -244,6 +255,7 @@
 						'account_id'		: $('#account_id').val(),
 						'item_id'			: $('#item_id').val(),
 						'employee_id'		: $('#employee_id').val(),
+						'client_id'			: $('#client_id').val(),
 						'organization_id'	: $('#organization_id').val(),
 						},
 				url: "/payment/list",
