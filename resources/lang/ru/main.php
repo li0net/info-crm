@@ -197,6 +197,7 @@ return [
     'client:importance_bronze'              => 'Бронза',
     'client:importance_silver'              => 'Серебро',
     'client:importance_gold'                => 'Золото',
+    'client:form_page_header'               => 'Редактировать клиента',
 
     'client_category:form_page_header'      => 'Категории клиентов',
     'client_category:list_page_header'      => 'Категории клиентов',
