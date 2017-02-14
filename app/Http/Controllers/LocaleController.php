@@ -14,7 +14,7 @@ class LocaleController extends Controller {
 
     public function setLocale($locale){
         //getting list of languages
-        $languages = array_keys(Config::get('languages'));
+        $languages = array_keys(Config::get('app.languages'));
 
         if ( ! in_array($locale, $languages) ) {
             $locale = Config::get('app.locale');

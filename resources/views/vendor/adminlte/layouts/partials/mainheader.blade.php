@@ -121,7 +121,7 @@
                             <i class="fa fa-language"></i><span class="label label-flag {{ App::getLocale() }}"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            @foreach (Config::get('languages') as $lang => $language)
+                            @foreach (Config::get('app.languages') as $lang => $language)
                                 @if ($lang != App::getLocale())
                                     <li>
                                         <a class="lang-flag {{$lang}}" href="/locale/{{$lang}}">{{$language}}</a>

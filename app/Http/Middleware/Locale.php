@@ -34,7 +34,7 @@ class Locale
             $locale = Session::get('locale', Config::get('app.locale'));
         } else {
             //getting list of languages
-            $languages = array_keys(Config::get('languages'));
+            $languages = array_keys(Config::get('app.languages'));
             $locale = substr($request->server('HTTP_ACCEPT_LANGUAGE'), 0, 2);
             if ( ! in_array($locale, $languages) ) {
                 $locale = Config::get('app.locale');
