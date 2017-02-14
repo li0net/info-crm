@@ -35,5 +35,5 @@ elixir(function(mix) {
         .webpack('app.js')
         .webpack('usercabinet.js');
     mix.sass('general.scss');
-    mix.imagemin();
+    // mix.imagemin();
 });

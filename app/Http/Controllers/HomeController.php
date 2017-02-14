@@ -43,6 +43,8 @@ class HomeController extends Controller
 		//$dash = '- все -';
 
 		$appointments = Appointment::select('appointment_id', 'employee_id', 'client_id', 'service_id', 'start', 'end')->with('employee', 'client', 'service')->get();
+
+		dd($appointments);
 		$employees = Employee::select('employee_id', 'name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
 		$services = Service::select('service_id', 'name')->pluck('name', 'service_id');
 		$sessionStart = collect($this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, ''));
@@ -75,7 +77,9 @@ class HomeController extends Controller
 												'client_id',
 												'start', 
 												'end') ->whereBetween('start', [$filter_start_time, $filter_end_time])
-													   ->whereBetween('end', [$filter_start_time, $filter_end_time])->get();
+													   ->whereBetween('end', [$filter_start_time, $filter_end_time])
+													   ->with('employee', 'client', 'service')
+													   ->get();
 
 			return View::make('adminlte::appointmentlist', ['appointments' => $appointments]);
 
