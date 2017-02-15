@@ -16,7 +16,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-6 col-md-offset-3">
+		<div class="col-sm-6 col-sm-offset-3">
 			<div class="well">
 				{{ Form::label('title', "Наименование: ") }}
 				<p class="lead">{{ $card->title }}</p>
@@ -44,7 +44,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-sm-12">
 							{{ Html::linkRoute('card.index', 'Все технологические карты »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
 					</div>
 				</div>

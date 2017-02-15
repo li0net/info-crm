@@ -11,7 +11,7 @@
 @section('main-content')
 
 	<div class="row">
-		<div class="col-md-6 col-md-offset-3">
+		<div class="col-sm-6 col-sm-offset-3">
 			<h4>Новая единица измерения</h4>	
 			{{-- <ex1></ex1> --}}
 			<hr>	

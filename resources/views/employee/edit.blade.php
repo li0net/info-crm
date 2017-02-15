@@ -299,12 +299,12 @@
 						<hr>
 						
 						<div class="row">
-							<div class="col-md-4 col-md-offset-4">
+							<div class="col-sm-4 col-sm-offset-4">
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-sm-6">
 										{!! Html::linkRoute('employee.show', 'Отмена', [$employee->employee_id], ['class'=>'btn btn-danger btn-block']) !!}
 									</div>
-									<div class="col-md-6">
+									<div class="col-sm-6">
 										{{ Form::button('Сохранить', ['class'=>'btn btn-success btn-block', 'id' => 'form_submit']) }}
 									</div>
 								</div>

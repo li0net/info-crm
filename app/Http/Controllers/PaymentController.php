@@ -29,7 +29,7 @@ class PaymentController extends Controller
 							->with('account', 'item', 'itemtype', 'partner', 'client', 'employee', 'user')
 							->get()->all();
 
-		dd($payments);
+		//dd($payments);
 
 		$items = Item::where('organization_id', $request->user()->organization_id)->pluck('title', 'item_id');
 		$partners = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id');

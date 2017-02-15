@@ -11,7 +11,7 @@
 @section('main-content')
 
 	<div class="row">
-		<div class="col-md-6 col-md-offset-3">
+		<div class="col-sm-6 col-sm-offset-3">
 			<h4>Информация о складе</h4>	
 			{{-- <ex1></ex1> --}}
 			<hr>	
@@ -71,12 +71,12 @@
 					<hr>
 
 					<div class="row">
-						<div class="col-md-8 col-md-offset-2">
+						<div class="col-sm-8 col-sm-offset-2">
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-sm-6">
 									{!! Html::linkRoute('storage.show', 'Отмена', [$storage->storage_id], ['class'=>'btn btn-danger btn-block']) !!}
 								</div>
-								<div class="col-md-6">
+								<div class="col-sm-6">
 									{{ Form::submit('Сохранить', ['class'=>'btn btn-success btn-block']) }}
 								</div>
 							</div>

@@ -15,7 +15,7 @@
 		@endif
 	</div>
 	<div class="row">
-		<div class="col-md-4 col-md-offset-4">
+		<div class="col-sm-4 col-sm-offset-4">
 			<div class="well">
 				{{ Form::label('employee_id', "Сотрудник: ") }}
 				<p class="lead">#{{ $employee->employee_id }}</p>
@@ -58,7 +58,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-sm-12">
 							{{ Html::linkRoute('employee.index', 'Все сотрудники »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
 					</div>
 				</div>

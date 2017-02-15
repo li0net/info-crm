@@ -15,7 +15,7 @@
 		@endif
 	</div>
 	<div class="row">
-		<div class="col-md-6 col-md-offset-3">
+		<div class="col-sm-6 col-sm-offset-3">
 			<div class="well">
 				{{ Form::label('date', "Дата и время: ") }}
 				<p class="lead">{{ $payment->date }}</p>
@@ -66,7 +66,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-sm-12">
 						{{ Html::linkRoute('payment.index', 'Все платежи »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
 					</div>
 				</div>

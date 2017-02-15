@@ -55,19 +55,19 @@ class Payment extends Model
 		return $this->belongsTo(User::class, 'author_id');
 	}
 
-	public function itemtype() {
-        return $this->belongsToThrough(Itemtype::class, Item::class);
-    }
+	// public function itemtype() {
+ //        return $this->belongsToThrough(Itemtype::class, Item::class);
+ //    }
 
-	// public function itemtype()
-	// {
-	// 	$middle = $this->belongsTo(Item::class, 'item_id', 'item_id')->getResults();
-	// 	//dd($middle);
+	public function itemtype()
+	{
+		//$this->belongsTo(Item::class, 'item_id', 'item_id');
+		//dd($middle);
 		
-	// 	return $middle->belongsTo(Itemtype::class, 'itemtype_id', 'itemtype_id');
-	// 	// dd($end);
+		return $this->user->belongsTo(Itemtype::class, 'itemtype_id', 'itemtype_id');
+		// dd($end);
 
-	// 	// $end = $middle->belongsTo(Itemtype::class, 'itemtype_id', 'itemtype_id')->getResults();
-	// 	// dd($end);
-	// }	
+		// $end = $middle->belongsTo(Itemtype::class, 'itemtype_id', 'itemtype_id')->getResults();
+		// dd($end);
+	}	
 }

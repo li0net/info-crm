@@ -10,8 +10,8 @@
 
 @section('main-content')
 	<div class="row">
-		<div class="col-md-6 col-md-offset-3">
-			<h1>Информация о контрагенте</h1>	
+		<div class="col-sm-6 col-sm-offset-3">
+			<h4>Информация о контрагенте</h4>	
 			<hr>	
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
@@ -73,12 +73,12 @@
 					<hr>
 
 					<div class="row">
-						<div class="col-md-8 col-md-offset-2">
+						<div class="col-sm-8 col-sm-offset-2">
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-sm-6">
 									{!! Html::linkRoute('partner.show', 'Отмена', [$partner->partner_id], ['class'=>'btn btn-danger btn-block']) !!}
 								</div>
-								<div class="col-md-6">
+								<div class="col-sm-6">
 									{{ Form::submit('Сохранить', ['class'=>'btn btn-success btn-block']) }}
 								</div>
 							</div>
