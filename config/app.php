@@ -168,7 +168,12 @@ return [
         Mgallegos\LaravelJqgrid\LaravelJqgridServiceProvider::class,
         App\Providers\LaravelJqgridServiceProviderCustom::class,
 
-        'Collective\Html\HtmlServiceProvider'
+        'Collective\Html\HtmlServiceProvider',
+
+        /*
+         * View composer provider
+         */
+        App\Providers\ComposerServiceProvider::class
     ],
 
     /*

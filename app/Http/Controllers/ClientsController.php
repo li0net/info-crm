@@ -93,7 +93,8 @@ class ClientsController extends Controller
             'clientCategoriesOptions' => $this->prepareClientCategoriesOptions(),
             'genderOptions' => $this->genderOptions,
             'importanceOptions' => $this->importanceOptions,
-            'client' => $client
+            'client' => $client,
+            'crmuser' => $request->user()
         ]);
     }
 
@@ -145,15 +146,30 @@ class ClientsController extends Controller
         ]
         */
 
-        $validator = Validator::make($request->all(), [
+        $cId = $request->input('client_id');
+        // определить создание это или редактирование (по наличию поля client_id)
+        $createMode = TRUE;
+        if (!is_null($cId)) {
+            $createMode = FALSE;
+        }
+
+        $validationRules = [
             'name' => 'required|max:120',
-            'phone' => 'required|phone_crm',  // custom validation rule
             'email' => 'email',
             'discount' => 'regex:/^\d{0,2}$/',
             'birthday' => 'date',
             'total_bought' => 'numeric',
             'total_paid' => 'numeric'
-        ]);
+        ];
+
+        // Если это не создание записи и у юзера нет права на просмотр телефонов клиентов, то считаем что менять их ему тоже нельзя
+        $processPhone = FALSE;
+        if ($createMode OR $request->user()->hasAccessTo('client_phone', 'view', 0)) {
+            $validationRules['phone'] = 'required|phone_crm';  // custom validation rule
+            $processPhone = TRUE;
+        }
+
+        $validator = Validator::make($request->all(), $validationRules);
         if ($validator->fails()) {
             return redirect('/clients/create')
                 ->withErrors($validator)
@@ -181,7 +197,9 @@ class ClientsController extends Controller
         }
         */
 
-        $clientPhone = $request->user()->normalizePhoneNumber($request->input('phone'));
+        if ($processPhone) {
+            $clientPhone = $request->user()->normalizePhoneNumber($request->input('phone'));
+        }
         $gender = $request->input('gender');
         $importance = $request->input('importance');
         $birthday = $request->input('birthday');
@@ -204,10 +222,8 @@ class ClientsController extends Controller
         }
         $categories = $newCategories;
 
-        $cId = $request->input('client_id');
-        // определить создание это или редактирование (по наличию поля client_id)
-        // если редактирвоание - проверить что объект принадлежит текущей организации
-        if (!is_null($cId)) {  // редактирование
+        // если редактирование - проверить что объект принадлежит текущей организации
+        if (!$createMode) { // редактирование
             $client = Client::
             where('organization_id', $request->user()->organization_id)
                 ->where('client_id', $cId)
@@ -216,13 +232,15 @@ class ClientsController extends Controller
                 return 'Record doesn\'t exist';
             }
 
-        } else {
+        } else {            // создание
             $client = new Client();
             $client->organization_id = $request->user()->organization_id;      // curr users's org id
         }
 
         $client->name = $request->input('name');
-        $client->phone = $clientPhone;
+        if (isset($clientPhone)) {
+            $client->phone = $clientPhone;
+        }
         $client->email = $request->input('email');
         $client->gender = ($gender == 'null') ? NULL : $gender;
         $client->importance = ($importance == 'null') ? NULL : $importance;
