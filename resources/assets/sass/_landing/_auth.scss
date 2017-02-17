@@ -1,0 +1,50 @@
+.login-page, .register-page {
+  background: #ffae1a;
+}
+.login-box, .register-box {
+  width: 460px;
+}
+.register-box,
+.login-box{
+  .register-logo,
+  .login-logo{
+    display: none;
+  }
+  .register-box-body,
+  .login-box-body{
+    box-shadow: 7px 7px 0px 0px rgba(50, 50, 50, 0.2);
+    .register-box-msg,
+    .login-box-msg{
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #6d51aa;
+    }
+    .form-control{
+      border-color: #6d51aa;
+      border-radius: 20px;
+    }
+  }
+  .glyphicon,
+  a{
+    color: #6d51aa;
+    &:hover{
+      color: #ffae1a;
+    }
+
+  }
+  .col-xs-12 {
+    text-align: center;
+  }
+  .btn.btn-primary{
+    border-color: #5A4A93;
+    background-color: #6d51aa;
+    border-radius: 20px;
+    height: 40px;
+    color: #FFF;
+    font-size: 18px;
+    &:hover{
+      background-color: #5A4A93;
+    }
+  }
+}

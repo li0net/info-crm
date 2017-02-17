@@ -1,0 +1,405 @@
+
+@media screen and (max-width: 1200px){
+
+    .w1 {
+        margin: 0 0 0 63px;
+    }
+    .side-nav {
+        position:fixed;
+        -webkit-transform: translate3d(0, 0, 0);
+        -moz-transform: translate3d(0, 0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+        -o-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        width: 63px;
+        -webkit-transition: all 0.2s ease 0s;
+        -moz-transition: all 0.2s ease 0s;
+        -o-transition: all 0.2s ease 0s;
+        transition: all 0.2s ease 0s;
+    }
+    .side-nav .sidebar-panel{
+        display: none;
+        min-width: 300px;
+    }
+    .side-nav.nav-active  {
+        width: 300px;
+    }
+    .nav-opener {
+        display: block;
+    }
+    .login {
+        border-bottom: none;
+        padding-left:  14px;
+        line-height: 40px
+    }
+    .login .login-close {
+        display: block;
+    }
+    .login .login-open {
+        display: none;
+    }
+    #nav {
+        overflow: hidden;
+        padding: 0;
+    }
+    .nav-active #nav.Fixed{
+        background: #574188;
+        width: 300px;
+        z-index: 82;}
+    #nav.Fixed{
+        background: #574188;
+    width: 63px;
+    z-index: 82;}
+.nav-active  #nav a:hover, .nav-active #nav a:focus, .nav-active #nav a.active{    background: #574188;border-right: 10px solid #574188;}
+    #nav a:hover, #nav a:focus, #nav a.active {
+        border-right: 10px solid #6d51aa;
+        background: #6d51aa;
+
+    }
+   .nav-active #nav a:hover, .nav-active #nav a:focus, .nav-active #nav a.active{ border-right: 10px solid #fff;}
+    a.nav-opener{ border-right: 0px solid #574188;}
+    #nav .visual {
+        margin: 0 15px 0 10px;
+    }
+    .section02.inner .text-wrap {
+        margin-left: 0;
+    }
+
+}
+    @media screen and (max-width: 990px){
+        .section02.section01.giada4.giada17.giada2.giada7 .col-sm-12.col-md-12.col-lg-12, .section02.section01.giada2.giada7 .col-sm-12.col-md-12.col-lg-12{ padding: 0}
+        .section01.giada4.giada17 .section-title {
+            padding-bottom: 0px;
+        }
+        .section03.giada5.giada13 .Glist3 {
+            padding-left: 0px;
+        }
+        .section03.giada6 img.Gshadow {
+            max-width: 95%;
+        }
+        .Gsize {
+            max-width: 95% !important;
+        }
+        .section03.giada5.giada13 img {
+            margin: 15px auto 0 auto;
+        }
+        .section02.giada11 ul {
+            margin-left: 0px;
+        }
+        .section02.section03.giada5 ul {
+            margin-top: 0px;
+        }
+        .section02.giada8.giada19 .col-md-1.col-lg-1 img, .section02.giada8.giada16 .col-md-1.col-lg-1 img, .section02.giada8 .col-md-1.col-lg-1 img {
+            max-width: 40%; display: block; margin: 0 auto;
+        }
+        .section02.giada8.giada19 h5, .section03.giada5.giada20 h5 {
+            text-align: left;
+        }
+        .section01 .scope-holder ul {
+            margin: 0px 0 0 0;
+            padding: 0;
+        }
+        img{max-width: 97%; max-height: 300px}
+        .section01.giada9 .section-description p {
+            margin: 3% 0 3px 5px;
+            line-height: 22px;
+        }
+        .section02.giada2.giada7 h5{ text-align: left}
+        .section02.giada5 ul {
+            margin-top: 2%;
+        }
+    .section-title {
+        padding: 0 0 0px;
+    }
+    .tools-list {
+        margin: 15px 10px 0 0px;
+    }
+    .section01.giada4 img {
+        max-width: 90%;
+        margin: -10px auto 20px auto;
+        display: block;
+    }
+    .section01.giada4{ padding-bottom: 100px;}
+    .Gtop2{ margin-top: 10px;}
+    .section02.giada2 img, .section02.giada10 img{
+        max-width: 90%;
+        margin: 20px auto 0 auto;
+        display: block;
+    }
+    .Gtop {
+        margin: 10px 0 20px 0;
+        font-weight: bold;
+    }
+
+    .section01 {
+        padding: 20px 0 40px 0;
+    }
+    .section01 .section-title h1 {
+        margin-top: 30px;
+    }
+    .section01 .section-title {
+        margin: 0 0 0px 0px;
+    }
+    .section02 .title {
+        font-size: 26px;
+        line-height: 30px;
+    }
+    ul.talk-gallery li {
+        width: 98%;
+    }
+    .talk-gallery .text {
+        height: auto;
+    }
+    .section01 h2 {
+        margin-bottom: 30px;
+    }
+    .section-title {
+        font-size: 30px;
+        line-height: 38px;
+    }
+    #header {
+        padding-bottom: 10px;
+    }
+    .section03 .title,
+    .section02 .head {
+        font-size: 30px;
+        line-height: 36px;
+    }
+}
+
+
+@media screen and (max-width: 488px) {
+    .giada4 h2 {
+        line-height: 30px;
+    }
+    .side-nav {
+        width: 48px;
+    }
+    .w1 {
+        margin: 0 0 0 48px;
+    }
+    .side-nav .img-holder img, .side-nav .visual img {
+        width: 20px;
+        height: 20px;
+    }
+    #nav.Fixed {
+        background: #574188;
+        width: 48px;
+        z-index: 82;
+    }
+    #nav a {
+        padding: 0px 0 0px 0px;
+        height: 30px;
+    }
+    #nav .visual {
+        -webkit-flex: 0 0 30px;
+        -moz-flex: 0 0 30px;
+        -ms-flex: 0 0 30px;
+        -o-flex: 0 0 30px;
+        flex: 0 0 30px;
+        text-align: center;
+    }
+    #nav .visual {
+        margin: 0 10px 0 10px;
+    }
+    .login .login-close img {
+        width: 25px;
+        height: auto;
+        margin: -10px 0 0 0;
+    }
+    .nav-opener {
+        width: 48px;
+    }
+    .side-nav.nav-active  {
+        width: 300px;
+    }
+    .nav-opener span {
+        width: 21px;
+        right: 12px;
+    }
+    .login {
+        font-size: 15px;
+        padding: 15px 11px 12px;
+    }
+    #header {
+        padding-bottom: 10px;
+    }
+    .section03 .title, .section02 .head {
+        font-size: 21px;
+        line-height: 24px;
+    }
+    .section01 .col-sm-12.col-md-3.col-lg-3 img{ max-height: 120px;}
+    .section01 .section-title h1 {
+        margin-top: 20px;
+        font-size: 21px;
+    }
+    .section01 .section-title p, .section01 .section-description p {
+        font-size: 16px;
+    }
+    h2 {
+        font-size: 22px !important;
+        margin: -10px 0 0 0px;}
+    .section01 h2{  font-size: 24px;margin:0px 0 20px 0px;}
+    .section02 .section-description {
+        margin: 0 0 0 5px;
+        font-size: 16px;
+        line-height: 19px;
+    }
+    .section-title p{ font-size: 16px !important; line-height: 20px !important; margin: 0 !important;}
+    .section02 img {
+        margin-top: 20px;
+        max-width: 95%;
+    }
+   
+    .tools-list > li {
+        font-size: 15px;
+        line-height: 22px;
+    }
+    .tools-list .head {
+        padding: 0px 0 0 0;
+    }
+    .tools-list .title {
+        padding: 0 0 5px;
+        font-size: 24px;
+        line-height: 33px;
+    }
+    .tools-list .description {
+        font-size: 15px;
+        line-height: 18px;
+    }
+    .tools-list .visual {
+        min-height: 180px;
+    }
+    .tools-list .visual img {
+        position: absolute;
+        left: 0px;
+        top: 20px;
+    }
+    .tools-list p {
+        margin: 20px 0px 18px;
+        line-height: 18px;
+        font-size: 14px;
+    }
+    .section06 p {
+        margin: 0 0px 20px 5px;
+        font-size: 14px;
+        line-height: 18px;
+    }
+    .moduletableorange h3 {
+        background: url(/img/landing/line.svg) center 45px no-repeat;
+        background-size: 50px;
+        padding-bottom: 5px;
+        font-size: 26px;
+        margin: 0 0 5px 0;
+    }
+    .moduletableorange {
+        font-size: 18px;
+        line-height: 22px;
+    }
+    .newadress {
+        background-size: 25px;
+        padding-left: 35px;
+    }
+    .newphone {
+        background: url(/img/landing/newphone.svg) 0 0 no-repeat;
+        background-size: 22px;
+        padding-left: 35px;
+    }
+    .newmail {
+        background-size: 22px;
+        padding-left: 35px;
+    }
+
+}
+@media screen and (max-width: 600px) {
+    .section02.section01.giada2.giada7 h5 {
+        color: #ffae1a;
+        font-size: 16px;
+    }
+    .col-sm-12.col-md-12.col-lg-12 .col-sm-12.col-md-9.col-lg-9, .col-sm-12.col-md-12.col-lg-12 .col-sm-12.col-md-3.col-lg-3, .col-sm-12.col-md-12.col-lg-12 .col-sm-12.col-md-11.col-lg-11, .col-sm-12.col-md-12.col-lg-12  .col-sm-12.col-md-4.col-lg-4, .col-sm-12.col-md-12.col-lg-12  .col-sm-12.col-md-8.col-lg-8{ padding: 0}
+
+    .section01.giada4.giada17 p, .section01.giada4.giada17 ul {
+        padding-left: 0px;
+        margin-bottom: 15px;
+    }
+
+    .section02.giada10.giada11 h2 {
+        line-height: 30px;
+    }
+    .section02.giada10 p {
+        margin: 0 0 15px 0px;}
+    .section-description, .section-description p, .section02.giada10 p,.section03.giada13, .section02.giada8.giada19, .section02.giada8.giada19 h5, .section03.giada5.giada20 h5,  .col-sm-12.col-md-12.col-lg-12, .section02.giada8 h5, .col-sm-12.col-md-11.col-lg-11, .section02.giada8.giada16 .col-sm-12.col-md-9.col-lg-9 p {
+        font-size: 16px !important; line-height: 20px;
+    }
+    .Glist li, .Glist2 li, .Glist3 li, .Glist4 li{ font-size: 16px !important; line-height: 26px !important;}
+
+    .section-title{ margin-bottom: 0; padding-bottom: 10px}
+    .talk-gallery .head {
+        padding: 0 0 0 0px;
+    }
+    .section-title p {
+        font-size: 18px !important; line-height: 22px !important;;
+        margin: 0 !important;
+    }
+    h2 {
+        font-size: 30px;
+        margin: 10px 0 0 0px;
+        font-weight: bold;
+    }
+    .talk-gallery .visual {
+        -webkit-flex: 0 0 100px;
+        -moz-flex: 0 0 100px;
+        -ms-flex: 0 0 100px;
+        -o-flex: 0 0 100px;
+        flex: 0 0 100px;
+    }
+    .talk-gallery .name {
+        margin: -5px 0 3px;
+        font-size: 18px;
+        line-height: 24px;
+    }
+    .talk-gallery .post {
+        font-size: 14px;
+    }
+    .talk-gallery .text {
+        padding: 0px 0px 40px 20px;
+        font-size: 15px;
+        line-height: 18px;
+    }
+}
+@media screen and (max-width: 728px) {
+    .section03.giada3 h2, .section03.giada6 h2, .section03.giada11 h2 {
+        margin: 0 0 0 0px;
+    }
+.section-description {
+    margin: 0 0 0 0px !important;
+}
+}
+@media screen and (max-width: 420px) {
+    .talk-gallery .head {
+        display: block !important;
+        -ms-align-items: center;
+        align-items: center;
+        margin: 0 0 10px;
+        padding: 0 0 0 0px;
+    }
+    .talk-gallery .visual {
+        /* -webkit-flex: 0 0 120px; */
+        display: block;
+        margin: 0 auto;
+        width: 120px;
+    }
+    .talk-gallery .name {
+        margin: 10px 0 3px;
+        text-align: center;
+    }
+    .talk-gallery .post {
+        text-align: center;
+    }
+    .talk-gallery .text {
+        padding: 0px 0px 40px 0px;
+    }
+}
+
+
+

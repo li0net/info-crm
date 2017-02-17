@@ -1,314 +1,104 @@
 <!DOCTYPE html>
-<!--
-Landing page based on Pratt: http://blacktie.co/demo/pratt/
--->
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Adminlte-laravel - {{ trans('adminlte_lang::message.landingdescription') }} ">
-	<meta name="author" content="Sergi Tur Badenas - acacha.org">
+    <meta charset="utf-8">
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-	<meta property="og:title" content="Adminlte-laravel" />
-	<meta property="og:type" content="website" />
-	<meta property="og:description" content="Adminlte-laravel - {{ trans('adminlte_lang::message.landingdescription') }}" />
-	<meta property="og:url" content="http://demo.adminlte.acacha.org/" />
-	<meta property="og:image" content="http://demo.adminlte.acacha.org/img/AcachaAdminLTE.png" />
-	<meta property="og:image" content="http://demo.adminlte.acacha.org/img/AcachaAdminLTE600x600.png" />
-	<meta property="og:image" content="http://demo.adminlte.acacha.org/img/AcachaAdminLTE600x314.png" />
-	<meta property="og:sitename" content="demo.adminlte.acacha.org" />
-	<meta property="og:url" content="http://demo.adminlte.acacha.org" />
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta id="_token" value="{{ csrf_token() }}">
+    @if ($locale == 'ru')
+        <title>INFOGROUP.ONLINE Мощная и интуитивная платформа автоматизации сферы услуг!</title>
+    @else
+        <title>Programa de la inscripcion de clientes en linea. Inscripcion en linea en el sitio  | INFOGROUP.ONLINE</title>
+        <meta name="description" content="INFOGROUP.ONLINE es un programa de inscripcion de clientes en linea. Funciona 24/7, utiliza su diseno, esta integrado con las redes sociales. Probar gratis">
+        <meta name="keywords" content="programa de la inscripcion de clientes en linea,inscripcion en linea en el sitio,infogroup online,auromatizacion en el sector de servicios,estadisticas y analisis en el sector de servicios,censura de cuentas en el sector de servicios,aplicaciones moviles de inscripcion de clientes en linea">
+        <meta property="og:title" content="INFOGROUP.ONLINE es un widget de inscripcion en linea para un sitio web y redes sociales"/>
+        <meta property="og:description" content="Inscripcion en linea permite no perder nuevos clientes"/>
+    @endif
+    <meta name="author" content="INFOGROUP.ONLINE">
+    <meta property="og:image" content="/img/landing/logo.jpg"/>
+    <meta property="og:image:type" content="image/jpeg"/>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://infogroup.online"/>
+    <link type="/img/landing/png" href="/img/favicon.png" rel="shortcut icon">
 
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:site" content="@acachawiki" />
-	<meta name="twitter:creator" content="@acacha1" />
 
-	<title>{{ trans('adminlte_lang::message.landingdescriptionpratt') }}</title>
+    <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/landing.css') }}" rel="stylesheet" type="text/css">
 
-	<!-- Custom styles for this template -->
-	<link href="{{ asset('/css/all.css') }}" rel="stylesheet">
-	<link href="{{ asset('/css/main.css') }}" rel="stylesheet">
+    <!-- project scripts -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/landing.js') }}"></script>
 
-	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
-
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-
-<body data-spy="scroll" data-offset="0" data-target="#navigation">
-
-<div id="app">
-	<!-- Fixed navbar -->
-	<div id="navigation" class="navbar navbar-default navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#"><b>Barcelona</b>Info</a>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-				   {{--  <li class="active"><a href="#home" class="smoothScroll">{{ trans('adminlte_lang::message.home') }}</a></li>
-					<li><a href="#desc" class="smoothScroll">{{ trans('adminlte_lang::message.description') }}</a></li>
-					<li><a href="#showcase" class="smoothScroll">{{ trans('adminlte_lang::message.showcase') }}</a></li>
-					<li><a href="#contact" class="smoothScroll">{{ trans('adminlte_lang::message.contact') }}</a></li> --}}
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					@if (Auth::guest())
-						<li><a href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>
-						<li><a href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>
-					@else
-						<li><a href="/home">{{ Auth::user()->name }}</a></li>
-					@endif
-				</ul>
-			</div><!--/.nav-collapse -->
-		</div>
-	</div>
-
-	<div class="container" style="margin-top: 100px; font-size: 48px;">
-		<div class="row centered">
-			<div class="col-md-10 col-md-offset-1">
-				<div>
-					<div>Welcome!</div>
-
-					<div>
-						<b>Barcelona</b>Info Landing Page.
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-{{-- 	<section id="home" name="home"></section>
-	<div id="headerwrap">
-		<div class="container">
-			<div class="row centered">
-				<div class="col-lg-12">
-					<h1>Acacha <b><a href="https://github.com/acacha/adminlte-laravel">adminlte-laravel</a></b></h1>
-					<h3>A <a href="https://laravel.com/">Laravel</a> {{ trans('adminlte_lang::message.laravelpackage') }}
-						scaffolding/boilerplate {{ trans('adminlte_lang::message.to') }} <a href="https://almsaeedstudio.com/preview">AdminLTE</a> {{ trans('adminlte_lang::message.templatewith') }}
-						<a href="http://getbootstrap.com/">Bootstrap</a> 3.0 {{ trans('adminlte_lang::message.and') }} <a href="http://blacktie.co/demo/pratt/">Pratt</a> Landing page</h3>
-					<h3><a href="{{ url('/register') }}" class="btn btn-lg btn-success">{{ trans('adminlte_lang::message.gedstarted') }}</a></h3>
-				</div>
-				<div class="col-lg-2">
-					<h5>{{ trans('adminlte_lang::message.amazing') }}</h5>
-					<p>{{ trans('adminlte_lang::message.basedadminlte') }}</p>
-					<img class="hidden-xs hidden-sm hidden-md" src="{{ asset('/img/arrow1.png') }}">
-				</div>
-				<div class="col-lg-8">
-					<img class="img-responsive" src="{{ asset('/img/app-bg.png') }}" alt="">
-				</div>
-				<div class="col-lg-2">
-					<br>
-					<img class="hidden-xs hidden-sm hidden-md" src="{{ asset('/img/arrow2.png') }}">
-					<h5>{{ trans('adminlte_lang::message.awesomepackaged') }}</h5>
-					<p>... {{ trans('adminlte_lang::message.by') }} <a href="http://acacha.org/sergitur">Sergi Tur Badenas</a> {{ trans('adminlte_lang::message.at') }} <a href="http://acacha.org">acacha.org</a> {{ trans('adminlte_lang::message.readytouse') }}</p>
-				</div>
-			</div>
-		</div> 
-	</div> --}}
-
-{{-- 	<section id="desc" name="desc"></section>
-	
-	<div id="intro">
-		<div class="container">
-			<div class="row centered">
-				<h1>{{ trans('adminlte_lang::message.designed') }}</h1>
-				<br>
-				<br>
-				<div class="col-lg-4">
-					<img src="{{ asset('/img/intro01.png') }}" alt="">
-					<h3>{{ trans('adminlte_lang::message.community') }}</h3>
-					<p>{{ trans('adminlte_lang::message.see') }} <a href="https://github.com/acacha/adminlte-laravel">{{ trans('adminlte_lang::message.githubproject') }}</a>, {{ trans('adminlte_lang::message.post') }} <a href="https://github.com/acacha/adminlte-laravel/issues">{{ trans('adminlte_lang::message.issues') }}</a> {{ trans('adminlte_lang::message.and') }} <a href="https://github.com/acacha/adminlte-laravel/pulls">{{ trans('adminlte_lang::message.pullrequests') }}</a></p>
-				</div>
-				<div class="col-lg-4">
-					<img src="{{ asset('/img/intro02.png') }}" alt="">
-					<h3>{{ trans('adminlte_lang::message.schedule') }}</h3>
-					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-				</div>
-				<div class="col-lg-4">
-					<img src="{{ asset('/img/intro03.png') }}" alt="">
-					<h3>{{ trans('adminlte_lang::message.monitoring') }}</h3>
-					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-				</div>
-			</div>
-			<br>
-			<hr>
-		</div> 
-	</div> --}}
-
-	<!-- FEATURES WRAP -->
-{{-- 	<div id="features">
-		<div class="container">
-			<div class="row">
-				<h1 class="centered">{{ trans('adminlte_lang::message.whatnew') }}</h1>
-				<br>
-				<br>
-				<div class="col-lg-6 centered">
-					<img class="centered" src="{{ asset('/img/mobile.png') }}" alt="">
-				</div>
-
-				<div class="col-lg-6">
-					<h3>{{ trans('adminlte_lang::message.features') }}</h3>
-					<br>
-					<!
-					<div class="accordion ac" id="accordion2">
-						<div class="accordion-group">
-							<div class="accordion-heading">
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-									{{ trans('adminlte_lang::message.design') }}
-								</a>
-							</div>
-							<div id="collapseOne" class="accordion-body collapse in">
-								<div class="accordion-inner">
-									<p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-								</div>
-							</div>
-						</div>
-						<br>
-
-						<div class="accordion-group">
-							<div class="accordion-heading">
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-									{{ trans('adminlte_lang::message.retina') }}
-								</a>
-							</div>
-							<div id="collapseTwo" class="accordion-body collapse">
-								<div class="accordion-inner">
-									<p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-								</div>
-							</div>
-						</div>
-						<br>
-
-						<div class="accordion-group">
-							<div class="accordion-heading">
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-									{{ trans('adminlte_lang::message.support') }}
-								</a>
-							</div>
-							<div id="collapseThree" class="accordion-body collapse">
-								<div class="accordion-inner">
-									<p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-								</div>
-							</div>
-						</div>
-						<br>
-
-						<div class="accordion-group">
-							<div class="accordion-heading">
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
-									{{ trans('adminlte_lang::message.responsive') }}
-								</a>
-							</div>
-							<div id="collapseFour" class="accordion-body collapse">
-								<div class="accordion-inner">
-									<p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-								</div>
-							</div>
-						</div>
-						<br>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> --}}
-
-
-{{-- 	<section id="showcase" name="showcase"></section>
-	<div id="showcase">
-		<div class="container">
-			<div class="row">
-				<h1 class="centered">{{ trans('adminlte_lang::message.screenshots') }}</h1>
-				<br>
-				<div class="col-lg-8 col-lg-offset-2">
-					<div id="carousel-example-generic" class="carousel slide">
-						
-						<ol class="carousel-indicators">
-							<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-							<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-						</ol>
-
-						
-						<div class="carousel-inner">
-							<div class="item active">
-								<img src="{{ asset('/img/item-01.png') }}" alt="">
-							</div>
-							<div class="item">
-								<img src="{{ asset('/img/item-02.png') }}" alt="">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<br>
-			<br>
-			<br>
-		</div>
-	</div> --}}
-
-
-{{-- 	<section id="contact" name="contact"></section>
-	<div id="footerwrap">
-		<div class="container">
-			<div class="col-lg-5">
-				<h3>{{ trans('adminlte_lang::message.address') }}</h3>
-				<p>
-					Av. Greenville 987,<br/>
-					New York,<br/>
-					90873<br/>
-					United States
-				</p>
-			</div>
-
-			<div class="col-lg-7">
-				<h3>{{ trans('adminlte_lang::message.dropus') }}</h3>
-				<br>
-				<form role="form" action="#" method="post" enctype="plain">
-					<div class="form-group">
-						<label for="name1">{{ trans('adminlte_lang::message.yourname') }}</label>
-						<input type="name" name="Name" class="form-control" id="name1" placeholder="{{ trans('adminlte_lang::message.yourname') }}">
-					</div>
-					<div class="form-group">
-						<label for="email1">{{ trans('adminlte_lang::message.emailaddress') }}</label>
-						<input type="email" name="Mail" class="form-control" id="email1" placeholder="{{ trans('adminlte_lang::message.enteremail') }}">
-					</div>
-					<div class="form-group">
-						<label>{{ trans('adminlte_lang::message.yourtext') }}</label>
-						<textarea class="form-control" name="Message" rows="3"></textarea>
-					</div>
-					<br>
-					<button type="submit" class="btn btn-large btn-success">{{ trans('adminlte_lang::message.submit') }}</button>
-				</form>
-			</div>
-		</div>
-	</div> --}}
-{{-- 	<div id="c">
-		<div class="container">
-			<p>
-				<a href="https://github.com/acacha/adminlte-laravel"></a><b>admin-lte-laravel</b></a>. {{ trans('adminlte_lang::message.descriptionpackage') }}.<br/>
-				<strong>Copyright &copy; 2015 <a href="http://acacha.org">Acacha.org</a>.</strong> {{ trans('adminlte_lang::message.createdby') }} <a href="http://acacha.org/sergitur">Sergi Tur Badenas</a>. {{ trans('adminlte_lang::message.seecode') }} <a href="https://github.com/acacha/adminlte-laravel">Github</a>
-				<br/>
-				AdminLTE {{ trans('adminlte_lang::message.createdby') }} Abdullah Almsaeed <a href="https://almsaeedstudio.com/">almsaeedstudio.com</a>
-				<br/>
-				 Pratt Landing Page {{ trans('adminlte_lang::message.createdby') }} <a href="http://www.blacktie.co">BLACKTIE.CO</a>
-			</p>
-
-		</div>
-	</div> --}}
+<body>
+<div id="wrapper">
+    @include($sidepanel, ['page' => $page])
+    <div class="w1">
+        <header id="header">
+            <a href="/" class="logo"><img src="/img/landing/logo.svg"></a>
+        </header>
+        @include($content)
+    </div>
 </div>
+<div id="toTop"></div>
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="{{ asset('/js/app.js') }}"></script>
-<script src="{{ asset('/js/smoothscroll.js') }}"></script>
+<!--<script src="{{ asset('/js/app.js') }}" type="text/javascript"></script>-->
+
+<script src="{{ asset('/js/jqgrid/i18n/grid.locale-ru.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/js/jqgrid/jquery.jqGrid.min.js') }}" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/vue/1.0.28/vue.js"></script>
+
 <script>
-	$('.carousel').carousel({
-		interval: 3500
-	})
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-52416223-3', 'auto');
+    ga('send', 'pageview');
+</script>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter42486754 = new Ya.Metrika({
+                    id:42486754,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/42486754" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<script>
+    window.Laravel = <?php echo json_encode([
+        'csrfToken' => csrf_token(),
+    ]); ?>
 </script>
 </body>
 </html>
