@@ -3,6 +3,9 @@
 <head>
     <?php
         $locale = App::getLocale();
+        if ( $locale == 'es' OR $locale == 'ca' ){
+            $locale = 'en';
+        }
         $sidepanel = "adminlte::layouts.landing.{$locale}.sidepanel";
     ?>
     <meta charset="utf-8">
