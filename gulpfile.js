@@ -35,5 +35,5 @@ elixir(function(mix) {
     mix.sass('general.scss');
     mix.sass('landing.scss');
     //mix.copy('resources/assets/img/*.*','public/img/');
-    mix.imageOptimize("./resources/assets/img", "public/img/");
+    //mix.imageOptimize("./resources/assets/img", "public/img/");
 });

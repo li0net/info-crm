@@ -40,9 +40,21 @@ class WageSchemesController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function create()
+	public function create(Request $request)
 	{
-		return view('wage_schemes.create');
+		$service_ctgs = ServiceCategory::where('organization_id', $request->user()->organization_id)
+										->orderBy('name')
+										->with('service')
+										->get()
+										->pluck('service', 'service_category_id');
+
+		$product_ctgs = ProductCategory::where('organization_id', $request->user()->organization_id)
+										->orderBy('title')
+										->with('product')
+										->get()
+										->pluck('product', 'product_category_id');
+
+		return view('wage_schemes.create', ['service_ctgs' => $service_ctgs, 'product_ctgs' => $product_ctgs]);
 	}
 
 	/**

@@ -269,7 +269,6 @@
 							$(this).val(initialValue);
 						} else {
 							$(this).val($(this).find('option').first().val());
-							console.log($(this).find('option').first().val());
 						}
 					});
 				},
@@ -301,7 +300,6 @@
 							$(this).val(initialValue);
 						} else {
 							$(this).val($(this).find('option').first().val());
-							console.log($(this).find('option').first().val());
 						}
 					});
 				},
