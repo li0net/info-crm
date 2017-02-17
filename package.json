@@ -22,5 +22,9 @@
     "toastr": "^2.1.2",
     "vue": "^2.0.1",
     "vue-resource": "^1.0.3"
+  },
+  "dependencies": {
+    "imagemin-pngquant": "^5.0.0",
+    "laravel-elixir-image-optimize": "^1.1.0"
   }
 }

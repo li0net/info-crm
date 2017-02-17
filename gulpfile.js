@@ -1,12 +1,7 @@
 const elixir = require('laravel-elixir');
 
 require('laravel-elixir-vue-2');
-require('laravel-elixir-imagemin');
-
-elixir.config.images = {
-    folder: 'img',
-    outputFolder: 'img'
-};
+require('laravel-elixir-image-optimize');
 
 elixir(function(mix) {
     //app.scss includes app css, Boostrap and Ionicons
@@ -34,6 +29,9 @@ elixir(function(mix) {
         .copy('node_modules/icheck/skins/square/blue@2x.png','public/css')
         .webpack('app.js')
         .webpack('usercabinet.js');
+
     mix.sass('general.scss');
-    // mix.imagemin();
+    mix.sass('landing.scss');
+    mix.copy('resources/assets/img/*.*','public/img/');
+    mix.imageOptimize("./resources/assets/img", "public/img/");
 });
