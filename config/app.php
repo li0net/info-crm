@@ -148,6 +148,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -168,7 +169,12 @@ return [
         Mgallegos\LaravelJqgrid\LaravelJqgridServiceProvider::class,
         App\Providers\LaravelJqgridServiceProviderCustom::class,
 
-        'Collective\Html\HtmlServiceProvider'
+        'Collective\Html\HtmlServiceProvider',
+
+        /*
+         * View composer provider
+         */
+        App\Providers\ComposerServiceProvider::class
     ],
 
     /*

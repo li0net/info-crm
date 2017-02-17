@@ -135,8 +135,35 @@ Route::get('/image-upload', 'UploadImageController@uploadImage');
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::post('changelocale', ['as' => 'changelocale', 'uses' => 'TranslationController@changeLocale']);
 
-Route::get('locale/{locale?}',
-    [
-        'as' => 'locale.setlocale',
-        'uses' => 'LocaleController@setLocale'
+Route::get('locale/{locale?}', ['as' => 'locale.setlocale', 'uses' => 'LocaleController@setLocale']);
+
+// Passport token manage GUI
+Route::get('/oauth/manageUsers', function() {
+    if (Input::user()->is_admin != true) {
+        return 'You dont have permission to access this page';
+    }
+    return view('passport.main', [
+        'header'                => trans('main.passport:manage_clients_title'),
+        'passportVueComponent'  => '<passport-clients></passport-clients>'
     ]);
+})->middleware('auth');
+
+Route::get('/oauth/manageAuthorizedUsers', function() {
+    if (Input::user()->is_admin != true) {
+        return 'You dont have permission to access this page';
+    }
+    return view('passport.main', [
+        'header'                => trans('main.passport:manage_authorized_clients_title'),
+        'passportVueComponent'  => '<passport-authorized-clients></passport-authorized-clients>'
+    ]);
+})->middleware('auth');
+
+Route::get('/oauth/managePersonalTokens', function() {
+    if (Input::user()->is_admin != true) {
+        return 'You dont have permission to access this page';
+    }
+    return view('passport.main', [
+        'header'                => trans('main.passport:manage_personal_access_tokens_title'),
+        'passportVueComponent'  => '<passport-personal-access-tokens></passport-personal-access-tokens>'
+    ]);
+})->middleware('auth');

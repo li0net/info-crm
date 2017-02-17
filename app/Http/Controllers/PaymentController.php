@@ -26,8 +26,11 @@ class PaymentController extends Controller
 	public function index(Request $request)
 	{
 		$payments = Payment::where('organization_id', $request->user()->organization_id)
-							->with('account', 'item', 'partner', 'client', 'employee', 'user')
+							->with('account', 'item', 'itemtype', 'partner', 'client', 'employee', 'user')
 							->get()->all();
+
+		//dd($payments);
+
 		$items = Item::where('organization_id', $request->user()->organization_id)->pluck('title', 'item_id');
 		$partners = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id');
 		$accounts = Account::where('organization_id', $request->user()->organization_id)->pluck('title', 'account_id');

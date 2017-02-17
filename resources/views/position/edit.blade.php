@@ -16,7 +16,7 @@
 	</div>
 	<div class="row">
 		{!! Form::model($position, ['route' => ['position.update', $position->position_id], "method" => 'PUT']) !!}
-			<div class="col-md-4 col-md-offset-4">
+			<div class="col-sm-4 col-sm-offset-4">
 				<div class="well">
 					{{ Form::label('position_id', "Должность: ") }}
 					<p class="lead">#{{ $position->position_id }}</p>
@@ -34,12 +34,12 @@
 					<hr>
 
 					<div class="row">
-						<div class="col-md-8 col-md-offset-2">
+						<div class="col-sm-8 col-sm-offset-2">
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-sm-6">
 									{!! Html::linkRoute('position.show', 'Отмена', [$position->position_id], ['class'=>'btn btn-danger btn-block']) !!}
 								</div>
-								<div class="col-md-6">
+								<div class="col-sm-6">
 									{{ Form::submit('Сохранить', ['class'=>'btn btn-success btn-block']) }}
 								</div>
 							</div>

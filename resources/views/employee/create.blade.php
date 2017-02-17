@@ -11,8 +11,8 @@
 @section('main-content')
 
 	<div class="row">
-		<div class="col-md-6 col-md-offset-3">
-			<h1>Создание нового сотрудника</h1>	
+		<div class="col-sm-6 col-sm-offset-3">
+			<h4>Создание нового сотрудника</h4>	
 			<hr>	
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
@@ -66,7 +66,7 @@
 					<hr>
 
 					<div class="row">
-						<div class="col-md-6 col-md-offset-3">
+						<div class="col-sm-6 col-sm-offset-3">
 							{{	Form::submit('Создать нового сотрудника', ['class' => 'btn btn-success btn-lg btn-block', 'style' => 'margin-top:20px;']) }}
 						</div>
 					</div>

@@ -35,19 +35,19 @@
 		{{ Form::hidden('organization_id', $user->organization_id, ['id' => 'organization_id']) }}
 		<fieldset>
 			<div class="row m-b">
-				<div class="col-md-3">
+				<div class="col-sm-3">
 					<div class="input-group">
 						<span class="input-group-addon">c&nbsp;&nbsp;</span>
 						<input class="form-control hasDatepicker" name="start_date" data-days-offset="-1" type="text" id="date-from">
 					</div>
 				</div>
-				<div class="col-md-3">
+				<div class="col-sm-3">
 					<div class="input-group">
 						<span class="input-group-addon">по</span>
 						<input class="form-control hasDatepicker" name="end_date" type="text" id="date-to">
 					</div>
 				</div>
-				<div class="col-md-3">
+				<div class="col-sm-3">
 					<select class="form-control" data-placeholder="Выберите вид платежа" name="balance_is">
 						<option selected="" value="0">Все виды платежей</option>
 						<option value="1">Доходы</option>
@@ -55,31 +55,31 @@
 						<option value="3">Перемещение</option>
 					</select>
 				</div>	    	
-				<div class="col-md-3">
+				<div class="col-sm-3">
 				{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '', 'id' => 'partner_id', 'placeholder' => 'Контрагент не выбран']) }}
 				</div>	
 			</div>
 			<div class="row m-b">
-				<div class="col-md-3">
+				<div class="col-sm-3">
 					{{ Form::select('account_id', $accounts, null, ['class' => 'form-control', 'required' => '', 'id' => 'account_id', 'placeholder' => 'Счет не выбран']) }}
 				</div>
-				<div class="col-md-3">
+				<div class="col-sm-3">
 					{{ Form::select('item_id', $items, null, ['class' => 'form-control', 'required' => '', 'id' => 'item_id', 'placeholder' => 'Статья платежа не выбрана']) }}			
 				</div>
-				<div class="col-md-3">
+				<div class="col-sm-3">
 					{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '', 'id' => 'employee_id', 'placeholder' => 'Сотрудник не выбран']) }}
 				</div>
-				<div class="col-md-3">
+				<div class="col-sm-3">
 					{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '', 'id' => 'client_id', 'placeholder' => 'Клиент не выбран']) }}
 				</div>
-				{{-- <div class="col-md-3">
+				{{-- <div class="col-sm-3">
 					<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
 					<input type="text" class="form-control ui-autocomplete-input" name="client" value="" placeholder="Поиск клиента (имя или телефон)" autocomplete="off">
 					<input type="hidden" class="form-control" name="client_id" value=""> 
 				</div> --}}
 			</div>
 			<div class="row m-b">
-				<div class="col-md-3 transactions-multi-filters">
+				<div class="col-sm-3 transactions-multi-filters">
 					{{-- <select name="good_ids[]" data-placeholder="Выберите товары..." class="chosen-filter-goods small_select form-control" multiple="multiple" style="display: none;">
 						<option value="436655">111111111</option>
 						<option value="453399">rasas</option>
@@ -97,7 +97,7 @@
 						</div>
 					</div> --}}
 				</div>
-				<div class="col-md-3 transactions-multi-filters">
+				<div class="col-sm-3 transactions-multi-filters">
 					{{-- <select name="service_ids[]" class="form-control chosen-filter-services" data-placeholder="Выберите услуги..." multiple="multiple" style="display: none;">
 						<option value="508710">Стрижки и укладки</option>
 						<option value="508711">Полубокс</option>
@@ -126,14 +126,14 @@
 						</div>
 					</div> --}}
 				</div>
-				<div class="col-md-3">
+				<div class="col-sm-3">
 					<select class="form-control" data-placeholder="Выберите статус платежа" name="deleted">
 						<option selected="" value="0">Не отмененные</option>
 						<option value="1">Отмененные</option>
 					</select>
 				</div>
 				<div class="form-inline">
-					<div class="col-md-3">
+					<div class="col-sm-3">
 						<select name="editable_length" aria-controls="editable" class="form-control input-sm">
 							<option selected="" value="25">25</option>
 							<option value="50">50</option>
@@ -143,7 +143,7 @@
 				</div>
 			</div>
 			<div class="row m-b ">
-				<div class="col-md-2 col-md-offset-10">
+				<div class="col-sm-2 col-sm-offset-10">
 					<input type="button" class="btn btn-success btn-sm pull-right" value="Показать" id='form_submit'>
 				</div>
 			</div>

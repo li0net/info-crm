@@ -18,4 +18,9 @@ class Item extends Model
 	{
 		return $this->belongsTo(Organization::class);
 	}
+
+	public function itemtype()
+	{
+		return $this->belongsTo(Itemtype::class, 'itemtype_id');
+	}
 }

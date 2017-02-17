@@ -66,19 +66,23 @@
                             <div class="form-group">
                                 <label for="c_phone" class="col-sm-2 control-label">@lang('main.client:phone_label')</label>
                                 <div class="col-md-10">
-                                    <?php
-                                    $old = old('phone');
-                                    if (!is_null($old)) {
-                                        $value = $old;
-                                    } elseif (isset($client)) {
-                                        $value = $client->phone;
-                                    } else {
-                                        $value = '';
-                                    }?>
-                                    <input type="text" class="form-control" name="phone" id="c_phone" value="{{$value}}">
-                                    @foreach ($errors->get('phone') as $message)
-                                        <br/>{{$message}}
-                                    @endforeach
+                                    @if ($crmuser->hasAccessTo('client_phone', 'view', 0))
+                                        <?php
+                                        $old = old('phone');
+                                        if (!is_null($old)) {
+                                            $value = $old;
+                                        } elseif (isset($client)) {
+                                            $value = $client->phone;
+                                        } else {
+                                            $value = '';
+                                        }?>
+                                        <input type="text" class="form-control" name="phone" id="c_phone" value="{{$value}}">
+                                        @foreach ($errors->get('phone') as $message)
+                                            <br/>{{$message}}
+                                        @endforeach
+                                    @else
+                                        <span>@lang('main.user:grid_phone_hidden_message')</span>
+                                    @endif
                                 </div>
                             </div>
                             <div class="form-group">

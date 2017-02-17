@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Znck\Eloquent\Traits\BelongsToThrough;
 
 class Payment extends Model
 {
@@ -53,4 +54,20 @@ class Payment extends Model
 	{
 		return $this->belongsTo(User::class, 'author_id');
 	}
+
+	// public function itemtype() {
+ //        return $this->belongsToThrough(Itemtype::class, Item::class);
+ //    }
+
+	public function itemtype()
+	{
+		//$this->belongsTo(Item::class, 'item_id', 'item_id');
+		//dd($middle);
+		
+		return $this->user->belongsTo(Itemtype::class, 'itemtype_id', 'itemtype_id');
+		// dd($end);
+
+		// $end = $middle->belongsTo(Itemtype::class, 'itemtype_id', 'itemtype_id')->getResults();
+		// dd($end);
+	}	
 }

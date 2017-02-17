@@ -197,6 +197,7 @@ return [
     'client:importance_bronze'              => 'Бронза',
     'client:importance_silver'              => 'Серебро',
     'client:importance_gold'                => 'Золото',
+    'client:form_page_header'               => 'Редактировать клиента',
 
     'client_category:form_page_header'      => 'Категории клиентов',
     'client_category:list_page_header'      => 'Категории клиентов',
@@ -212,4 +213,7 @@ return [
     'client_category:edit_success_message'  => 'Изменения сохранены',
     'client_category:create_success_message'=> 'Категория создана',
 
+    'passport:manage_clients_title'         => 'Управление API пользователями',
+    'passport:manage_authorized_clients_title' => 'Управление авторизованными API пользователями',
+    'passport:manage_personal_access_tokens_title' => 'Управление персональными токенами'
 ];

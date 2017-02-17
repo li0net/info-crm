@@ -11,7 +11,7 @@
 @section('main-content')
 
 	<div class="row">
-		<div class="col-md-4 col-md-offset-4">
+		<div class="col-sm-4 col-sm-offset-4">
 			<h1>Создание новой должности</h1>	
 			<hr>	
 			@if (count($errors) > 0)
