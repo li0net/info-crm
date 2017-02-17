@@ -2,16 +2,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App;
+use Config;
 
 class LandingController extends Controller {
     public function index(Request $request) {
         // getting locale
-//        $locale = substr($request->server('HTTP_ACCEPT_LANGUAGE'), 0, 2);
-//        $locale = ($locale == 'ru') ? $locale : 'en';
-//
         $locale = App::getLocale();
 
         //getting the page for show
