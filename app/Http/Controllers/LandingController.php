@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
@@ -9,28 +8,30 @@ use App\Http\Controllers\Controller;
 
 class LandingController extends Controller {
     public function index(Request $request) {
+        // getting locale
         $locale = substr($request->server('HTTP_ACCEPT_LANGUAGE'), 0, 2);
         $locale = ($locale == 'ru') ? $locale : 'en';
 
         //getting the page for show
         $page = 'index';
-        if (! empty($request->p)){
+        if ( ! empty($request->p)){
             //TODO validate param
-            if (view()->exists("landing.{$locale}.".$request->p)){
+            if (view()->exists("adminlte::layouts.landing.{$locale}.".$request->p)){
                 $page = $request->p;
             }
         }
 
-        $sidepanel = "landing.{$locale}.sidepanel";
-        $content = "landing.{$locale}.".$page;
+        // getting names of sub-views
+        $sidepanel = "adminlte::layouts.landing.{$locale}.sidepanel";
+        $content = "adminlte::layouts.landing.{$locale}.".$page;
 
         return view(
-            'landing.landing',
+            'adminlte::layouts.landing',
             [
-                'locale' => $locale,
-                'content' => $content,
+                'locale'    => $locale,
+                'content'   => $content,
                 'sidepanel' => $sidepanel,
-                'page' => $page,
+                'page'      => $page,
             ]
         );
     }

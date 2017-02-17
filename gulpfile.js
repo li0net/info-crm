@@ -28,10 +28,12 @@ elixir(function(mix) {
         .copy('node_modules/icheck/skins/square/blue.png','public/css')
         .copy('node_modules/icheck/skins/square/blue@2x.png','public/css')
         .webpack('app.js')
-        .webpack('usercabinet.js');
+        .webpack('usercabinet.js')
+        .webpack('landing.js')
+        .webpack('bootstrap.js');
 
     mix.sass('general.scss');
     mix.sass('landing.scss');
-    mix.copy('resources/assets/img/*.*','public/img/');
+    //mix.copy('resources/assets/img/*.*','public/img/');
     mix.imageOptimize("./resources/assets/img", "public/img/");
 });
