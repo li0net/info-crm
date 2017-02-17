@@ -1,7 +1,21 @@
 <div class="side-nav">
     <div class="login">
-        <div class="login-open"><img src="/img/landing/icon_user2.svg"><a href="/login">Login</a> | <a href="/register" >Registration</div><div class="login-close"><a href="#" ><img src="/img/landing/icon_login.svg"></a></div>
+        <div class="login-open">
+            <img src="/img/landing/icon_user2.svg">
+            <a href="/login">Login</a> |
+            <a href="/register" >Registration</a> |
+            <div class="dropdown">
+                <button  class="btn btn-default btn-xs dropdown-toggle dropbtn btn-flag en">
+                    <span class="caret"></span>
+                </button>
+                <div class="dropdown-content">
+                    <a class="lang-flag ru" href="/locale/ru">Русский</a>
+                </div>
+            </div>
+        </div>
+        <div class="login-close"><a href="#" ><img src="/img/landing/icon_login.svg"></a></div>
     </div>
+
     <a href="#" class="nav-opener">
         <span></span>
     </a>

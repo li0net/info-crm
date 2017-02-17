@@ -1,6 +1,19 @@
 <div class="side-nav">
     <div class="login">
-        <div class="login-open"><img src="/img/landing/icon_user2.svg"><a href="/login">Вход</a> | <a href="/register" >Регистрация</div><div class="login-close"><a href="#" ><img src="/img/landing/icon_login.svg"></a></div>
+        <div class="login-open">
+            <img src="/img/landing/icon_user2.svg">
+            <a href="/login">Вход</a> |
+            <a href="/register" >Регистрация</a> |
+            <div class="dropdown">
+                <button  class="btn btn-default btn-xs dropdown-toggle dropbtn btn-flag ru">
+                    <span class="caret"></span>
+                </button>
+                <div class="dropdown-content">
+                    <a class="lang-flag en" href="/locale/en">English</a>
+                </div>
+            </div>
+        </div>
+        <div class="login-close"><a href="#" ><img src="/img/landing/icon_login.svg"></a></div>
     </div>
     <a href="#" class="nav-opener">
         <span></span>

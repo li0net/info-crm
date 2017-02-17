@@ -9,8 +9,10 @@ use App\Http\Controllers\Controller;
 class LandingController extends Controller {
     public function index(Request $request) {
         // getting locale
-        $locale = substr($request->server('HTTP_ACCEPT_LANGUAGE'), 0, 2);
-        $locale = ($locale == 'ru') ? $locale : 'en';
+//        $locale = substr($request->server('HTTP_ACCEPT_LANGUAGE'), 0, 2);
+//        $locale = ($locale == 'ru') ? $locale : 'en';
+//
+        $locale = App::getLocale();
 
         //getting the page for show
         $page = 'index';

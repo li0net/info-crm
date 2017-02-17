@@ -30,7 +30,7 @@ elixir(function(mix) {
         .webpack('app.js')
         .webpack('usercabinet.js')
         .webpack('landing.js')
-        .webpack('bootstrap.js');
+        .webpack('bootstrap.min.js');
 
     mix.sass('general.scss');
     mix.sass('landing.scss');
