@@ -70,10 +70,10 @@
 								<div class="col-sm-2"></div>							
 								<div class="col-sm-8" style="padding:0">
 									<div class="col-sm-4">
-										{{ Form::select('services_cats_detailed[]', $service_cats, '0', ['class' => 'form-control', 'maxlength' => '110']) }}
+										{{ Form::select('services_cats_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => 0]) }}
 									</div>
 									<div class="col-sm-4">
-										{{ Form::select('services_detailed[]', ['0' => 'Модельная', '1' => 'Полубокс'], '0', ['class' => 'form-control', 'maxlength' => '110']) }}
+										{{ Form::select('services_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'placeholder' => 'Выберите услугу']) }}
 									</div>
 									<div class="col-sm-2">
 										{{ Form::text('services_percent_detailed[]', 0, ['class' => 'form-control', 'maxlength' => '110']) }}
@@ -86,15 +86,16 @@
 									<input type="button" id="add-detailed-section" class="btn btn-info" value="Добавить">
 								</div>
 							</div>
+
 							@foreach( $services_custom_settings as $service_setting )
 								<div class="wrap-it">
 									<div class="col-sm-2"></div>							
 									<div class="col-sm-8" style="padding:0">
 										<div class="col-sm-4">
-											{{ Form::select('services_cats_detailed[]', $service_cats, $service_setting[0], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+											{{ Form::select('services_cats_detailed[]',  [], $service_setting[0], ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'data-initial-value' => $service_setting[0]]) }}
 										</div>
 										<div class="col-sm-4">
-											{{ Form::select('services_detailed[]', ['0' => 'Модельная', '1' => 'Полубокс'], $service_setting[1], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+											{{ Form::select('services_detailed[]', $service_ctgs[$service_setting[0]]->pluck('name', 'service_id')->all(), $service_setting[1], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 										</div>
 										<div class="col-sm-2">
 											{{ Form::text('services_percent_detailed[]', $service_setting[2], ['class' => 'form-control', 'maxlength' => '110']) }}
@@ -140,10 +141,10 @@
 								<div class="col-sm-2"></div>							
 								<div class="col-sm-8" style="padding:0">
 									<div class="col-sm-4">
-										{{ Form::select('products_cats_detailed[]', ['0' => 'Лаки', '1' => 'Краски'], '0', ['class' => 'form-control', 'maxlength' => '110']) }}
+										{{ Form::select('products_cats_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => 0]) }}
 									</div>
 									<div class="col-sm-4">
-										{{ Form::select('products_detailed[]', ['0' => 'LONDA', '1' => 'WELLA'], '0', ['class' => 'form-control', 'maxlength' => '110']) }}
+										{{ Form::select('products_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'placeholder' => 'Выберите товар']) }}
 									</div>
 									<div class="col-sm-2">
 										{{ Form::text('products_percent_detailed[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
@@ -156,15 +157,18 @@
 									<input type="button" id="add-detailed-section" class="btn btn-info" value="Добавить">
 								</div>
 							</div>
+
+							<hr>
+
 							@foreach( $products_custom_settings as $product_setting )
 								<div class="wrap-it">
 									<div class="col-sm-2"></div>							
 									<div class="col-sm-8" style="padding:0">
 										<div class="col-sm-4">
-											{{ Form::select('products_cats_detailed[]', ['0' => 'Лаки', '1' => 'Краски'], $product_setting[0], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+											{{ Form::select('products_cats_detailed[]', [], $product_setting[0], ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'data-initial-value' => $product_setting[0]]) }}
 										</div>
 										<div class="col-sm-4">
-											{{ Form::select('products_detailed[]', ['0' => 'LONDA', '1' => 'WELLA'], $product_setting[1], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+											{{ Form::select('products_detailed[]', $product_ctgs[$product_setting[0]]->pluck('title', 'product_id')->all(), $product_setting[1], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 										</div>
 										<div class="col-sm-2">
 											{{ Form::text('products_percent_detailed[]', $product_setting[2], ['class' => 'form-control', 'maxlength' => '110']) }}
@@ -257,6 +261,17 @@
 
 					$('select.form-control[name="services_cats_detailed[]"]').find('option').remove();
 					$('select.form-control[name="services_cats_detailed[]"]').append(options);
+
+					$('select.form-control[name="services_cats_detailed[]"]').each(function() {
+						var initialValue = $(this).attr('data-initial-value');
+						
+						if ( 0 != initialValue ) {
+							$(this).val(initialValue);
+						} else {
+							$(this).val($(this).find('option').first().val());
+							console.log($(this).find('option').first().val());
+						}
+					});
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
 					console.log('Error while processing services data range!');
@@ -278,10 +293,47 @@
 
 					$('select.form-control[name="products_cats_detailed[]"]').find('option').remove();
 					$('select.form-control[name="products_cats_detailed[]"]').append(options);
+
+					$('select.form-control[name="products_cats_detailed[]"]').each(function() {
+						var initialValue = $(this).attr('data-initial-value');
+						
+						if ( 0 != initialValue ) {
+							$(this).val(initialValue);
+						} else {
+							$(this).val($(this).find('option').first().val());
+							console.log($(this).find('option').first().val());
+						}
+					});
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log('Error while processing services data range!');
+					console.log('Error while processing products data range!');
 				}
+			});
+
+			$('#detailed-services').on('change', 'select[name="services_cats_detailed[]"]', function(e){
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					data: {'service_ctgs' : $(this).val()},
+					url: "<?php echo route('wage_scheme.detailedServiceOptions') ?>",
+					success: function(data) {
+						$(e.target).parent().next().children('select[name="services_detailed[]"]').first().html('');
+						$(e.target).parent().next().children('select[name="services_detailed[]"]').first().html(data.options);
+					}
+				});
+			});
+
+			$('#detailed-products').on('change', 'select[name="products_cats_detailed[]"]', function(e){
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					data: {'product_ctgs' : $(this).val()},
+					url: "<?php echo route('wage_scheme.detailedProductOptions') ?>",
+					success: function(data) {
+						$(e.target).parent().next().children('select[name="products_detailed[]"]').first().html('');
+						$(e.target).parent().next().children('select[name="products_detailed[]"]').first().html(data.options);
+					}
+				});
 			});
 		});
 	</script>

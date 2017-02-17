@@ -629,10 +629,10 @@ $(document).ready(function () {
 	});
 
 	$('#detailed-services').on('click', '#add-detailed-section', function(e) {
-		if($(e.target).val() !== 'Удалить') {
+		if( 'Удалить' !== $(e.target).val() ) {
 			$('#detailed-services').prepend(
 				'<div class="wrap-it"><div class="col-sm-2"></div>' +						
-				'<div class="col-sm-8" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="services_cats_detailed[]" class="form-control"><option value="0" selected="selected">Стрижки</option><option value="1">Укладки</option></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="services_detailed[]" class="form-control"><option value="0" selected="selected">Полубокс</option><option value="1">Модельная</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="services_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="services_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
+				'<div class="col-sm-8" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="services_cats_detailed[]" class="form-control"></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="services_detailed[]" class="form-control"><option value="">Выберите услугу</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="services_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="services_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
 				'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info"></div></div>');
 			
 			$('select.form-control[name="services_cats_detailed[]"]').first().find('option').remove();

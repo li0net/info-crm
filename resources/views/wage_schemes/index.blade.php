@@ -49,7 +49,7 @@
 							<td>
 								{{ $scheme->services_percent }}
 								@if( $scheme->service_unit == 'rub')
-									&#8381
+									&#8381;
 								@else
 									%
 								@endif
@@ -57,7 +57,7 @@
 							<td>
 								{{ $scheme->products_percent }}
 								@if( $scheme->products_unit == 'rub')
-									&#8381
+									&#8381;
 								@else
 									%
 								@endif

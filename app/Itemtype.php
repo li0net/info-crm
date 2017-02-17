@@ -19,8 +19,13 @@ class Itemtype extends Model
 		return $this->belongsTo(Organization::class);
 	}
 
-	// public function payments()
-	// {
-	// 	return $this->hasManyThrough('App\Itemtype', 'App\Item', 'item_id', 'itemtype_id', 'payment_id');
-	// }
+	public function payments()
+	{
+		return $this->hasManyThrough('App\Itemtype', 'App\Item', 'itemtype_id', 'itemtype_id', 'item_id');
+	}
+
+	public function item()
+	{
+		return $this->hasOne(Item::class, 'itemtype_id');
+	}
 }

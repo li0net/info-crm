@@ -50,6 +50,10 @@ Route::resource('/card', 'CardController');
 Route::post('/home', 'homeController@indexFiltered');
 Route::post('/payment/list', ['as' => 'payment.list', 'uses' => 'PaymentController@indexFiltered']);
 Route::post('/payment/beneficiaryOptions', ['as' => 'payment.beneficiaryOptions', 'uses' => 'PaymentController@populateBeneficiaryOptions']);
+Route::post('/wage_scheme/detailedServiceOptions', ['as' => 'wage_scheme.detailedServiceOptions', 
+                                                    'uses' => 'WageSchemesController@populateDetailedServiceOptions']);
+Route::post('/wage_scheme/detailedProductOptions', ['as' => 'wage_scheme.detailedProductOptions', 
+                                                    'uses' => 'WageSchemesController@populateDetailedProductOptions']);
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
 Route::get('/serviceCategories/gridData', function()

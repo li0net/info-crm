@@ -10,6 +10,7 @@ use App\Payment;
 use App\Partner;
 use App\Employee;
 use App\Client;
+use App\Itemtype;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
@@ -29,7 +30,9 @@ class PaymentController extends Controller
 							->with('account', 'item', 'itemtype', 'partner', 'client', 'employee', 'user')
 							->get()->all();
 
-		//dd($payments);
+		// $types = Itemtype::where('organization_id', $request->user()->organization_id)->with('payments')->get();
+
+		// dd($types);
 
 		$items = Item::where('organization_id', $request->user()->organization_id)->pluck('title', 'item_id');
 		$partners = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id');
@@ -93,7 +96,6 @@ class PaymentController extends Controller
 		$payments->whereBetween('date', [$filter_start_time, $filter_end_time]);
 
 		$payments = $payments->with('account', 'item', 'partner', 'client', 'employee', 'user')->get();
-
 
 		// $items = Item::where('organization_id', $request->user()->organization_id)->pluck('title', 'item_id');
 		// $partners = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id');

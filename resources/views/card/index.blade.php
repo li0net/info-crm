@@ -138,6 +138,10 @@
 			  	$('a[href="#' + id + '"] .badge.label-danger').html($('#' + id + ' .form-group').children('.row').length);
 			  	$('a[href="#' + id + '"] .badge.label-danger').removeClass('hidden');
 			});
+
+			$('select[name="services_cats_detailed[]"]').change(function(){
+				console.log('jopa');
+			});
 		});
 	</script>
 @endsection

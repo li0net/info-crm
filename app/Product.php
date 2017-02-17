@@ -27,4 +27,9 @@ class Product extends Model
 	{
 		return $this->belongsTo(Organization::class);
 	}
+
+	public function productCategory()
+    {
+        return $this->belongsTo(ProductCategory::class, 'category');
+    }
 }

@@ -64,7 +64,7 @@ class Payment extends Model
 		//$this->belongsTo(Item::class, 'item_id', 'item_id');
 		//dd($middle);
 		
-		return $this->user->belongsTo(Itemtype::class, 'itemtype_id', 'itemtype_id');
+		return $this->item->belongsTo(Itemtype::class, 'itemtype_id', 'itemtype_id');
 		// dd($end);
 
 		// $end = $middle->belongsTo(Itemtype::class, 'itemtype_id', 'itemtype_id')->getResults();

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\WageScheme;
 use App\ServiceCategory;
+use App\Service;
+use App\ProductCategory;
+use App\Product;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
@@ -117,7 +120,20 @@ class WageSchemesController extends Controller
 	public function edit(Request $request, $id)
 	{
 		$scheme = WageScheme::find($id);
-		$service_cats = ServiceCategory::where('organization_id', $request->user()->organization_id)->orderBy('name')->pluck('name', 'service_category_id');
+		$service_ctgs = ServiceCategory::where('organization_id', $request->user()->organization_id)
+										->orderBy('name')
+										->with('service')
+										->get()
+										->pluck('service', 'service_category_id');
+
+		$product_ctgs = ProductCategory::where('organization_id', $request->user()->organization_id)
+										->orderBy('title')
+										->with('product')
+										->get()
+										->pluck('product', 'product_category_id');
+
+		//dd($product_ctgs);
+		//dd($service_ctgs[3]->pluck('name', 'service_id')->all());
 
 		$services_custom_settings = array();
 		$products_custom_settings = array();
@@ -138,7 +154,9 @@ class WageSchemesController extends Controller
 			}
 		}
 
-		return view('wage_schemes.edit', ['scheme' => $scheme, 'service_cats' => $service_cats, 'services_custom_settings' => $services_custom_settings, 'products_custom_settings' => $products_custom_settings]);
+		//dd($service_ctgs);
+
+		return view('wage_schemes.edit', ['scheme' => $scheme, 'service_ctgs' => $service_ctgs, 'product_ctgs' => $product_ctgs, 'services_custom_settings' => $services_custom_settings, 'products_custom_settings' => $products_custom_settings]);
 	}
 
 	/**
@@ -222,4 +240,42 @@ class WageSchemesController extends Controller
 
 		return redirect()->route('wage_scheme.index');
 	}
+
+	public function populateDetailedServiceOptions(Request $request)
+    {
+    	if($request->ajax()){
+    		
+    		$options = Service::where('service_category_id', $request->service_ctgs)->pluck('name', 'service_id')->all();
+
+    		// if ($request->beneficiary_type == 'partner') {
+    		// 	$options = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id')->all();
+    		// } elseif ($request->beneficiary_type == 'client') {
+    		// 	$options = Client::where('organization_id', $request->user()->organization_id)->pluck('name', 'client_id')->all();
+    		// } else {
+    		// 	$options = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id')->all();
+    		// }
+    		
+    		$data = view('wage_schemes.options', compact('options'))->render();
+    		return response()->json(['options' => $data]);
+    	}
+    }
+
+    public function populateDetailedProductOptions(Request $request)
+    {
+    	if($request->ajax()){
+    		
+    		$options = Product::where('category', $request->product_ctgs)->pluck('title', 'product_id')->all();
+
+    		// if ($request->beneficiary_type == 'partner') {
+    		// 	$options = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id')->all();
+    		// } elseif ($request->beneficiary_type == 'client') {
+    		// 	$options = Client::where('organization_id', $request->user()->organization_id)->pluck('name', 'client_id')->all();
+    		// } else {
+    		// 	$options = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id')->all();
+    		// }
+    		
+    		$data = view('wage_schemes.options', compact('options'))->render();
+    		return response()->json(['options' => $data]);
+    	}
+    }
 }

@@ -21,8 +21,8 @@ class ProductCategory extends Model
         return $this->belongsTo(Organization::class);
     }
 
-    public function service()
+    public function product()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class, 'category', 'product_category_id');
     }
 }
