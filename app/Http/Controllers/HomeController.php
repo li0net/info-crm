@@ -42,9 +42,12 @@ class HomeController extends Controller
 	{
 		//$dash = '- все -';
 
-		$appointments = Appointment::select('appointment_id', 'employee_id', 'client_id', 'service_id', 'start', 'end')->with('employee', 'client', 'service')->get();
+		$appointments = Appointment::select('appointment_id', 'employee_id', 'client_id', 'service_id', 'start', 'end')
+			->where('organization_id', $request->user()->organization_id)
+			->with('employee', 'client', 'service')
+			->get();
 
-		dd($appointments);
+		//dd($appointments);
 		$employees = Employee::select('employee_id', 'name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
 		$services = Service::select('service_id', 'name')->pluck('name', 'service_id');
 		$sessionStart = collect($this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, ''));
