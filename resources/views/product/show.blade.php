@@ -29,6 +29,9 @@
 				{{ Form::label('category', "Категория: ") }}
 				<p class="lead">{{ $product->category }}</p>
 
+				{{ Form::label('storage_id', "Склад: ") }}
+				<p class="lead">{{ $product->storage_id }}</p>
+
 				{{ Form::label('price', "Цена продажи: ") }}
 				<p class="lead">{{ $product->price }}</p>
 

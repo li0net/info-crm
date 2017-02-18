@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Card;
 use App\Storage;
+use App\Product;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
@@ -29,9 +30,13 @@ class CardController extends Controller
 		}
 
 		foreach ($items as &$item) {
+			foreach ($item[0] as $key => $value) {
+				$storage = Storage::where('storage_id', $item[0][$key])->get(['title'])->all();
+				$item[0][$key] = $storage[0]->title;
+			}
 			foreach ($item[1] as $key => $value) {
-				$storage = Storage::where('storage_id', $item[1][$key])->get(['title'])->all();
-				$item[1][$key] = $storage[0]->title;
+				$product = Product::where('product_id', $item[1][$key])->get(['title'])->all();
+				$item[1][$key] = $product[0]->title;
 			}
 		}
 
@@ -56,8 +61,8 @@ class CardController extends Controller
 		$itemsForCurrentPage = array_slice($cards, $offset, $paginate, true);
 		$cards = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($cards), $paginate, $page);
 		$cards->setPath('card');
-
-		$i = 0;
+		
+		$i = $offset;
 		foreach ($cards as $card) {
 			$card->card_items = $card_items[$i];
 			$i++;
@@ -73,9 +78,13 @@ class CardController extends Controller
 	 */
 	public function create(Request $request)
 	{
-		$storages = Storage::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'storage_id');
+		$storages = Storage::where('organization_id', $request->user()->organization_id)
+														->orderBy('title')
+														->with('products')
+														->get()
+														->pluck('title', 'storage_id');
 
-		return view('card.create', ['storages' => $storages]);
+		return view('card.create', compact('storages'));
 	}
 
 	/**
@@ -97,16 +106,16 @@ class CardController extends Controller
 
 		$input = $request->input();
 
-		array_pop($input['product_id']);
 		array_pop($input['storage_id']);
+		array_pop($input['product_id']);
 		array_pop($input['amount']);
 
 		$card = new Card;
 
 		$card->title = $request->title;
 		$card->description = $request->description;
-		$card->card_items = json_encode(array($input['product_id'],
-												$input['storage_id'],
+		$card->card_items = json_encode(array($input['storage_id'],
+												$input['product_id'],
 												$input['amount']));
 		$card->organization_id = $request->user()->organization_id;
 
@@ -139,11 +148,13 @@ class CardController extends Controller
 	public function edit(Request $request, $id)
 	{
 		$card = Card::find($id);
-		$storages = Storage::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'storage_id');
+		$storages = Storage::where('organization_id', $request->user()->organization_id)
+									->orderBy('title')
+									->with('products')
+									->get()
+									->pluck('products', 'storage_id');
 
 		$card_items = array();
-
-		// dd($card->card_items);
 
 		if(null !== $card->card_items) {
 			$items = json_decode($card->card_items);
@@ -153,7 +164,7 @@ class CardController extends Controller
 			}
 		}
 
-		return view('card.edit', ['card' => $card, 'storages' => $storages, 'card_items' => $card_items]);
+		return view('card.edit', compact('card', 'storages', 'card_items'));
 	}
 
 	/**
@@ -186,8 +197,8 @@ class CardController extends Controller
 		}
 
 		$card->title = $request->title;
-		$card->card_items = json_encode(array($input['product_id'],
-												$input['storage_id'],
+		$card->card_items = json_encode(array($input['storage_id'],
+												$input['product_id'],
 												$input['amount']));
 		$card->description = $request->description;
 		$card->organization_id = $request->user()->organization_id;
@@ -218,4 +229,16 @@ class CardController extends Controller
 
 		return redirect()->route('card.index');
 	}
+
+	public function populateProductOptions(Request $request)
+    {
+    	if($request->ajax()){
+    		
+    		$options = Product::where('storage_id', $request->storage_id)->pluck('title', 'product_id')->all();
+    		
+    		$data = view('card.options', compact('options'))->render();
+    		return response()->json(['options' => $data]);
+    	}
+    }
 }
+

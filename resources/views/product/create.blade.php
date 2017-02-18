@@ -78,6 +78,18 @@
 
 						<div class="form-group">
 							<div class="col-sm-2 control-label">
+								{{ Form::label('storage_id', 'Склад:', ['class' => 'form-spacing-top']) }}
+							</div>
+							<div class="col-sm-9">
+								{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
+							</div>
+							<label class="col-sm-1 text-left">
+								<a class="fa fa-info-circle" id="storage_id" original-title="">&nbsp;</a>
+							</label>
+						</div>
+
+						<div class="form-group">
+							<div class="col-sm-2 control-label">
 								{{ Form::label('price', 'Цена продажи:', ['class' => 'form-spacing-top']) }}
 							</div>
 							<div class="col-sm-9">

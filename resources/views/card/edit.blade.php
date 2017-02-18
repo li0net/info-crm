@@ -55,8 +55,8 @@
 							<div class="row">
 								<div class="col-sm-2"></div>
 								<div class="col-sm-8">
+									<div class="col-sm-5">Склад</div>									
 									<div class="col-sm-5">Наименование</div>
-									<div class="col-sm-5">Склад</div>
 									<div class="col-sm-2">Количество</div>
 								</div>
 								<div class="col-sm-2"></div>
@@ -71,10 +71,10 @@
 									<div class="col-sm-2"></div>							
 									<div class="col-sm-8" style="padding:0">
 										<div class="col-sm-5">
-											{{ Form::text('product_id[]', $card_item[0], ['class' => 'form-control', 'maxlength' => '110']) }}
+											{{ Form::select('storage_id[]',[], $card_item[0], ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => $card_item[0]]) }}
 										</div>
 										<div class="col-sm-5">
-											{{ Form::select('storage_id[]', $storages, $card_item[1], ['class' => 'form-control', 'maxlength' => '110']) }}
+											{{ Form::select('product_id[]', $storages[$card_item[0]]->pluck('title', 'product_id')->all(), $card_item[1], ['class' => 'form-control', 'maxlength' => '110']) }}
 										</div>
 										<div class="col-sm-2">
 											{{ Form::text('amount[]', $card_item[2], ['class' => 'form-control', 'maxlength' => '110']) }}
@@ -89,10 +89,10 @@
 								<div class="col-sm-2"></div>							
 								<div class="col-sm-8" style="padding:0">
 									<div class="col-sm-5">
-										{{ Form::text('product_id[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
+										{{ Form::select('storage_id[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => 0]) }}
 									</div>
 									<div class="col-sm-5">
-										{{ Form::select('storage_id[]', $storages, '0', ['class' => 'form-control', 'maxlength' => '110']) }}
+										{{ Form::select('product_id[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'placeholder' => 'Выберите товар']) }}
 									</div>
 									<div class="col-sm-2">
 										{{ Form::text('amount[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
@@ -150,10 +150,36 @@
 					}
 
 					$('#storage_options').val(options);
+
+					$('select.form-control[name="storage_id[]"]').find('option').remove();
+					$('select.form-control[name="storage_id[]"]').append(options);
+
+					$('select.form-control[name="storage_id[]"]').each(function() {
+						var initialValue = $(this).attr('data-initial-value');
+						
+						if ( 0 != initialValue ) {
+							$(this).val(initialValue);
+						} else {
+							$(this).val($(this).find('option').first().val());
+						}
+					});
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
 					console.log('Error while processing services data range!');
 				}
+			});
+
+			$('#card-items').on('change', 'select[name="storage_id[]"]', function(e){
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					data: {'storage_id' : $(this).val()},
+					url: "<?php echo route('card.productOptions') ?>",
+					success: function(data) {
+						$(e.target).parent().next().children('select[name="product_id[]"]').first().html('');
+						$(e.target).parent().next().children('select[name="product_id[]"]').first().html(data.options);
+					}
+				});
 			});
 		});
 	</script>

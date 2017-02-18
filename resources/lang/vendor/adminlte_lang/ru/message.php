@@ -157,7 +157,7 @@ return [
 	'calls'						=> 'Звонки',
 	'settings'					=> 'Настройки',
 	'sales_analysis'			=> 'Анализ продаж',
-	'remnants'					=> 'Отстаки на складах',
+	'stock_balance'				=> 'Отстатки на складах',
 	'pl_report'					=> 'P&L отчет',
 	'finance_report'			=> 'Финансовый отчет',
 	'services'					=> 'Услуги',

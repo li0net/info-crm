@@ -55,6 +55,8 @@ Route::post('/wage_scheme/detailedServiceOptions', ['as' => 'wage_scheme.detaile
                                                     'uses' => 'WageSchemesController@populateDetailedServiceOptions']);
 Route::post('/wage_scheme/detailedProductOptions', ['as' => 'wage_scheme.detailedProductOptions', 
                                                     'uses' => 'WageSchemesController@populateDetailedProductOptions']);
+Route::post('/card/productOptions', ['as' => 'card.productOptions', 
+                                                    'uses' => 'CardController@populateProductOptions']);
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
 Route::get('/serviceCategories/gridData', function()

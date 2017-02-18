@@ -611,7 +611,7 @@ $(document).ready(function () {
 	$('#card-items').on('click', '#add-card-item', function(e) {
 		if($(e.target).val() !== 'Удалить') {
 			$('#card-items').append(
-				'<div class="wrap-it"><div class="col-sm-2"></div> <div class="col-sm-8" style="padding: 0px;"><div class="col-sm-5"><input maxlength="110" name="product_id[]" type="text" class="form-control"></div> <div class="col-sm-5"><select maxlength="110" name="storage_id[]" class="form-control"><option value="0" selected="selected">Новый</option><option value="1">Расходники</option><option value="2">Готовая продукция</option></select></div> <div class="col-sm-2"><input maxlength="110" name="amount[]" type="text" class="form-control"></div></div> <div class="col-sm-2" style="margin-bottom: 15px;"><input type="button" id="add-card-item" value="Добавить" class="btn btn-info"></div></div>');
+				'<div class="wrap-it"><div class="col-sm-2"></div> <div class="col-sm-8" style="padding: 0px;"><div class="col-sm-5"><select maxlength="110" name="storage_id[]" class="form-control"></select></div> <div class="col-sm-5"><select maxlength="110" name="product_id[]" class="form-control"><option value="">Выберите товар</option></select></div> <div class="col-sm-2"><input maxlength="110" name="amount[]" type="text" class="form-control"></div></div> <div class="col-sm-2" style="margin-bottom: 15px;"><input type="button" id="add-card-item" value="Добавить" class="btn btn-info"></div></div>');
 
 			$('select.form-control[name="storage_id[]"]').last().find('option').remove();
 			$('select.form-control[name="storage_id[]"]').last().append($('#storage_options').val());

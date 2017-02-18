@@ -97,11 +97,6 @@ class PaymentController extends Controller
 
 		$payments = $payments->with('account', 'item', 'partner', 'client', 'employee', 'user')->get();
 
-		// $items = Item::where('organization_id', $request->user()->organization_id)->pluck('title', 'item_id');
-		// $partners = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id');
-		// $accounts = Account::where('organization_id', $request->user()->organization_id)->pluck('title', 'account_id');
-		// $employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
-
 		return View::make('payment.list', ['payments' => $payments]);
 	}
 

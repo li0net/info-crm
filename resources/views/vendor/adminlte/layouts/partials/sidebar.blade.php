@@ -104,8 +104,8 @@
 						<li><a href="/stub">{{ trans('adminlte_lang::message.inventory') }}</a></li>
 						<li class="treeview"><a href="#">{{ trans('adminlte_lang::message.reports') }}<i class="fa fa-angle-left pull-right"></i></a>
 							<ul class="treeview-menu">
-								<li><a href="/stub">{{ trans('adminlte_lang::message.finance_report') }}</a></li>
-								<li><a href="/stub">{{ trans('adminlte_lang::message.pl_report') }}</a></li>
+								<li><a href="/stub">{{ trans('adminlte_lang::message.stock_balance') }}</a></li>
+								<li><a href="/stub">{{ trans('adminlte_lang::message.sales_analysis') }}</a></li>
 							</ul>
 						</li>
 					</ul>

@@ -32,4 +32,9 @@ class Product extends Model
     {
         return $this->belongsTo(ProductCategory::class, 'category');
     }
+
+    public function storage()
+	{
+		return $this->belongsTo(Storage::class);
+	}
 }

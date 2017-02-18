@@ -74,8 +74,8 @@
 									</div>
 									<div id="card-items-{{$card->card_id}}" class="collapse card-items">
 										<div class="row">
-											<div class="col-sm-4 small"><strong>Наименование</strong></div>
 											<div class="col-sm-4 small"><strong>Склад</strong></div>
+											<div class="col-sm-4 small"><strong>Наименование</strong></div>
 											<div class="col-sm-4 small"><strong>Количество</strong></div>
 										</div>
 										<div class="row">

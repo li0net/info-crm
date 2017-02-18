@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Product;
+use App\Storage;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
@@ -37,9 +38,11 @@ class ProductController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function create()
+	public function create(Request $request)
 	{
-		return view('product.create');
+		$storages = Storage::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'storage_id');
+
+		return view('product.create', compact('storages'));
 	}
 
 	/**
@@ -65,6 +68,7 @@ class ProductController extends Controller
 		$product->article = $request->article;
 		$product->barcode = $request->barcode;
 		$product->category = $request->category;
+		$product->storage_id = $request->storage_id;
 		$product->price = $request->price;
 		$product->unit_for_sale = $request->unit_for_sale;
 		$product->is_equal = $request->is_equal;
@@ -101,11 +105,13 @@ class ProductController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($id)
+	public function edit(Request $request, $id)
 	{
 		$product = Product::find($id);
 
-		return view('product.edit', ['product' => $product]);
+		$storages = Storage::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'storage_id');
+
+		return view('product.edit', compact('product', 'storages'));
 	}
 
 	/**
@@ -135,6 +141,7 @@ class ProductController extends Controller
 		$product->article = $request->article;
 		$product->barcode = $request->barcode;
 		$product->category = $request->category;
+		$product->storage_id = $request->storage_id;
 		$product->price = $request->price;
 		$product->unit_for_sale = $request->unit_for_sale;
 		$product->is_equal = $request->is_equal;
