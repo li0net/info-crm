@@ -1,7 +1,9 @@
 const elixir = require('laravel-elixir');
 
 require('laravel-elixir-vue-2');
-require('laravel-elixir-image-optimize');
+
+/* Не удалять, позже будем использовать для оптимизации. Работает под Linux
+require('laravel-elixir-image-optimize');*/
 
 elixir(function(mix) {
     //app.scss includes app css, Boostrap and Ionicons
@@ -35,6 +37,7 @@ elixir(function(mix) {
     mix.sass('general.scss');
     mix.sass('landing.scss');
     mix.copy('resources/assets/img', 'public/img');
-    //Не удалять, позже убдем использовать для оптимизации. Работает под Linux
-    //mix.imageOptimize("./resources/assets/img", "public/img/");
+
+    /* Не удалять, позже будем использовать для оптимизации. Работает под Linux
+     mix.imageOptimize("./resources/assets/img", "public/img/");*/
 });
