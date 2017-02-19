@@ -22,8 +22,8 @@
 
 		<div class="col-sm-4">
 			<a href="{{ route('storage.create') }}" class="btn btn-primary pull-right">Новый склад</a>
+			<a href="#" class="btn btn-success m-r pull-right">Переместить товары</a>
 		</div>
-
 		<div class="col-sm-12">
 			<hr>	
 		</div>
@@ -47,9 +47,7 @@
 								<small>{{ $storage->description }}</small>
 							</td>
 							<td>
-								<Это расчетное поле>
-								<br>
-								<a class="btn btn-success btn-xs" href="#">Переместить товары</a>
+								{{ count($storage->products) }} товар(ов)
 							</td>
 							<td> 
 							<td class="text-right">

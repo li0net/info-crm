@@ -19,7 +19,7 @@ class StorageController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$storages = Storage::where('organization_id', $request->user()->organization_id)->get()->all();
+		$storages = Storage::where('organization_id', $request->user()->organization_id)->with('products')->get()->all();
 
 		$page = Input::get('page', 1);
 		$paginate = 10;

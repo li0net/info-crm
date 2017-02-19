@@ -45,6 +45,7 @@ Route::resource('/wage_scheme', 'WageSchemesController');
 Route::resource('/unit', 'UnitController');
 Route::resource('/storage', 'StorageController');
 Route::resource('/payment', 'PaymentController');
+Route::resource('/storagetransaction', 'StorageTransactionController');
 Route::get('/storageData', 'StorageController@getStorageData');
 Route::get('/productCategoriesData', 'ProductCategoriesController@getProductCategoriesData');
 Route::resource('/card', 'CardController');
@@ -56,7 +57,7 @@ Route::post('/wage_scheme/detailedServiceOptions', ['as' => 'wage_scheme.detaile
 Route::post('/wage_scheme/detailedProductOptions', ['as' => 'wage_scheme.detailedProductOptions', 
                                                     'uses' => 'WageSchemesController@populateDetailedProductOptions']);
 Route::post('/card/productOptions', ['as' => 'card.productOptions', 
-                                                    'uses' => 'CardController@populateProductOptions']);
+                                     'uses' => 'CardController@populateProductOptions']);
 
 //Route::get('/serviceCategories/gridData', 'ServiceCategoriesController@gridData');
 Route::get('/serviceCategories/gridData', function()
