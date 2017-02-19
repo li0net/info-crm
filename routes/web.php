@@ -174,3 +174,6 @@ Route::get('/oauth/managePersonalTokens', function() {
         'passportVueComponent'  => '<passport-personal-access-tokens></passport-personal-access-tokens>'
     ]);
 })->middleware('auth');
+
+/** виджет */
+Route::get('/widget/render', 'Widget\WidgetController@render');
