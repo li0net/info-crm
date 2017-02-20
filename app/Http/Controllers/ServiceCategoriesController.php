@@ -245,7 +245,7 @@ class ServiceCategoriesController extends Controller
 
         if ($sc) {
             // проверяем что у категории нет вложенных услуг
-            $servicesCnt = $sc->service()->count();
+            $servicesCnt = $sc->services()->count();
             if ($servicesCnt > 0) {
                 Session::flash('error', trans('main.service_category:delete_failed_has_services_message', ['cnt' => $servicesCnt]));
             } else {

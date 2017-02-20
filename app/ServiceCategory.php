@@ -22,7 +22,7 @@ class ServiceCategory extends Model
         return $this->belongsTo(Organization::class);
     }
 
-    public function service()
+    public function services()
     {
         return $this->hasMany(Service::class);
     }
