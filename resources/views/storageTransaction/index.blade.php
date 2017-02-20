@@ -21,7 +21,7 @@
 		</div>	
 
 		<div class="col-sm-4">
-			<a href="{{ route('payment.create') }}" class="btn btn-primary pull-right">Новая операция</a>
+			<a href="{{ route('storagetransaction.create') }}" class="btn btn-primary pull-right">Новая операция</a>
 			<a href="#" class="btn btn-default m-r pull-right">Выгрузить в Excel</a>
 		</div>
 
@@ -29,7 +29,7 @@
 			<hr>	
 		</div>
 	</div>
-	<form method="post" action="/payment" class="form">
+	<form method="post" action="#" class="form">
 		{{ csrf_field() }}
 		{{ Form::hidden('organization_id', $user->organization_id, ['id' => 'organization_id']) }}
 		<fieldset>
@@ -64,7 +64,7 @@
 					{{ Form::select('account_id', $accounts, null, ['class' => 'form-control', 'required' => '', 'id' => 'account_id', 'placeholder' => 'Счет не выбран']) }}
 				</div>
 				<div class="col-sm-3">
-					{{ Form::select('item_id', $items, null, ['class' => 'form-control', 'required' => '', 'id' => 'item_id', 'placeholder' => 'Статья платежа не выбрана']) }}			
+					{{-- {{ Form::select('item_id', $items, null, ['class' => 'form-control', 'required' => '', 'id' => 'item_id', 'placeholder' => 'Статья платежа не выбрана']) }}			 --}}
 				</div>
 				<div class="col-sm-3">
 					{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '', 'id' => 'employee_id', 'placeholder' => 'Сотрудник не выбран']) }}
@@ -182,8 +182,8 @@
 								<td>Перемещение</td>
 							@endif
 
-							<td>{{ $transaction->storage->title }}</td>
-							<td>{{ $transaction->account->title }}</td>
+							<td>{{ $transaction->storage1->title }}</td>
+							{{-- <td>{{ $transaction->account->title }}</td> --}}
 							<td>{{ $transaction->description }}</td>
 							<td></td>
 							<td></td>
@@ -192,11 +192,11 @@
 							<td></td>
 
 							<td class="text-right">
-								@if ($user->hasAccessTo('transaction', 'edit', 0))
-									<a href="{{ route('storageTransaction.edit', $transaction->id) }}" id="transaction_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+								@if ($user->hasAccessTo('storateTransaction', 'edit', 0))
+									<a href="{{ route('storagetransaction.edit', $transaction->id) }}" id="transaction_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
 								@endif
-								@if ($user->hasAccessTo('transaction', 'delete', 0))
-									{!! Form::open(['route' => ['storageTransaction.destroy', $transaction->id], 'id' => 'form'.$transaction->id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
+								@if ($user->hasAccessTo('storageTransaction', 'delete', 0))
+									{!! Form::open(['route' => ['storagetransaction.destroy', $transaction->id], 'id' => 'form'.$transaction->id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
 										<a href="javascript: submitform('#form{{$transaction->id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif

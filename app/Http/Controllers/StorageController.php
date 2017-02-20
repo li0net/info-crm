@@ -83,7 +83,7 @@ class StorageController extends Controller
 	{
 		$storage = Storage::find($id);
 
-		return view('storage.show', ['storage' => $storage]);
+		return view('storage.show', compact('storage'));
 	}
 
 	/**
@@ -96,7 +96,7 @@ class StorageController extends Controller
 	{
 		$storage = Storage::find($id);
 
-		return view('storage.edit', ['storage' => $storage]);
+		return view('storage.edit', compact('storage'));
 	}
 
 	/**

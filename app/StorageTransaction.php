@@ -39,4 +39,14 @@ class StorageTransaction extends Model
 	{
 		return $this->belongsTo(Employee::class, 'employee_id');
 	}
+
+	public function storage1()
+	{
+		return $this->belongsTo(Storage::class, 'storage1_id');
+	}
+
+	public function storage2()
+	{
+		return $this->belongsTo(Storage::class, 'storage2_id');
+	}
 }
