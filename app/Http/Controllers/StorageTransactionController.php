@@ -15,6 +15,7 @@ use App\Storage;
 use App\StorageTransaction;
 use Session;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\View;
 
 class StorageTransactionController extends Controller
 {
@@ -35,6 +36,7 @@ class StorageTransactionController extends Controller
 		$accounts = Account::where('organization_id', $request->user()->organization_id)->pluck('title', 'account_id');
 		$employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
 		$clients = Client::where('organization_id', $request->user()->organization_id)->pluck('name', 'client_id');
+		$storages = Storage::where('organization_id', $request->user()->organization_id)->pluck('title', 'storage_id');
 		$user = $request->user();
 
 		$page = Input::get('page', 1);
@@ -45,8 +47,48 @@ class StorageTransactionController extends Controller
 		$transactions = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($transactions), $paginate, $page);
 		$transactions->setPath('payment');
 
-		// return view('storageTransaction.index', ['user' => $request->user(), 'partners' => $partners, 'accounts' => $accounts, 'employees' => $employees, 'clients' => $clients])->withtransactions($transactions);
-		return view('storageTransaction.index', compact('user', 'partners', 'accounts' , 'employees' , 'clients', 'transactions'));
+		return view('storageTransaction.index', compact('user', 'partners', 'accounts' , 'employees' , 'clients', 'storages', 'transactions'));
+	}
+
+	public function indexFiltered(Request $request)
+	{
+		$transactions = storageTransaction::where('organization_id', $request->organization_id);
+
+		if('0' !== $request->transaction_type) {
+			$transactions = $transactions->where('type', $request->transaction_type);
+		}
+
+		if('' !== $request->account_id) {
+			$transactions = $transactions->where('account_id', $request->account_id);
+		}
+
+		if('' !== $request->storage_id) {
+			$transactions->where('storage1_id', $request->storage_id);
+		}
+
+		if('' !== $request->employee_id) {
+			$transactions->where('employee_id', $request->employee_id);
+		}
+
+		if('' !== $request->partner_id) {
+			$transactions->where('partner_id', $request->partner_id);
+		}
+
+		if('' !== $request->client_id) {
+			$transactions->where('client_id', $request->client_id);
+		}
+		
+		$filter_start_time = date_create($request->date_from.'00:00:00');
+		date_format($filter_start_time, 'U = Y-m-d 0:0:0');
+
+		$filter_end_time = date_create($request->date_to.'23:59:59');
+		date_format($filter_end_time, 'U = Y-m-d 23:59:59');
+
+		$transactions->whereBetween('date', [$filter_start_time, $filter_end_time]);
+
+		$transactions = $transactions->with('account', 'storage1', 'partner', 'client', 'employee')->get();
+
+		return View::make('storagetransaction.list', compact('transactions'));
 	}
 
 	/**
@@ -98,12 +140,36 @@ class StorageTransactionController extends Controller
 		date_format($transaction->date, 'U = Y-m-d H:i:s');
 
 		$transaction->type = $request->type;
-		$transaction->client_id = 0;
-		$transaction->employee_id = 0;
-		$transaction->storage1_id = $request->storage_id;
-		$transaction->storage2_id = 0;
-		$transaction->partner_id = $request->partner_id;
-		$transaction->account_id = 0;
+		if ($request->type == 'income') {
+			$transaction->client_id = 0;
+			$transaction->employee_id = 0;
+			$transaction->storage1_id = $request->storage_id;
+			$transaction->storage2_id = 0;
+			$transaction->partner_id = $request->partner_id;
+			$transaction->account_id = 0;
+		} elseif ($request->type == 'expenses') {
+			$transaction->client_id = $request->client_id;
+			$transaction->employee_id = $request->employee_id;
+			$transaction->storage1_id = $request->storage_id;
+			$transaction->storage2_id = 0;
+			$transaction->partner_id = 0;
+			$transaction->account_id = 0;
+		} elseif ($request->type == 'discharge'){
+			$transaction->client_id = 0;
+			$transaction->employee_id = 0;
+			$transaction->storage1_id = $request->storage_id;
+			$transaction->storage2_id = 0;
+			$transaction->partner_id = 0;
+			$transaction->account_id = 0;
+		} else {
+			$transaction->client_id = 0;
+			$transaction->employee_id = 0;
+			$transaction->storage1_id = $request->storage_id;
+			$transaction->storage2_id = $request->storage2_id;
+			$transaction->partner_id = 0;
+			$transaction->account_id = 0;
+		}
+		
 		$transaction->description = $request->description;
 		$transaction->is_paidfor = $request->ispaidfor == 1;
 		$transaction->product_items = json_encode(array($input['product_id'], $input['price'], $input['amount'], $input['discount'], $input['sum'], $input['code']));
@@ -185,12 +251,35 @@ class StorageTransactionController extends Controller
 		date_format($transaction->date, 'U = Y-m-d H:i:s');
 
 		$transaction->type = $request->type;
-		$transaction->client_id = 0;
-		$transaction->employee_id = 0;
-		$transaction->storage1_id = $request->storage_id;
-		$transaction->storage2_id = 0;
-		$transaction->partner_id = $request->partner_id;
-		$transaction->account_id = 0;
+		if ($request->type == 'income') {
+			$transaction->client_id = 0;
+			$transaction->employee_id = 0;
+			$transaction->storage1_id = $request->storage_id;
+			$transaction->storage2_id = 0;
+			$transaction->partner_id = $request->partner_id;
+			$transaction->account_id = 0;
+		} elseif ($request->type == 'expenses') {
+			$transaction->client_id = $request->client_id;
+			$transaction->employee_id = $request->employee_id;
+			$transaction->storage1_id = $request->storage_id;
+			$transaction->storage2_id = 0;
+			$transaction->partner_id = 0;
+			$transaction->account_id = 0;
+		} elseif ($request->type == 'discharge'){
+			$transaction->client_id = 0;
+			$transaction->employee_id = 0;
+			$transaction->storage1_id = $request->storage_id;
+			$transaction->storage2_id = 0;
+			$transaction->partner_id = 0;
+			$transaction->account_id = 0;
+		} else {
+			$transaction->client_id = 0;
+			$transaction->employee_id = 0;
+			$transaction->storage1_id = $request->storage_id;
+			$transaction->storage2_id = $request->storage2_id;
+			$transaction->partner_id = 0;
+			$transaction->account_id = 0;
+		}
 		$transaction->description = $request->description;
 		$transaction->is_paidfor = $request->ispaidfor == 1;
 		$transaction->product_items = json_encode(array($input['product_id'], $input['price'], $input['amount'], $input['discount'], $input['sum'], $input['code']));

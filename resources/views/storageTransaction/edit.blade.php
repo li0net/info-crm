@@ -52,36 +52,110 @@
 							</div>
 							<div class="col-sm-9">
 								{{ Form::select('type', ['income' => 'Приход', 'expenses' => 'Расход', 'discharge' => 'Списание', 'transfer' => 'Перемещение'],
-																	'income', 
+																	$transaction->type, 
 																	['class' => 'form-control', 'required' => '']) }}
 							</div>
 							<label class="col-sm-1 text-left">
 								<a class="fa fa-info-circle" original-title="">&nbsp;</a>
 							</label>
 						</div>
+						<div class="transaction-type-content">
+							@if ($transaction->type == 'income')
+								<div class="form-group">
+									<div class="col-sm-2 control-label">
+										{{ Form::label('partner_id', 'Контрагент: ') }}
+									</div>
+									<div class="col-sm-9">
+										{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '']) }}
+									</div>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+									</label>
+								</div>
 
-						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('partner_id', 'Контрагент: ') }}
-							</div>
-							<div class="col-sm-9">
-								{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '']) }}
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-							</label>
-						</div>
+								<div class="form-group">
+									<div class="col-sm-2 control-label">
+										{{ Form::label('storage_id', 'Склад: ') }}
+									</div>
+									<div class="col-sm-9">
+										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
+									</div>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+									</label>
+								</div>
+							@elseif ($transaction->type == 'expenses')
+								<div class="form-group">
+									<div class="col-sm-2 control-label">
+										{{ Form::label('client_id', 'Клиент: ') }}
+									</div>
+									<div class="col-sm-9">
+										{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '']) }}
+									</div>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+									</label>
+								</div>
 
-						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('storage_id', 'Склад: ') }}
-							</div>
-							<div class="col-sm-9">
-								{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-							</label>
+								<div class="form-group">
+									<div class="col-sm-2 control-label">
+										{{ Form::label('employee_id', 'Сотрудник: ') }}
+									</div>
+									<div class="col-sm-9">
+										{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '']) }}
+									</div>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+									</label>
+								</div>
+
+								<div class="form-group">
+									<div class="col-sm-2 control-label">
+										{{ Form::label('storage_id', 'Склад: ') }}
+									</div>
+									<div class="col-sm-9">
+										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
+									</div>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+									</label>
+								</div>
+							@elseif ($transaction->type == 'discharge')
+								<div class="form-group">
+									<div class="col-sm-2 control-label">
+										{{ Form::label('storage_id', 'Склад: ') }}
+									</div>
+									<div class="col-sm-9">
+										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
+									</div>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+									</label>
+								</div>
+							@else
+								<div class="form-group">
+									<div class="col-sm-2 control-label">
+										{{ Form::label('storage1_id', 'Со склада: ') }}
+									</div>
+									<div class="col-sm-9">
+										{{ Form::select('storage1_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
+									</div>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+									</label>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-2 control-label">
+										{{ Form::label('storage2_id', 'На склад: ') }}
+									</div>
+									<div class="col-sm-9">
+										{{ Form::select('storage2_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
+									</div>
+									<label class="col-sm-1 text-left">
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+									</label>
+								</div>
+							@endif
 						</div>
 
 						<div class="form-group">
@@ -91,13 +165,6 @@
 								&nbsp;&nbsp;Список товаров&nbsp;&nbsp;
 								<i class="fa fa-caret-down"></i></a>
 							</div>
-							{{-- <div class="col-sm-9">
-								<a href="#transaction-items" data-toggle="collapse" class="btn btn-link btn-xs">
-								<span class="badge label-danger hidden">@{{ transaction_items_count }}</span>
-								&nbsp;&nbsp;Список товаров&nbsp;&nbsp;
-								<i class="fa fa-caret-down"></i></a>
-							</div> --}}
-							
 						</div>
 
 						<div id="transaction-items" class="form-group collapse">
@@ -210,13 +277,117 @@
 			$('#transaction-hour').val(today.getHours());
 			$('#transaction-minute').val(today.getMinutes());
 
+			$('select[name="type"]').on('change', function(e){
+				$('.transaction-type-content').children().remove();
+				if( $(this).val() == 'income') {
+					$('.transaction-type-content').append(
+								'<div class="form-group"> \
+									<div class="col-sm-2 control-label"> \
+										{{ Form::label('partner_id', 'Контрагент: ') }} \
+									</div> \
+									<div class="col-sm-9"> \
+										{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '']) }} \
+									</div> \
+									<label class="col-sm-1 text-left"> \
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+									</label> \
+								</div> \
+								\
+								<div class="form-group"> \
+									<div class="col-sm-2 control-label"> \
+										{{ Form::label('storage_id', 'Склад: ') }} \
+									</div> \
+									<div class="col-sm-9">\
+										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
+									</div> \
+									<label class="col-sm-1 text-left"> \
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+									</label> \
+								</div>');
+				} else if ($(this).val() == 'expenses') {
+					$('.transaction-type-content').append(
+								'<div class="form-group"> \
+									<div class="col-sm-2 control-label"> \
+										{{ Form::label('client_id', 'Клиент: ') }} \
+									</div> \
+									<div class="col-sm-9"> \
+										{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '']) }} \
+									</div> \
+									<label class="col-sm-1 text-left"> \
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+									</label> \
+								</div> \
+								\
+								<div class="form-group"> \
+									<div class="col-sm-2 control-label"> \
+										{{ Form::label('employee_id', 'Сотрудник: ') }} \
+									</div> \
+									<div class="col-sm-9"> \
+										{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '']) }} \
+									</div> \
+									<label class="col-sm-1 text-left"> \
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+									</label> \
+								</div> \
+								\
+								<div class="form-group"> \
+									<div class="col-sm-2 control-label"> \
+										{{ Form::label('storage_id', 'Склад: ') }} \
+									</div> \
+									<div class="col-sm-9"> \
+										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
+									</div> \
+									<label class="col-sm-1 text-left"> \
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+									</label> \
+								</div>');
+				} else if ($(this).val() == 'discharge') {
+					$('.transaction-type-content').append(
+									'<div class="form-group"> \
+										<div class="col-sm-2 control-label"> \
+											{{ Form::label('storage_id', 'Склад: ') }} \
+										</div> \
+										<div class="col-sm-9"> \
+											{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
+										</div> \
+										<label class="col-sm-1 text-left"> \
+											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+										</label> \
+									</div>');
+				} else {
+					$('.transaction-type-content').append(
+									'<div class="form-group"> \
+										<div class="col-sm-2 control-label"> \
+											{{ Form::label('storage_id', 'Со склада: ') }} \
+										</div> \
+										<div class="col-sm-9"> \
+											{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
+										</div> \
+										<label class="col-sm-1 text-left"> \
+											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+										</label> \
+									</div> \
+									<div class="form-group"> \
+										<div class="col-sm-2 control-label"> \
+											{{ Form::label('storage2_id', 'На склад: ') }} \
+										</div> \
+										<div class="col-sm-9"> \
+											{{ Form::select('storage2_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
+										</div> \
+										<label class="col-sm-1 text-left"> \
+											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+										</label> \
+									</div>');
+				}
+			});
+
 			$('#transaction-date').datepicker()
 				.on('show', function(e) {
 					$('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
 					$('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
 				});
 
-			$('select[name="storage_id"]').on('change', function(e){
+			$('.transaction-type-content').on('change', 'select[name="storage_id"]', function(e){
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',

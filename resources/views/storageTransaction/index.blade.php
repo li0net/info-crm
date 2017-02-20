@@ -47,12 +47,12 @@
 					</div>
 				</div>
 				<div class="col-sm-3">
-					<select class="form-control" data-placeholder="Выберите вид платежа" name="balance_is">
+					<select class="form-control" data-placeholder="Выберите вид платежа" id="transaction_type">
 						<option selected="" value="0">Все виды операций</option>
-						<option value="1">Приход</option>
-						<option value="2">Расход</option>
-						<option value="3">Списание</option>
-						<option value="4">Перемещение</option>
+						<option value="income">Приход</option>
+						<option value="expenses">Расход</option>
+						<option value="discharge">Списание</option>
+						<option value="transfer">Перемещение</option>
 					</select>
 				</div>	    	
 				<div class="col-sm-3">
@@ -64,7 +64,7 @@
 					{{ Form::select('account_id', $accounts, null, ['class' => 'form-control', 'required' => '', 'id' => 'account_id', 'placeholder' => 'Счет не выбран']) }}
 				</div>
 				<div class="col-sm-3">
-					{{-- {{ Form::select('item_id', $items, null, ['class' => 'form-control', 'required' => '', 'id' => 'item_id', 'placeholder' => 'Статья платежа не выбрана']) }}			 --}}
+					{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '', 'id' => 'storage_id', 'placeholder' => 'Склад не выбран']) }}			
 				</div>
 				<div class="col-sm-3">
 					{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '', 'id' => 'employee_id', 'placeholder' => 'Сотрудник не выбран']) }}
@@ -170,7 +170,16 @@
 						<tr>
 							<th class="text-center">{{ $transaction->id }}</th>
 							<td>{{ $transaction->date }}</td>
-							<td>{{ $transaction->partner->title }}</td>
+							@if($transaction->type == 'income' && null !== $transaction->partner)
+								<td>{{ $transaction->partner->title }}</td>
+							@elseif($transaction->type == 'expenses' && null !== $transaction->client) 
+								<td>{{ $transaction->client->name }}</td>
+							@elseif($transaction->type == 'discharge')
+								<td class='text-center'>-</td>
+							@else
+								<td class='text-center'>-</td>
+							@endif
+							{{-- <td>{{ $transaction->partner->title }}</td> --}}
 							
 							@if($transaction->type == 'income')
 								<td>Приход</td>
@@ -254,14 +263,15 @@
 				dataType: 'html',
 				data: {	'date_from'			: $('#date-from').val(),
 						'date_to'			: $('#date-to').val(),
+						'transaction_type'	: $('#transaction_type').val(),
 						'partner_id'		: $('#partner_id').val(),
 						'account_id'		: $('#account_id').val(),
-						'item_id'			: $('#item_id').val(),
 						'employee_id'		: $('#employee_id').val(),
 						'client_id'			: $('#client_id').val(),
+						'storage_id'		: $('#storage_id').val(),
 						'organization_id'	: $('#organization_id').val(),
 						},
-				url: "/payment/list",
+				url: "/storagetransaction/list",
 				success: function(data) {
 						$('#result_container').html(data);
 				},
