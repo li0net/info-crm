@@ -307,7 +307,7 @@
 					$('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
 				});
 
-			$('select[name="storage_id"]').on('change', function(e){
+			$('.transaction-type-content').on('change', 'select[name="storage_id"]', function(e){
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',

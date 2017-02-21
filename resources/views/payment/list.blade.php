@@ -69,7 +69,7 @@
 			@endforeach
 		</tbody>
 	</table>
-	<div class="text-center">
+	<div class="text-center filtered">
 		{!! $payments->render(); !!} 
 	</div>
 @endif

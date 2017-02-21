@@ -96,7 +96,7 @@ class StorageTransactionController extends Controller
 		$itemsForCurrentPage = $transactions->slice($offset, $paginate);
 
 		$transactions = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($transactions), $paginate, $page);
-		$transactions->setPath('/');
+		$transactions->setPath('\storagetransaction');
 		$transactions->appends(['index' => 'filtered']);
 
 		return View::make('storageTransaction.list', compact('transactions'));
@@ -188,6 +188,22 @@ class StorageTransactionController extends Controller
 
 		$transaction->save();
 
+		foreach ($input['product_id'] as $key => $value) {
+			$product = Product::where('organization_id', $request->user()->organization_id)->where('product_id', $value)->first();
+			
+			if ($request->type == 'income') {
+				$product->amount += $input['amount'][$key];
+			} elseif ($request->type == 'expenses') {
+				$product->amount -= $input['amount'][$key];	
+			} elseif ($request->type == 'discharge'){
+				$product->amount -= $input['amount'][$key];
+			} else {
+				$product->storage_id = $request->storage2_id;
+			}
+
+			$product->save();
+		}
+
 		Session::flash('success', 'Новая операция успешно проведена!');
 
 		return redirect()->route('storagetransaction.show', $transaction->id);
@@ -221,11 +237,8 @@ class StorageTransactionController extends Controller
 		$employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
 		$clients = Client::where('organization_id', $request->user()->organization_id)->pluck('name', 'client_id');
 		$storages = Storage::where('organization_id', $request->user()->organization_id)->pluck('title', 'storage_id');
-		$st = Storage::where('organization_id', $request->user()->organization_id)->with('products')->get();
 		$pr = Product::with('storageWithProducts')->get()->pluck('storageWithProducts', 'product_id');
 		
-		//dd($pr);
-
 		$transaction_hours = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 60, '', ' ч', 'G');
 		$transaction_minutes = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('00:59:00'), 1, '', ' мин', 'i');
 
@@ -238,6 +251,8 @@ class StorageTransactionController extends Controller
 				$transaction_items[] = array($value, $items[1][$key], $items[2][$key], $items[3][$key], $items[4][$key], $items[5][$key]);
 			}
 		}
+
+		Session::flash('jopa', $transaction_items);
 
 		return view('storageTransaction.edit', compact('clients', 'employees', 'accounts', 'partners', 'storages', 'transaction', 'transaction_hours', 'transaction_minutes', 'transaction_items', 'pr'));
 	}
@@ -311,6 +326,8 @@ class StorageTransactionController extends Controller
 		$transaction->organization_id = $request->user()->organization_id;
 
 		$transaction->save();
+
+		dd(Session::get('jopa'));
 
 		Session::flash('success', 'Информация об операции успешно обновлена!');
 

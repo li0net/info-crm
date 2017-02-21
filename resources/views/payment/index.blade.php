@@ -268,7 +268,7 @@
 			});
 		});
 
-		$('#result_container').on('click', '.pagination', function(e) {
+		$('#result_container').on('click', '.filtered > .pagination', function(e) {
 			var me = this, page = 0;
 			if ($(e.target).html() == '»') {
 				page = parseInt($('.pagination li.active span').html()) + 1;

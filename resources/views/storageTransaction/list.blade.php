@@ -81,7 +81,7 @@
 			@endforeach
 		</tbody>
 	</table>
-	<div class="text-center">
+	<div class="text-center filtered">
 		{!! $transactions->render(); !!} 
 	</div>
 @endif
