@@ -21,7 +21,7 @@
 		</div>	
 
 		<div class="col-sm-4">
-			<a href="{{ route('payment.create') }}" class="btn btn-primary pull-right">Новая операция</a>
+			<a href="{{ route('storagetransaction.create') }}" class="btn btn-primary pull-right">Новая операция</a>
 			<a href="#" class="btn btn-default m-r pull-right">Выгрузить в Excel</a>
 		</div>
 
@@ -29,7 +29,7 @@
 			<hr>	
 		</div>
 	</div>
-	<form method="post" action="/payment" class="form">
+	<form method="post" action="#" class="form">
 		{{ csrf_field() }}
 		{{ Form::hidden('organization_id', $user->organization_id, ['id' => 'organization_id']) }}
 		<fieldset>
@@ -47,12 +47,12 @@
 					</div>
 				</div>
 				<div class="col-sm-3">
-					<select class="form-control" data-placeholder="Выберите вид платежа" name="balance_is">
+					<select class="form-control" data-placeholder="Выберите вид платежа" id="transaction_type">
 						<option selected="" value="0">Все виды операций</option>
-						<option value="1">Приход</option>
-						<option value="2">Расход</option>
-						<option value="3">Списание</option>
-						<option value="4">Перемещение</option>
+						<option value="income">Приход</option>
+						<option value="expenses">Расход</option>
+						<option value="discharge">Списание</option>
+						<option value="transfer">Перемещение</option>
 					</select>
 				</div>	    	
 				<div class="col-sm-3">
@@ -64,7 +64,7 @@
 					{{ Form::select('account_id', $accounts, null, ['class' => 'form-control', 'required' => '', 'id' => 'account_id', 'placeholder' => 'Счет не выбран']) }}
 				</div>
 				<div class="col-sm-3">
-					{{ Form::select('item_id', $items, null, ['class' => 'form-control', 'required' => '', 'id' => 'item_id', 'placeholder' => 'Статья платежа не выбрана']) }}			
+					{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '', 'id' => 'storage_id', 'placeholder' => 'Склад не выбран']) }}			
 				</div>
 				<div class="col-sm-3">
 					{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '', 'id' => 'employee_id', 'placeholder' => 'Сотрудник не выбран']) }}
@@ -72,59 +72,11 @@
 				<div class="col-sm-3">
 					{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '', 'id' => 'client_id', 'placeholder' => 'Клиент не выбран']) }}
 				</div>
-				{{-- <div class="col-sm-3">
-					<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-					<input type="text" class="form-control ui-autocomplete-input" name="client" value="" placeholder="Поиск клиента (имя или телефон)" autocomplete="off">
-					<input type="hidden" class="form-control" name="client_id" value=""> 
-				</div> --}}
 			</div>
 			<div class="row m-b">
 				<div class="col-sm-3 transactions-multi-filters">
-					{{-- <select name="good_ids[]" data-placeholder="Выберите товары..." class="chosen-filter-goods small_select form-control" multiple="multiple" style="display: none;">
-						<option value="436655">111111111</option>
-						<option value="453399">rasas</option>
-					</select>
-					<div class="chosen-container chosen-container-multi" style="width: 376px;" title="">
-						<ul class="chosen-choices">
-							<li class="search-field">	
-								<input type="text" value="Выберите товары..." class="default" autocomplete="off" style="width: 158px;">
-							</li>
-						</ul>
-						<div class="chosen-drop">
-							<ul class="chosen-results">
-								<li class="no-results">Начните печатать для поиска товаров...</li>
-							</ul>
-						</div>
-					</div> --}}
 				</div>
 				<div class="col-sm-3 transactions-multi-filters">
-					{{-- <select name="service_ids[]" class="form-control chosen-filter-services" data-placeholder="Выберите услуги..." multiple="multiple" style="display: none;">
-						<option value="508710">Стрижки и укладки</option>
-						<option value="508711">Полубокс</option>
-						<option value="529076">Маникюр</option>
-						<option value="529077">Стилистика</option>
-						<option value="529093">Модельная</option>
-						<option value="529094">Наголо</option>
-						<option value="529095">Ирокез</option>
-						<option value="529096">Французский</option>
-						<option value="529100">Со стразами</option>
-						<option value="529101">Профилактика</option>
-						<option value="529102">Свадебный</option>
-						<option value="529104">Деловой</option>
-						<option value="529105">Нарядный</option>
-					</select>
-					<div class="chosen-container chosen-container-multi" style="width: 376px;" title="">
-						<ul class="chosen-choices">
-							<li class="search-field">
-								<input type="text" value="Выберите услуги..." class="default" autocomplete="off" style="width: 151px;">
-							</li>
-						</ul>
-						<div class="chosen-drop">
-							<ul class="chosen-results">
-								<li class="no-results">Начните печатать для поиска услуг...</li>
-							</ul>
-						</div>
-					</div> --}}
 				</div>
 				<div class="col-sm-3">
 					<select class="form-control" data-placeholder="Выберите статус платежа" name="deleted">
@@ -150,8 +102,8 @@
 		</fieldset>
 	</form>
 	<div class="row">
-		<div class="col-sm-12">
-			<table class="table" id = 'result_container'>
+		<div class="col-sm-12" id = "result_container">
+			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
 					<th>Дата</th>
@@ -170,7 +122,16 @@
 						<tr>
 							<th class="text-center">{{ $transaction->id }}</th>
 							<td>{{ $transaction->date }}</td>
-							<td>{{ $transaction->partner->title }}</td>
+							@if($transaction->type == 'income' && null !== $transaction->partner)
+								<td>{{ $transaction->partner->title }}</td>
+							@elseif($transaction->type == 'expenses' && null !== $transaction->client) 
+								<td>{{ $transaction->client->name }}</td>
+							@elseif($transaction->type == 'discharge')
+								<td class='text-center'>-</td>
+							@else
+								<td class='text-center'>-</td>
+							@endif
+							{{-- <td>{{ $transaction->partner->title }}</td> --}}
 							
 							@if($transaction->type == 'income')
 								<td>Приход</td>
@@ -182,8 +143,8 @@
 								<td>Перемещение</td>
 							@endif
 
-							<td>{{ $transaction->storage->title }}</td>
-							<td>{{ $transaction->account->title }}</td>
+							<td>{{ $transaction->storage1->title }}</td>
+							{{-- <td>{{ $transaction->account->title }}</td> --}}
 							<td>{{ $transaction->description }}</td>
 							<td></td>
 							<td></td>
@@ -192,11 +153,11 @@
 							<td></td>
 
 							<td class="text-right">
-								@if ($user->hasAccessTo('transaction', 'edit', 0))
-									<a href="{{ route('storageTransaction.edit', $transaction->id) }}" id="transaction_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+								@if ($user->hasAccessTo('storateTransaction', 'edit', 0))
+									<a href="{{ route('storagetransaction.edit', $transaction->id) }}" id="transaction_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
 								@endif
-								@if ($user->hasAccessTo('transaction', 'delete', 0))
-									{!! Form::open(['route' => ['storageTransaction.destroy', $transaction->id], 'id' => 'form'.$transaction->id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
+								@if ($user->hasAccessTo('storageTransaction', 'delete', 0))
+									{!! Form::open(['route' => ['storagetransaction.destroy', $transaction->id], 'id' => 'form'.$transaction->id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
 										<a href="javascript: submitform('#form{{$transaction->id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
@@ -254,14 +215,15 @@
 				dataType: 'html',
 				data: {	'date_from'			: $('#date-from').val(),
 						'date_to'			: $('#date-to').val(),
+						'transaction_type'	: $('#transaction_type').val(),
 						'partner_id'		: $('#partner_id').val(),
 						'account_id'		: $('#account_id').val(),
-						'item_id'			: $('#item_id').val(),
 						'employee_id'		: $('#employee_id').val(),
 						'client_id'			: $('#client_id').val(),
+						'storage_id'		: $('#storage_id').val(),
 						'organization_id'	: $('#organization_id').val(),
 						},
-				url: "/payment/list",
+				url: "/storagetransaction/list",
 				success: function(data) {
 						$('#result_container').html(data);
 				},

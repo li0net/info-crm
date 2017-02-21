@@ -81,6 +81,7 @@ const app = new Vue({
 			detailed_services_count: 0,
 			detailed_products_count: 0,
 			card_items_count: 0,
+			transaction_items_count: 0,
 			services_ctgs_options: '',
 			storage_options: ''
 		}
@@ -127,6 +128,7 @@ const app = new Vue({
 		this.detailed_services_count = $('#detailed-services').find('.wrap-it').length-1;
 		this.detailed_products_count = $('#detailed-products').find('.wrap-it').length-1;
 		this.card_items_count = $('#card-items').find('.wrap-it').length-1;
+		this.transaction_items_count = $('#transaction-items').find('.wrap-it').length-1;
 
 		if(this.detailed_services_count != 0) {
 			$('a[href="#detailed-services"] .badge.label-danger').removeClass('hidden');
@@ -138,6 +140,10 @@ const app = new Vue({
 
 		if(this.card_items_count != 0) {
 			$('a[href="#card-items"] .badge.label-danger').removeClass('hidden');
+		}
+
+		if(this.transaction_items_count != 0) {
+			$('a[href="#transaction-items"] .badge.label-danger').removeClass('hidden');
 		}
 	}
 });
@@ -607,6 +613,43 @@ $(document).ready(function () {
 		);
 		return $category;
 	};
+
+	$('#transaction-items').on('click', '#add-transaction-item', function(e) {
+		if($(e.target).val() !== 'Удалить') {
+			$('#transaction-content').prepend(
+				'<div class="wrap-it"><div class="col-sm-2"></div> <div class="col-sm-8" style="padding: 0px;"><div class="col-sm-3"><select maxlength="110" name="product_id[]" class="form-control"><option selected="selected" value="">Выберите товар</option></select></div> <div class="col-sm-2"><input name="price[]" type="text" class="form-control"></div> <div class="col-sm-2"><input name="amount[]" type="text" class="form-control"></div> <div class="col-sm-1"><input name="discount[]" type="text" class="form-control"></div> <div class="col-sm-2"><input name="sum[]" type="text" class="form-control"></div> <div class="col-sm-2"><input name="code[]" type="text" class="form-control"></div></div> <div class="col-sm-2" style="margin-bottom: 15px;"><input type="button" id="add-transaction-item" value="Добавить" class="btn btn-info"></div></div>');
+
+			// $('select.form-control[name="storage_id[]"]').last().find('option').remove();
+			// $('select.form-control[name="storage_id[]"]').last().append($('#storage_options').val());
+
+			app.transaction_items_count++;
+			$('a[href="#transaction-items"] .badge.label-danger').removeClass('hidden');
+			$(e.target).val('Удалить');
+			$(e.target).toggleClass('btn-info btn-danger')
+			$(e.target).off();
+			$(e.target).on('click', function(e) {
+				$(e.target).parent().parent().remove();
+				app.transaction_items_count--;
+				if(app.transaction_items_count == 0) {
+					$('a[href="#transaction-items"] .badge.label-danger').addClass('hidden');
+				}
+			});
+		} else {
+			$(e.target).parent().parent().remove();
+			app.transaction_items_count--;
+			if(app.transaction_items_count == 0) {
+				$('a[href="#transaction-items"] .badge.label-danger').addClass('hidden');
+			}
+		}
+	});
+
+	$('#transaction-items').on('shown.bs.collapse', function(){
+		$('a[href="#transaction-items"] .fa.fa-caret-down').toggleClass('fa-caret-down fa-caret-up');
+	});
+
+	$('#transaction-items').on('hidden.bs.collapse', function(){
+		$('a[href="#transaction-items"] .fa.fa-caret-up').toggleClass('fa-caret-up fa-caret-down');
+	});
 
 	$('#card-items').on('click', '#add-card-item', function(e) {
 		if($(e.target).val() !== 'Удалить') {

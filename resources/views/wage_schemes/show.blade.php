@@ -46,7 +46,7 @@
 							<div class="col-sm-2">
 								<p class="lead">
 									@if( $scheme->service_unit == 'rub' )
-										&#8381
+										&#8381;
 									@else
 										%
 									@endif
@@ -65,7 +65,7 @@
 							<div class="col-sm-2">
 								<p class="lead">
 									@if( $scheme->products_unit == 'rub' )
-										&#8381
+										&#8381;
 									@else
 										%
 									@endif

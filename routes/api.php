@@ -16,3 +16,5 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
+
+Route::get('/api/v1/widget/show', 'Widget\BaseWidgetController@getDivision')->middleware('auth:api');

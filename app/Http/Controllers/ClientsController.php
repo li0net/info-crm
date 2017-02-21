@@ -78,7 +78,8 @@ class ClientsController extends Controller
         return view('client.form', [
             'clientCategoriesOptions' => $this->prepareClientCategoriesOptions(),
             'genderOptions' => $this->genderOptions,
-            'importanceOptions' => $this->importanceOptions
+            'importanceOptions' => $this->importanceOptions,
+            'crmuser' => $request->user()
         ]);
     }
 

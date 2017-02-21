@@ -144,9 +144,6 @@ class WageSchemesController extends Controller
 										->get()
 										->pluck('product', 'product_category_id');
 
-		//dd($product_ctgs);
-		//dd($service_ctgs[3]->pluck('name', 'service_id')->all());
-
 		$services_custom_settings = array();
 		$products_custom_settings = array();
 

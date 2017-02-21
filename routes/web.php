@@ -46,6 +46,8 @@ Route::resource('/unit', 'UnitController');
 Route::resource('/storage', 'StorageController');
 Route::resource('/payment', 'PaymentController');
 Route::resource('/storagetransaction', 'StorageTransactionController');
+Route::post('/storagetransaction/list', ['as' => 'storagetransaction.list', 'uses' => 'StorageTransactionController@indexFiltered']);
+
 Route::get('/storageData', 'StorageController@getStorageData');
 Route::get('/productCategoriesData', 'ProductCategoriesController@getProductCategoriesData');
 Route::resource('/card', 'CardController');
@@ -140,7 +142,7 @@ Route::post('/image-upload/{id}', ['as' => 'upload', 'uses' => 'UploadImageContr
 Route::get('/image-upload', 'UploadImageController@uploadImage');
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
-Route::post('changelocale', ['as' => 'changelocale', 'uses' => 'TranslationController@changeLocale']);
+// Route::post('changelocale', ['as' => 'changelocale', 'uses' => 'TranslationController@changeLocale']);
 
 Route::get('locale/{locale?}', ['as' => 'locale.setlocale', 'uses' => 'LocaleController@setLocale']);
 
