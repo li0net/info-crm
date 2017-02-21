@@ -150,8 +150,8 @@
 		</fieldset>
 	</form>
 	<div class="row">
-		<div class="col-sm-12">
-			<table class="table" id = 'result_container'>
+		<div class="col-sm-12" id="result_container">
+			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
 					<th>Дата</th>
@@ -266,6 +266,41 @@
 						console.log('Error while processing payments data range!');
 				}
 			});
+		});
+
+		$('#result_container').on('click', '.pagination', function(e) {
+			var me = this, page = 0;
+			if ($(e.target).html() == '»') {
+				page = parseInt($('.pagination li.active span').html()) + 1;
+			} else if ($(e.target).html() == '«'){
+				page = parseInt($('.pagination li.active span').html()) - 1;
+			} else {
+				page = parseInt($(e.target).html());
+			}
+
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				data: {	'date_from'			: $('#date-from').val(),
+						'date_to'			: $('#date-to').val(),
+						'partner_id'		: $('#partner_id').val(),
+						'account_id'		: $('#account_id').val(),
+						'item_id'			: $('#item_id').val(),
+						'employee_id'		: $('#employee_id').val(),
+						'client_id'			: $('#client_id').val(),
+						'organization_id'	: $('#organization_id').val(),
+						'page'				: page
+						},
+				url: "/payment/list",
+				success: function(data) {
+						$('#result_container').html(data);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+						console.log('Error while processing payments data range!');
+				}
+			});
+
+			return false;
 		});
 	});
 		

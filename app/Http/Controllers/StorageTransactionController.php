@@ -89,12 +89,10 @@ class StorageTransactionController extends Controller
 
 		$transactions = $transactions->with('account', 'storage1', 'partner', 'client', 'employee')->get();
 
-		//$page = Input::get('page', 1);
-		$page = ($request->page == 0) ? 1 : $request->page;
+		$page = (0 == $request->page) ? 1 : $request->page;
 		$paginate = 10;
 
 		$offset = ($page * $paginate) - $paginate;
-		//$itemsForCurrentPage = array_slice($transactions, $offset, $paginate, true);
 		$itemsForCurrentPage = $transactions->slice($offset, $paginate);
 
 		$transactions = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($transactions), $paginate, $page);

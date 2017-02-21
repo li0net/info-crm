@@ -59,7 +59,6 @@
 					@endforeach
 				</tbody>
 			</table>
-
 			<div class="text-center">
 				{!! $positions->render(); !!} 
 			</div>

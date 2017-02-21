@@ -102,7 +102,7 @@
 		</fieldset>
 	</form>
 	<div class="row">
-		<div class="col-sm-12" id = "result_container">
+		<div class="col-sm-12" id="result_container">
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
