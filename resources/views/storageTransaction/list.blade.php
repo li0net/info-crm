@@ -80,8 +80,8 @@
 				</tr>
 			@endforeach
 		</tbody>
-		<div class="text-center">
-			{!! $transactions->render(); !!} 
-		</div>
 	</table>
+	<div class="text-center">
+		{!! $transactions->render(); !!} 
+	</div>
 @endif
