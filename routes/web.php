@@ -51,7 +51,7 @@ Route::post('/storagetransaction/list', ['as' => 'storagetransaction.list', 'use
 Route::get('/storageData', 'StorageController@getStorageData');
 Route::get('/productCategoriesData', 'ProductCategoriesController@getProductCategoriesData');
 Route::resource('/card', 'CardController');
-Route::post('/home', 'homeController@indexFiltered');
+Route::post('/home', 'HomeController@indexFiltered');
 Route::post('/payment/list', ['as' => 'payment.list', 'uses' => 'PaymentController@indexFiltered']);
 Route::post('/payment/beneficiaryOptions', ['as' => 'payment.beneficiaryOptions', 'uses' => 'PaymentController@populateBeneficiaryOptions']);
 Route::post('/wage_scheme/detailedServiceOptions', ['as' => 'wage_scheme.detailedServiceOptions', 
