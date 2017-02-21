@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Symfony\Component\EventDispatcher\Tests\Service;
 
+use \App\Http\Controllers\Controller;
+
 class BaseWidgetController extends Controller
 {
     private $superOrganization = NULL;
