@@ -12,6 +12,7 @@ use App\Payment;
 use App\Partner;
 use App\Employee;
 use App\Storage;
+use App\Product;
 use App\StorageTransaction;
 use Session;
 use Illuminate\Support\Facades\Input;
@@ -30,8 +31,6 @@ class StorageTransactionController extends Controller
 							->with('account', 'partner', 'client', 'employee', 'storage1')
 							->get()->all();
 
-		// dd($transactions);     
-
 		$partners = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id');
 		$accounts = Account::where('organization_id', $request->user()->organization_id)->pluck('title', 'account_id');
 		$employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
@@ -41,11 +40,11 @@ class StorageTransactionController extends Controller
 
 		$page = Input::get('page', 1);
 		$paginate = 10;
-		 
+
 		$offset = ($page * $paginate) - $paginate;
 		$itemsForCurrentPage = array_slice($transactions, $offset, $paginate, true);
 		$transactions = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($transactions), $paginate, $page);
-		$transactions->setPath('payment');
+		$transactions->setPath('storagetransaction');
 
 		return view('storageTransaction.index', compact('user', 'partners', 'accounts' , 'employees' , 'clients', 'storages', 'transactions'));
 	}
@@ -87,6 +86,18 @@ class StorageTransactionController extends Controller
 		$transactions->whereBetween('date', [$filter_start_time, $filter_end_time]);
 
 		$transactions = $transactions->with('account', 'storage1', 'partner', 'client', 'employee')->get();
+
+		$page = Input::get('page', 1);
+		$paginate = 10;
+
+		$offset = ($page * $paginate) - $paginate;
+		//$itemsForCurrentPage = array_slice($transactions, $offset, $paginate, true);
+		$itemsForCurrentPage = $transactions->slice($offset, $paginate);
+
+		$transactions = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($transactions), $paginate, $page);
+		$transactions->setPath('storagetransaction');
+
+		//dd($transactions);
 
 		return View::make('storagetransaction.list', compact('transactions'));
 	}
@@ -172,7 +183,7 @@ class StorageTransactionController extends Controller
 		
 		$transaction->description = $request->description;
 		$transaction->is_paidfor = $request->ispaidfor == 1;
-		$transaction->product_items = json_encode(array($input['product_id'], $input['price'], $input['amount'], $input['discount'], $input['sum'], $input['code']));
+		$transaction->transaction_items = json_encode(array($input['product_id'], $input['price'], $input['amount'], $input['discount'], $input['sum'], $input['code']));
 		$transaction->organization_id = $request->user()->organization_id;
 
 		$transaction->save();
@@ -210,11 +221,25 @@ class StorageTransactionController extends Controller
 		$employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
 		$clients = Client::where('organization_id', $request->user()->organization_id)->pluck('name', 'client_id');
 		$storages = Storage::where('organization_id', $request->user()->organization_id)->pluck('title', 'storage_id');
+		$st = Storage::where('organization_id', $request->user()->organization_id)->with('products')->get();
+		$pr = Product::with('storageWithProducts')->get()->pluck('storageWithProducts', 'product_id');
+		
+		//dd($pr);
 
 		$transaction_hours = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 60, '', ' ч', 'G');
 		$transaction_minutes = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('00:59:00'), 1, '', ' мин', 'i');
 
-		return view('storageTransaction.edit', compact('clients', 'employees', 'accounts', 'partners', 'storages', 'transaction', 'transaction_hours', 'transaction_minutes'));
+		$transaction_items = array();
+		
+		if(null !== $transaction->transaction_items) {
+			$items = json_decode($transaction->transaction_items);
+			
+			foreach ($items[0] as $key => $value) {
+				$transaction_items[] = array($value, $items[1][$key], $items[2][$key], $items[3][$key], $items[4][$key], $items[5][$key]);
+			}
+		}
+
+		return view('storageTransaction.edit', compact('clients', 'employees', 'accounts', 'partners', 'storages', 'transaction', 'transaction_hours', 'transaction_minutes', 'transaction_items', 'pr'));
 	}
 
 	/**
@@ -281,8 +306,8 @@ class StorageTransactionController extends Controller
 			$transaction->account_id = 0;
 		}
 		$transaction->description = $request->description;
-		$transaction->is_paidfor = $request->ispaidfor == 1;
-		$transaction->product_items = json_encode(array($input['product_id'], $input['price'], $input['amount'], $input['discount'], $input['sum'], $input['code']));
+		$transaction->is_paidfor = $request->is_paidfor == true;
+		$transaction->transaction_items = json_encode(array($input['product_id'], $input['price'], $input['amount'], $input['discount'], $input['sum'], $input['code']));
 		$transaction->organization_id = $request->user()->organization_id;
 
 		$transaction->save();

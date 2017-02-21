@@ -212,6 +212,34 @@
 										<input type="button" id="add-transaction-item" class="btn btn-info" value="Добавить">
 									</div>
 								</div>
+								@foreach($transaction_items as $transaction_item)
+									<div class="wrap-it">
+										<div class="col-sm-2"></div>							
+										<div class="col-sm-8" style="padding:0">
+											<div class="col-sm-3">
+												{{ Form::select('product_id[]', $pr[$transaction_item[0]]->pluck('title', 'product_id'), $transaction_item[0], ['class' => 'form-control', 'maxlength' => '110', 'placeholder' => 'Выберите товар']) }}
+											</div>
+											<div class="col-sm-2">
+												{{ Form::text('price[]', $transaction_item[1], ['class' => 'form-control']) }}
+											</div>
+											<div class="col-sm-2">
+												{{ Form::text('amount[]', $transaction_item[2], ['class' => 'form-control']) }}
+											</div>
+											<div class="col-sm-1">
+												{{ Form::text('discount[]', $transaction_item[3], ['class' => 'form-control']) }}
+											</div>
+											<div class="col-sm-2">
+												{{ Form::text('sum[]', $transaction_item[4], ['class' => 'form-control']) }}
+											</div>
+											<div class="col-sm-2">
+												{{ Form::text('code[]', $transaction_item[5], ['class' => 'form-control']) }}
+											</div>
+										</div>
+										<div class="col-sm-2" style="margin-bottom: 15px;">
+											<input type="button" id="add-transaction-item" class="btn btn-danger" value="Удалить">
+										</div>
+									</div>
+								@endforeach
 							</div>
 						</div>
 
@@ -220,7 +248,7 @@
 								{{ Form::label('is_paidfor', 'Оплата: ') }}
 							</div>
 							<label class="col-sm-9 text-left" style="font-weight: 300">
-								{{ Form::checkbox('is_paidfor', 1, 0, ['style' => 'margin-right: 10px;']) }}
+								{{ Form::checkbox('is_paidfor', true, $transaction->is_paidfor == true, ['style' => 'margin-right: 10px;']) }}
 								Оплачено
 							</label>
 							<label class="col-sm-1 text-left">

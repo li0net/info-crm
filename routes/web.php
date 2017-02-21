@@ -47,6 +47,7 @@ Route::resource('/storage', 'StorageController');
 Route::resource('/payment', 'PaymentController');
 Route::resource('/storagetransaction', 'StorageTransactionController');
 Route::post('/storagetransaction/list', ['as' => 'storagetransaction.list', 'uses' => 'StorageTransactionController@indexFiltered']);
+
 Route::get('/storageData', 'StorageController@getStorageData');
 Route::get('/productCategoriesData', 'ProductCategoriesController@getProductCategoriesData');
 Route::resource('/card', 'CardController');

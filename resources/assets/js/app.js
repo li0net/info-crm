@@ -81,6 +81,7 @@ const app = new Vue({
 			detailed_services_count: 0,
 			detailed_products_count: 0,
 			card_items_count: 0,
+			transaction_items_count: 0,
 			services_ctgs_options: '',
 			storage_options: ''
 		}
@@ -127,6 +128,7 @@ const app = new Vue({
 		this.detailed_services_count = $('#detailed-services').find('.wrap-it').length-1;
 		this.detailed_products_count = $('#detailed-products').find('.wrap-it').length-1;
 		this.card_items_count = $('#card-items').find('.wrap-it').length-1;
+		this.transaction_items_count = $('#transaction-items').find('.wrap-it').length-1;
 
 		if(this.detailed_services_count != 0) {
 			$('a[href="#detailed-services"] .badge.label-danger').removeClass('hidden');
@@ -138,6 +140,10 @@ const app = new Vue({
 
 		if(this.card_items_count != 0) {
 			$('a[href="#card-items"] .badge.label-danger').removeClass('hidden');
+		}
+
+		if(this.transaction_items_count != 0) {
+			$('a[href="#transaction-items"] .badge.label-danger').removeClass('hidden');
 		}
 	}
 });

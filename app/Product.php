@@ -37,4 +37,11 @@ class Product extends Model
 	{
 		return $this->belongsTo(Storage::class);
 	}
+
+	public function storageWithProducts()
+	{
+		$st = $this->belongsTo(Storage::class)->getResults();
+
+		return $st->hasMany(Product::class);
+	}
 }

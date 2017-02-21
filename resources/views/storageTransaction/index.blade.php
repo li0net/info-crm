@@ -72,59 +72,11 @@
 				<div class="col-sm-3">
 					{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '', 'id' => 'client_id', 'placeholder' => 'Клиент не выбран']) }}
 				</div>
-				{{-- <div class="col-sm-3">
-					<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-					<input type="text" class="form-control ui-autocomplete-input" name="client" value="" placeholder="Поиск клиента (имя или телефон)" autocomplete="off">
-					<input type="hidden" class="form-control" name="client_id" value=""> 
-				</div> --}}
 			</div>
 			<div class="row m-b">
 				<div class="col-sm-3 transactions-multi-filters">
-					{{-- <select name="good_ids[]" data-placeholder="Выберите товары..." class="chosen-filter-goods small_select form-control" multiple="multiple" style="display: none;">
-						<option value="436655">111111111</option>
-						<option value="453399">rasas</option>
-					</select>
-					<div class="chosen-container chosen-container-multi" style="width: 376px;" title="">
-						<ul class="chosen-choices">
-							<li class="search-field">	
-								<input type="text" value="Выберите товары..." class="default" autocomplete="off" style="width: 158px;">
-							</li>
-						</ul>
-						<div class="chosen-drop">
-							<ul class="chosen-results">
-								<li class="no-results">Начните печатать для поиска товаров...</li>
-							</ul>
-						</div>
-					</div> --}}
 				</div>
 				<div class="col-sm-3 transactions-multi-filters">
-					{{-- <select name="service_ids[]" class="form-control chosen-filter-services" data-placeholder="Выберите услуги..." multiple="multiple" style="display: none;">
-						<option value="508710">Стрижки и укладки</option>
-						<option value="508711">Полубокс</option>
-						<option value="529076">Маникюр</option>
-						<option value="529077">Стилистика</option>
-						<option value="529093">Модельная</option>
-						<option value="529094">Наголо</option>
-						<option value="529095">Ирокез</option>
-						<option value="529096">Французский</option>
-						<option value="529100">Со стразами</option>
-						<option value="529101">Профилактика</option>
-						<option value="529102">Свадебный</option>
-						<option value="529104">Деловой</option>
-						<option value="529105">Нарядный</option>
-					</select>
-					<div class="chosen-container chosen-container-multi" style="width: 376px;" title="">
-						<ul class="chosen-choices">
-							<li class="search-field">
-								<input type="text" value="Выберите услуги..." class="default" autocomplete="off" style="width: 151px;">
-							</li>
-						</ul>
-						<div class="chosen-drop">
-							<ul class="chosen-results">
-								<li class="no-results">Начните печатать для поиска услуг...</li>
-							</ul>
-						</div>
-					</div> --}}
 				</div>
 				<div class="col-sm-3">
 					<select class="form-control" data-placeholder="Выберите статус платежа" name="deleted">
@@ -150,8 +102,8 @@
 		</fieldset>
 	</form>
 	<div class="row">
-		<div class="col-sm-12">
-			<table class="table" id = 'result_container'>
+		<div class="col-sm-12" id = "result_container">
+			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
 					<th>Дата</th>

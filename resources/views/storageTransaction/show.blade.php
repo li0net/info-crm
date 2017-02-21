@@ -16,7 +16,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-sm-6 col-sm-offset-3">
+		<div class="col-sm-4 col-sm-offset-4">
 			<div class="well">
 				{{ Form::label('title', "Дата и время проведения операции: ") }}
 				<p class="lead">{{ $transaction->date }}</p>
@@ -33,9 +33,6 @@
 						Перемещение
 					@endif
 				</p>
-
-				{{ Form::label('partner_id', "Описание: ") }}
-				<p class="lead">{{ $transaction->partner_id }}</p>
 
 				{{ Form::label('description', "Описание: ") }}
 				<p class="lead">{{ $transaction->description }}</p>
