@@ -50,11 +50,10 @@ class BaseWidgetController extends Controller
     public function getDivision(Request $request)
     {
         // отображение отделения организации, если их больше 1
-        $su = SuperOrganization::find($this->superOrganizationId);
-        $orgs = $su->organizations();
+        $orgs = $this->superOrganization->organizations();
 
         if ($orgs->count() > 1) {
-            return $orgs;
+            return $orgs->getResults();
             // TODO: load view to list all divisions
         } else {
             $this->organization = $orgs->first();
@@ -80,7 +79,7 @@ class BaseWidgetController extends Controller
             return $this->getServices($request, $sc->first());
         }
 
-        return $sc;
+        return $sc->getResult();
         // TODO: load view to list all service categories
     }
 
@@ -117,7 +116,7 @@ class BaseWidgetController extends Controller
         //    return $this->getEmployees($request, $services->first());
         //}
 
-        return $services;
+        return $services->getResults();
         // TODO: load view to list all services
         /*
         foreach($services AS $service) {
@@ -154,7 +153,7 @@ class BaseWidgetController extends Controller
             // TODO: такой вариант не является аномалией, нужно придусмотреть view для него
         }
 
-        return $employees;
+        return $employees->getResults();
         // TODO: добавить вариант "Мастер не важен"
         // TODO: во view также передаем service_id и пишем его в скрытое поле
     }
