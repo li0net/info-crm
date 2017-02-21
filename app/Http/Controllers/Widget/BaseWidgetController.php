@@ -37,7 +37,7 @@ class BaseWidgetController extends Controller
 
         if (Input::get('org_id')) {
             // TODO: проверить соответсвие организации и токена
-            $this->organization = Organization::find(Input::get('org_id'));         // post параметр sc_id - service category id
+            $this->organization = Organization::find(Input::get('organization_id'));         // post параметр org_id - organization id
             if (!$this->organization) {
                 abort(401, '401 Unauthorized.');
             }
@@ -57,7 +57,7 @@ class BaseWidgetController extends Controller
         } else {
             $this->organization = $orgs->first();
             // если отделение только одно сразу показываем набор доступных услуг
-            return $this->getServiceCategories();
+            return $this->getServiceCategories($request);
         }
     }
 
@@ -117,6 +117,12 @@ class BaseWidgetController extends Controller
 
         return $services;
         // TODO: load view to list all services
+        /*
+        foreach($services AS $service) {
+            {{$service->name}}
+            {{$service->price_min}}
+        }
+        */
     }
 
 
@@ -152,14 +158,33 @@ class BaseWidgetController extends Controller
     }
 
     // Отображает календарь с днями доступными для записи к выбранному мастеру на выбранную услугу
-    public function getAvailableDays()
-    {}
+    public function getAvailableDays(Request $request)
+    {
+        $formData = $request->only(['service_id', 'employee_id']);                        // post параметр service_id, employee_id
+
+        $validator = Validator::make($formData, [
+            'service_id'    => 'required|max:10',
+            'employee_id'    => 'required|max:10'
+        ]);
+        if ($validator->fails()) {
+            // TODO: Что делать - просто отобразить ошибку или сделать редирект?
+            return redirect('/clients/create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // TODO: получить массив дат этого месяца с атрибутами 'день доступен для записи', 'день недоступен для записи'
+    }
 
     // Отображает доступное время для записи для выбранного дня
-    public function getAvailableTime()
-    {}
+    public function getAvailableTime(Request $request)
+    {
+        $formData = $request->only(['service_id', 'employee_id']);                        // post параметр service_id, employee_id, day
+    }
 
     // Отображает форму с полями для ввода имени, телефона, адреса электронной почты и т.д.
-    public function getUserInformationForm()
-    {}
+    public function getUserInformationForm(Request $request)
+    {
+        $formData = $request->only(['service_id', 'employee_id', 'date', 'time']);         // post параметр service_id, employee_id
+    }
 }
