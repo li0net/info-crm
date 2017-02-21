@@ -232,6 +232,42 @@
 				}
 			});
 		});
+
+		$('#result_container').on('click', '.pagination', function(e) {
+			var me = this, page = 0;
+			if ($(e.target).html() == '»') {
+				page = parseInt($('.pagination li.active span').html()) + 1;
+			} else if ($(e.target).html() == '«'){
+				page = parseInt($('.pagination li.active span').html()) - 1;
+			} else {
+				page = parseInt($(e.target).html());
+			}
+
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				data: {	'date_from'			: $('#date-from').val(),
+						'date_to'			: $('#date-to').val(),
+						'transaction_type'	: $('#transaction_type').val(),
+						'partner_id'		: $('#partner_id').val(),
+						'account_id'		: $('#account_id').val(),
+						'employee_id'		: $('#employee_id').val(),
+						'client_id'			: $('#client_id').val(),
+						'storage_id'		: $('#storage_id').val(),
+						'organization_id'	: $('#organization_id').val(),
+						'page'				: page
+						},
+				url: "/storagetransaction/list",
+				success: function(data) {
+						$('#result_container').html(data);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+						console.log('Error while processing payments data range!');
+				}
+			});
+
+			return false;
+		});
 	});
 		
 </script>

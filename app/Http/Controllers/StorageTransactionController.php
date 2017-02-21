@@ -38,6 +38,8 @@ class StorageTransactionController extends Controller
 		$storages = Storage::where('organization_id', $request->user()->organization_id)->pluck('title', 'storage_id');
 		$user = $request->user();
 
+		$filtered = Input::get('index');
+
 		$page = Input::get('page', 1);
 		$paginate = 10;
 
@@ -87,7 +89,8 @@ class StorageTransactionController extends Controller
 
 		$transactions = $transactions->with('account', 'storage1', 'partner', 'client', 'employee')->get();
 
-		$page = Input::get('page', 1);
+		//$page = Input::get('page', 1);
+		$page = ($request->page == 0) ? 1 : $request->page;
 		$paginate = 10;
 
 		$offset = ($page * $paginate) - $paginate;
@@ -95,11 +98,10 @@ class StorageTransactionController extends Controller
 		$itemsForCurrentPage = $transactions->slice($offset, $paginate);
 
 		$transactions = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($transactions), $paginate, $page);
-		$transactions->setPath('storagetransaction');
+		$transactions->setPath('/');
+		$transactions->appends(['index' => 'filtered']);
 
-		//dd($transactions);
-
-		return View::make('storagetransaction.list', compact('transactions'));
+		return View::make('storageTransaction.list', compact('transactions'));
 	}
 
 	/**
