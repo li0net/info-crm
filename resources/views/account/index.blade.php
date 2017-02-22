@@ -17,7 +17,7 @@
 
 	<div class="row">
 		<div class="col-sm-10">
-			<h4>Все счета</h4>
+			<h4>{{ trans('adminlte_lang::message.accounts') }}</h4>
 		</div>	
 
 		<div class="col-sm-2">
@@ -33,10 +33,10 @@
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
-					<th>Наименование счета/кассы</th>
-					<th>Остаток</th>
-					<th>Доходы</th>
-					<th>Расходы</th>
+					<th>{{ trans('adminlte_lang::message.account_name') }}</th>
+					<th>{{ trans('adminlte_lang::message.account_balance') }}</th>
+					<th>{{ trans('adminlte_lang::message.account_income') }}</th>
+					<th>{{ trans('adminlte_lang::message.account_expenses') }}</th>
 					<th></th>
 				</thead>
 				<tbody>
@@ -49,17 +49,17 @@
 								<small>{{ $account->comment }}</small>
 							</td>
 							<td>
-								{{ $account->balance }} &#8381
+								{{ $account->balance }} &#8381;
 								<br>
-								<small>Текущий остаток на счете(в кассе)</small>
+								<small>{{ trans('adminlte_lang::message.account_balance_descr') }}</small>
 							</td>
-							<td><Это расчетное поле> &#8381
+							<td><Это расчетное поле> &#8381;
 								<br>
-								<small>Выручка за текущий месяц</small>
+								<small>{{ trans('adminlte_lang::message.account_income_descr') }}</small>
 							</td>
-							<td><Это расчетное поле> &#8381
+							<td><Это расчетное поле> &#8381;
 								<br> 
-								<small>Расходы за текущий месяц</small>
+								<small>{{ trans('adminlte_lang::message.account_expenses_descr') }}</small>
 							</td>
 							<td class="text-right">
 								@if ($user->hasAccessTo('account', 'edit', 0))
