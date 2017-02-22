@@ -37,6 +37,8 @@ class BaseWidgetController extends Controller
         // TODO: get super organization id from token
         $this->superOrganization = SuperOrganization::find('1');
 
+        view()->share('superOrganization', $this->superOrganization);
+
         if (Input::get('org_id')) {
             // TODO: проверить соответсвие организации и токена
             $this->organization = Organization::find(Input::get('organization_id'));         // post параметр org_id - organization id
@@ -51,15 +53,18 @@ class BaseWidgetController extends Controller
     {
         // отображение отделения организации, если их больше 1
         $orgs = $this->superOrganization->organizations();
-
         if ($orgs->count() > 1) {
-            return $orgs->getResults();
-            // TODO: load view to list all divisions
+            return view('widget.pages.divisions', [
+                'organizations' => $orgs->getResults()
+            ]);
         } else {
             $this->organization = $orgs->first();
             // если отделение только одно сразу показываем набор доступных услуг
-            return $this->getServiceCategories($request);
+            return view('widget.pages.categories', [
+                'categories' => $this->getServiceCategories($request)
+            ]);
         }
+
     }
 
     // Отображает категории услуг
@@ -188,4 +193,35 @@ class BaseWidgetController extends Controller
     {
         $formData = $request->only(['service_id', 'employee_id', 'date', 'time']);         // post параметр service_id, employee_id
     }
+    /*
+    <!--<div id="app">-->
+    <!--    <widget></widget>-->
+    <!--    <widget></widget>-->
+    <!--</div>-->
+    <!--<template id="widget-template">-->
+    <!--    <h1>waka</h1>-->
+    <!--</template>-->
+
+    <h1>Organization</h1>
+    <div> {{ $organization->organization_id }} </div>
+    <div> {{ $organization->name }} </div>
+    <div> {{ $organization->category }} </div>
+    <div> {{ $organization->shortinfo }} </div>
+    <div> <img src="{{$organization->getLogoUri()}}"> </div>
+    <hr>
+
+
+    <h1>Categories</h1>
+    @foreach ($serviceCategories as $sc)
+    <p>Категория: {{ $sc->online_reservation_name}}</p>
+    <span> {{ $sc->service_category_id}} </span>|
+    <span> {{ $sc->gender}} </span>|
+    <span> {{ $sc->name}} </span>
+    <hr>
+    @endforeach
+
+
+
+    */
+
 }
