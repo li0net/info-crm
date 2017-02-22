@@ -97,6 +97,15 @@ class PaymentController extends Controller
 
 		$payments = $payments->with('account', 'item', 'partner', 'client', 'employee', 'user')->get();
 
+		$page = (0 == $request->page) ? 1 : $request->page;
+		$paginate = 10;
+		 
+		$offset = ($page * $paginate) - $paginate;
+		$itemsForCurrentPage = $payments->slice($offset, $paginate);
+		$payments = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($payments), $paginate, $page);
+		$payments->setPath('payment');
+		$payments->appends(['index' => 'filtered']);
+
 		return View::make('payment.list', ['payments' => $payments]);
 	}
 

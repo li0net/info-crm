@@ -102,7 +102,7 @@
 		</fieldset>
 	</form>
 	<div class="row">
-		<div class="col-sm-12" id = "result_container">
+		<div class="col-sm-12" id="result_container">
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
@@ -233,7 +233,7 @@
 			});
 		});
 
-		$('#result_container').on('click', '.pagination', function(e) {
+		$('#result_container').on('click', '.filtered > .pagination', function(e) {
 			var me = this, page = 0;
 			if ($(e.target).html() == '»') {
 				page = parseInt($('.pagination li.active span').html()) + 1;

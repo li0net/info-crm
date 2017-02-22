@@ -9,7 +9,7 @@
 		@if (Session::has('success'))
 		
 		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
+			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
 		</div>
 
 		@endif
@@ -17,19 +17,19 @@
 
 	<div class="row">
 		<div class="col-sm-7">
-			<h4>Все технологические карты</h4>
+			<h4>{{ trans('adminlte_lang::message.routines') }}</h4>
 		</div>	
 
 		<div class="col-sm-5">
-			<a href="{{ route('card.create') }}" class="btn btn-primary pull-right">Новая технологическая карта</a>
+			<a href="{{ route('card.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.routine_create_new') }}</a>
 		</div>
 
 		<div class="col-sm-12">
 			<div class="input-group">
-				<input name="search_term" type="text" placeholder="Поиск (по названию, описанию)" class="input form-control" value="" autocomplete="off">
+				<input name="search_term" type="text" placeholder="{{ trans('adminlte_lang::message.search_by_name_descr') }}" class="input form-control" value="" autocomplete="off">
 				<span class="input-group-btn">
 					 <button type="submit" class="btn btn btn-success">
-						<i class="fa fa-search"></i> Найти
+						<i class="fa fa-search"></i> {{ trans('adminlte_lang::message.search') }}
 					</button>
 				</span>
 			</div>
@@ -44,8 +44,8 @@
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
-					<th>Наименование</th>
-					<th>Описание</th>
+					<th>{{ trans('adminlte_lang::message.title') }}</th>
+					<th>{{ trans('adminlte_lang::message.description') }}</th>
 					<th></th>
 					<th></th>
 					<th></th>
@@ -67,16 +67,16 @@
 											<div class="form-group">
 												<a href="#card-items-{{$card->card_id}}" data-toggle="collapse" class="btn btn-link btn-xs card-items-toggle">
 												<span class="badge label-danger hidden">0</span>
-												Состав технологической карты
+												{{ trans('adminlte_lang::message.routine_structure') }}
 												<i class="fa fa-caret-down"></i></a>
 											</div>
 										</div>
 									</div>
 									<div id="card-items-{{$card->card_id}}" class="collapse card-items">
 										<div class="row">
-											<div class="col-sm-4 small"><strong>Склад</strong></div>
-											<div class="col-sm-4 small"><strong>Наименование</strong></div>
-											<div class="col-sm-4 small"><strong>Количество</strong></div>
+											<div class="col-sm-4 small"><strong>{{ trans('adminlte_lang::message.stock') }}</strong></div>
+											<div class="col-sm-4 small"><strong>{{ trans('adminlte_lang::message.title') }}</strong></div>
+											<div class="col-sm-4 small"><strong>{{ trans('adminlte_lang::message.amount') }}</strong></div>
 										</div>
 										<div class="row">
 											<div class="col-sm-12"><hr></div>
