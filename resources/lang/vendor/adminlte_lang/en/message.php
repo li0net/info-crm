@@ -213,6 +213,18 @@ return [
 	'cancel'					=> 'Cancel',
 	'save'						=> 'Save',
 	'edit'						=> 'Edit',
-	'delete'					=> 'Delete'
-
+	'delete'					=> 'Delete',
+	'success'					=> 'Success',
+	'routine_create_new'		=> 'Create new routine',
+	'routines'					=> 'Routines',
+	'search'					=> 'Search',
+	'search_by_name_descr'		=> 'Seacrh(by title or description)',
+	'routine_structure'			=> 'Routine structure',
+	'routine_information'		=> 'Routine information',
+	'routine_title'				=> 'Routine title',
+	'title'						=> 'Title',
+	'stock'						=> 'Stock',
+	'amount'					=> 'Amount',
+	'select_good'				=> 'Select good',
+	'add'						=> 'Add',
 ];

@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employee_create') }}
+	{{ trans('adminlte_lang::message.routine_information') }}
 @endsection
 
 {{-- @section('Stylesheets')
@@ -12,7 +12,7 @@
 
 	<div class="row">
 		<div class="col-sm-6 col-sm-offset-3">
-			<h4>Информация о технологической карте</h4>	
+			<h4>{{ trans('adminlte_lang::message.routine_information') }}</h4>	
 			{{-- <ex1></ex1> --}}
 			<hr>	
 			@if (count($errors) > 0)
@@ -31,7 +31,7 @@
 					<div class="row">
 						<div class="form-group">
 							<div class="col-sm-2 control-label">
-								{{ Form::label('title', 'Наименование:', ['class' => 'form-spacing-top']) }}
+								{{ Form::label('title', trans('adminlte_lang::message.title'), ['class' => 'form-spacing-top']) }}
 							</div>
 							<div class="col-sm-9">
 								{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
@@ -46,7 +46,7 @@
 							<div class="col-sm-6">
 								<a href="#card-items" data-toggle="collapse" class="btn btn-link btn-xs">
 								<span class="badge label-danger hidden">@{{ card_items_count }}</span>
-								&nbsp;&nbsp;Состав технологической карты&nbsp;&nbsp;
+								&nbsp;&nbsp;{{ trans('adminlte_lang::message.routine_structure') }}&nbsp;&nbsp;
 								<i class="fa fa-caret-down"></i></a>
 							</div>
 						</div>
@@ -55,9 +55,9 @@
 							<div class="row">
 								<div class="col-sm-2"></div>
 								<div class="col-sm-8">
-									<div class="col-sm-5">Склад</div>									
-									<div class="col-sm-5">Наименование</div>
-									<div class="col-sm-2">Количество</div>
+									<div class="col-sm-5">{{ trans('adminlte_lang::message.stock') }}</div>									
+									<div class="col-sm-5">{{ trans('adminlte_lang::message.title') }}</div>
+									<div class="col-sm-2">{{ trans('adminlte_lang::message.amount') }}</div>
 								</div>
 								<div class="col-sm-2"></div>
 							</div>
@@ -92,20 +92,23 @@
 										{{ Form::select('storage_id[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => 0]) }}
 									</div>
 									<div class="col-sm-5">
-										{{ Form::select('product_id[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'placeholder' => 'Выберите товар']) }}
+										{{ Form::select('product_id[]', [], null, [
+																					'class' => 'form-control', 
+																					'maxlength' => '110', 
+																					'placeholder' => trans('adminlte_lang::message.select_good')]) }}
 									</div>
 									<div class="col-sm-2">
 										{{ Form::text('amount[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
 									</div>
 								</div>
 								<div class="col-sm-2" style="margin-bottom: 15px;">
-									<input type="button" id="add-card-item" class="btn btn-info" value="Добавить">
+									<input type="button" id="add-card-item" class="btn btn-info" value={{ trans('adminlte_lang::message.add') }}>
 								</div>
 							</div>
 						</div>
 
 						<div class="form-group">
-							{{ Form::label('description', 'Описание:', ['class' => 'form-spacing-top col-sm-2 control-label']) }}
+							{{ Form::label('description', trans('adminlte_lang::message.description'), ['class' => 'form-spacing-top col-sm-2 control-label']) }}
 							<div class="col-sm-9">
 								{{ Form::textarea('description', null, ['class' => 'form-control']) }}
 							</div>
@@ -121,10 +124,10 @@
 						<div class="col-md-8 col-md-offset-2">
 							<div class="row">
 								<div class="col-md-6">
-									{!! Html::linkRoute('card.show', 'Отмена', [$card->card_id], ['class'=>'btn btn-danger btn-block']) !!}
+									{!! Html::linkRoute('card.show', trans('adminlte_lang::message.cancel'), [$card->card_id], ['class'=>'btn btn-danger btn-block']) !!}
 								</div>
 								<div class="col-md-6">
-									{{ Form::submit('Сохранить', ['class'=>'btn btn-success btn-block']) }}
+									{{ Form::submit(trans('adminlte_lang::message.save'), ['class'=>'btn btn-success btn-block']) }}
 								</div>
 							</div>
 						</div>
