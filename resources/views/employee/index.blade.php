@@ -9,18 +9,18 @@
 		@if (Session::has('success'))
 		
 		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
+			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
 		</div>
 
 		@endif
 	</div>
 	<div class="row">
 		<div class="col-sm-10">
-			<h4>Все сотрудники</h4>
+			<h4>{{ trans('adminlte_lang::message.employees') }}</h4>
 		</div>	
 
 		<div class="col-sm-2">
-			<a href="{{ route('employee.create') }}" class="btn btn-primary btn-block">Новый сотрудник</a>
+			<a href="{{ route('employee.create') }}" class="btn btn-primary btn-block">{{ trans('adminlte_lang::message.employee_create_new') }}</a>
 		</div>
 
 		<div class="col-sm-12">
@@ -34,10 +34,10 @@
 				<thead>
 					<th class="text-center">#</th>
 					<th></th>
-					<th>ФИО</th>
-					<th>Email</th>
-					<th>Номер телефона</th>
-					<th>Должность</th>
+					<th>{{ trans('adminlte_lang::message.employee_name') }}</th>
+					<th>{{ trans('adminlte_lang::message.employee_email') }}</th>
+					<th>{{ trans('adminlte_lang::message.employee_phone') }}</th>
+					<th>{{ trans('adminlte_lang::message.employee_position') }}</th>
 					<th></th>
 				</thead>
 

@@ -114,7 +114,7 @@ class EmployeeController extends Controller
 		$employee = Employee::where('organization_id', request()->user()->organization_id)->where('employee_id', $id)->first();
 
 		if (!$employee) {
-			return 'No such record';
+			return 'No such record!';
 		}
 
 		return view('employee.show', ['user' => request()->user()])->withEmployee( $employee );
