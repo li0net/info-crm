@@ -16,8 +16,13 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
-
 Route::get('/v1/widget/show', 'Widget\BaseWidgetController@getDivision');
+    //->middleware('auth:api');
+Route::get('/v1/widget/getCategories', 'Widget\BaseWidgetController@getServiceCategoriesAjax');
+Route::post('/v1/widget/getCategories', 'Widget\BaseWidgetController@getServiceCategoriesAjax');
+Route::post('/v1/widget/getServicesAjax', 'Widget\BaseWidgetController@getServicesAjax');
+Route::get('/v1/widget/getServicesAjax', 'Widget\BaseWidgetController@getServicesAjax');
+    //->middleware('auth:api');
     //->middleware('auth:api');
 Route::post('/v1/widget/showServiceCategories', 'Widget\BaseWidgetController@getServiceCategories')->middleware('auth:api');
 Route::post('/v1/widget/showServices', 'Widget\BaseWidgetController@getServices')->middleware('auth:api');

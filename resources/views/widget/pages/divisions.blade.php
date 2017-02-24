@@ -2,11 +2,14 @@
 @section('content')
     <h1>Выберите филиал</h1>
     @foreach ($organizations as $organization)
-        <div> {{ $organization->organization_id }} </div>
-        <div> {{ $organization->name }} </div>
-        <div> {{ $organization->category }} </div>
-        <div> {{ $organization->shortinfo }} </div>
-        <div> <img src="{{$organization->getLogoUri()}}"> </div>
+        <a class="row division-row" data-id="{{ $organization->organization_id }}" href="#">
+            <div class="col-sm-2"> <img src="{{$organization->getLogoUri()}}"> </div>
+            <div class="col-sm-4">
+                {{ $organization->name }}<br>
+                {{ $organization->category }}
+            </div>
+            <div class="col-sm-6"> {{ $organization->shortinfo }} </div>
+        </a>
         <hr>
     @endforeach
 @stop

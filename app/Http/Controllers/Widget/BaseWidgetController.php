@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Widget;
 
 use App\ServiceCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use App\User;
 use App\SuperOrganization;
 use App\Organization;
@@ -41,9 +42,9 @@ class BaseWidgetController extends Controller
 
         if (Input::get('org_id')) {
             // TODO: проверить соответсвие организации и токена
-            $this->organization = Organization::find(Input::get('organization_id'));         // post параметр org_id - organization id
+            $this->organization = Organization::find(Input::get('org_id'));         // post параметр org_id - organization id
             if (!$this->organization) {
-                abort(401, '401 Unauthorized.');
+
             }
         }
     }
@@ -52,6 +53,7 @@ class BaseWidgetController extends Controller
     public function getDivision(Request $request)
     {
         // отображение отделения организации, если их больше 1
+        // TODO исключить организации без категорий и услуг
         $orgs = $this->superOrganization->organizations();
         if ($orgs->count() > 1) {
             return view('widget.pages.divisions', [
@@ -66,16 +68,47 @@ class BaseWidgetController extends Controller
         }
 
     }
+    public function getServiceCategoriesAjax(Request $request){
+        if (Input::get('org_id')) {
+            // TODO: проверить соответсвие организации и токена
+            $this->organization = Organization::find(Input::get('org_id'));
+            if (!$this->organization) {
+                abort(401, '401 Unauthorized.');
+            }
+//            $result = array(
+//                'res' => 'true',
+//                'categories' => $this->getServiceCategories($request)
+//            );
+            $view = View::make('widget.pages.categories_sub', [
+                'categories' => $this->getServiceCategories($request)
+            ]);
+
+            $contents = $view->render();
+            return $contents;
+
+//                $view = View::make('my_view', ['name' => 'Rishabh']);
+//            $contents = (string) $view;
+//// or
+//            $contents = $view->render();
+
+        } else {
+            return array(
+                'res' => 'false'
+            );
+        }
+        //return json_encode($result);
+    }
 
     // Отображает категории услуг
+
     public function getServiceCategories(Request $request)
     {
         // отображение услуг в данном отделении (или всей организации, если отделение только одно)
         if (is_null($this->organization)) {
             abort(500, 'Internal server error. Organization not set.');
         }
-
         $sc = $this->organization->serviceCategories();
+
         if ($sc->count() == 0) {
             abort(500, 'Internal server error. No service categories.');
         }
@@ -83,12 +116,64 @@ class BaseWidgetController extends Controller
         if ($sc->count()==1) {
             return $this->getServices($request, $sc->first());
         }
-
-        return $sc->getResult();
-        // TODO: load view to list all service categories
+        return $sc->getResults();
     }
 
     // Отображает услуги
+    public function getServicesAjax(Request $request, ServiceCategory $sc = NULL)
+    {
+        // может не существовать, если у организации только одна категория услуг
+        $serviceCategoryId = $request->input('sc_id');
+        // post параметр sc_id - service category id
+        if (empty($serviceCategoryId))
+        {
+            if (is_null($sc))
+            {
+                abort(500, 'Internal server error. Service category not set.');
+            }
+        } else {
+            $sc = ServiceCategory::where('service_category_id', $serviceCategoryId)
+                ->where('organization_id', $this->organization->organization_id)
+                ->first();
+            if (!$sc)
+            {
+                abort(500, 'Internal server error. Service category error.');
+            }
+        }
+
+        $services = $sc->services();
+        if ($services->count() == 0)
+        {
+            abort(500, 'Internal server error. No services found.');
+        }
+
+        // В любом случае, надо показать название услуги, даже если она всего одна
+        //if ($services->count() == 1) {
+        //    return $this->getEmployees($request, $services->first());
+        //}
+
+        $view = View::make('widget.pages.services', [
+            'services' => $services->getResults()
+        ]);
+        $contents = $view->render();
+        return $contents;
+
+//        $result = array(
+//            'res' => 'true',
+//            'services' => $services->getResults()
+//        );
+//
+//        return json_encode($result);
+
+        // TODO: load view to list all services
+        /*
+        foreach($services AS $service) {
+            {{$service->name}}
+            {{$service->price_min}}
+        }
+        */
+    }
+
     public function getServices(Request $request, ServiceCategory $sc = NULL)
     {
         // может не существовать, если у организации только одна категория услуг
