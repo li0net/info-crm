@@ -11,7 +11,7 @@
 @section('main-content')
 
 	<div class="row">
-		<div class="col-sm-4 col-sm-offset-4">
+		<div class="col-sm-6 col-sm-offset-3">
 			<h4>{{ trans('adminlte_lang::message.account_information') }}</h4>	
 			<hr>	
 			@if (count($errors) > 0)

@@ -305,7 +305,7 @@
 						<hr>
 						
 						<div class="row">
-							<div class="col-sm-4 col-sm-offset-4">
+							<div class="col-sm-6 col-sm-offset-3">
 								<div class="row">
 									<div class="col-sm-6">
 										{!! Html::linkRoute('employee.show', trans('adminlte_lang::message.cancel'), [$employee->employee_id], ['class'=>'btn btn-danger btn-block']) !!}

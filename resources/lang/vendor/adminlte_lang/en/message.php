@@ -362,5 +362,11 @@ return [
 	'client_not_chosen'			=> 'Client not chosen',
 	'show'						=> 'Show',
 	'expenses'					=> 'Expenses',
-	'sucessfully_added'			=> 'New payment successfully added!'
+	'sucessfully_added'			=> 'New payment successfully added!',
+	'position_create_new'		=> 'Create new position',
+	'position'					=> 'Position',
+	'new_position'				=> 'New position',
+	'position_name'				=> 'Position name',
+	'positions'					=> 'Positions',
+	'service_example'			=> 'Example: A full range of mens hairstyles'
 ];

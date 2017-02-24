@@ -369,5 +369,11 @@ return [
 	'client_not_chosen'			=> 'Клиент не выбран',
 	'show'						=> 'Показать',
 	'expenses'					=> 'Расходы',
-	'sucessfully_added'			=> 'Новый платеж успешно добавлен!'
+	'sucessfully_added'			=> 'Новый платеж успешно добавлен!',
+	'position_create_new'		=> 'Создание новой должности',
+	'position'					=> 'Должность',
+	'new_position'				=> 'Новая должность',
+	'position_name'				=> 'Наименование должности',
+	'positions'					=> 'Все должности',
+	'service_example'			=> 'Пример: Весь спектр мужских причесок'
 ];
