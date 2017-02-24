@@ -67,7 +67,7 @@
 
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
-							{{	Form::submit(trans('adminlte_lang::message.employee_create_new'), ['class' => 'btn btn-success btn-lg btn-block', 'style' => 'margin-top:20px']) }}
+							{{	Form::submit(trans('adminlte_lang::message.employee_create_new'), ['class' => 'btn btn-success btn-lg btn-block']) }}
 						</div>
 					</div>
 					

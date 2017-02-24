@@ -279,5 +279,18 @@ return [
 	'load_photo'				=> 'Load photo',
 	'appointment_time'			=> 'Appointment time',
 	'client_name'				=> 'Client name',
-	'appointment_status'		=> 'Appointment status'
+	'appointment_status'		=> 'Appointment status',
+	'item_information'			=> 'Information about item of income-expenses',
+	'item_name'					=> 'Name',
+	'income'					=> 'Income',
+	'expenses_on_cost'			=> 'Expenses on cost',
+	'commercial_exps'			=> 'Commercial expenses',
+	'staff_exps'				=> 'Staff expenses',
+	'admin_exps'				=> 'Administrative expenses',
+	'taxes'						=> 'Taxes and fees',
+	'other_exps'				=> 'Other expenses',
+	'item_create_new'			=> 'Create new item',
+	'item_name'					=> 'Item name',
+	'item_type'					=> 'Item type',
+	'items'						=> 'Items'
 ];
