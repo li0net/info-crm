@@ -1,29 +1,27 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employees') }}
+	{{ trans('adminlte_lang::message.payments') }}
 @endsection
 
 @section('main-content')
 	<div class="row">
 		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
-		</div>
-
+			<div class="alert alert-success" role="alert">
+				<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
+			</div>
 		@endif
 	</div>
 
 	<div class="row">
-		<div class="col-sm-8">
-			<h4>Все финансовые операции</h4>
+		<div class="col-sm-4">
+			<h4>{{ trans('adminlte_lang::message.payments') }}</h4>
 		</div>	
 
-		<div class="col-sm-4">
-			<a href="{{ route('payment.create') }}" class="btn btn-primary pull-right">Новый платеж</a>
-			<a href="#" class="btn btn-default m-r pull-right">Загрузить из Excel</a>
-			<a href="#" class="btn btn-default m-r pull-right">Выгрузить в Excel</a>
+		<div class="col-sm-8">
+			<a href="{{ route('payment.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.new_payment') }}</a>
+			<a href="#" class="btn btn-default m-r pull-right">{{ trans('adminlte_lang::message.load_from_excel') }}</a>
+			<a href="#" class="btn btn-default m-r pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
 		</div>
 
 		<div class="col-sm-12">
@@ -48,29 +46,44 @@
 					</div>
 				</div>
 				<div class="col-sm-3">
-					<select class="form-control" data-placeholder="Выберите вид платежа" name="balance_is">
-						<option selected="" value="0">Все виды платежей</option>
-						<option value="1">Доходы</option>
-						<option value="2">Расходы</option>
-						<option value="3">Перемещение</option>
+					<select class="form-control" data-placeholder={{ trans('adminlte_lang::message.select_payment_status') }} name="balance_is">
+						<option selected="" value="0">{{ trans('adminlte_lang::message.payment_all_types') }}</option>
+						<option value="1">{{ trans('adminlte_lang::message.income') }}</option>
+						<option value="2">{{ trans('adminlte_lang::message.expenses') }}</option>
+						<option value="3">{{ trans('adminlte_lang::message.transfer') }}</option>
 					</select>
 				</div>	    	
 				<div class="col-sm-3">
-				{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '', 'id' => 'partner_id', 'placeholder' => 'Контрагент не выбран']) }}
+				{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 
+																'required' => '', 
+																'id' => 'partner_id', 
+																'placeholder' => trans('adminlte_lang::message.partner_not_chosen')]) }}
 				</div>	
 			</div>
 			<div class="row m-b">
 				<div class="col-sm-3">
-					{{ Form::select('account_id', $accounts, null, ['class' => 'form-control', 'required' => '', 'id' => 'account_id', 'placeholder' => 'Счет не выбран']) }}
+					{{ Form::select('account_id', $accounts, null, ['class' => 'form-control', 
+																	'required' => '', 
+																	'id' => 'account_id', 
+																	'placeholder' => trans('adminlte_lang::message.account_not_chosen')]) }}
 				</div>
 				<div class="col-sm-3">
-					{{ Form::select('item_id', $items, null, ['class' => 'form-control', 'required' => '', 'id' => 'item_id', 'placeholder' => 'Статья платежа не выбрана']) }}			
+					{{ Form::select('item_id', $items, null, ['class' => 'form-control', 
+															  'required' => '', 
+															  'id' => 'item_id', 
+															  'placeholder' => trans('adminlte_lang::message.payment_item_not_chosen')]) }}			
 				</div>
 				<div class="col-sm-3">
-					{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '', 'id' => 'employee_id', 'placeholder' => 'Сотрудник не выбран']) }}
+					{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 
+																	  'required' => '', 
+																	  'id' => 'employee_id', 
+																	  'placeholder' => trans('adminlte_lang::message.employee_not_chosen')]) }}
 				</div>
 				<div class="col-sm-3">
-					{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '', 'id' => 'client_id', 'placeholder' => 'Клиент не выбран']) }}
+					{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 
+																  'required' => '', 
+																  'id' => 'client_id', 
+																  'placeholder' => trans('adminlte_lang::message.client_not_chosen')]) }}
 				</div>
 				{{-- <div class="col-sm-3">
 					<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
@@ -127,9 +140,9 @@
 					</div> --}}
 				</div>
 				<div class="col-sm-3">
-					<select class="form-control" data-placeholder="Выберите статус платежа" name="deleted">
-						<option selected="" value="0">Не отмененные</option>
-						<option value="1">Отмененные</option>
+					<select class="form-control" data-placeholder={{ trans('adminlte_lang::message.select_payment_status') }} name="deleted">
+						<option selected="" value="0">{{ trans('adminlte_lang::message.not_cancelled') }}</option>
+						<option value="1">{{ trans('adminlte_lang::message.cancelled') }}</option>
 					</select>
 				</div>
 				<div class="form-inline">
@@ -138,13 +151,13 @@
 							<option selected="" value="25">25</option>
 							<option value="50">50</option>
 							<option value="100">100</option>
-						</select> платежей на странице            
+						</select> {{ trans('adminlte_lang::message.payments_per_page') }}
 					</div>
 				</div>
 			</div>
 			<div class="row m-b ">
 				<div class="col-sm-2 col-sm-offset-10">
-					<input type="button" class="btn btn-success btn-sm pull-right" value="Показать" id='form_submit'>
+					<input type="button" class="btn btn-success btn-sm pull-right" value={{ trans('adminlte_lang::message.show') }} id='form_submit'>
 				</div>
 			</div>
 		</fieldset>
@@ -154,16 +167,16 @@
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
-					<th>Дата</th>
-					<th>Наименование контрагента</th>
-					<th>Назначение</th>
-					<th>Касса</th>
-					<th>Комментарий</th>
-					<th>Автор</th>
-					<th>Сумма</th>
-					<th>Остаток в кассе</th>
-					<th>Услуга/Товар</th>
-					<th>Визит</th>
+					<th>{{ trans('adminlte_lang::message.date') }}</th>
+					<th>{{ trans('adminlte_lang::message.beneficiary_name') }}</th>
+					<th>{{ trans('adminlte_lang::message.purpose') }}</th>
+					<th>{{ trans('adminlte_lang::message.account') }}</th>
+					{{-- <th>{{ trans('adminlte_lang::message.comment') }}</th>
+					<th>{{ trans('adminlte_lang::message.author') }}</th> --}}
+					<th>{{ trans('adminlte_lang::message.sum') }}</th>
+					<th>{{ trans('adminlte_lang::message.balance_in_cash') }}</th>
+					{{-- <th>{{ trans('adminlte_lang::message.service_good') }}</th>
+					<th>{{ trans('adminlte_lang::message.visit') }}</th> --}}
 				</thead>
 				<tbody>
 					@foreach($payments as $payment)
@@ -181,14 +194,14 @@
 							@endif
 							<td>{{ $payment->item->title }}</td>
 							<td>{{ $payment->account->title }}</td>
-							<td>{{ $payment->description }}</td>
-							<td>{{ $payment->user->name }}</td>
+							{{-- <td>{{ $payment->description }}</td>
+							<td>{{ $payment->user->name }}</td> --}}
 							<td>{{ $payment->sum }}</td>
-							<td> <Это расчетное поле> </td>
-							<td></td>
-							<td></td>
+							<td> 0-00 </td>
+							{{-- <td></td>
+							<td></td> --}}
 
-							<td class="text-right">
+							<td class="text-right" style="min-width: 100px;">
 								@if ($user->hasAccessTo('payment', 'edit', 0))
 									<a href="{{ route('payment.edit', $payment->payment_id) }}" id="payment_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
 								@endif
