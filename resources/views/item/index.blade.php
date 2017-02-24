@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employees') }}
+	{{ trans('adminlte_lang::message.items') }}
 @endsection
 
 @section('main-content')
@@ -9,19 +9,19 @@
 		@if (Session::has('success'))
 		
 		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
+			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
 		</div>
 
 		@endif
 	</div>
 
 	<div class="row">
-		<div class="col-sm-10">
-			<h4>Все статьи доходов-расходов</h4>
+		<div class="col-sm-9">
+			<h4>{{ trans('adminlte_lang::message.items') }}</h4>
 		</div>	
 
-		<div class="col-sm-2">
-			<a href="{{ route('item.create') }}" class="btn btn-primary btn-block">Новая статья</a>
+		<div class="col-sm-3">
+			<a href="{{ route('item.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.item_create_new') }}</a>
 		</div>
 
 		<div class="col-sm-12">
@@ -33,8 +33,8 @@
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
-					<th>Наименование статьи</th>
-					<th>Тип статьи</th>
+					<th>{{ trans('adminlte_lang::message.item_name') }}</th>
+					<th>{{ trans('adminlte_lang::message.item_type') }}</th>
 					<th></th>
 				</thead>
 				<tbody>
@@ -48,21 +48,21 @@
 							</td>
 							<td>
 								@php
-									switch ($item->type) {
-										case 'income':
-											echo 'Доходы'; break;
-										case 'exp_oncost':
-											echo 'Расходы', ' ', 'на', ' ', 'себестоимость'; break;
-										case 'sales_exp':
-											echo 'Коммерческие', ' ', 'расходы'; break;
-										case 'staff_exp':
-											echo 'Расходы', ' ', 'на', ' ', 'персонал'; break;
-										case 'admin_exp':
-											echo 'Административно-хозяйственные', ' ', 'расходы'; break;
-										case 'taxes':
-											echo 'Налоги', ' ', 'и', ' ', 'сборы'; break;
+									switch ($item->itemtype_id) {
+										case 1:
+											echo trans('adminlte_lang::message.income'); break;
+										case 2:
+											echo trans('adminlte_lang::message.expenses_on_cost'); break;
+										case 3:
+											echo trans('adminlte_lang::message.commercial_exps'); break;
+										case 4:
+											echo trans('adminlte_lang::message.staff_exps'); break;
+										case 5:
+											echo trans('adminlte_lang::message.admin_exps'); break;
+										case 6:
+											echo trans('adminlte_lang::message.taxes'); break;
 										default:
-											echo 'Прочие'; break;
+											echo trans('adminlte_lang::message.other_exps'); break;
 									}
 								@endphp
 							</td>

@@ -6,13 +6,15 @@ use App\ServiceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use App\User;
+use App\Service;
 use App\SuperOrganization;
 use App\Organization;
 use App\AccessPermission;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
-use Symfony\Component\EventDispatcher\Tests\Service;
+use Illuminate\Support\Facades\DB;
+//use Symfony\Component\EventDispatcher\Tests\Service;
 
 use \App\Http\Controllers\Controller;
 
@@ -230,14 +232,25 @@ class BaseWidgetController extends Controller
         }
 
         $service = Service::where('service_id', $serviceId)
-            ->where('organization_id', $this->organization->organization_id)
+            ->join('service_categories', 'service.service_category_id', '=', 'service_categories.service_category_id')
+            ->where('service_categories.organization_id', $this->organization->organization_id)
             ->first();
         if (!$service)
         {
             abort(500, 'Internal server error. Service error.');
         }
 
-        $employees = $service->employees();
+        //$employees = $service->employees();
+        // Отображаем только тех, что разрешили онлайн запись (в employee_settings)
+        $employees = DB::table('employees')
+            ->join('employee_provides_service', 'employees.employee_id', '=', 'employee_provides_service.employee_id')
+            ->join('employee_settings', 'employees.employee_id', '=', 'employee_settings.employee_id')
+            ->select('employees.*', 'employee_settings.*')
+            ->where('employees.organization_id', $this->organization->organization_id)
+            ->where('employee_provides_service.service_id', $service->service_id)
+            ->where('employee_settings.reg_permitted', 1)
+            ->get();
+
         if ($employees->count() == 0) {
             abort(500, 'Internal server error. No employees for service found.');
             // TODO: такой вариант не является аномалией, нужно придусмотреть view для него

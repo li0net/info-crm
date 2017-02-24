@@ -56,7 +56,7 @@ class ItemController extends Controller
 		$item = new Item;
 
 		$item->title = $request->title;
-		$item->type = $request->type;
+		$item->itemtype_id = $request->type;
 		$item->description = $request->description;
 		$item->organization_id = $request->user()->organization_id;
 
@@ -117,7 +117,7 @@ class ItemController extends Controller
 		}
 
 		$item->title = $request->title;
-		$item->type = $request->type;
+		$item->itemtype_id = $request->type;
 		$item->description = $request->description;
 		$item->organization_id = $request->user()->organization_id;
 

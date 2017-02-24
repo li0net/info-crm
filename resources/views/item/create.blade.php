@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employee_create') }}
+	{{ trans('adminlte_lang::message.item_information') }}
 @endsection
 
 {{-- @section('Stylesheets')
@@ -12,7 +12,7 @@
 
 	<div class="row">
 		<div class="col-sm-6 col-sm-offset-3">
-			<h1>Информация о статье доходов-расходов</h1>	
+			<h4>{{ trans('adminlte_lang::message.item_information') }}</h4>	
 			<hr>	
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
@@ -27,21 +27,32 @@
 				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
 				{!! Form::open(['route' => 'item.store']) !!}
 					<div class="form-group">
-						{{ Form::label('title', 'Наименование:', ['class' => 'form-spacing-top']) }}
+						{{ Form::label('title', trans('adminlte_lang::message.item_name'), ['class' => 'form-spacing-top']) }}
 						{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 					</div>
 
 					<div class="form-group">
-						{{ Form::label('type', "Тип: ", ['class' => 'form-spacing-top']) }}
-						{{ Form::select('type', ['income'=>'Доходы', 'exp_oncost'=>'Расходы на себестоимость', 'sales_exp'=>'Коммерческие расходы', 'staff_exp'=>'Расходы на персонал', 'admin_exp'=>'Административно-хозяйственные расходы', 'taxes'=>'Налоги и сборы', 'others'=>'Прочие'], 'income', ['class' => 'form-control', 'required' => '']) }}
+						{{ Form::label('type', trans('adminlte_lang::message.item_type'), ['class' => 'form-spacing-top']) }}
+						{{ Form::select('type', [1 => trans('adminlte_lang::message.income'), 
+												 2 => trans('adminlte_lang::message.expenses_on_cost'), 
+												 3 => trans('adminlte_lang::message.commercial_exps'), 
+												 4 => trans('adminlte_lang::message.staff_exps'), 
+												 5 => trans('adminlte_lang::message.admin_exps'), 
+												 6 => trans('adminlte_lang::message.taxes'), 
+												 7 => trans('adminlte_lang::message.other_exps')], 'income', ['class' => 'form-control', 'required' => '']) }}
 					</div>
 
 					<div class="form-group">
-						{{ Form::label('description', "Описание: ", ['class' => 'form-spacing-top']) }}
+						{{ Form::label('description', trans('adminlte_lang::message.description'), ['class' => 'form-spacing-top']) }}
 						{{ Form::textarea('description', null, ['class' => 'form-control']) }}
 					</div>
 
-					{{	Form::submit('Создать новую статью', ['class' => 'btn btn-success btn-lg btn-block', 'style' => 'margin-top:20px;']) }}
+					<div class="row">
+						<div class="col-sm-6 col-sm-offset-3">
+							{{ Form::submit(trans('adminlte_lang::message.item_create_new'), ['class' => 'btn btn-success btn-block']) }}
+						</div>
+					</div>
+					{{-- {{	Form::submit(trans('adminlte_lang::message.item_create_new'), ['class' => 'btn btn-success text-center', 'style' => 'margin-top:20px;']) }} --}}
 				{!! Form::close() !!}	
 			</div>
 		</div>
