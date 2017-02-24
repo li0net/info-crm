@@ -12,10 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\Appointment;
 use App\Employee;
+use App\Client;
 use App\EmployeeSetting;
 use App\Service;
 use Response;
 use View;
+use Session;
+use Illuminate\Support\Facades\Input;
 
 /**
  * Class HomeController
@@ -40,78 +43,72 @@ class HomeController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		//$dash = '- все -';
-
 		$appointments = Appointment::select('appointment_id', 'employee_id', 'client_id', 'service_id', 'start', 'end')
 			->where('organization_id', $request->user()->organization_id)
 			->with('employee', 'client', 'service')
-			->get();
+			->get()->all();
 
-		//dd($appointments);
 		$employees = Employee::select('employee_id', 'name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
 		$services = Service::select('service_id', 'name')->pluck('name', 'service_id');
+		$clients = Client::where('organization_id', $request->user()->organization_id)->pluck('name', 'client_id');
 		$sessionStart = collect($this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, ''));
 		$sessionEnd = collect($this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, ''));
 
-		// $employees = $employees->put(0, $dash)->sort();
-		// $services = $services->put(0, $dash)->sort();
+		$filtered = Input::get('index');
 
-		return view('adminlte::home', [
-			'appointments' => $appointments,
-			'employees' => $employees,
-			'services' => $services,
-			'sessionStart' => $sessionStart,
-			'sessionEnd' => $sessionEnd
-		]);
+		$page = Input::get('page', 1);
+		$paginate = 10;
+
+		$offset = ($page * $paginate) - $paginate;
+		$itemsForCurrentPage = array_slice($appointments, $offset, $paginate, true);
+		$appointments = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($appointments), $paginate, $page);
+		$appointments->setPath('home');
+
+		return view('adminlte::home', compact('appointments', 'employees', 'services', 'clients', 'sessionStart', 'sessionEnd'));
 	}
 
 	public function indexFiltered(Request $request)
 	{
-		if(null !== ($request->input('date'))) {
-			$filter_start_time = date_create($request->input('date').'00:00:00');
-			date_format($filter_start_time, 'U = Y-m-d H:i:s');
+		$appointments = Appointment::where('organization_id', $request->organization_id);
 
-			$filter_end_time = date_create($request->input('date').'23:45:00');
-			date_format($filter_end_time, 'U = Y-m-d H:i:s');
-
-			$appointments = Appointment::select('appointment_id', 
-												'employee_id', 
-												'service_id', 
-												'client_id',
-												'start', 
-												'end') ->whereBetween('start', [$filter_start_time, $filter_end_time])
-													   ->whereBetween('end', [$filter_start_time, $filter_end_time])
-													   ->with('employee', 'client', 'service')
-													   ->get();
-
-			return View::make('adminlte::appointmentlist', ['appointments' => $appointments]);
-
-		} else {
-			$filter_employee = $request->input('filter_employee');
-			$filter_service = $request->input('filter_service');
-			
-			$filter_start_time = date_create();
-			date_format($filter_start_time, 'U = Y-m-d H:i:s');
-			date_timestamp_set($filter_start_time, strtotime($request->input('filter_start_time')));
-
-			$filter_end_time = date_create();
-			date_format($filter_end_time, 'U = Y-m-d H:i:s');
-			date_timestamp_set($filter_end_time, strtotime($request->input('filter_end_time')));
-			
-			$appointments = Appointment::select('appointment_id', 
-												'employee_id', 
-												'service_id', 
-												'client_id',
-												'start', 
-												'end')->whereBetween('employee_id', $filter_employee != 0 ? [$filter_employee, $filter_employee] : [1, 9999])
-													  ->whereBetween('service_id', $filter_service != 0 ? [$filter_service, $filter_service] : [1, 9999])
-													  ->whereBetween('start', [$filter_start_time, $filter_end_time])
-													  ->whereBetween('end', [$filter_start_time, $filter_end_time])
-													  ->with('employee', 'client', 'service')
-													  ->get();
-
-			return View::make('adminlte::appointmentlist', ['appointments' => $appointments]);
+		if('' !== $request->filter_employee_id) {
+			$appointments = $appointments->where('employee_id', $request->filter_employee_id);
 		}
+
+		if('' !== $request->filter_service_id) {
+			$appointments = $appointments->where('service_id', $request->filter_service_id);
+		}
+
+		if('' !== $request->filter_client_id) {
+			$appointments->where('client_id', $request->filter_client_id);
+		}
+
+		if('' !== $request->filter_appointment_status) {
+			$appointments->where('state', $request->filter_appointment_status);
+		}
+		
+		$filter_start_time = date_create($request->filter_date_from.'00:00:00');
+		date_format($filter_start_time, 'U = Y-m-d 0:0:0');
+
+		$filter_end_time = date_create($request->filter_date_to.'23:59:59');
+		date_format($filter_end_time, 'U = Y-m-d 23:59:59');
+
+		$appointments->whereBetween('start', [$filter_start_time, $filter_end_time]);
+		$appointments->whereBetween('end', [$filter_start_time, $filter_end_time]);
+
+		$appointments = $appointments->with('employee', 'client', 'service')->get();
+
+		$page = (0 == $request->page) ? 1 : $request->page;
+		$paginate = 10;
+
+		$offset = ($page * $paginate) - $paginate;
+		$itemsForCurrentPage = $appointments->slice($offset, $paginate);
+
+		$appointments = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($appointments), $paginate, $page);
+		$appointments->setPath('home');
+		$appointments->appends(['index' => 'filtered']);
+
+		return View::make('adminlte::appointmentlist', compact('appointments'));
 	}
 
 	protected function populateTimeIntervals($startTime, $endTime, $interval, $modifier) {

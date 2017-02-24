@@ -283,5 +283,8 @@ return [
 	'upload_into_1C'			=> 'Выгружать данные клиентов в 1С',
 	'payroll_calc'				=> 'Расчет заработной платы',
 	'photo'						=> 'Фотопортрет',
-	'load_photo'				=> 'Загрузить фото'
+	'load_photo'				=> 'Загрузить фото',
+	'appointment_time'			=> 'Время визита',
+	'client_name'				=> 'Наименование клиента',
+	'appointment_status'		=> 'Статус записи'
 ];

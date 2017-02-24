@@ -276,5 +276,8 @@ return [
 	'upload_into_1C'			=> 'Upload Data of Clients into 1C',
 	'payroll_calc'				=> 'Payroll calculation',
 	'photo'						=> 'Photo',
-	'load_photo'				=> 'Load photo'
+	'load_photo'				=> 'Load photo',
+	'appointment_time'			=> 'Appointment time',
+	'client_name'				=> 'Client name',
+	'appointment_status'		=> 'Appointment status'
 ];
