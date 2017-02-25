@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employees') }}
+	{{ trans('adminlte_lang::message.products') }}
 @endsection
 
 @section('main-content')
@@ -9,21 +9,21 @@
 		@if (Session::has('success'))
 		
 		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
+			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
 		</div>
 
 		@endif
 	</div>
 
 	<div class="row">
-		<div class="col-sm-8">
-			<h4>Все товары</h4>
+		<div class="col-sm-4">
+			<h4>{{ trans('adminlte_lang::message.products') }}</h4>
 		</div>	
 
-		<div class="col-sm-4">
-			<a href="{{ route('product.create') }}" class="btn btn-primary pull-right">Новый товар</a>
-			<a href="#" class="btn btn-default m-r pull-right">Загрузить из Excel</a>
-			<a href="#" class="btn btn-default m-r pull-right">Выгрузить в Excel</a>
+		<div class="col-sm-8">
+			<a href="{{ route('product.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.new_product') }}</a>
+			<a href="#" class="btn btn-default m-r pull-right">{{ trans('adminlte_lang::message.load_from_excel') }}</a>
+			<a href="#" class="btn btn-default m-r pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
 		</div>
 
 		<div class="col-sm-12">
@@ -35,10 +35,10 @@
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
-					<th>Наименование товара</th>
-					<th>Цена продажи</th>
-					<th>Единица измерения</th>
-					<th>Комментарий</th>
+					<th>{{ trans('adminlte_lang::message.product_title') }}</th>
+					<th>{{ trans('adminlte_lang::message.sell_price') }}</th>
+					<th>{{ trans('adminlte_lang::message.unit') }}</th>
+					<th>{{ trans('adminlte_lang::message.comment') }}</th>
 					<th></th>
 				</thead>
 				<tbody>
@@ -53,22 +53,22 @@
 							<td>
 								{{ $product->price }} &#8381;
 								<br>
-								<small>Стоимость товара для продажи</small>
+								<small>{{ trans('adminlte_lang::message.cost_of_goods_for_sale') }}</small>
 							</td>
 							<td> 
 								@if($product->unit_for_sale = 'pcs') 
-									Штуки&nbsp;
+									{{ trans('adminlte_lang::message.pieces') }}&nbsp;
 								@else
-									Миллилитры
+									{{ trans('adminlte_lang::message.milliliters') }}
 								@endif
 								=&nbsp;{{ $product->is_equal }}&nbsp;
 								@if($product->unit_for_disposal = 'pcs')
-									Штуки&nbsp; 
+									{{ trans('adminlte_lang::message.pieces') }}&nbsp; 
 								@else
-									Миллилитры
+									{{ trans('adminlte_lang::message.milliliters') }}
 								@endif
 								<br>
-								<small>Формула расчета товара для списания</small>
+								<small>{{ trans('adminlte_lang::message.formula_for_disposal') }}</small>
 							</td>
 							<td>
 								{{ $product->description }}
@@ -88,7 +88,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-					{!! $products->render(); !!} 
+				{!! $products->render(); !!} 
 			</div>
 		</div>
 	</div>		

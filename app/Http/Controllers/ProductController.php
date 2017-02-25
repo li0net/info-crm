@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Product;
+use App\ProductCategory;
 use App\Storage;
 use Session;
 use Illuminate\Support\Facades\Input;
@@ -41,8 +42,9 @@ class ProductController extends Controller
 	public function create(Request $request)
 	{
 		$storages = Storage::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'storage_id');
+		$categories = ProductCategory::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'product_category_id');
 
-		return view('product.create', compact('storages'));
+		return view('product.create', compact('storages', 'categories'));
 	}
 
 	/**
@@ -67,10 +69,11 @@ class ProductController extends Controller
 		$product->title = $request->title;
 		$product->article = $request->article;
 		$product->barcode = $request->barcode;
-		$product->category = $request->category;
+		$product->category_id = $request->category_id;
 		$product->storage_id = $request->storage_id;
 		$product->price = $request->price;
 		$product->unit_for_sale = $request->unit_for_sale;
+		$product->amount = 0;
 		$product->is_equal = $request->is_equal;
 		$product->unit_for_disposal = $request->unit_for_disposal;
 		$product->critical_balance = $request->critical_balance;
@@ -81,7 +84,7 @@ class ProductController extends Controller
 
 		$product->save();
 
-		Session::flash('success', 'Новый товар успешно добавлен!');
+		Session::flash('success', trans('adminlte_lang::message.new_product_added'));
 
 		return redirect()->route('product.show', $product->product_id);
 	}
@@ -92,11 +95,14 @@ class ProductController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show($id)
+	public function show(Request $request, $id)
 	{
 		$product = Product::find($id);
 
-		return view('product.show', ['product' => $product]);
+		$storage = Storage::where('organization_id', $request->user()->organization_id)->where('storage_id', $product->storage_id)->get()->first();
+		$category = ProductCategory::where('organization_id', $request->user()->organization_id)->where('product_category_id', $product->category_id)->get()->first();
+
+		return view('product.show', compact('product', 'storage', 'category'));
 	}
 
 	/**
@@ -110,8 +116,9 @@ class ProductController extends Controller
 		$product = Product::find($id);
 
 		$storages = Storage::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'storage_id');
+		$categories = ProductCategory::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'product_category_id');
 
-		return view('product.edit', compact('product', 'storages'));
+		return view('product.edit', compact('product', 'storages', 'categories'));
 	}
 
 	/**
@@ -140,7 +147,7 @@ class ProductController extends Controller
 		$product->title = $request->title;
 		$product->article = $request->article;
 		$product->barcode = $request->barcode;
-		$product->category = $request->category;
+		$product->category_id = $request->category_id;
 		$product->storage_id = $request->storage_id;
 		$product->price = $request->price;
 		$product->unit_for_sale = $request->unit_for_sale;

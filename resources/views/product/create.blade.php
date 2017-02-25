@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employee_create') }}
+	{{ trans('adminlte_lang::message.product_create_new') }}
 @endsection
 
 {{-- @section('Stylesheets')
@@ -11,8 +11,8 @@
 @section('main-content')
 
 	<div class="row">
-		<div class="col-sm-6 col-sm-offset-3">
-			<h4>Информация о товаре</h4>	
+		<div class="col-sm-8 col-sm-offset-2">
+			<h4>{{ trans('adminlte_lang::message.information_about_product') }}</h4>	
 			{{-- <ex1></ex1> --}}
 			<hr>	
 			@if (count($errors) > 0)
@@ -29,10 +29,10 @@
 				{!! Form::open(['route' => 'product.store', 'class' => 'form-horizontal']) !!}
 					<div class="row">
 						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('title', 'Наименование:', ['class' => 'form-spacing-top']) }}
+							<div class="col-sm-3 control-label">
+								{{ Form::label('title', trans('adminlte_lang::message.product_title'), ['class' => 'form-spacing-top']) }}
 							</div>
-							<div class="col-sm-9">
+							<div class="col-sm-8">
 								{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
 							<label class="col-sm-1 text-left">
@@ -41,10 +41,10 @@
 						</div>
 
 						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('article', 'Артикул:', ['class' => 'form-spacing-top']) }}
+							<div class="col-sm-3 control-label">
+								{{ Form::label('article', trans('adminlte_lang::message.article'), ['class' => 'form-spacing-top']) }}
 							</div>
-							<div class="col-sm-9">
+							<div class="col-sm-8">
 								{{ Form::text('article', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
 							<label class="col-sm-1 text-left">
@@ -53,10 +53,10 @@
 						</div>
 
 						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('barcode', 'Штрих-код:', ['class' => 'form-spacing-top']) }}
+							<div class="col-sm-3 control-label">
+								{{ Form::label('barcode', trans('adminlte_lang::message.bar_code'), ['class' => 'form-spacing-top']) }}
 							</div>
-							<div class="col-sm-9">
+							<div class="col-sm-8">
 								{{ Form::text('barcode', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
 							<label class="col-sm-1 text-left">
@@ -65,11 +65,11 @@
 						</div>
 
 						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('category', 'Категория:', ['class' => 'form-spacing-top']) }}
+							<div class="col-sm-3 control-label">
+								{{ Form::label('category_id', trans('adminlte_lang::message.category'), ['class' => 'form-spacing-top']) }}
 							</div>
-							<div class="col-sm-9">
-								{{ Form::text('category', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+							<div class="col-sm-8">
+								{{ Form::select('category_id', $categories, null, ['class' => 'form-control', 'required' => '']) }}
 							</div>
 							<label class="col-sm-1 text-left">
 								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -77,10 +77,10 @@
 						</div>
 
 						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('storage_id', 'Склад:', ['class' => 'form-spacing-top']) }}
+							<div class="col-sm-3 control-label">
+								{{ Form::label('storage_id', trans('adminlte_lang::message.storage'), ['class' => 'form-spacing-top']) }}
 							</div>
-							<div class="col-sm-9">
+							<div class="col-sm-8">
 								{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
 							</div>
 							<label class="col-sm-1 text-left">
@@ -89,10 +89,10 @@
 						</div>
 
 						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('price', 'Цена продажи:', ['class' => 'form-spacing-top']) }}
+							<div class="col-sm-3 control-label">
+								{{ Form::label('price', trans('adminlte_lang::message.sell_price'), ['class' => 'form-spacing-top']) }}
 							</div>
-							<div class="col-sm-9">
+							<div class="col-sm-8">
 								{{ Form::text('price', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
 							<label class="col-sm-1 text-left">
@@ -101,23 +101,29 @@
 						</div>
 
 						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('', 'Единица измерения:', ['class' => 'form-spacing-top']) }}
+							<div class="col-sm-3 control-label">
+								{{ Form::label('', trans('adminlte_lang::message.unit'), ['class' => 'form-spacing-top']) }}
 							</div>
-							<div class="col-sm-4">
-								<p>Для продажи</p>
-								{{ Form::select('unit_for_sale', ['pcs' => 'штуки', 'ml' => 'миллилитры'], 'pcs', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+							<div class="col-sm-3">
+								<p>{{ trans('adminlte_lang::message.for_sale') }}</p>
+								{{ Form::select('unit_for_sale', ['pcs' => trans('adminlte_lang::message.pieces'), 
+																  'ml' => trans('adminlte_lang::message.milliliters')], 
+																  'pcs', 
+																  ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
-							<div class="col-sm-1">
-								<p>Равно</p>
+							<div class="col-sm-2">
+								<p>{{ trans('adminlte_lang::message.is_equal') }}</p>
 								<div class="input-group">
 									<span class="input-group-addon">=</span>
 									<input type="text" class="form-control" name="is_equal" value="2"> 
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<p>Для списания</p>
-								{{ Form::select('unit_for_disposal', ['pcs' => 'штуки', 'ml' => 'миллилитры'], 'pcs', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+							<div class="col-sm-3">
+								<p>{{ trans('adminlte_lang::message.for_disposal') }}</p>
+								{{ Form::select('unit_for_disposal', ['pcs' => trans('adminlte_lang::message.pieces'), 
+																  	  'ml' => trans('adminlte_lang::message.milliliters')], 
+																  	  'pcs', 
+																  	  ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
 							<label class="col-sm-1 text-left">
 								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -125,11 +131,11 @@
 						</div>
 
 						<div class="form-group">
-							{{ Form::label('critical_balance', 'Критичный остаток:', ['class' => 'form-spacing-top col-sm-2 control-label']) }}
-							<div class="col-sm-9">
+							{{ Form::label('critical_balance', trans('adminlte_lang::message.critical_balance'), ['class' => 'form-spacing-top col-sm-3 control-label']) }}
+							<div class="col-sm-8">
 								<div class="input-group">
 									{{ Form::text('critical_balance', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-									<span class="input-group-addon">шт.</span>
+									<span class="input-group-addon">{{ trans('adminlte_lang::message.pcs') }}</span>
 								</div>
 							</div>
 							<label class="col-sm-1 text-left">
@@ -138,20 +144,20 @@
 						</div>
 
 						<div class="form-group">
-							{{ Form::label('critical_balance', 'Массы:', ['class' => 'form-spacing-top col-sm-2 control-label']) }}
-							<div class="col-sm-4">
-								<p>Масса нетто:</p>
+							{{ Form::label('critical_balance', trans('adminlte_lang::message.weights'), ['class' => 'form-spacing-top col-sm-3 control-label']) }}
+							<div class="col-sm-3">
+								<p>{{ trans('adminlte_lang::message.net_weight') }}</p>
 								<div class="input-group">
 									{{ Form::text('net_weight', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-									<span class="input-group-addon">гр.</span>
+									<span class="input-group-addon">{{ trans('adminlte_lang::message.g') }}</span>
 								</div>
 							</div>
-							<div class="col-sm-1"></div>
-							<div class="col-sm-4">
-								<p>Масса брутто:</p>
+							<div class="col-sm-2"></div>
+							<div class="col-sm-3">
+								<p>{{ trans('adminlte_lang::message.gross_weight') }}</p>
 								<div class="input-group">
 									{{ Form::text('gross_weight', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-									<span class="input-group-addon">гр.</span>
+									<span class="input-group-addon">{{ trans('adminlte_lang::message.g') }}</span>
 								</div>
 							</div>
 							<label class="col-sm-1 text-left">
@@ -160,8 +166,8 @@
 						</div>
 
 						<div class="form-group">
-							{{ Form::label('description', 'Описание:', ['class' => 'form-spacing-top col-sm-2 control-label']) }}
-							<div class="col-sm-9">
+							{{ Form::label('description', trans('adminlte_lang::message.description'), ['class' => 'form-spacing-top col-sm-3 control-label']) }}
+							<div class="col-sm-8">
 								{{ Form::textarea('description', null, ['class' => 'form-control']) }}
 							</div>
 							<label class="col-sm-1 text-left">
@@ -174,7 +180,7 @@
 					
 					<div class="row">
 						<div class="col-sm-4 col-sm-offset-4">
-							{{	Form::submit('Создать новый товар', ['class' => 'btn btn-success btn-block', 'style' => 'margin-top:20px;']) }}
+							{{	Form::submit(trans('adminlte_lang::message.product_create_new'), ['class' => 'btn btn-success btn-block']) }}
 						</div>
 					</div>
 					
