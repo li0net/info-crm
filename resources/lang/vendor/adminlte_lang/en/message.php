@@ -403,5 +403,11 @@ return [
 	'cost_of_goods_for_sale'	=> 'Cost of goods for sale',
 	'formula_for_disposal'		=> 'The formula for calculating the goods for disposal',
 	'products'					=> 'Products',
-	'new_product_added'			=> 'New product successfully added!'
+	'new_product_added'			=> 'New product successfully added!',
+	'product_ctgs_create_new'	=> 'Create new product category',
+	'parent_category'			=> 'Parent category',
+	'new_category'				=> 'New category',
+	'category_title'			=> 'Category title',
+	'information_about_ctgs'	=> 'Information about product category',
+	'product_categories'		=> 'Product categories'
 ];

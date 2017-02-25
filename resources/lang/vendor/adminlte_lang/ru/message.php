@@ -410,5 +410,11 @@ return [
 	'cost_of_goods_for_sale'	=> 'Стоимость товара для продажи',
 	'formula_for_disposal'		=> 'Формула расчета товара для списания',
 	'products'					=> 'Все товары',
-	'new_product_added'			=> 'Новый товар успешно добавлен!'
+	'new_product_added'			=> 'Новый товар успешно добавлен!',
+	'product_ctgs_create_new'	=> 'Создание новой категории товара',
+	'parent_category'			=> 'Родительская категория',
+	'new_category'				=> 'Новая категория',
+	'category_title'				=> 'Наименование категории',
+	'information_about_ctgs'	=> 'Информация о категории товара',
+	'product_categories'		=> 'Категории товаров'
 ];
