@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employee_create') }}
+	{{ trans('adminlte_lang::message.position_create_new') }}
 @endsection
 
 {{-- @section('Stylesheets')
@@ -11,8 +11,8 @@
 @section('main-content')
 
 	<div class="row">
-		<div class="col-sm-4 col-sm-offset-4">
-			<h1>Создание новой должности</h1>	
+		<div class="col-sm-6 col-sm-offset-3">
+			<h4>{{ trans('adminlte_lang::message.position_create_new') }}</h4>	
 			<hr>	
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
@@ -27,16 +27,20 @@
 				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
 				{!! Form::open(['route' => 'position.store']) !!}
 					<div class="form-group">
-						{{ Form::label('title', 'Название:', ['class' => 'form-spacing-top']) }}
-						{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '70']) }}
+						{{ Form::label('title', trans('adminlte_lang::message.position_name')) }}
+						{{ Form::text('title', null, ['class' => 'form-control', 
+													  'required' => '', 
+													  'maxlength' => '70',
+													  'placeholder' => trans('adminlte_lang::message.specialization_example')]) }}
 					</div>
 
 					<div class="form-group">
-						{{ Form::label('description', "Описание: ", ['class' => 'form-spacing-top']) }}
-						{{ Form::textarea('description', null, ['class' => 'form-control', 'email' => '']) }}
+						{{ Form::label('description', trans('adminlte_lang::message.description')) }}
+						{{ Form::textarea('description', null, ['class' => 'form-control',
+																'placeholder' => trans('adminlte_lang::message.service_example')]) }}
 					</div>
 
-					{{	Form::submit('Создать новую должность', ['class' => 'btn btn-success btn-lg btn-block', 'style' => 'margin-top:20px;']) }}
+					{{	Form::submit(trans('adminlte_lang::message.position_create_new'), ['class' => 'btn btn-success btn-block']) }}
 				{!! Form::close() !!}	
 			</div>
 		</div>

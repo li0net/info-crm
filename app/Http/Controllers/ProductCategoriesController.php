@@ -115,7 +115,7 @@ class ProductCategoriesController extends Controller
             'title' => 'required'
         ]);
 
-        $productCategory = new ProductCategory;
+        $productCategory = ProductCategory::where('organization_id', $request->user()->organization_id)->where('product_category_id', $id)->first();
 
         $productCategory->title = $request->title;            
         $productCategory->description = $request->description;
@@ -124,7 +124,7 @@ class ProductCategoriesController extends Controller
 
         $productCategory->save();
 
-        Session::flash('success', 'Новая категория товара успешно добавлена!');
+        Session::flash('success', 'Информация о категория товара успешно сохранена!');
 
         return redirect()->route('productCategories.show', $productCategory->product_сategory_id);
     }

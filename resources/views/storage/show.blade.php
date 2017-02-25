@@ -9,7 +9,7 @@
 		@if (Session::has('success'))
 		
 		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
+			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
 		</div>
 
 		@endif
@@ -17,19 +17,19 @@
 	<div class="row">
 		<div class="col-sm-6 col-sm-offset-3">
 			<div class="well">
-				{{ Form::label('title', "Наименование: ") }}
+				{{ Form::label('title', trans('adminlte_lang::message.storage_title')) }}
 				<p class="lead">{{ $storage->title }}</p>
 
-				{{ Form::label('type', "Тип: ") }}
+				{{ Form::label('type', trans('adminlte_lang::message.storage_type')) }}
 				<p class="lead">
 					@if( $storage->type == 0 )
-						Для списания расходных материалов
+						{{ trans('adminlte_lang::message.writeoff_supplies') }}
 					@else
-						Для продажи товаров
+						{{ trans('adminlte_lang::message.sale_goods') }}
 					@endif
 				</p>
 
-				{{ Form::label('description', "Описание: ") }}
+				{{ Form::label('description', trans('adminlte_lang::message.description')) }}
 				<p class="lead">{{ $storage->description }}</p>
 				
 				<hr>
@@ -37,15 +37,13 @@
 				<div class="row">
 					@if ($user->hasAccessTo('storage', 'edit', 0))
 						<div class="col-sm-6">
-							{!! Html::linkRoute('storage.edit', 'Редактировать', [$storage->storage_id], ['class'=>'btn btn-primary btn-block']) !!}
+							{!! Html::linkRoute('storage.edit', trans('adminlte_lang::message.edit'), [$storage->storage_id], ['class'=>'btn btn-primary btn-block']) !!}
 						</div>
 					@endif
 					@if ($user->hasAccessTo('storage', 'delete', 0))
 						<div class="col-sm-6">
 							{!! Form::open(['route' => ['storage.destroy', $storage->storage_id], "method" => 'DELETE']) !!}
-
-							{{ Form::submit('Удалить', ['class'=>'btn btn-danger btn-block']) }}
-
+								{{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger btn-block']) }}
 							{!! Form::close() !!}
 						</div>
 					@endif
@@ -53,7 +51,8 @@
 
 				<div class="row">
 					<div class="col-sm-12">
-							{{ Html::linkRoute('storage.index', 'Все склады »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
+							{{ Html::linkRoute('storage.index', trans('adminlte_lang::message.storages').' »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 
+																													'style' => 'margin-top:15px']) }}
 					</div>
 				</div>
 			</div>

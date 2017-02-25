@@ -4,33 +4,33 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-4 col-sm-offset-4 text-center">
-			<h4><b>Операций с такими параметрами не обнаружено</b></h4>
+			<h4><b>{{ trans('adminlte_lang::message.no_such_transations') }}</b></h4>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-sm-4 col-sm-offset-4 text-center m-b">
-			Вы можете добавить новый платеж
+			{{ trans('adminlte_lang::message.you_can_add_payment') }}
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-sm-4 col-sm-offset-4 text-center">
-			<a href="/payment/create" class="btn btn-primary">Новый платеж</a>
+			<a href="/payment/create" class="btn btn-primary">{{ trans('adminlte_lang::message.new_payment') }}</a>
 		</div>
 	</div>
 @else
 	<table class="table">
 		<thead>
 			<th class="text-center">#</th>
-			<th>Дата</th>
-			<th>Наименование контрагента</th>
-			<th>Назначение</th>
-			<th>Касса</th>
-			<th>Комментарий</th>
-			<th>Автор</th>
-			<th>Сумма</th>
-			<th>Остаток в кассе</th>
-			<th>Услуга/Товар</th>
-			<th>Визит</th>
+			<th>{{ trans('adminlte_lang::message.date') }}</th>
+			<th>{{ trans('adminlte_lang::message.beneficiary_name') }}</th>
+			<th>{{ trans('adminlte_lang::message.purpose') }}</th>
+			<th>{{ trans('adminlte_lang::message.account') }}</th>
+			{{-- <th>{{ trans('adminlte_lang::message.comment') }}</th>
+			<th>{{ trans('adminlte_lang::message.author') }}</th> --}}
+			<th>{{ trans('adminlte_lang::message.sum') }}</th>
+			<th>{{ trans('adminlte_lang::message.balance_in_cash') }}</th>
+			{{-- <th>{{ trans('adminlte_lang::message.service_good') }}</th>
+			<th>{{ trans('adminlte_lang::message.visit') }}</th> --}}
 		</thead>
 		<tbody>
 			@foreach($payments as $payment)
@@ -48,14 +48,14 @@
 					@endif
 					<td>{{ $payment->item->title }}</td>
 					<td>{{ $payment->account->title }}</td>
-					<td>{{ $payment->description }}</td>
-					<td>{{ $payment->user->name }}</td>
+					{{-- <td>{{ $payment->description }}</td>
+					<td>{{ $payment->user->name }}</td> --}}
 					<td>{{ $payment->sum }}</td>
-					<td> <Это расчетное поле> </td>
-					<td></td>
-					<td></td>
+					<td> 0-00 </td>
+					{{-- <td></td>
+					<td></td> --}}
 
-					<td class="text-right">
+					<td class="text-right" style="min-width: 100px;">
 						@if ($user->hasAccessTo('payment', 'edit', 0))
 							<a href="{{ route('payment.edit', $payment->payment_id) }}" id="payment_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
 						@endif

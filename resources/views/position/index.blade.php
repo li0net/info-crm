@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employees') }}
+	{{ trans('adminlte_lang::message.positions') }}
 @endsection
 
 @section('main-content')
@@ -9,18 +9,18 @@
 		@if (Session::has('success'))
 		
 		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
+			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
 		</div>
 
 		@endif
 	</div>
 	<div class="row">
 		<div class="col-sm-10">
-			<h4>Все должности</h1>
+			<h4>{{ trans('adminlte_lang::message.positions') }}</h1>
 		</div>	
 
 		<div class="col-sm-2">
-			<a href="{{ route('position.create') }}" class="btn btn-primary btn-block">Новая должность</a>
+			<a href="{{ route('position.create') }}" class="btn btn-primary btn-block">{{ trans('adminlte_lang::message.new_position') }}</a>
 		</div>
 
 		<div class="col-sm-12">
@@ -33,8 +33,8 @@
 			<table class="table">
 				<thead>
 					<th>#</th>
-					<th>Название</th>
-					<th>Описание</th>
+					<th>{{ trans('adminlte_lang::message.position_name') }}</th>
+					<th>{{ trans('adminlte_lang::message.description') }}</th>
 					<th></th>
 				</thead>
 

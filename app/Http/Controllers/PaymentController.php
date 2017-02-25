@@ -175,7 +175,7 @@ class PaymentController extends Controller
 
 		$payment->save();
 
-		Session::flash('success', 'Новый платеж успешно добавлен!');
+		Session::flash('success', trans('adminlte_lang::message.sucessfully_added'));
 
 		return redirect()->route('payment.show', $payment->payment_id);
 	}
@@ -193,7 +193,12 @@ class PaymentController extends Controller
 		$item = Item::where('organization_id', $request->user()->organization_id)->where('item_id', $payment->item_id)->get()->first();
 		$account = Account::where('organization_id', $request->user()->organization_id)->where('account_id', $payment->account_id)->get()->first();
 
-		return view('payment.show', ['payment' => $payment, 'item' => $item, 'account' => $account]);
+		$partner = Partner::where('organization_id', $request->user()->organization_id)->where('partner_id', $payment->partner_id)->get()->first();
+		$employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $payment->employee_id)->get()->first();
+		$client = Client::where('organization_id', $request->user()->organization_id)->where('client_id', $payment->client_id)->get()->first();
+
+		// return view('payment.show', ['payment' => $payment, 'item' => $item, 'account' => $account]);
+		return view('payment.show', compact('payment', 'item', 'account', 'partner', 'employee', 'client'));
 	}
 
 	/**

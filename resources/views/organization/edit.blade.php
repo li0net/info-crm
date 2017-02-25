@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employee_edit') }}
+	{{ trans('adminlte_lang::message.org_info') }}
 @endsection
 
 @section('main-content')
@@ -11,13 +11,13 @@
 				<div class="well">
 					<ul class="nav nav-tabs">
 						<li class="active">
-							<a data-toggle="tab" href="#menu1">Контакты</a>
+							<a data-toggle="tab" href="#menu1">{{ trans('adminlte_lang::message.contacts') }}</a>
 						</li>
 						<li class="">
-							<a data-toggle="tab" href="#menu2">Описание</a>
+							<a data-toggle="tab" href="#menu2">{{ trans('adminlte_lang::message.description') }}</a>
 						</li>
 						<li class="">
-							<a data-toggle="tab" href="#menu3">Фото</a>
+							<a data-toggle="tab" href="#menu3">{{ trans('adminlte_lang::message.photo') }}</a>
 						</li>
 					</ul>
 				
@@ -29,44 +29,52 @@
 									{!! Form::hidden('coordinates', null, ['id' => 'coordinates']) !!}
 									<div class="col-sm-7 b-r">
 										<div class="form-group">
-											{{ Form::label('address', 'Адрес:', ['class' => 'ctrl-label']) }}
-											{{ Form::text('address', null, ['id' => 'addr', 'class' => 'text-left form-control', 'placeholder' => 'Например, ул. Парковая д.14, 23']) }}
+											{{ Form::label('address', trans('adminlte_lang::message.address'), ['class' => 'ctrl-label']) }}
+											{{ Form::text('address', null, ['id' => 'addr', 
+																			'class' => 'text-left form-control', 
+																			'placeholder' => trans('adminlte_lang::message.address_example')]) }}
 										</div>
 
 										<div class="form-group">
-											{{ Form::label('post_index', 'Почтовый индекс:', ['class' => 'ctrl-label']) }}
-											{{ Form::text('post_index', null, ['class' => 'text-left form-control', 'placeholder' => 'Например, 153150']) }}
+											{{ Form::label('post_index', trans('adminlte_lang::message.zip_code'), ['class' => 'ctrl-label']) }}
+											{{ Form::text('post_index', null, ['class' => 'text-left form-control', 
+																			   'placeholder' => trans('adminlte_lang::message.zip_example')]) }}
 										</div>
 
 										<div class="form-group">
-											{{ Form::label('phone_1', "Телефон: ", ['class' => 'ctrl-label']) }}
-											{{ Form::text('phone_1', null, ['class' => 'form-control', 'placeholder' => 'Формат: 7 495 682 1414']) }}
+											{{ Form::label('phone_1', trans('adminlte_lang::message.phone'), ['class' => 'ctrl-label']) }}
+											{{ Form::text('phone_1', null, ['class' => 'form-control', 
+																			'placeholder' => trans('adminlte_lang::message.phone_format')]) }}
 										</div>
 
 										<div class="form-group">
-											{{ Form::label('phone_2', "Телефон: ", ['class' => 'ctrl-label']) }}
-											{{ Form::text('phone_2', null, ['class' => 'form-control', 'placeholder' => 'Формат: 7 495 682 1414']) }}
+											{{ Form::label('phone_2', trans('adminlte_lang::message.phone'), ['class' => 'ctrl-label']) }}
+											{{ Form::text('phone_2', null, ['class' => 'form-control', 
+																			'placeholder' => trans('adminlte_lang::message.phone_format')]) }}
 										</div>
 
 										<div class="form-group">
-											{{ Form::label('phone_3', "Телефон: ", ['class' => 'ctrl-label']) }}
-											{{ Form::text('phone_3', null, ['class' => 'form-control', 'placeholder' => 'Формат: 7 495 682 1414']) }}
+											{{ Form::label('phone_3', trans('adminlte_lang::message.phone'), ['class' => 'ctrl-label']) }}
+											{{ Form::text('phone_3', null, ['class' => 'form-control', 
+																			'placeholder' => trans('adminlte_lang::message.phone_format')]) }}
 										</div>
 
 										<div class="form-group">
-											{{ Form::label('website', "Сайт: ", ['class' => 'ctrl-label']) }}
-											{{ Form::text('website', null, ['class' => 'form-control', 'placeholder' => 'Например, www.my-company.com']) }}
+											{{ Form::label('website', trans('adminlte_lang::message.site'), ['class' => 'ctrl-label']) }}
+											{{ Form::text('website', null, ['class' => 'form-control', 
+																			'placeholder' => trans('adminlte_lang::message.site_example')]) }}
 										</div>
 
 										<div class="form-group">
-											{{ Form::label('work_hours', "Часы работы: ", ['class' => 'ctrl-label']) }}
-											{{ Form::text('work_hours', null, ['class' => 'form-control', 'placeholder' => 'Например, пн.-вс.: 11:00-22:00']) }}
+											{{ Form::label('work_hours', trans('adminlte_lang::message.opening_hours'), ['class' => 'ctrl-label']) }}
+											{{ Form::text('work_hours', null, ['class' => 'form-control', 
+																			   'placeholder' => trans('adminlte_lang::message.hours_example')]) }}
 										</div>
 									</div>
 
 									<div class="col-sm-5 text-center">
 										<div id='map' style='height:300px; margin-top: 15px; margin-bottom: 15px;' class='map-block'></div>
-										<div class="alert alert-info">Перемещайте маркер, чтобы указать расположение на карте. Щелкните мышью по маркеру, чтобы установить адрес.</div>
+										<div class="alert alert-info">{{ trans('adminlte_lang::message.map_instruction') }}</div>
 									</div>
 								{!! Form::close() !!}
 							</div>
@@ -94,7 +102,7 @@
 							<div class="col-sm-4 col-sm-offset-4">
 								<div class="row">
 									<div class="col-sm-12">
-										{{ Form::button('Сохранить', ['class'=>'btn btn-success btn-block', 'id' => 'form_submit']) }}
+										{{ Form::button(trans('adminlte_lang::message.save'), ['class'=>'btn btn-success btn-block', 'id' => 'form_submit']) }}
 									</div>
 								</div>
 							</div>
@@ -140,8 +148,8 @@
 
 				// Метка, содержимое балуна которой загружается с помощью AJAX.
 				placemark = new ymaps.Placemark((myCenter == '' || myCenter == null) ? [55.87, 37.66] : myCenter, {
-					iconContent: "Укажите адрес",
-					hintContent: "Перетащите метку и кликните, чтобы указать адрес"
+					iconContent: <?php echo "'".trans('adminlte_lang::message.specify_the_address')."'" ?>,
+					hintContent: <?php echo "'".trans('adminlte_lang::message.drag_label')."'" ?>
 				}, {
 					draggable: "true",
 					preset: "twirl#blueStretchyIcon",
@@ -150,7 +158,7 @@
 				});
 
 				placemark.events.add('balloonopen', function (e) {
-					placemark.properties.set('balloonContent', "Идет загрузка данных...");
+					placemark.properties.set('balloonContent', <?php echo "'".trans('adminlte_lang::message.loading')."'" ?>);
 
 					// Имитация задержки при загрузке данных (для демонстрации примера).
 					setTimeout(function () {
@@ -159,7 +167,7 @@
 						}).then(function (res) {
 							var newContent = res.geoObjects.get(0) ?
 									res.geoObjects.get(0).properties.get('name') :
-									'Не удалось определить адрес.';
+									<?php echo "'".trans('adminlte_lang::message.unable_to_locate')."'" ?>;
 
 							// Задаем новое содержимое балуна в соответствующее свойство метки.
 							placemark.properties.set('balloonContent', newContent);

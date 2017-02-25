@@ -174,8 +174,8 @@ class OrganizationsController extends Controller
 
         $org->save();
 
-        Session::flash('success', 'Сведения об организации успешно сохранены!');
+        Session::flash('success', trans('adminlte_lang::message.org_info_saved'));
 
-        return redirect()->to('/');
+        return view('organization.show', ['organization' => $org]);
     }
 }

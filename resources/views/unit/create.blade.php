@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employee_create') }}
+	{{ trans('adminlte_lang::message.unit_create_new') }}
 @endsection
 
 {{-- @section('Stylesheets')
@@ -12,7 +12,7 @@
 
 	<div class="row">
 		<div class="col-sm-6 col-sm-offset-3">
-			<h4>Новая единица измерения</h4>	
+			<h4>{{ trans('adminlte_lang::message.unit_create_new') }}</h4>	
 			{{-- <ex1></ex1> --}}
 			<hr>	
 			@if (count($errors) > 0)
@@ -26,44 +26,27 @@
 			@endif
 			<div class="well">
 				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-				{!! Form::open(['route' => 'unit.store', 'class' => 'form-horizontal']) !!}
-					<div class="row">
-						<div class="form-group">
-							{{ Form::label('title', 'Наименование:', ['class' => 'form-spacing-top col-sm-2 control-label']) }}
-							<div class="col-sm-9">
-								{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-							</label>
-						</div>
-
-						<div class="form-group">
-							{{ Form::label('short_title', 'Краткое наименование:', ['class' => 'form-spacing-top col-sm-2 control-label']) }}
-							<div class="col-sm-9">
-								{{ Form::text('short_title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-							</label>
-						</div>
-
-						<div class="form-group">
-							{{ Form::label('description', 'Описание:', ['class' => 'form-spacing-top col-sm-2 control-label']) }}
-							<div class="col-sm-9">
-								{{ Form::textarea('description', null, ['class' => 'form-control']) }}
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-							</label>
-						</div>
+				{!! Form::open(['route' => 'unit.store']) !!}
+					<div class="form-group">
+						{{ Form::label('title', trans('adminlte_lang::message.unit_title')) }}
+						{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 					</div>
-					
+
+					<div class="form-group">
+						{{ Form::label('short_title', trans('adminlte_lang::message.unit_short_title')) }}
+						{{ Form::text('short_title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+					</div>
+
+					<div class="form-group">
+						{{ Form::label('description', trans('adminlte_lang::message.description')) }}
+						{{ Form::textarea('description', null, ['class' => 'form-control']) }}
+					</div>
+
 					<hr>
 
 					<div class="row">
-						<div class="col-sm-6 col-sm-offset-3">
-							{{	Form::submit('Создать новую единицу измерения', ['class' => 'btn btn-success btn-block', 'style' => 'margin-top:20px;']) }}
+						<div class="col-sm-8 col-sm-offset-2">
+							{{	Form::submit(trans('adminlte_lang::message.unit_create_new'), ['class' => 'btn btn-success btn-block']) }}
 						</div>
 					</div>
 				{!! Form::close() !!}	

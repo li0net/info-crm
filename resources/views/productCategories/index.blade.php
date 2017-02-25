@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employees') }}
+	{{ trans('adminlte_lang::message.information_about_ctgs') }}
 @endsection
 
 @section('main-content')
@@ -9,7 +9,7 @@
 		@if (Session::has('success'))
 		
 		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
+			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
 		</div>
 
 		@endif
@@ -17,11 +17,11 @@
 
 	<div class="row">
 		<div class="col-sm-10">
-			<h4>Все категории товаров</h4>
+			<h4>{{ trans('adminlte_lang::message.product_categories') }}</h4>
 		</div>	
 
 		<div class="col-sm-2">
-			<a href="{{ route('productCategories.create') }}" class="btn btn-primary">Новая категория товаров</a>
+			<a href="{{ route('productCategories.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.new_category') }}</a>
 		</div>
 
 		<div class="col-sm-12">
@@ -33,9 +33,9 @@
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
-					<th>Наименование категории товара</th>
-					<th>Описание</th>
-					<th>Родительская категория</th>
+					<th>{{ trans('adminlte_lang::message.category_title') }}</th>
+					<th>{{ trans('adminlte_lang::message.description') }}</th>
+					<th>{{ trans('adminlte_lang::message.parent_category') }}</th>
 					<th></th>
 				</thead>
 				<tbody>

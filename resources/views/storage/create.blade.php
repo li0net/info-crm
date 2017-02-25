@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employee_create') }}
+	{{ trans('adminlte_lang::message.storage_create_new') }}
 @endsection
 
 {{-- @section('Stylesheets')
@@ -12,8 +12,7 @@
 
 	<div class="row">
 		<div class="col-sm-6 col-sm-offset-3">
-			<h4>Новый склад</h4>	
-			{{-- <ex1></ex1> --}}
+			<h4>{{ trans('adminlte_lang::message.new_storage') }}</h4>	
 			<hr>	
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
@@ -24,61 +23,46 @@
 					</ul>
 				</div>
 			@endif
-			<div class="well">
-				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-				{!! Form::open(['route' => 'storage.store', 'class' => 'form-horizontal']) !!}
-					<div class="row">
-						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('title', 'Наименование:', ['class' => 'form-spacing-top']) }}
-							</div>
-							<div class="col-sm-9">
-								{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-							</label>
-						</div>
-
-						<div class="form-group">
-							{{ Form::label('type', 'Тип', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-							<div class="col-sm-7 text-left">
-								<label style="width: 100%">
-									{{ Form::radio('type', 1, false, ['style' => 'margin-right: 10px']) }}
-									 Для списания расходных материалов 
-								</label>
-								<label>
-									{{ Form::radio('type', 2, false, ['style' => 'margin-right: 10px']) }}
-									 Для продажи товаров 
-								</label>
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="type" original-title="">&nbsp;</a>
-							</label>
-						</div>
-
-						<div class="form-group">
-							{{ Form::label('description', 'Описание:', ['class' => 'form-spacing-top col-sm-2 control-label']) }}
-							<div class="col-sm-9">
-								{{ Form::textarea('description', null, ['class' => 'form-control']) }}
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-							</label>
-						</div>
-					</div>
-					
-					<hr>
-
-					<div class="row">
-						<div class="col-sm-4 col-sm-offset-4">
-							{{	Form::submit('Создать новый склад', ['class' => 'btn btn-success btn-block', 'style' => 'margin-top:20px;']) }}
-						</div>
-					</div>
-				{!! Form::close() !!}	
-			</div>
 		</div>
 	</div>
+		{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
+		{!! Form::open(['route' => 'storage.store']) !!}
+			<div class="row">
+				<div class="col-sm-6 col-sm-offset-3">
+					<div class="well">
+						<div class="form-group">
+							{{ Form::label('title', trans('adminlte_lang::message.storage_title')) }}
+							{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+						</div>
+
+						<div class="form-group">
+							{{ Form::label('type', trans('adminlte_lang::message.storage_type')) }}
+							<label style="width: 100%">
+								{{ Form::radio('type', 1, true, ['style' => 'margin-right: 10px']) }}
+									{{ trans('adminlte_lang::message.writeoff_supplies') }} 
+							</label>
+							<label>
+								{{ Form::radio('type', 2, false, ['style' => 'margin-right: 10px']) }}
+									{{ trans('adminlte_lang::message.sale_goods') }}
+							</label>
+						</div>
+
+						<div class="form-group">
+							{{ Form::label('description', trans('adminlte_lang::message.description')) }}
+							{{ Form::textarea('description', null, ['class' => 'form-control']) }}
+						</div>
+					
+						<hr>
+
+						<div class="row">
+							<div class="col-sm-6 col-sm-offset-3">
+								{{	Form::submit(trans('adminlte_lang::message.storage_create_new'), ['class' => 'btn btn-success btn-block']) }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{!! Form::close() !!}	
 @endsection
 {{-- @section('scripts')
 	{!! Html::script('js/parsley.min.js') !!}

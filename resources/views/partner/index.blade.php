@@ -9,21 +9,21 @@
 		@if (Session::has('success'))
 		
 		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
+			<strong>{{ trans('adminlte_lang::message.partner_create_new') }}</strong> {{ Session::get('success') }}
 		</div>
 
 		@endif
 	</div>
 
 	<div class="row">
-		<div class="col-sm-8">
-			<h4>Все контрагенты</h4>
+		<div class="col-sm-4">
+			<h4>{{ trans('adminlte_lang::message.partners') }}</h4>
 		</div>	
 
-		<div class="col-sm-4">
-			<a href="{{ route('partner.create') }}" class="btn btn-primary pull-right">Новый контрагент</a>
-			<a href="#" class="btn btn-default m-r pull-right">Загрузить из Excel</a>
-			<a href="#" class="btn btn-default m-r pull-right">Выгрузить в Excel</a>
+		<div class="col-sm-8">
+			<a href="{{ route('partner.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.partner_create_new') }}</a>
+			<a href="#" class="btn btn-default m-r pull-right">{{ trans('adminlte_lang::message.load_from_excel') }}</a>
+			<a href="#" class="btn btn-default m-r pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
 		</div>
 
 		<div class="col-sm-12">
@@ -35,11 +35,11 @@
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
-					<th>Наименование контрагента</th>
-					<th>Контакты</th>
-					<th>Реквизиты</th>
-					<th>Адрес</th>
-					<th>Баланс</th>
+					<th>{{ trans('adminlte_lang::message.partner_name') }}</th>
+					<th>{{ trans('adminlte_lang::message.partner_contacts') }}</th>
+					{{-- <th>{{ trans('adminlte_lang::message.requisites') }}</th> --}}
+					<th>{{ trans('adminlte_lang::message.address') }}</th>
+					<th>{{ trans('adminlte_lang::message.balance') }}</th>
 					<th></th>
 				</thead>
 				<tbody>
@@ -58,18 +58,18 @@
 								<br>
 								<small>{{ $partner->email }}</small>
 							</td>
-							<td>
-								ИНН: {{ $partner->inn }}
+							{{-- <td>
+								<small>{{ trans('adminlte_lang::message.INN') }} {{ $partner->inn }}</small>
 								<br>
-								КПП: {{ $partner->kpp }}
-							</td>
+								<small>{{ trans('adminlte_lang::message.KPP') }} {{ $partner->kpp }}</small>
+							</td> --}}
 							<td>
 								{{ $partner->address }}
 							</td>
 							<td>
-								<Это расчетное поле> &#8381
+								0-00 &#8381;
 							</td>
-							<td class="text-right">
+							<td class="text-right" style="min-width: 100px;">
 								@if ($user->hasAccessTo('partner', 'edit', 0))
 									<a href="{{ route('partner.edit', $partner->partner_id) }}" id="partner_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
 								@endif

@@ -11,7 +11,7 @@
 @section('main-content')
 
 	<div class="row">
-		<div class="col-sm-4 col-sm-offset-4">
+		<div class="col-sm-6 col-sm-offset-3">
 			<h4>{{ trans('adminlte_lang::message.account_create_new') }}</h4>	
 			<hr>	
 			@if (count($errors) > 0)
@@ -46,7 +46,7 @@
 						{{ Form::textarea('comment', null, ['class' => 'form-control']) }}
 					</div>
 
-					{{	Form::submit(trans('adminlte_lang::message.account_create_new'), ['class' => 'btn btn-success btn-lg btn-block', 'style' => 'margin-top:20px;']) }}
+					{{	Form::submit(trans('adminlte_lang::message.account_create_new'), ['class' => 'btn btn-success btn-block']) }}
 				{!! Form::close() !!}	
 			</div>
 		</div>

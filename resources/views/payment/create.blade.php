@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employee_create') }}
+	{{ trans('adminlte_lang::message.payment_create_new') }}
 @endsection
 
 {{-- @section('Stylesheets')
@@ -11,8 +11,8 @@
 @section('main-content')
 
 	<div class="row">
-		<div class="col-sm-6 col-sm-offset-3">
-			<h4>Создание нового платежа</h4>	
+		<div class="col-sm-8 col-sm-offset-2">
+			<h4>{{ trans('adminlte_lang::message.payment_create_new') }}</h4>	
 			<hr>	
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
@@ -28,7 +28,7 @@
 				{!! Form::open(['route' => 'payment.store', 'class' => 'form-horizontal']) !!}
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
-							{{ Form::label('date', 'Дата и время:', ['class' => 'form-spacing-top']) }}
+							{{ Form::label('date', trans('adminlte_lang::message.date_and_time'), ['class' => 'form-spacing-top']) }}
 						</div>
 						<div class="col-sm-4">
 							{{ Form::text('payment-date', '10-02-2017', ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'id' => 'payment-date']) }}
@@ -46,7 +46,7 @@
 
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
-							{{ Form::label('item_id', "Статья платежа: ", ['class' => 'form-spacing-top']) }}
+							{{ Form::label('item_id', trans('adminlte_lang::message.payment_item'), ['class' => 'form-spacing-top']) }}
 						</div>
 						<div class="col-sm-8">
 							{{ Form::select('item_id', $items, null, ['class' => 'form-control', 'required' => '']) }}
@@ -58,7 +58,7 @@
 
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
-							{{ Form::label('account_id', "Счет: ", ['class' => 'form-spacing-top']) }}
+							{{ Form::label('account_id', trans('adminlte_lang::message.account'), ['class' => 'form-spacing-top']) }}
 						</div>
 						<div class="col-sm-8">
 							{{ Form::select('account_id', $accounts, null, ['class' => 'form-control', 'required' => '']) }}
@@ -70,25 +70,25 @@
 
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
-							{{ Form::label('beneficiary_type', 'Получатель:') }}
+							{{ Form::label('beneficiary_type', trans('adminlte_lang::message.beneficiary_type')) }}
 						</div>
 						<div class="col-sm-8">
 							<div class="radio">
 								<label>
 									{{ Form::radio('beneficiary_type', 'partner', false, ['style' => 'margin-right: 10px']) }}
-									 Контрагент 
+										{{ trans('adminlte_lang::message.partner') }} 
 								</label>
 							</div>
 							<div class="radio">
 								<label>
 									{{ Form::radio('beneficiary_type', 'client', false, ['style' => 'margin-right: 10px']) }}
-									 Клиент 
+										{{ trans('adminlte_lang::message.client') }} 
 								</label>
 							</div>
 							<div class="radio">
 								<label>
 									{{ Form::radio('beneficiary_type', 'employee', false, ['style' => 'margin-right: 10px']) }}
-									 Сотрудник 
+										{{ trans('adminlte_lang::message.employee') }} 
 								</label>
 							</div>
 						</div>
@@ -96,7 +96,7 @@
 
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
-							{{ Form::label('beneficiary_id',  'Контрагент:', ['class' => 'form-spacing-top']) }}
+							{{ Form::label('beneficiary_id',  trans('adminlte_lang::message.partner'), ['class' => 'form-spacing-top']) }}
 						</div>
 						<div class="col-sm-8">
 							{{ Form::select('beneficiary_id', [''=>''], null, ['class' => 'form-control', 'required' => '']) }}
@@ -108,7 +108,7 @@
 
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
-							{{ Form::label('sum', 'Сумма:', ['class' => 'form-spacing-top']) }}
+							{{ Form::label('sum', trans('adminlte_lang::message.sum'), ['class' => 'form-spacing-top']) }}
 						</div>
 						<div class="col-sm-8">
 							{{ Form::text('sum', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '10']) }}
@@ -120,7 +120,7 @@
 					
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
-							{{ Form::label('description', "Описание: ", ['class' => 'form-spacing-top']) }}
+							{{ Form::label('description', trans('adminlte_lang::message.description'), ['class' => 'form-spacing-top']) }}
 						</div>
 						<div class="col-sm-8">
 							{{ Form::textarea('description', null, ['class' => 'form-control']) }}
@@ -133,8 +133,8 @@
 					<hr>
 					
 					<div class="row">
-						<div class="col-sm-4 col-sm-offset-4">
-							{{	Form::submit('Создать новый платеж', ['class' => 'btn btn-success btn-block', 'style' => 'margin-top:20px;']) }}
+						<div class="col-sm-6 col-sm-offset-3">
+							{{	Form::submit(trans('adminlte_lang::message.payment_create_new'), ['class' => 'btn btn-success btn-block']) }}
 						</div>
 					</div>
 				{!! Form::close() !!}	
@@ -168,13 +168,13 @@
 			$('input[name="beneficiary_type"]').on('change', function() {
 				switch($(this).val()) {
 					case 'client':
-						$('label[for="beneficiary_id"]').html('Клиент:');
+						$('label[for="beneficiary_id"]').html(<?php echo "'". trans('adminlte_lang::message.client')."'" ?>);
 							break;
 					case 'partner':
-						$('label[for="beneficiary_id"]').html('Контрагент:');
+						$('label[for="beneficiary_id"]').html(<?php echo "'". trans('adminlte_lang::message.partner')."'" ?>);
 							break;
 					case 'employee':
-						$('label[for="beneficiary_id"]').html('Сотрудник:');
+						$('label[for="beneficiary_id"]').html(<?php echo "'". trans('adminlte_lang::message.employee')."'" ?>);
 							break;
 				}
 

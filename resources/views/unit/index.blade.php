@@ -1,27 +1,25 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employees') }}
+	{{ trans('adminlte_lang::message.units') }}
 @endsection
 
 @section('main-content')
 	<div class="row">
 		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
-		</div>
-
+			<div class="alert alert-success" role="alert">
+				<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
+			</div>
 		@endif
 	</div>
 
 	<div class="row">
 		<div class="col-sm-8">
-			<h4>Все единицы измерения</h4>
+			<h4>{{ trans('adminlte_lang::message.units') }}</h4>
 		</div>	
 
 		<div class="col-sm-4">
-			<a href="{{ route('unit.create') }}" class="btn btn-primary pull-right">Новая единица измерения</a>
+			<a href="{{ route('unit.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.new_measurement_unit') }}</a>
 		</div>
 
 		<div class="col-sm-12">
@@ -33,8 +31,8 @@
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
-					<th>Наименование</th>
-					<th>Комментарий</th>
+					<th>{{ trans('adminlte_lang::message.unit_title') }}</th>
+					<th>{{ trans('adminlte_lang::message.comment') }}</th>
 					<th></th>
 				</thead>
 				<tbody>
