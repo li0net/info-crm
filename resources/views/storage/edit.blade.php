@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employee_create') }}
+	{{ $storage->title }}
 @endsection
 
 {{-- @section('Stylesheets')
@@ -9,63 +9,42 @@
 @endsection --}}
 
 @section('main-content')
-
 	<div class="row">
-		<div class="col-sm-6 col-sm-offset-3">
-			<h4>Информация о складе</h4>	
-			{{-- <ex1></ex1> --}}
-			<hr>	
-			@if (count($errors) > 0)
-				<div class="alert alert-danger">
-					<ul>
-						@foreach ($errors->all() as $error)
-							<li>{{ $error }}</li>
-						@endforeach
-					</ul>
-				</div>
-			@endif
-			<div class="well">
-				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-				{!! Form::model($storage, ['route' => ['storage.update', $storage->storage_id], 'class' => 'form-horizontal', 'method' => 'PUT']) !!}
-					<div class="row">
-						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('title', 'Наименование:', ['class' => 'form-spacing-top']) }}
-							</div>
-							<div class="col-sm-9">
-								{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-							</label>
-						</div>
+		@if (Session::has('success'))
+			<div class="alert alert-success" role="alert">
+				<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
+			</div>
+		@endif
+	</div>
+{{-- 	<div class="row">
+		<h4>{{ trans('adminlte_lang::message.information_about_storage') }}</h4>	
+		<hr>
+	</div> --}}	
+		{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
+	<div class="row">
+		{!! Form::model($storage, ['route' => ['storage.update', $storage->storage_id], 'method' => 'PUT']) !!}
+			<div class="col-sm-6 col-sm-offset-3">
+				<div class="well">
+					<div class="form-group">
+						{{ Form::label('title', trans('adminlte_lang::message.storage_title')) }}
+						{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+					</div>
 
-						<div class="form-group">
-							{{ Form::label('type', 'Тип', ['class' => 'col-sm-4 text-right ctrl-label']) }}
-							<div class="col-sm-7 text-left">
-								<label style="width: 100%">
-									{{ Form::radio('type', 1, $storage->type ? true : false, ['style' => 'margin-right: 10px']) }}
-									 Для списания расходных материалов 
-								</label>
-								<label>
-									{{ Form::radio('type', 2, $storage->type ? true : false, ['style' => 'margin-right: 10px']) }}
-									 Для продажи товаров 
-								</label>
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="type" original-title="">&nbsp;</a>
-							</label>
-						</div>
+					<div class="form-group">
+						{{ Form::label('type', trans('adminlte_lang::message.storage_type')) }}
+						<label style="width: 100%">
+							{{ Form::radio('type', 1, $storage->type ? true : false, ['style' => 'margin-right: 10px']) }}
+								{{ trans('adminlte_lang::message.writeoff_supplies') }}
+						</label>
+						<label>
+							{{ Form::radio('type', 2, $storage->type ? true : false, ['style' => 'margin-right: 10px']) }}
+								{{ trans('adminlte_lang::message.sale_goods') }}
+						</label>
+					</div>
 
-						<div class="form-group">
-							{{ Form::label('description', 'Описание:', ['class' => 'form-spacing-top col-sm-2 control-label']) }}
-							<div class="col-sm-9">
-								{{ Form::textarea('description', null, ['class' => 'form-control']) }}
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-							</label>
-						</div>
+					<div class="form-group">
+						{{ Form::label('description', trans('adminlte_lang::message.description')) }}
+						{{ Form::textarea('description', null, ['class' => 'form-control']) }}
 					</div>
 					
 					<hr>
@@ -74,18 +53,19 @@
 						<div class="col-sm-8 col-sm-offset-2">
 							<div class="row">
 								<div class="col-sm-6">
-									{!! Html::linkRoute('storage.show', 'Отмена', [$storage->storage_id], ['class'=>'btn btn-danger btn-block']) !!}
+									{!! Html::linkRoute('storage.show', trans('adminlte_lang::message.cancel'), [$storage->storage_id], 
+																												['class'=>'btn btn-danger btn-block']) !!}
 								</div>
 								<div class="col-sm-6">
-									{{ Form::submit('Сохранить', ['class'=>'btn btn-success btn-block']) }}
+									{{ Form::submit(trans('adminlte_lang::message.save'), ['class'=>'btn btn-success btn-block']) }}
 								</div>
 							</div>
 						</div>
 					</div>
-				{!! Form::close() !!}	
+				{!! Form::close() !!}
 			</div>
 		</div>
-	</div>
+	</div>	
 @endsection
 {{-- @section('scripts')
 	{!! Html::script('js/parsley.min.js') !!}

@@ -368,5 +368,15 @@ return [
 	'new_position'				=> 'New position',
 	'position_name'				=> 'Position name',
 	'positions'					=> 'Positions',
-	'service_example'			=> 'Example: A full range of mens hairstyles'
+	'service_example'			=> 'Example: A full range of mens hairstyles',
+	'writeoff_supplies'			=> 'For the write-off of supplies',
+	'sale_goods'				=> 'For the sale of goods',
+	'storage_type'				=> 'Type',
+	'storage_create_new'		=> 'Create new storage',
+	'new_storage'				=> 'New storage',
+	'information_about_storage'	=> 'Information about storage',
+	'move_goods'				=> 'Move goods',
+	'number_of_units'			=> 'Number of units',
+	'storages'					=> 'Storages',
+	'storage_title'				=> 'Storage title'
 ];

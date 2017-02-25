@@ -1,28 +1,26 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employees') }}
+	{{ trans('adminlte_lang::message.storages') }}
 @endsection
 
 @section('main-content')
 	<div class="row">
 		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
-		</div>
-
+			<div class="alert alert-success" role="alert">
+				<strong>trans('adminlte_lang::message.success')</strong> {{ Session::get('success') }}
+			</div>
 		@endif
 	</div>
 
 	<div class="row">
 		<div class="col-sm-8">
-			<h4>Все склады</h4>
+			<h4>{{ trans('adminlte_lang::message.storages') }}</h4>
 		</div>	
 
 		<div class="col-sm-4">
-			<a href="{{ route('storage.create') }}" class="btn btn-primary pull-right">Новый склад</a>
-			<a href="#" class="btn btn-success m-r pull-right">Переместить товары</a>
+			<a href="{{ route('storage.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.new_storage') }}</a>
+			<a href="#" class="btn btn-success m-r pull-right">{{ trans('adminlte_lang::message.move_goods') }}</a>
 		</div>
 		<div class="col-sm-12">
 			<hr>	
@@ -33,8 +31,8 @@
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
-					<th>Наименование</th>
-					<th>Количество единиц</th>
+					<th>{{ trans('adminlte_lang::message.storage_title') }}</th>
+					<th>{{ trans('adminlte_lang::message.number_of_units') }}</th>
 					<th></th>
 				</thead>
 				<tbody>

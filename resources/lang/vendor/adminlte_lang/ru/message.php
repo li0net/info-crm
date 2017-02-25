@@ -375,5 +375,15 @@ return [
 	'new_position'				=> 'Новая должность',
 	'position_name'				=> 'Наименование должности',
 	'positions'					=> 'Все должности',
-	'service_example'			=> 'Пример: Весь спектр мужских причесок'
+	'service_example'			=> 'Пример: Весь спектр мужских причесок',
+	'writeoff_supplies'			=> 'Для списания расходных материалов',
+	'sale_goods'				=> 'Для продажи товаров',
+	'storage_type'				=> 'Тип',
+	'storage_create_new'		=> 'Создать новый склад',
+	'new_storage'				=> 'Новый склад',
+	'information_about_storage'	=> 'Информация о складе',
+	'move_goods'				=> 'Переместить товары',
+	'number_of_units'			=> 'Количество единиц',
+	'storages'					=> 'Все склады',
+	'storage_title'				=> 'Наименование склада'
 ];
