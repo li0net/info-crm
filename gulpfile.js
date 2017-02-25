@@ -21,6 +21,9 @@ elixir(function(mix) {
             './node_modules/icheck/skins/square/blue.css',
             './public/css/toastr.css'
         ])
+        .sass('general.scss')
+        .sass('landing.scss')
+        .sass('widget.scss')
         .copy('node_modules/font-awesome/fonts/*.*','public/fonts/')
         .copy('node_modules/ionicons/dist/fonts/*.*','public/fonts/')
         .copy('node_modules/admin-lte/bootstrap/fonts/*.*','public/fonts/bootstrap')
@@ -33,11 +36,8 @@ elixir(function(mix) {
         .webpack('widget.js')
         .webpack('usercabinet.js')
         .webpack('landing.js')
-        .webpack('bootstrap.min.js');
-
-    mix.sass('general.scss');
-    mix.sass('landing.scss');
-    mix.copy('resources/assets/img', 'public/img');
+        .webpack('bootstrap.min.js')
+        .copy('resources/assets/img', 'public/img');
 
     /* Не удалять, позже будем использовать для оптимизации. Работает под Linux
      mix.imageOptimize("./resources/assets/img", "public/img/");*/

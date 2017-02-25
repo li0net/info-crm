@@ -2,28 +2,34 @@
 <h3>Онлайн запись</h3>
 
 <form onsubmit="return false;" id ='requestForm'>
+    <input type="hidden" name="time" value="{{ $data['time'] }}">
+    <input type="hidden" name="date" value="{{ $data['date'] }}">
+    <input type="hidden" name="employeeId" value="{{ $data['employeeId'] }}">
+    <input type="hidden" name="organizationId" value="{{ $data['organizationId'] }}">
+    <input type="hidden" name="serviceId" value="{{ $data['serviceId'] }}">
+
     <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+        <input type="text" class="form-control" id="clientName" name="client[name]" placeholder="Name">
     </div>
     <div class="form-group">
         <label for="phone">Phone</label>
-        <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone">
+        <input type="text" class="form-control" id="clientPhone" name="client[phone]" placeholder="Phone">
     </div>
     <div class="form-group">
         <label for="comment">Comment</label>
-        <textarea name="comment" class="form-control" rows="3"></textarea>
+        <textarea name="client[comment]" id="clientComment" class="form-control" rows="3"></textarea>
     </div>
+
     <div class="form-group">
         <label for="remind">Remind me</label>
-        <select name="remind" id="remind" class="form-control">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+        <select name="client[remind]" id="clientRemind" class="form-control">
+            <option value="1 hour">1 hour</option>
+            <option value="2 hours">2 hours</option>
+            <option value="1 day">1 day</option>
         </select>
     </div>
+
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <div class="checkbox">

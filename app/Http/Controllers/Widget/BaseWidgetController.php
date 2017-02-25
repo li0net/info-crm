@@ -217,6 +217,33 @@ class BaseWidgetController extends Controller
         if ($validator->fails()) {
             // TODO: Что делать - просто отобразить ошибку или сделать редирект?
         }
+        /*// фейковый массив
+        $days = array();
+        $days[0] = array(
+            'day' => '2017-02-24',
+            'is_available' => false,
+            'is_nonworking' => false
+        );
+        $days[1] = array(
+            'day' => '2017-02-25',
+            'is_available' => true,
+            'is_nonworking' => false
+        );
+        $days[2] = array(
+            'day' => '2017-02-26',
+            'is_available' => true,
+            'is_nonworking' => false
+        );
+        $days[3] = array(
+            'day' => '2017-02-27',
+            'is_available' => false,
+            'is_nonworking' => false
+        );
+        $days[4] = array(
+            'day' => '2017-02-28',
+            'is_available' => true,
+            'is_nonworking' => false
+        );*/
 
         $employee = Employee::find($request->input('employee_id'));
         $days = $employee->getFreeWorkDaysForCurrMonth();
@@ -224,6 +251,7 @@ class BaseWidgetController extends Controller
         $view = View::make('widget.pages.days', [
             'days' => $days
         ]);
+
 
         return $view->render();
     }
@@ -240,21 +268,38 @@ class BaseWidgetController extends Controller
         $employee = Employee::find($request->input('employee_id'));
         $date = $request->input('date');
         $times = $employee->getFreeTimeIntervals($date, $date, TRUE);
+        // фейковый массив
+
+//        $times = array();
+//        $times[0] = array(
+//        'work_end' => '2017-02-10 09:30:00',
+//        'work_end' => '2017-02-10 13:00:00'
+//        );
 
         $view = View::make('widget.pages.times', [
             'times' => $times
+
         ]);
         return $view->render();
-    }
+        }
 
-    /**
-     * Отображает форму с полями для ввода имени, телефона, адреса электронной почты и т.д.
-     * @param Request $request
-     */
+           /**
+            * Отображает форму с полями для ввода имени, телефона, адреса электронной почты и т.д.
+            * @param Request $request
+            */
     public function getUserInformationForm(Request $request)
     {
-        $view = View::make('widget.pages.clientform', [
+        // все собранные данные для отображения на форме
+        $data = array(
+            'time' => $request->input('time'),
+            'date' => $request->input('date'),
+            'employeeId' => $request->input('employee_id'),
+            'organizationId' => $request->input('orgId'),
+            'serviceId' => $request->input('serviceId'),
+        );
 
+        $view = View::make('widget.pages.clientform', [
+            'data' => $data
         ]);
         return $view->render();
     }
@@ -262,7 +307,15 @@ class BaseWidgetController extends Controller
     // Отображает форму с полями для ввода имени, телефона, адреса электронной почты и т.д.
     public function handleUserInformationForm(Request $request)
     {
-        return json_encode(Input::get());
+        $formData = Input::get();
+        //TODO сохранить заявку, создать клиента
+
+        //TODO обработка ошибок
+        //TODO экран завершения
+        $result=array(
+            'res' => TRUE
+        );
+        return json_encode($result);
     }
 
     public function getOrgInformation(Request $request)

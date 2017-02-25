@@ -1,0 +1,27 @@
+body { padding-top: 20px; }
+#myCarousel .nav a small {
+  display:block;
+}
+#myCarousel .nav {
+  background:#eee;
+}
+#myCarousel .nav a {
+  border-radius:0px;
+}
+.hidden{
+  display: none;
+}
+.loadingbox{
+  position: relative;
+  text-align: center;
+  &:after{
+    text-align: center;
+    content: "";
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.8) url("/img/widget/ajax-loader2.gif") no-repeat scroll 50% 50%;
+  }
+}
