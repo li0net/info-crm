@@ -6,6 +6,7 @@ use App\ServiceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use App\User;
+use App\Employee;
 use App\Service;
 use App\SuperOrganization;
 use App\Organization;
@@ -215,45 +216,16 @@ class BaseWidgetController extends Controller
         ]);
         if ($validator->fails()) {
             // TODO: Что делать - просто отобразить ошибку или сделать редирект?
-            return redirect('/clients/create')
-                ->withErrors($validator)
-                ->withInput();
         }
-        // TODO: получить массив дат этого месяца с атрибутами 'день доступен для записи', 'день недоступен для записи'
 
-        // фейковый массив
-        $days = array();
-        $days[0] = array(
-            'day' => '2017-02-24',
-            'is_available' => false,
-            'is_nonworking' => false
-        );
-        $days[1] = array(
-            'day' => '2017-02-25',
-            'is_available' => true,
-            'is_nonworking' => false
-        );
-        $days[2] = array(
-            'day' => '2017-02-26',
-            'is_available' => true,
-            'is_nonworking' => false
-        );
-        $days[3] = array(
-            'day' => '2017-02-27',
-            'is_available' => false,
-            'is_nonworking' => false
-        );
-        $days[4] = array(
-            'day' => '2017-02-28',
-            'is_available' => true,
-            'is_nonworking' => false
-        );
+        $employee = Employee::find($request->input('employee_id'));
+        $days = $employee->getFreeWorkDaysForCurrMonth();
 
         $view = View::make('widget.pages.days', [
             'days' => $days
         ]);
-        $contents = $view->render();
-        return $contents;
+
+        return $view->render();
     }
 
     /**
@@ -265,13 +237,14 @@ class BaseWidgetController extends Controller
     {
         $formData = $request->only(['service_id', 'employee_id', 'date']);  // post параметр service_id, employee_id, day
 
-        // фейковый массив
-        $times = array('10:00', '10:30', '11:00', '14:00', '16:30');
+        $employee = Employee::find($request->input('employee_id'));
+        $date = $request->input('date');
+        $times = $employee->getFreeTimeIntervals($date, $date, TRUE);
+
         $view = View::make('widget.pages.times', [
             'times' => $times
         ]);
-        $contents = $view->render();
-        return $contents;
+        return $view->render();
     }
 
     /**
@@ -280,9 +253,6 @@ class BaseWidgetController extends Controller
      */
     public function getUserInformationForm(Request $request)
     {
-//        $formData = $request->only(['service_id', 'employee_id', 'date', 'time']); // post параметр service_id, employee_id
-//        $this->organization = Organization::find(Input::get('org_id')); // post параметр org_id - organization id
-
         $view = View::make('widget.pages.clientform', [
 
         ]);
