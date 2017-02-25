@@ -409,5 +409,11 @@ return [
 	'new_category'				=> 'New category',
 	'category_title'			=> 'Category title',
 	'information_about_ctgs'	=> 'Information about product category',
-	'product_categories'		=> 'Product categories'
+	'product_categories'		=> 'Product categories',
+	'new_measurement_unit'		=> 'New measurement unit',
+	'unit_title'				=> 'Measurement unit title',
+	'unit_short_title'			=> 'Measurement unit short title',
+	'unit_create_new'			=> 'New measurement unit create',
+	'information_about_unit'	=> 'Information about the measurement unit',
+	'units'						=> 'Measurement units'
 ];

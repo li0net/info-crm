@@ -414,7 +414,13 @@ return [
 	'product_ctgs_create_new'	=> 'Создание новой категории товара',
 	'parent_category'			=> 'Родительская категория',
 	'new_category'				=> 'Новая категория',
-	'category_title'				=> 'Наименование категории',
+	'category_title'			=> 'Наименование категории',
 	'information_about_ctgs'	=> 'Информация о категории товара',
-	'product_categories'		=> 'Категории товаров'
+	'product_categories'		=> 'Категории товаров',
+	'new_measurement_unit'		=> 'Новая единица измерения',
+	'unit_title'				=> 'Наименование',
+	'unit_short_title'			=> 'Краткое наименование',
+	'unit_create_new'			=> 'Создать новую единицу измерения',
+	'information_about_unit'	=> 'Информация о единице измерения',
+	'units'						=> 'Все единицы измерения'
 ];
