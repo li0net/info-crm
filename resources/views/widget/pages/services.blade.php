@@ -1,7 +1,7 @@
 <h1>Выберите услугу</h1>
 
 @foreach ($services as $service)
-    <a class="row service-row" data-id="{{ $service->service_id }}" href="#">
+    <a class="row service-row" data-id="{{ $service->service_id }}"  data-name="{{ $service->name }}" href="#">
         <div class="col-sm-4">
             {{$service->name}}
         </div>

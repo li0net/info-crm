@@ -11,7 +11,7 @@
 
         <div id="main" class="row">
             <div id="content" class="col-md-12">
-                @yield('content')
+                loading ...
             </div>
         </div>
 
