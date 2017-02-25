@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employee_create') }}
+	{{ trans('adminlte_lang::message.information_about_payroll_scheme') }}
 @endsection
 
 {{-- @section('Stylesheets')
@@ -9,10 +9,9 @@
 @endsection --}}
 
 @section('main-content')
-
 	<div class="row">
-		<div class="col-sm-6 col-sm-offset-3">
-			<h4>Информация о схеме расчета ЗП</h4>	
+		<div class="col-sm-8 col-sm-offset-2">
+			<h4>{{ trans('adminlte_lang::message.information_about_payroll_scheme') }}</h4>	
 			{{-- <ex1></ex1> --}}
 			<hr>	
 			@if (count($errors) > 0)
@@ -26,100 +25,115 @@
 			@endif
 			<div class="well">
 				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-				{!! Form::model($scheme, ['route' => ['wage_scheme.update', $scheme->scheme_id], 'class' => 'form-horizontal', 'method' => 'PUT']) !!}
+				{!! Form::model($scheme, ['route' => ['wage_scheme.update', $scheme->scheme_id], 'method' => 'PUT']) !!}
 					{{ Form::hidden('service_ctgs_options', null, ['id' => 'service_ctgs_options']) }}
 					{{ Form::hidden('product_ctgs_options', null, ['id' => 'product_ctgs_options']) }}
-					<div class="row">
+					{{-- <div class="row"> --}}
 						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('scheme_name', 'Наименование:', ['class' => 'form-spacing-top']) }}
-							</div>
-							<div class="col-sm-8">
+							<div class="col-sm-10">
+								{{ Form::label('scheme_name', trans('adminlte_lang::message.scheme_name')) }}
 								{{ Form::text('scheme_name', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
+							<div class="col-sm-2"></div>
 						</div>
-						
 						<div class="form-group">
-							<label class="col-sm-2 control-label">
-								{{ Form::label('services_percent', 'Услуги:', ['class' => 'form-spacing-top']) }}
-							</label>
-							<div class="col-sm-6">
+							<div class="col-sm-8">
+								{{ Form::label('services_percent', trans('adminlte_lang::message.services')) }}
+							</div>
+							<div class="col-sm-8">
 								{{ Form::text('services_percent', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
 							<div class="col-sm-2">
-								{{ Form::select('service_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+								{{ Form::select('service_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 
+																									  'required' => '', 
+																									  'maxlength' => '110']) }}
 							</div>
-							<label class="col-sm-1 text-left">
+							<label class="col-sm-2 text-left">
 								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
 							</label>
 						</div>
-
+						
 						<div class="form-group">
-							<label class="col-sm-2 control-label"></label>
+							{{-- <label class="col-sm-2 control-label"></label> --}}
 							<div class="col-sm-6">
 								<a href="#detailed-services" data-toggle="collapse" class="btn btn-link btn-xs">
 								<span class="badge label-danger hidden">@{{ detailed_services_count }}</span>
 								{{-- <input v-model="detailed_services_count"> --}}
-								&nbsp;&nbsp;Уточнить значение для категорий или отдельных услуг&nbsp;&nbsp;
+								&nbsp;&nbsp;{{ trans('adminlte_lang::message.specify_val_4_services') }}&nbsp;&nbsp;
 								<i class="fa fa-caret-down"></i></a>
 							</div>
 						</div>
 
 						<div id="detailed-services" class="form-group collapse">
 							<div class="wrap-it">
-								<div class="col-sm-2"></div>							
-								<div class="col-sm-8" style="padding:0">
+								{{-- <div class="col-sm-2"></div>							 --}}
+								<div class="col-sm-10" style="padding:0">
 									<div class="col-sm-4">
-										{{ Form::select('services_cats_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => 0]) }}
+										{{ Form::select('services_cats_detailed[]', [], null, ['class' => 'form-control', 
+																							   'maxlength' => '110', 
+																							   'data-initial-value' => 0]) }}
 									</div>
 									<div class="col-sm-4">
-										{{ Form::select('services_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'placeholder' => 'Выберите услугу']) }}
+										{{ Form::select('services_detailed[]', [], null, ['class' => 'form-control', 
+																						  'maxlength' => '110', 
+																						  'placeholder' => trans('adminlte_lang::message.select_service')]) }}
 									</div>
 									<div class="col-sm-2">
 										{{ Form::text('services_percent_detailed[]', 0, ['class' => 'form-control', 'maxlength' => '110']) }}
 									</div>
 									<div class="col-sm-2">
-										{{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'maxlength' => '110']) }}
+										{{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 
+																														  'maxlength' => '110']) }}
 									</div>
 								</div>
 								<div class="col-sm-2" style="margin-bottom: 15px;">
-									<input type="button" id="add-detailed-section" class="btn btn-info" value="Добавить">
+									<input type="button" id="add-detailed-section" class="btn btn-info btn-sm" value={{ trans('adminlte_lang::message.add') }}>
 								</div>
 							</div>
 
 							@foreach( $services_custom_settings as $service_setting )
 								<div class="wrap-it">
-									<div class="col-sm-2"></div>							
-									<div class="col-sm-8" style="padding:0">
+									<div class="col-sm-10" style="padding:0">
 										<div class="col-sm-4">
-											{{ Form::select('services_cats_detailed[]',  [], $service_setting[0], ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'data-initial-value' => $service_setting[0]]) }}
+											{{ Form::select('services_cats_detailed[]',  [], $service_setting[0], ['class' => 'form-control', 
+																												   'required' => '', 
+																												   'maxlength' => '110', 
+																												   'data-initial-value' => $service_setting[0]]) }}
 										</div>
 										<div class="col-sm-4">
-											{{ Form::select('services_detailed[]', $service_ctgs[$service_setting[0]]->pluck('name', 'service_id')->all(), $service_setting[1], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+											{{ Form::select('services_detailed[]', $service_ctgs[$service_setting[0]]->pluck('name', 'service_id')->all(), 
+																				   $service_setting[1], ['class' => 'form-control', 
+																				   						 'required' => '', 
+																				   						 'maxlength' => '110']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::text('services_percent_detailed[]', $service_setting[2], ['class' => 'form-control', 'maxlength' => '110']) }}
+											{{ Form::text('services_percent_detailed[]', $service_setting[2], ['class' => 'form-control', 
+																											   'maxlength' => '110']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], $service_setting[3], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+											{{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], $service_setting[3], ['class' => 'form-control', 
+																																			'required' => '', 
+																																			'maxlength' => '110']) }}
 										</div>
 									</div>
 									<div class="col-sm-2" style="margin-bottom: 15px;">
-										<input type="button" id="add-detailed-section" class="btn btn-danger" value="Удалить">
+										<input type="button" id="add-detailed-section" class="btn btn-danger btn-sm" value="Удалить">
 									</div>
 								</div>
 							@endforeach
 						</div>
 
 						<div class="form-group">
-							<label class="col-sm-2 control-label">
-								{{ Form::label('products_percent', 'Товары:', ['class' => 'form-spacing-top']) }}
-							</label>
-							<div class="col-sm-6">
+							<div class="col-sm-8">
+								{{ Form::label('products_percent', trans('adminlte_lang::message.products')) }}
+							</div>
+							<div class="col-sm-8">
 								{{ Form::text('products_percent', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
 							<div class="col-sm-2">
-								{{ Form::select('products_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+								{{ Form::select('products_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 
+																									   'required' => '', 
+																									   'maxlength' => '110']) }}
 							</div>
 							<label class="col-sm-1 text-left">
 								<a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
@@ -127,111 +141,131 @@
 						</div>
 
 						<div class="form-group">
-							<label class="col-sm-2 control-label"></label>
+							{{-- <label class="col-sm-2 control-label"></label> --}}
 							<div class="col-sm-6">
 								<a href="#detailed-products" data-toggle="collapse" class="btn btn-link btn-xs">
 								<span class="badge label-danger hidden">@{{ detailed_products_count }}</span>
-								&nbsp;&nbsp;Уточнить значение для категорий или отдельных товаров&nbsp;&nbsp;
+								&nbsp;&nbsp;{{ trans('adminlte_lang::message.specify_val_4_products') }}&nbsp;&nbsp;
 								<i class="fa fa-caret-down"></i></a>
 							</div>
 						</div>
 
 						<div id="detailed-products" class="form-group collapse">
 							<div class="wrap-it">
-								<div class="col-sm-2"></div>							
-								<div class="col-sm-8" style="padding:0">
+								{{-- <div class="col-sm-2"></div>							 --}}
+								<div class="col-sm-10" style="padding:0">
 									<div class="col-sm-4">
-										{{ Form::select('products_cats_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => 0]) }}
+										{{ Form::select('products_cats_detailed[]', [], null, ['class' => 'form-control', 
+																							   'maxlength' => '110', 
+																							   'data-initial-value' => 0]) }}
 									</div>
 									<div class="col-sm-4">
-										{{ Form::select('products_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'placeholder' => 'Выберите товар']) }}
+										{{ Form::select('products_detailed[]', [], null, ['class' => 'form-control', 
+																						  'maxlength' => '110', 
+																						  'placeholder' => trans('adminlte_lang::message.select_product')]) }}
 									</div>
 									<div class="col-sm-2">
 										{{ Form::text('products_percent_detailed[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
 									</div>
 									<div class="col-sm-2">
-										{{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'maxlength' => '110']) }}
+										{{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 
+																														  'maxlength' => '110']) }}
 									</div>
 								</div>
 								<div class="col-sm-2" style="margin-bottom: 15px;">
-									<input type="button" id="add-detailed-section" class="btn btn-info" value="Добавить">
+									<input type="button" id="add-detailed-section" class="btn btn-info btn-sm" value={{ trans('adminlte_lang::message.add') }}>
 								</div>
 							</div>
 
-							<hr>
-
 							@foreach( $products_custom_settings as $product_setting )
 								<div class="wrap-it">
-									<div class="col-sm-2"></div>							
-									<div class="col-sm-8" style="padding:0">
+									{{-- <div class="col-sm-2"></div>							 --}}
+									<div class="col-sm-10" style="padding:0">
 										<div class="col-sm-4">
-											{{ Form::select('products_cats_detailed[]', [], $product_setting[0], ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'data-initial-value' => $product_setting[0]]) }}
+											{{ Form::select('products_cats_detailed[]', [], $product_setting[0], ['class' => 'form-control', 
+																												  'required' => '', 
+																												  'maxlength' => '110', 
+																												  'data-initial-value' => $product_setting[0]]) }}
 										</div>
 										<div class="col-sm-4">
-											{{ Form::select('products_detailed[]', $product_ctgs[$product_setting[0]]->pluck('title', 'product_id')->all(), $product_setting[1], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+											{{ Form::select('products_detailed[]', $product_ctgs[$product_setting[0]]->pluck('title', 'product_id')->all(), 
+																				   $product_setting[1], ['class' => 'form-control', 
+																				   						 'required' => '', 
+																				   						 'maxlength' => '110']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::text('products_percent_detailed[]', $product_setting[2], ['class' => 'form-control', 'maxlength' => '110']) }}
+											{{ Form::text('products_percent_detailed[]', $product_setting[2], ['class' => 'form-control', 
+																											   'maxlength' => '110']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], $product_setting[3], ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+											{{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 
+																						$product_setting[3], ['class' => 'form-control', 
+																											  'required' => '', 
+																											  'maxlength' => '110']) }}
 										</div>
 									</div>
 									<div class="col-sm-2" style="margin-bottom: 15px;">
-										<input type="button" id="add-detailed-section" class="btn btn-danger" value="Удалить">
+										<input type="button" id="add-detailed-section" class="btn btn-danger btn-sm" value="Удалить">
 									</div>
 								</div>
 							@endforeach
 						</div>
 
 						<div class="form-group">
-							<label class="col-sm-2 control-label">
-								{{ Form::label('wage_rate', 'Оклад:', ['class' => 'form-spacing-top']) }}
-							</label>
-							<div class="col-sm-6">
-								{{ Form::text('wage_rate', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+							<div class="col-sm-12">
+								{{ Form::label('wage_rate', trans('adminlte_lang::message.wage')) }}
+							</div>
+							<div class="col-sm-8">
+								{{ Form::text('wage_rate', null, ['class' => 'form-control', 
+																  'required' => '', 
+																  'maxlength' => '110']) }}
 							</div>
 							<div class="col-sm-2">
-								{{ Form::select('wage_rate_period', ['hour' => 'час', 'day' => 'день', 'month' => 'месяц'], 'day', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+								{{ Form::select('wage_rate_period', ['hour' => trans('adminlte_lang::message.hour'), 
+																	 'day' => trans('adminlte_lang::message.day'), 
+																	 'month' => trans('adminlte_lang::message.month')], 
+																	 'day', 
+																	 ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
 							</div>
-							<label class="col-sm-1 text-left">
+							<label class="col-sm-2 text-left">
 								<a class="fa fa-info-circle" id="wage_rate" original-title="">&nbsp;</a>
 							</label>
 						</div>
 
 						<div class="form-group">
-							{{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }}
-							<label class="col-sm-8 text-left">
+							{{-- {{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }} --}}
+							<label class="col-sm-10 text-left">
 								{{ Form::checkbox('is_client_discount_counted', true, $scheme->is_client_discount_counted, ['style' => 'margin-right: 10px']) }}
-								 Учитывать скидку клиенту при расчете ЗП 
+									{{ trans('adminlte_lang::message.consider_discount') }}
 							</label>
-							<label class="col-sm-1 text-left">
+							<label class="col-sm-2 text-left">
 								<a class="fa fa-info-circle" id="is_client_discount_counted" original-title="">&nbsp;</a>
 							</label>
 						</div>
 						
 						<div class="form-group">
-							{{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }}
-							<label class="col-sm-8 text-left">
+							{{-- {{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }} --}}
+							<label class="col-sm-10 text-left">
 								{{ Form::checkbox('is_material_cost_counted', true, $scheme->is_client_discount_counted, ['style' => 'margin-right: 10px']) }}
-								 Учитывать себестоимость материалов при расчете ЗП 
+									{{ trans('adminlte_lang::message.consider_cost_of_materials') }} 
 							</label>
-							<label class="col-sm-1 text-left">
+							<label class="col-sm-2 text-left">
 								<a class="fa fa-info-circle" id="is_material_cost_counted" original-title="">&nbsp;</a>
 							</label>
 						</div>
-					</div>						
+					{{-- </div>						 --}}
 					
-					<hr>
+					{{-- <div class="row"><hr></div> --}}
 
 					<div class="row">
+						<div class="col-sm-12"><hr></div>
 						<div class="col-sm-8 col-sm-offset-2">
 							<div class="row">
 								<div class="col-sm-6">
-									{!! Html::linkRoute('wage_scheme.show', 'Отмена', [$scheme->scheme_id], ['class'=>'btn btn-danger btn-block']) !!}
+									{!! Html::linkRoute('wage_scheme.show', trans('adminlte_lang::message.cancel'), [$scheme->scheme_id], ['class'=>'btn btn-danger btn-block']) !!}
 								</div>
 								<div class="col-sm-6">
-									{{ Form::submit('Сохранить', ['class'=>'btn btn-success btn-block']) }}
+									{{ Form::submit(trans('adminlte_lang::message.save'), ['class'=>'btn btn-success btn-block']) }}
 								</div>
 							</div>
 						</div>
