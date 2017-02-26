@@ -63,7 +63,7 @@ class Organization extends Model
      * @return string
      */
     public function getLogoUri() {
-        $logoUri = asset('uploaded_images/logo/logo200_50.png');
+        $logoUri = asset('img/crm/avatar/avatar100.jpg');
         if ($this->logo_image){
             $logoPath = public_path() . '/uploaded_images/logo/main/' . $this->logo_image;
             if (file_exists($logoPath)) {

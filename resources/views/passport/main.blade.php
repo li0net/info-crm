@@ -7,5 +7,5 @@
 @section('main-content')
     <div class="row">
         {!!$passportVueComponent!!}
-</div>
+    </div>
 @endsection
