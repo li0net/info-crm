@@ -76,6 +76,7 @@ return [
     'appointment:note_label'                => 'Примечания',
     'appointment:client_num_visits'         => 'Количество визитов',
     'appointment:client_last_visit_date'    => 'Последний визит',
+    'appointment:error_duration_not_selected' => 'Duration can\'t be 0',
 
     'user:list_page_header'                 => 'Список пользователей',
 

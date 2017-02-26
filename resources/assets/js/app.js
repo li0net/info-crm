@@ -473,7 +473,7 @@ $(document).ready(function () {
 	// Datepicker defaults
 	$.datepicker.setDefaults({
 		//language: 'ru',
-		dateFormat: 'yy-mm-dd',
+		format: 'yyyy-mm-dd',
 		firstDay: 1,
 		autoclose: true
 	});
@@ -481,7 +481,7 @@ $(document).ready(function () {
 	// APPOINTMENT FORM
 	$('#app_date_from').datepicker({
 		autoclose: true,
-		dateFormat: 'yy-mm-dd',
+		format: 'yyyy-mm-dd',
 		firstDay: 1
 	});
 	// Service dropdown change event
@@ -571,6 +571,7 @@ $(document).ready(function () {
 			type: "POST",
 			url: "/appointments/save",
 			data: $("#appointment_form").serialize(),
+			dataType: "json",
 			beforeSend: function() {
 				//$('#result').html('<img src="loading.gif" />');
 				var btn = $('#btn_submit_app_form');
@@ -583,7 +584,44 @@ $(document).ready(function () {
 				var btn = $('#btn_submit_app_form');
 				$(btn).val(btnLabel);
 				$(btn).prop('disabled', false);
-				alert("Saved");
+
+				var errorContainers = [
+					'client_name_error',
+					'client_phone_error',
+					'client_email_error',
+					'service_id_error',
+					'note_error',
+					'employee_id_error',
+					'date_from_error',
+					'time_from_error',
+					'duration_hours_error',
+					'duration_minutes_error'
+				];
+				for (var i = 0; i < errorContainers.length; i++) {
+					$('#' + errorContainers[i]).html('');
+				}
+
+				if (data.success) {
+					alert("Saved");
+				} else {
+					if (data.validation_errors !== undefined) {
+						for (var field_name in data.validation_errors) {
+							if (data.validation_errors.hasOwnProperty(field_name)) {
+								if (data.validation_errors[field_name] instanceof Array) {
+									var errorMsg = data.validation_errors[field_name].join('<br/>');
+								} else {
+									var errorMsg = data.validation_errors[field_name];
+								}
+
+								$('#' + field_name + '_error').html(errorMsg);
+							}
+						}
+					}
+
+					if (data.error !== undefined) {
+						alert("Error:" + data.error);
+					}
+				}
 			},
 			error: function(data) {
 				var btn = $('#btn_submit_app_form');
@@ -597,7 +635,7 @@ $(document).ready(function () {
 	// CLIENT form
 	$('#c_birthday').datepicker({
 		autoclose: true,
-		dateFormat: 'yy-mm-dd',
+		format: 'yyyy-mm-dd',
 		firstDay: 1
 	});
 	// select2 multiple select init
