@@ -357,6 +357,24 @@ class BaseWidgetController extends Controller
         $endTs = strtotime($appStart.' + '.$sDurationHours.' hours '.$sDurationMinutes.' minutes');
         $appEnd = date('Y-m-d H:i:s', $endTs);
 
+        // Проверка что данное время все еще свободно у мастера
+        $employee = Employee::find($request->input('employee_id'))->where('organization_id', $request->input('organization_id'))->first();
+        if (!$employee) return json_encode($this->getCommonError());
+        $freeTimesForService = $employee->getFreeWorkTimesForDay($request->input('date'), $service);
+        if ($freeTimesForService === FALSE OR count($freeTimesForService) == 0) {
+            return json_encode($this->getCommonError(trans('main.widget:error_time_already_taken')));
+        }
+        $timeIsFree = false;
+        foreach ($freeTimesForService AS $freeTime) {
+            if ($request->input('time') == $freeTime) {
+                $timeIsFree = true;
+                break;
+            }
+        }
+        if (!$timeIsFree) {
+            return json_encode($this->getCommonError(trans('main.widget:error_time_already_taken')));
+        }
+
         // Ищем клиента
         // TODO: искать клиента по комбинации имени-номера телефона-имейла ??
         //  имя и телефон нормализуем (имя - каждое слово с заглавной буквы, лишние пробелы между словами и до/после убираем, номер телефона - храним в стандартном формате)
@@ -401,6 +419,7 @@ class BaseWidgetController extends Controller
         }
         // TODO: поменять, когда появится поддержка 'Мастер не важен'
         $appointment->is_employee_important = 1;
+        $appointment->source = 'widget';
 
         $appointment->save();
 
