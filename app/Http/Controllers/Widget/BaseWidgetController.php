@@ -10,12 +10,13 @@ use App\Employee;
 use App\Service;
 use App\SuperOrganization;
 use App\Organization;
+use App\Client;
+use App\Appointment;
 use App\AccessPermission;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
-//use Symfony\Component\EventDispatcher\Tests\Service;
 
 use \App\Http\Controllers\Controller;
 
@@ -267,8 +268,9 @@ class BaseWidgetController extends Controller
         $formData = $request->only(['service_id', 'employee_id', 'date']);  // post параметр service_id, employee_id, day
 
         $employee = Employee::find($request->input('employee_id'));
+        $service = Service::find($request->input('service_id'));
         $date = $request->input('date');
-        $times = $employee->getFreeTimeIntervals($date, $date, TRUE);
+        $times = $employee->getFreeWorkTimesForDay($date, $service);
         // фейковый массив
 
 //        $times = array();
@@ -295,8 +297,8 @@ class BaseWidgetController extends Controller
             'time' => $request->input('time'),
             'date' => $request->input('date'),
             'employeeId' => $request->input('employee_id'),
-            'organizationId' => $request->input('orgId'),
-            'serviceId' => $request->input('serviceId'),
+            'organizationId' => $request->input('org_id'),
+            'serviceId' => $request->input('service_id'),
         );
 
         $view = View::make('widget.pages.clientform', [
@@ -308,8 +310,118 @@ class BaseWidgetController extends Controller
     // Отображает форму с полями для ввода имени, телефона, адреса электронной почты и т.д.
     public function handleUserInformationForm(Request $request)
     {
-        $formData = Input::get();
-        //TODO сохранить заявку, создать клиента
+        /*
+        time:"11:00"
+        date:"2017-02-27"
+        employee_id:"5"
+        organization_id:""
+        service_id:""
+
+        client_name:"name_entered"
+        client_phone:"+7854522221122"
+        client_comment:"commentaryi"
+        agree:"on"
+        */
+
+        $validator = Validator::make($request->all(), [
+            'agree'         => 'accepted',
+            'time'          => 'required',
+            'date'          => 'required|date_format:"Y-m-d"',
+            'employee_id'   => 'required|max:12',
+            'organization_id' => 'required|max:12',
+            'service_id'     => 'required|max:12|exists:services,service_id',
+            'client_name'   => 'required|max:120',
+            'client_phone'  => 'required|phone_crm' // custom validation rule
+        ]);
+
+        if ($validator->fails()) {
+            return json_encode(array(
+                'success'   => false,
+                'errors'    => $validator->messages()
+            ));
+        }
+
+        $service = Service::where('service_id', $request->input('service_id'))
+            ->join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id')
+            ->where('service_categories.organization_id', $request->input('organization_id'))
+            ->first();
+        if (!$service) return json_encode($this->getCommonError());
+
+        $appStart = $request->input('date').' '.$request->input('time').':00';
+        if (!preg_match('/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/', $appStart)) return json_encode($this->getCommonError());
+
+        $appStartTs = strtotime($appStart);
+        if ($appStartTs === false) return json_encode($this->getCommonError());
+
+        list($sDurationHours, $sDurationMinutes, $sDurationSeconds) = explode(':', $service->duration);
+        $endTs = strtotime($appStart.' + '.$sDurationHours.' hours '.$sDurationMinutes.' minutes');
+        $appEnd = date('Y-m-d H:i:s', $endTs);
+
+        // Проверка что данное время все еще свободно у мастера
+        $employee = Employee::find($request->input('employee_id'))->where('organization_id', $request->input('organization_id'))->first();
+        if (!$employee) return json_encode($this->getCommonError());
+        $freeTimesForService = $employee->getFreeWorkTimesForDay($request->input('date'), $service);
+        if ($freeTimesForService === FALSE OR count($freeTimesForService) == 0) {
+            return json_encode($this->getCommonError(trans('main.widget:error_time_already_taken')));
+        }
+        $timeIsFree = false;
+        foreach ($freeTimesForService AS $freeTime) {
+            if ($request->input('time') == $freeTime) {
+                $timeIsFree = true;
+                break;
+            }
+        }
+        if (!$timeIsFree) {
+            return json_encode($this->getCommonError(trans('main.widget:error_time_already_taken')));
+        }
+
+        // Ищем клиента
+        // TODO: искать клиента по комбинации имени-номера телефона-имейла ??
+        //  имя и телефон нормализуем (имя - каждое слово с заглавной буквы, лишние пробелы между словами и до/после убираем, номер телефона - храним в стандартном формате)
+        $usr = new User();
+        $clientPhone = $usr->normalizePhoneNumber($request->input('client_phone'));
+        $client = Client::where('organization_id', $request->input('organization_id'))
+            ->where('phone', $clientPhone)
+            ->first();
+
+        // если такой клиент уже есть (поиск по номеру телефона) - добавляем ему email, если не было, иначе не апдейтим его
+        //  а его id прописываем в $appointment->client_id
+        if (is_null($client)) {
+            $client = new Client();
+            $client->name = $request->input('client_name');      // TODO: нормализовать
+            $client->phone = $clientPhone;
+            /*
+            if ($request->input('client_email')) {
+                $client->email = $request->input('client_email');
+            }
+            */
+            $client->organization_id = $request->input('organization_id');
+            $client->save();
+
+        } else {
+            // показывать в иджете поле для ввода email ?
+            //if (empty($client->email) AND !empty($request->input('client_email'))) {
+            //    $client->email = $request->input('client_email');
+            //    $client->save();
+            //}
+        }
+
+        // TODO: проверять что данный диапазон времени (start - end) не занят у работника
+        $appointment = new Appointment();
+        $appointment->organization_id = $request->input('organization_id');
+        $appointment->client_id = $client->client_id;
+        $appointment->service_id = $request->input('service_id');
+        $appointment->start = $appStart;
+        $appointment->end = $appEnd;
+        $appointment->employee_id = $request->input('employee_id');
+        if (!empty($request->input('client_comment'))) {
+            $appointment->note = $request->input('client_comment');
+        }
+        // TODO: поменять, когда появится поддержка 'Мастер не важен'
+        $appointment->is_employee_important = 1;
+        $appointment->source = 'widget';
+
+        $appointment->save();
 
         //TODO обработка ошибок
         //TODO экран завершения
@@ -318,6 +430,7 @@ class BaseWidgetController extends Controller
         );
         return json_encode($result);
     }
+
 
     public function getOrgInformation(Request $request)
     {
@@ -331,5 +444,12 @@ class BaseWidgetController extends Controller
         ]);
         $contents = $view->render();
         return $contents;
+    }
+
+    private function getCommonError($msg = 'Data error') {
+        return array(
+            'success' => false,
+            'errors' => $msg
+        );
     }
 }

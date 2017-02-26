@@ -190,4 +190,5 @@ return [
     'client_category:edit_success_message'  => 'Изменения сохранены',
     'client_category:create_success_message'=> 'Категория создана',
 
+    'widget:error_time_already_taken'       => 'Unfortunately selected time is already occupied. Please return to previous step and select other time.'
 ];

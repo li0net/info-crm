@@ -215,5 +215,7 @@ return [
 
     'passport:manage_clients_title'         => 'Управление API пользователями',
     'passport:manage_authorized_clients_title' => 'Управление авторизованными API пользователями',
-    'passport:manage_personal_access_tokens_title' => 'Управление персональными токенами'
+    'passport:manage_personal_access_tokens_title' => 'Управление персональными токенами',
+
+    'widget:error_time_already_taken'       => 'К сожалению, выбранное время уже занято. Пожалуйста, вернитесь на предыдущий шаг и выберите другое время.',
 ];
