@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employees') }}
+	{{ trans('adminlte_lang::message.schemes') }}
 @endsection
 
 @section('main-content')
@@ -9,7 +9,7 @@
 		@if (Session::has('success'))
 		
 		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
+			<strong>{{ trans('adminlte_lang::message.schemes') }}</strong> {{ Session::get('success') }}
 		</div>
 
 		@endif
@@ -17,11 +17,11 @@
 
 	<div class="row">
 		<div class="col-sm-10">
-			<h4>Все схемы расчет ЗП</h4>
+			<h4>{{ trans('adminlte_lang::message.schemes') }}</h4>
 		</div>	
 
 		<div class="col-sm-2">
-			<a href="{{ route('wage_scheme.create') }}" class="btn btn-primary btn-block">Новая схема</a>
+			<a href="{{ route('wage_scheme.create') }}" class="btn btn-primary btn-block">{{ trans('adminlte_lang::message.new_scheme') }}</a>
 		</div>
 
 		<div class="col-sm-12">
@@ -33,10 +33,10 @@
 			<table class="table">
 				<thead>
 					<th class="text-center">#</th>
-					<th>Наименование схемы</th>
-					<th>За услуги</th>
-					<th>За товары</th>
-					<th>Оклад</th>
+					<th>{{ trans('adminlte_lang::message.scheme_name') }}</th>
+					<th>{{ trans('adminlte_lang::message.for_services') }}</th>
+					<th>{{ trans('adminlte_lang::message.for_products') }}</th>
+					<th>{{ trans('adminlte_lang::message.wage') }}</th>
 					<th></th>
 				</thead>
 				<tbody>
@@ -66,11 +66,11 @@
 								{{ $scheme->wage_rate }}
 								<br>
 								@if( $scheme->wage_rate_period == 'hour')
-									<small>в час</small>
+									<small>{{ trans('adminlte_lang::message.an_hour') }}</small>
 								@elseif( $scheme->wage_rate_period == 'day' )
-									<small>в день</small>
+									<small>{{ trans('adminlte_lang::message.a_day') }}</small>
 								@else
-									<small>в месяц</small>
+									<small>{{ trans('adminlte_lang::message.a_month') }}</small>
 								@endif
 							</td>
 							<td class="text-right">

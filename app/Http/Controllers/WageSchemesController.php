@@ -44,9 +44,9 @@ class WageSchemesController extends Controller
 	{
 		$service_ctgs = ServiceCategory::where('organization_id', $request->user()->organization_id)
 										->orderBy('name')
-										->with('service')
+										->with('services')
 										->get()
-										->pluck('service', 'service_category_id');
+										->pluck('services', 'service_category_id');
 
 		$product_ctgs = ProductCategory::where('organization_id', $request->user()->organization_id)
 										->orderBy('title')
@@ -134,9 +134,9 @@ class WageSchemesController extends Controller
 		$scheme = WageScheme::find($id);
 		$service_ctgs = ServiceCategory::where('organization_id', $request->user()->organization_id)
 										->orderBy('name')
-										->with('service')
+										->with('services')
 										->get()
-										->pluck('service', 'service_category_id');
+										->pluck('services', 'service_category_id');
 
 		$product_ctgs = ProductCategory::where('organization_id', $request->user()->organization_id)
 										->orderBy('title')
@@ -273,7 +273,7 @@ class WageSchemesController extends Controller
     {
     	if($request->ajax()){
     		
-    		$options = Product::where('category', $request->product_ctgs)->pluck('title', 'product_id')->all();
+    		$options = Product::where('category_id', $request->product_ctgs)->pluck('title', 'product_id')->all();
 
     		// if ($request->beneficiary_type == 'partner') {
     		// 	$options = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id')->all();

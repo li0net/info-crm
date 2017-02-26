@@ -691,9 +691,9 @@ $(document).ready(function () {
 	$('#detailed-services').on('click', '#add-detailed-section', function(e) {
 		if( 'Удалить' !== $(e.target).val() ) {
 			$('#detailed-services').prepend(
-				'<div class="wrap-it"><div class="col-sm-2"></div>' +						
-				'<div class="col-sm-8" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="services_cats_detailed[]" class="form-control"></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="services_detailed[]" class="form-control"><option value="">Выберите услугу</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="services_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="services_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
-				'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info"></div></div>');
+				'<div class="wrap-it">' +
+				'<div class="col-sm-10" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="services_cats_detailed[]" class="form-control"></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="services_detailed[]" class="form-control"><option value="">Выберите услугу</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="services_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="services_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
+				'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info btn-sm"></div></div>');
 			
 			$('select.form-control[name="services_cats_detailed[]"]').first().find('option').remove();
 			$('select.form-control[name="services_cats_detailed[]"]').first().append($('#service_ctgs_options').val());
@@ -731,9 +731,9 @@ $(document).ready(function () {
 	$('#detailed-products').on('click', '#add-detailed-section', function(e) {
 		if($(e.target).val() !== 'Удалить') {
 			$('#detailed-products').prepend(
-				'<div class="wrap-it"><div class="col-sm-2"></div>' +						
-				'<div class="col-sm-8" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="products_cats_detailed[]" class="form-control"></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="products_detailed[]" class="form-control"><option value="0" selected="selected">Выберите товар</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="products_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="products_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
-				'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info"></div></div>');
+				'<div class="wrap-it">' +						
+				'<div class="col-sm-10" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="products_cats_detailed[]" class="form-control"></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="products_detailed[]" class="form-control"><option value="0" selected="selected">Выберите товар</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="products_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="products_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
+				'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info btn-sm"></div></div>');
 			
 			$('select.form-control[name="products_cats_detailed[]"]').first().find('option').remove();
 			$('select.form-control[name="products_cats_detailed[]"]').first().append($('#product_ctgs_options').val());

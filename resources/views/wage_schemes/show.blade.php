@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employee_create') }}
+	{{ trans('adminlte_lang::message.information_about_payroll_scheme') }}
 @endsection
 
 {{-- @section('Stylesheets')
@@ -12,7 +12,7 @@
 
 	<div class="row">
 		<div class="col-sm-6 col-sm-offset-3">
-			<h4>Информация о схеме расчета ЗП</h4>	
+			<h4>{{ trans('adminlte_lang::message.information_about_payroll_scheme') }}</h4>	
 			<hr>	
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
@@ -25,105 +25,108 @@
 			@endif
 			<div class="well">
 				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-				{!! Form::open(['route' => ['wage_scheme.store'], 'class' => 'form-horizontal']) !!}
+				{!! Form::open(['route' => ['wage_scheme.store']]) !!}
 					<div class="row">
 						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								{{ Form::label('scheme_name', 'Наименование:', ['class' => 'form-spacing-top']) }}
+							<div class="col-sm-4">
+								{{ Form::label('scheme_name', trans('adminlte_lang::message.scheme_name')) }}
 							</div>
 							<div class="col-sm-8">
-								<p class="lead">{{ $scheme->scheme_name }}
+								<p class="lead">{{ $scheme->scheme_name }}</p>
 							</div>
 						</div>
-						
+					</div>
+					
+					<div class="row">
 						<div class="form-group">
-							<label class="col-sm-2 control-label">
-								{{ Form::label('services_percent', 'Услуги:', ['class' => 'form-spacing-top']) }}
-							</label>
-							<div class="col-sm-6">
-								<p class="lead">{{ $scheme->services_percent }}
+							<div class="col-sm-4">
+								{{ Form::label('services_percent', trans('adminlte_lang::message.services')) }}
 							</div>
-							<div class="col-sm-2">
+							<div class="col-sm-8">
 								<p class="lead">
+									{{ $scheme->services_percent }}
 									@if( $scheme->service_unit == 'rub' )
 										&#8381;
 									@else
 										%
 									@endif
 								</p>
-								{{-- , ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }} --}}
 							</div>
 						</div>
+					</div>
 
+					<div class="row">
 						<div class="form-group">
-							<label class="col-sm-2 control-label">
-								{{ Form::label('products_percent', 'Товары:', ['class' => 'form-spacing-top']) }}
-							</label>
-							<div class="col-sm-6">
-								<p class="lead">{{ $scheme->products_percent }}
+							<div class="col-sm-4">
+								{{ Form::label('products_percent', trans('adminlte_lang::message.products')) }}
 							</div>
-							<div class="col-sm-2">
+							<div class="col-sm-8">
 								<p class="lead">
+									{{ $scheme->products_percent }}
 									@if( $scheme->products_unit == 'rub' )
 										&#8381;
 									@else
 										%
 									@endif
 								</p>
-							</div>
+							</div>							
 						</div>
+					</div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label">
-								{{ Form::label('wage_rate', 'Оклад:', ['class' => 'form-spacing-top']) }}
-							</label>
-							<div class="col-sm-6">
-								<p class="lead">{{ $scheme->wage_rate }}
+					<div class="form-group">
+						<div class="row">
+							<div class="col-sm-4">
+								{{ Form::label('wage_rate', trans('adminlte_lang::message.wage')) }}
 							</div>
-							<div class="col-sm-2">
+							<div class="col-sm-8">
 								<p class="lead">
+									{{ $scheme->wage_rate }}
+									&#8381;
 									@if( $scheme->wage_rate_period == 'hour' )
-										в час
+										{{ trans('adminlte_lang::message.an_hour') }}
 									@elseif( $scheme->wage_rate_period == 'day' )
-										в день
+										{{ trans('adminlte_lang::message.a_day') }}
 									@else
-										в месяц
+										{{ trans('adminlte_lang::message.a_month') }}
 									@endif
 								</p>
 							</div>
 						</div>
+					</div>
 
+					<div class="row">
 						<div class="form-group">
-							{{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }}
-							<label class="col-sm-8 text-left">
+							{{-- {{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }} --}}
+							<label class="col-sm-12 text-left">
 								{{ Form::checkbox('is_client_discount_counted', 1, $scheme->is_client_discount_counted, ['style' => 'margin-right: 10px', 'disabled']) }}
-								 Учитывать скидку клиенту при расчете ЗП 
+									{{ trans('adminlte_lang::message.consider_discount') }} 
 							</label>
 						</div>
-						
+					</div>
+					
+					<div class="row">
 						<div class="form-group">
-							{{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }}
-							<label class="col-sm-8 text-left">
+							{{-- {{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }} --}}
+							<label class="col-sm-12 text-left">
 								{{ Form::checkbox('is_material_cost_counted', 1, $scheme->is_material_cost_counted, ['style' => 'margin-right: 10px', 'disabled']) }}
-								 Учитывать себестоимость материалов при расчете ЗП 
+									{{ trans('adminlte_lang::message.consider_cost_of_materials') }} 
 							</label>
 						</div>
-					</div>						
+					</div>
 				{!! Form::close() !!}	
-				<hr>
+				
+				<div class="row"><hr></div>
 
 				<div class="row">
 					@if ($user->hasAccessTo('wage_scheme', 'edit', 0))
 						<div class="col-sm-6">
-							{!! Html::linkRoute('wage_scheme.edit', 'Редактировать', [$scheme->scheme_id], ['class'=>'btn btn-primary btn-block']) !!}
+							{!! Html::linkRoute('wage_scheme.edit', trans('adminlte_lang::message.edit'), [$scheme->scheme_id], ['class'=>'btn btn-primary btn-block']) !!}
 						</div>
 					@endif
 					@if ($user->hasAccessTo('wage_scheme', 'delete', 0))
 						<div class="col-sm-6">
 							{!! Form::open(['route' => ['wage_scheme.destroy', $scheme->scheme_id], "method" => 'DELETE']) !!}
-
-							{{ Form::submit('Удалить', ['class'=>'btn btn-danger btn-block']) }}
-
+								{{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger btn-block']) }}
 							{!! Form::close() !!}
 						</div>
 					@endif
@@ -131,7 +134,8 @@
 
 				<div class="row">
 					<div class="col-sm-12">
-							{{ Html::linkRoute('wage_scheme.index', 'Все схемы расчета »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
+							{{ Html::linkRoute('wage_scheme.index', trans('adminlte_lang::message.schemes').' »', [], ['class' => 'btn btn-default btn-block', 
+																													   'style' => 'margin-top:15px']) }}
 					</div>
 				</div>
 			</div>

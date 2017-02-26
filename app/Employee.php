@@ -52,13 +52,13 @@ class Employee extends Model
 	}
 
 	/**
-	 * Возвращает
+	 * Возвращает свободные для записи интервалы времени у текущего работника
 	 *
 	 * @param null $startDateTime string start datetime. If not set current timestamp is used
 	 * @param null $endDateTime string end datetime. If not set end of current month is used
 	 * @param bool|FALSE $forWidget
 	 *
-	 * @return array | bool
+	 * @return array | bool - [{'work_start' => '2017-02-20 10:00:00', 'work_end' => '2017-02-20 16:30:00'}, ...]
 	 */
 	public function getFreeTimeIntervals($startDateTime = NULL, $endDateTime = NULL, $forWidget = FALSE) {
 		/*
@@ -82,8 +82,13 @@ class Employee extends Model
 		$startDateTime = new \DateTime($startDateTime);
 		$startDateTime = $startDateTime->format('Y-m-d H:i:s');
 
-		$endDateTime = new \DateTime($endDateTime);
-		$endDateTime = $endDateTime->format('Y-m-t') . ' 23:59:59';		// t returns the number of days in the month for given date
+		if (is_null($endDateTime)) {
+			$endDateTime = new \DateTime();
+			$endDateTime = $endDateTime->format('Y-m-t') . ' 23:59:59';        // t returns the number of days in the month for given date
+		} else {
+			$endDateTime = new \DateTime($endDateTime);
+			$endDateTime = $endDateTime->format('Y-m-d H:i:s');
+		}
 
 		// Отбираем интервалы расписаний в пределах нужного срока и Сортируем их по возрастанию
 		$schedules = DB::select(
@@ -231,5 +236,52 @@ class Employee extends Model
 		}
 
 		return array_keys($dates);
+	}
+
+	/**
+	 * Возвращает временные метки свободные для записи на выбранный день на конкретную услугу
+	 *
+	 * @param $day string 'YYYY-mm-dd'
+	 * @param $service Service model object
+	 *
+	 * @return array|bool  ['10:30', '11:15', '14:00', '14:45']
+	 */
+	public function getFreeWorkTimesForDay($day, Service $service) {
+		if (!preg_match('/^\d\d\d\d-\d\d-\d\d$/', $day)) {
+			return FALSE;
+		}
+
+		$ss = '00';
+		list($sh, $sm, $ss) = explode(':', $service->duration);		//'00:45:00'
+		$serviceDurationInt = new \DateInterval("PT{$sh}H{$sm}M{$ss}S");
+
+		$freeTimeIntervals = $this->getFreeTimeIntervals($day . '00:00:00', $day . '23:59:59', TRUE);
+		/*[
+			{
+				'work_start' => '2017-02-20 10:00:00',
+				'work_end' => '2017-02-20 16:30:00'
+			},
+			{
+				'work_start' => '2017-02-20 17:30:00',
+				'work_end' => '2017-02-20 19:00:00'
+			}
+		]*/
+
+		$availableTimes = array();
+		foreach($freeTimeIntervals AS $int) {
+			$intStart = new \DateTime($int->work_start);
+			$intEnd = new \DateTime($int->work_end);
+
+			$currDT = $intStart->add($serviceDurationInt);
+			while($currDT <= $intEnd) {
+				$selStartTime = clone $currDT;
+				$selStartTime = $selStartTime->sub($serviceDurationInt);
+				$availableTimes[] = $selStartTime->format('H:i');
+
+				$currDT = $currDT->add($serviceDurationInt);
+			}
+		}
+
+		return $availableTimes;
 	}
 }
