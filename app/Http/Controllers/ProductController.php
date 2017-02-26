@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Product;
 use App\ProductCategory;
+use App\storageTransaction;
 use App\Storage;
 use App\Partner;
+use App\Employee;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
@@ -228,8 +230,6 @@ class ProductController extends Controller
 
 		$products = $products->with('storage')->get();
 
-		// dd($products);
-
 		$page = (0 == $request->page) ? 1 : $request->page;
 		$paginate = 10;
 		 
@@ -240,5 +240,69 @@ class ProductController extends Controller
 		$products->appends(['index' => 'filtered']);
 
 		return View::make('product.list', compact('products'));
+	}
+
+	public function salesAnalysis(Request $request)
+	{
+		$transactions = storageTransaction::where('organization_id', $request->user()->organization_id)->with('product')->get()->all();
+		$employees = Employee::where('organization_id', $request->user()->organization_id)->get()->pluck('name', 'employee_id');
+		$partners = Partner::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'partner_id');
+		$categories = ProductCategory::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'product_category_id');
+		$user = $request->user();
+
+		//$pr = storageTransaction::with('productWithCategories')->get();
+
+		$page = Input::get('page', 1);
+		$paginate = 10;
+		 
+
+		$offset = ($page * $paginate) - $paginate;
+		$itemsForCurrentPage = array_slice($transactions, $offset, $paginate, true);
+		$transactions = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($transactions), $paginate, $page);
+		$transactions->setPath('salesanalysis');
+
+		return view('product.salesanalysis', compact('user', 'transactions', 'employees', 'partners', 'categories'));
+	}
+
+	public function salesAnalysisFiltered(Request $request)
+	{
+		$transactions = storageTransaction::where('organization_id', $request->user()->organization_id)->with('product');
+		$employees = Employee::where('organization_id', $request->user()->organization_id)->get()->pluck('name', 'employee_id');
+		$partners = Partner::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'partner_id');
+		$categories = ProductCategory::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'product_category_id');
+		$user = $request->user();
+
+		if('' !== $request->employee_id) {
+			$transactions = $transactions->where('employee_id', $request->employee_id);
+		}
+
+		if('' !== $request->partner_id) {
+			$transactions = $transactions->where('partner_id', $request->partner_id);
+		}
+
+		if('' !== $request->category_id) {
+			$transactions->where('category_id', $request->category_id);
+		}
+
+		$filter_start_time = date_create($request->date_from.'00:00:00');
+		date_format($filter_start_time, 'U = Y-m-d 0:0:0');
+
+		$filter_end_time = date_create($request->date_to.'23:59:59');
+		date_format($filter_end_time, 'U = Y-m-d 23:59:59');
+
+		$transactions->whereBetween('date', [$filter_start_time, $filter_end_time]);
+
+		$transactions = $transactions->with('product')->get();
+
+		$page = (0 == $request->page) ? 1 : $request->page;
+		$paginate = 10;
+		 
+		$offset = ($page * $paginate) - $paginate;
+		$itemsForCurrentPage = $transactions->slice($offset, $paginate);
+		$transactions = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($transactions), $paginate, $page);
+		$transactions->setPath('salesanalysis');
+		$transactions->appends(['index' => 'filtered']);
+
+		return View::make('product.sales', compact('transactions'));
 	}
 }
