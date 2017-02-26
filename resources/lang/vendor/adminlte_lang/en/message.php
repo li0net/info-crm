@@ -438,5 +438,18 @@ return [
 	'a_day'						=> 'a day',
 	'a_month'					=> 'a month',
 	'information_about_payroll_scheme'	=> 'Information about payroll scheme',
-	'schemes'					=> 'Schemes'
+	'schemes'					=> 'Schemes',
+	'price'						=> 'Price',
+	'writeoff_balance'			=> 'The balance of write-off units',
+	'cost_price'				=> 'Cost price',
+	'margin'					=> 'Margin',
+	'margin_pctg'				=> 'Margin percentage',
+	'integrated_cost'			=> 'Integrated cost',
+	'show_critical_balances'	=> 'Show critical balances',
+	'dont_show_critical_balances'	=> 'Dont show critical balances',
+	'storage_balances'			=> 'Storage balances',
+	'products_per_page'			=> 'products per page',
+	'no_such_products'			=> 'No such products on storages',
+	'categories'				=> 'Categories',
+	'on_date'					=> 'on date'
 ];

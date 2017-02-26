@@ -165,7 +165,8 @@ class WageSchemesController extends Controller
 
 		//dd($service_ctgs);
 
-		return view('wage_schemes.edit', ['scheme' => $scheme, 'service_ctgs' => $service_ctgs, 'product_ctgs' => $product_ctgs, 'services_custom_settings' => $services_custom_settings, 'products_custom_settings' => $products_custom_settings]);
+		// return view('wage_schemes.edit', ['scheme' => $scheme, 'service_ctgs' => $service_ctgs, 'product_ctgs' => $product_ctgs, 'services_custom_settings' => $services_custom_settings, 'products_custom_settings' => $products_custom_settings]);
+		return view('wage_schemes.edit', compact('scheme', 'service_ctgs', 'product_ctgs', 'services_custom_settings', 'products_custom_settings'));
 	}
 
 	/**

@@ -38,6 +38,8 @@ Route::put('/employee', 'EmployeeController@store');
 Route::resource('/position', 'PositionController');
 Route::resource('/account', 'AccountController');
 Route::resource('/product', 'ProductController');
+Route::get('/storagebalance', 'ProductController@storagebalance');
+Route::post('/storagebalance/list', ['as' => 'storagebalance.list', 'uses' => 'ProductController@storagebalanceFiltered']);
 Route::resource('/productCategories', 'ProductCategoriesController');
 Route::resource('/partner', 'PartnerController');
 Route::resource('/item', 'ItemController');

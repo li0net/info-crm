@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\ProductCategory;
 use App\Storage;
+use App\Partner;
 use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
@@ -184,5 +185,60 @@ class ProductController extends Controller
 		}
 
 		return redirect()->route('product.index');
+	}
+
+	public function storageBalance(Request $request)
+	{
+		$products = Product::where('organization_id', $request->user()->organization_id)->with('storage')->get()->all();
+		$storages = Storage::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'storage_id');
+		$partners = Partner::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'partner_id');
+		$categories = ProductCategory::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'product_category_id');
+		$user = $request->user();
+
+		$page = Input::get('page', 1);
+		$paginate = 10;
+		 
+		$offset = ($page * $paginate) - $paginate;
+		$itemsForCurrentPage = array_slice($products, $offset, $paginate, true);
+		$products = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($products), $paginate, $page);
+		$products->setPath('product');
+
+		return view('product.storagebalance', compact('user', 'products', 'storages', 'partners', 'categories'));
+	}
+
+	public function storageBalanceFiltered(Request $request)
+	{
+		$products = Product::where('organization_id', $request->organization_id);
+		$storages = Storage::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'storage_id');
+		$partners = Partner::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'partner_id');
+		$categories = ProductCategory::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'product_category_id');
+		$user = $request->user();
+
+		if('' !== $request->storage_id) {
+			$products = $products->where('storage_id', $request->storage_id);
+		}
+
+		if('' !== $request->category_id) {
+			$products->where('category_id', $request->category_id);
+		}
+
+		if(1 == $request->show_critical_balance) {
+			$products->whereRaw('products.amount < products.critical_balance');
+		}
+
+		$products = $products->with('storage')->get();
+
+		// dd($products);
+
+		$page = (0 == $request->page) ? 1 : $request->page;
+		$paginate = 10;
+		 
+		$offset = ($page * $paginate) - $paginate;
+		$itemsForCurrentPage = $products->slice($offset, $paginate);
+		$products = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($products), $paginate, $page);
+		$products->setPath('storagebalance');
+		$products->appends(['index' => 'filtered']);
+
+		return View::make('product.list', compact('products'));
 	}
 }

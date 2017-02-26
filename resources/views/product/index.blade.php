@@ -56,13 +56,13 @@
 								<small>{{ trans('adminlte_lang::message.cost_of_goods_for_sale') }}</small>
 							</td>
 							<td> 
-								@if($product->unit_for_sale = 'pcs') 
+								@if($product->unit_for_sale == 'pcs') 
 									{{ trans('adminlte_lang::message.pieces') }}&nbsp;
 								@else
 									{{ trans('adminlte_lang::message.milliliters') }}
 								@endif
 								=&nbsp;{{ $product->is_equal }}&nbsp;
-								@if($product->unit_for_disposal = 'pcs')
+								@if($product->unit_for_disposal == 'pcs')
 									{{ trans('adminlte_lang::message.pieces') }}&nbsp; 
 								@else
 									{{ trans('adminlte_lang::message.milliliters') }}

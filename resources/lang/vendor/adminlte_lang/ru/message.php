@@ -445,5 +445,18 @@ return [
 	'a_day'						=> 'в день',
 	'a_month'					=> 'в месяц',
 	'information_about_payroll_scheme'	=> 'Информация о схеме расчета ЗП',
-	'schemes'					=> 'Все схемы расчета'
+	'schemes'					=> 'Все схемы расчета',
+	'price'						=> 'Цена',
+	'writeoff_balance'			=> 'Остаток в единицах списания',
+	'cost_price'				=> 'Себестоимость',
+	'margin'					=> 'Наценка',
+	'margin_pctg'				=> 'Наценка в процентах',
+	'integrated_cost'			=> 'Суммарная стоимость',
+	'show_critical_balances'	=> 'Показывать критичные остатки',
+	'dont_show_critical_balances'	=> 'Не показывать критичные остатки',
+	'storage_balances'			=> 'Остатки на складах',
+	'products_per_page'			=> 'товаров на страницу',
+	'no_such_products'			=> 'Товаров с такими параметрами на складах не обнаружено',
+	'categories'				=> 'Все категории',
+	'on_date'					=> 'на дату'
 ];
