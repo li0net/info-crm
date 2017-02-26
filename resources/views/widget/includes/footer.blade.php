@@ -1,9 +1,4 @@
-<div id="info-block" class="info-block"></div>
-<div id="address" class="address text-center"></div>
-<hr>
-
-
-<div id="copyright" class="text-center">INfogroup</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="{{asset('js/widget.js')}}"></script>
-
+<div class="row">
+    <div id="address" class="address text-center col-sm-12 hidden"></div>
+    <div id="copyright" class="copyright text-center col-sm-12"><div class="footer-logo"></div></div>
+</div>

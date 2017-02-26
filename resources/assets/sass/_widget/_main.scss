@@ -1,0 +1,212 @@
+@import "variables";
+html{
+  min-height:100%;/* make sure it is at least as tall as the viewport */
+  position:relative;
+}
+body{
+  height:100%;
+  padding: 0 0 90px 0;
+  margin: 0;
+  background-color: $body-bg;
+  color: $text-color;
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+}
+
+#cloud-container{
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  overflow:hidden;
+
+}
+
+.hidden{
+  display: none;
+}
+
+.loadingbox{
+  position: relative;
+  text-align: center;
+  &:after{
+    text-align: center;
+    content: "";
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.8) url("/img/widget/ajax-loader2.gif") no-repeat scroll 50% 50%;
+  }
+}
+h1,
+h4{
+  font-family: $font-family-sans-serif;
+}
+
+h1 {
+  font-size: 24px;
+  color: $brand-primary;
+}
+h4 {
+  font-size: 13px;
+  color:$text-color;
+}
+
+
+
+/** header **/
+header{
+  height: 60px;
+  background-color: $brand-primary;
+  color: #FFFFFF;
+  font-weight: 900;
+  a{
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 19pt;
+    line-height: 2.2;
+  }
+}
+footer{
+  position: fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  min-height: 40px;
+  background-color: $brand-primary;
+  color: #FFFFFF;
+  font-weight: 900;
+  .address{
+    background-color: $brand-second;
+    color: $brand-primary;
+    height: 50px;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 17px;
+    padding-top: 8px;
+  }
+  .copyright{
+    height: 40px;
+    background-color: $brand-primary;
+    .footer-logo{
+      display: inline-block;
+      width: 132px;
+      height: 40px;
+      background: url("/img/widget/brand_logo.png") no-repeat scroll 0 0;
+    }
+  }
+  a{
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 19pt;
+    line-height: 2.2;
+  }
+}
+
+
+/** main screens carousel logic **/
+#main{
+  #content{
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+#wgCarousel {
+  .nav {
+    li{
+      border-bottom: 1px solid $brand-primary;
+      background-color: $brand-second;
+      &:hover{
+        background-color: $brand-second;
+      }
+      a {
+        color: $brand-primary;
+        text-transform: uppercase;
+        font-weight: 600;
+        i{
+          margin-right: 5px;
+        }
+
+        &:hover{
+          background-color: $brand-second;
+          color: #FFFFFF;
+        }
+      }
+    }
+  }
+  .carousel-inner{
+    padding: 10px;
+    a.row{
+      display: block;
+      border-bottom: 1px solid $border-color;
+      color: $text-color;
+      text-transform: uppercase;
+      padding: 15px;
+      &>div{
+        height:50px;
+      }
+      &.service-row,
+      &.day-row,
+      &.division-row,
+      &.time-row,
+      &.category-row{
+        height:auto;
+        &>div{
+          height:auto;
+        }
+      }
+      &:hover{
+        background-color: $brand-hover;
+      }
+      .name{
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+      .description{
+        text-transform:none;
+      }
+      .img-thumbnail{
+        height:50px;
+      }
+    }
+  }
+}
+/** форма отправки заказа **/
+#requestForm {
+  margin-top: 15px;
+  .form-control {
+    background-color: #fff;
+    background-image: none;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    border-bottom: 1px solid $brand-primary;
+    color: $text-color;
+  }
+  select.form-control {
+    color: $brand-primary;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: none;
+    border: 1px solid $brand-primary;
+  }
+  .input-group-addon {
+    color: $brand-primary;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid $brand-primary;
+    border-radius: 0;
+  }
+  .btn.btn-default{
+    background-color: $brand-primary;
+    color: #FFFFFF;
+    border-radius: 20px;
+  }
+}
+
+
+

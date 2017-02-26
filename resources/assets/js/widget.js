@@ -40,7 +40,7 @@ $(document).ready(function() {
     });
 
     /** расширение структуры таб-карусели при отрисовке нового экрана виджета */
-    function updateTabs(tabName) {
+    function updateTabs(tabName, icon) {
         $('#content').addClass('loadingbox');
 
         //елси пользователь вернулся к предыдущему шагу
@@ -58,16 +58,16 @@ $(document).ready(function() {
 
 
         // показываем кнопку предыдущего таба с отображением выбранного занчения
-        $('#wgCarousel').find('#crumb'+tabs+' a').html(tabName);
+        $('#wgCarousel').find('#crumb'+tabs+' a').html('<i class="fa ' + icon + ' " aria-hidden="true"></i>'+tabName);
         $('#wgCarousel').find('#crumb'+tabs).removeClass('hidden');
 
         // инкремент количества табов
         tabs++;
 
         // добавляем для нового экрана таб и кнопку(пока скрытую)
+
         $('#wgCarousel').find('ul.nav').append('<li data-target="#wgCarousel" class="hidden" id="crumb'+tabs+'" data-slide-to="'+tabs+'"><a href="#"></a></li>');
         $('#wgCarousel').find('.carousel-inner').append('<div class="item" id="tab'+tabs+'" data-id="'+tabs+'"></div>');
-
     }
 
     /**
@@ -79,9 +79,9 @@ $(document).ready(function() {
         activeTab = $(this).parents('.item').data('id');
         console.log('activeTab:'+activeTab+' tabs:'+tabs);
 
-        updateTabs($(this).data('name'));
+        updateTabs($(this).data('name'),'fa-flag');
 
-        $(".address").html( "<div>" + $(this).data('address') + '<br>' + $(this).data('phone') + "</div>" );
+        $(".address").html( "<div>" + $(this).data('address') + '<br>' + $(this).data('phone') + "</div>" ).removeClass('hidden');
         $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getCategories",  { org_id:orgId },  function() {
             $('#content').removeClass('loadingbox');
             $('#wgCarousel').carousel(tabs);
@@ -96,7 +96,7 @@ $(document).ready(function() {
         activeTab = $(this).parents('.item').data('id');
         console.log('activeTab:'+activeTab+' tabs:'+tabs);
 
-        updateTabs($(this).data('name'));
+        updateTabs($(this).data('name'), 'fa-list-ul');
 
         $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getServices",  {sc_id:categoryId, org_id:orgId},  function() {
             $('#content').removeClass('loadingbox');
@@ -111,7 +111,7 @@ $(document).ready(function() {
         activeTab = $(this).parents('.item').data('id');
         console.log('activeTab:'+activeTab+' tabs:'+tabs);
 
-        updateTabs($(this).data('name'));
+        updateTabs($(this).data('name'), 'fa-arrow-circle-right');
 
         $('#wgCarousel').find("#tab"+tabs).load("/api/v1/widget/getEmployees",  {service_id:serviceId, org_id:orgId},  function() {
             $('#wgCarousel').carousel(tabs);
@@ -125,7 +125,7 @@ $(document).ready(function() {
         employeeId = $(this).data('id');
         activeTab = $(this).parents('.item').data('id');
 
-        updateTabs($(this).data('name'));
+        updateTabs($(this).data('name'),'fa-user');
 
         $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getAvailableDays",  {employee_id:employeeId, org_id:orgId, service_id:serviceId},  function() {
             $('#content').removeClass('loadingbox');
@@ -138,7 +138,7 @@ $(document).ready(function() {
     $('#content').on('click', 'a.day-row', function(){
         date = $(this).data('id');
         activeTab = $(this).parents('.item').data('id');
-        updateTabs($(this).data('name'));
+        updateTabs($(this).data('name'),'fa-calendar');
 
         $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getAvailableTime",  {date:date, employee_id:employeeId, org_id:orgId, service_id:serviceId},  function() {
             $('#content').removeClass('loadingbox');
@@ -148,7 +148,7 @@ $(document).ready(function() {
     $('#content').on('click', 'a.time-row', function(){
         time = $(this).data('id');
         activeTab = $(this).parents('.item').data('id');
-        updateTabs($(this).data('name'));
+        updateTabs($(this).data('name'), 'fa-clock-o');
 
         $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getUserInformationForm",  {time:time, date:date, employee_id:employeeId, org_id:orgId, service_id:serviceId},  function() {
             $('#content').removeClass('loadingbox');
@@ -156,18 +156,17 @@ $(document).ready(function() {
         });
     });
     $('#content').on('click','#sendRequest', function(){
-        console.log('click');
-        //TODO валаидация
+        //TODO валидация
+        $('#content').addClass('loadingbox');
         $.ajax({
             type: "GET",
             url: "/api/v1/widget/handleUserInformationForm",
             dataType: "json",
-            data: { org_id: orgId, location: "Boston" },
+            data: { org_id: orgId},
             data: $('#requestForm').serialize(),
             success: function(result) {
-                //$(this).parents('.product-container').removeClass('loadingbox');
-                console.log(res);
-                if(result.res){
+                $('#content').removeClass('loadingbox');
+                if( result.res ){
                     alert('заявка создана');
                 } else {
                     alert('ошибка');
