@@ -30,7 +30,9 @@ class EmployeeController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$employees = Employee::select('employee_id', 'name', 'email', 'phone', 'position_id', 'avatar_image_name')->with(['position' => function($query) { $query->select('position_id', 'title'); }])->get()->all();
+		$employees = Employee::select('employee_id', 'name', 'email', 'phone', 'position_id', 'avatar_image_name')
+			->where('organization_id', $request->user()->organization_id)
+			->with(['position' => function($query) { $query->select('position_id', 'title'); }])->get()->all();
 
 		$page = Input::get('page', 1);
 		$paginate = 10;
@@ -64,9 +66,9 @@ class EmployeeController extends Controller
 	public function store(Request $request)
 	{
 		$this->validate($request, [
-			'name' => 'required',
-			'email' => 'required',
-			'phone' => 'required'
+			'name' => 'required|max:150',
+			'email' => 'required|email|unique:employees,email',
+			'phone' => 'required|phone_crm'
 		]);
 
 		$employee = new Employee;
@@ -129,7 +131,10 @@ class EmployeeController extends Controller
 	public function edit(Request $request, $id)
 	{
 		$dash = '---';
-		$employee = Employee::find($id);
+		$employee = Employee::where('employee_id', $id)->where('organization_id', $request->user()->organization_id)->first();
+		if (!$employee) {
+			abort(404, 'No such employee found');
+		}
 		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
 
 		$items = Position::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'position_id');
