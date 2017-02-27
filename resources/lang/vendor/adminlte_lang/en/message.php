@@ -133,6 +133,7 @@ return [
 	'stats'					  	=> 'Statistics',
 	'finance'				  	=> 'Finance',
 	'stock'					  	=> 'Warehouse',
+	'stock_balance'				=> 'Storage balances',
 	'registration'			  	=> 'Online records',
 	'balance'                 	=> 'Balance',
 	'backoffice'			  	=> 'Backoffice',
@@ -451,5 +452,8 @@ return [
 	'products_per_page'			=> 'products per page',
 	'no_such_products'			=> 'No such products on storages',
 	'categories'				=> 'Categories',
-	'on_date'					=> 'on date'
+	'on_date'					=> 'on date',
+	'sales_analysis'			=> 'Sales analysis',
+	'date_from'					=> 'from',
+	'date_to'					=> 'to'
 ];

@@ -100,12 +100,12 @@
 						<li><a href="{{ url('/product')}}">{{ trans('adminlte_lang::message.products') }}</a></li>
 						<li><a href="{{ url('/card')}}">{{ trans('adminlte_lang::message.routings') }}</a></li>
 						<li><a href="{{ url('/unit')}}">{{ trans('adminlte_lang::message.units') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.operations') }}</a></li>
+						<li><a href="{{ url('/storagetransaction')}}">{{ trans('adminlte_lang::message.operations') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.inventory') }}</a></li>
 						<li class="treeview"><a href="#">{{ trans('adminlte_lang::message.reports') }}<i class="fa fa-angle-left pull-right"></i></a>
 							<ul class="treeview-menu">
-								<li><a href="/stub">{{ trans('adminlte_lang::message.stock_balance') }}</a></li>
-								<li><a href="/stub">{{ trans('adminlte_lang::message.sales_analysis') }}</a></li>
+								<li><a href="{{ url('/storagebalance') }}">{{ trans('adminlte_lang::message.stock_balance') }}</a></li>
+								<li><a href="{{ url('/salesanalysis') }}">{{ trans('adminlte_lang::message.sales_analysis') }}</a></li>
 							</ul>
 						</li>
 					</ul>

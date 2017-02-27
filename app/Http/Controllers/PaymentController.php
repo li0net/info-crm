@@ -106,7 +106,7 @@ class PaymentController extends Controller
 		$payments->setPath('payment');
 		$payments->appends(['index' => 'filtered']);
 
-		return View::make('payment.list', ['payments' => $payments]);
+		return View::make('payment.list', compact('payments'));
 	}
 
 	public function populateBeneficiaryOptions(Request $request)

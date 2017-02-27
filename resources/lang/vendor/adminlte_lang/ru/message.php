@@ -458,5 +458,8 @@ return [
 	'products_per_page'			=> 'товаров на страницу',
 	'no_such_products'			=> 'Товаров с такими параметрами на складах не обнаружено',
 	'categories'				=> 'Все категории',
-	'on_date'					=> 'на дату'
+	'on_date'					=> 'на дату',
+	'sales_analysis'			=> 'Анализ продаж',
+	'date_from'					=> 'с',
+	'date_to'					=> 'по'
 ];

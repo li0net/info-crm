@@ -52,8 +52,7 @@
 							</div>
 							<div class="col-sm-9">
 								{{ Form::select('type', ['income' => 'Приход', 'expenses' => 'Расход', 'discharge' => 'Списание', 'transfer' => 'Перемещение'],
-																	'income', 
-																	['class' => 'form-control', 'required' => '']) }}
+														'income', ['class' => 'form-control', 'required' => '']) }}
 							</div>
 							<label class="col-sm-1 text-left">
 								<a class="fa fa-info-circle" original-title="">&nbsp;</a>
@@ -85,16 +84,7 @@
 							</div>
 						</div>
 
-						<div class="form-group">
-							<div class="col-sm-2 control-label">
-								<a href="#transaction-items" data-toggle="collapse" class="btn btn-link btn-xs">
-								<span class="badge label-danger hidden">@{{ transaction_items_count }}</span>
-								&nbsp;&nbsp;Список товаров&nbsp;&nbsp;
-								<i class="fa fa-caret-down"></i></a>
-							</div>
-						</div>
-
-						<div id="transaction-items" class="form-group collapse">
+						<div id="transaction-items" class="form-group collapse in">
 							<div class="row">
 								<div class="col-sm-2"></div>
 								<div class="col-sm-8">
@@ -117,26 +107,25 @@
 									<div class="col-sm-2"></div>							
 									<div class="col-sm-8" style="padding:0">
 										<div class="col-sm-3">
-											{{ Form::select('product_id[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'placeholder' => 'Выберите товар']) }}
+											{{ Form::select('product_id', [], null, ['class' => 'form-control', 
+																					 'maxlength' => '110', 
+																					 'placeholder' => 'Выберите товар']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::text('price[]', null, ['class' => 'form-control']) }}
+											{{ Form::text('price', null, ['class' => 'form-control']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::text('amount[]', null, ['class' => 'form-control']) }}
+											{{ Form::text('amount', null, ['class' => 'form-control']) }}
 										</div>
 										<div class="col-sm-1">
-											{{ Form::text('discount[]', null, ['class' => 'form-control']) }}
+											{{ Form::text('discount', null, ['class' => 'form-control']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::text('sum[]', null, ['class' => 'form-control']) }}
+											{{ Form::text('sum', null, ['class' => 'form-control']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::text('code[]', null, ['class' => 'form-control']) }}
+											{{ Form::text('code', null, ['class' => 'form-control']) }}
 										</div>
-									</div>
-									<div class="col-sm-2" style="margin-bottom: 15px;">
-										<input type="button" id="add-transaction-item" class="btn btn-info" value="Добавить">
 									</div>
 								</div>
 							</div>
@@ -314,8 +303,8 @@
 					data: {'storage_id' : $(this).val()},
 					url: "<?php echo route('card.productOptions') ?>",
 					success: function(data) {
-						$('select[name="product_id[]"]').first().html('');
-						$('select[name="product_id[]"]').first().html(data.options);
+						$('select[name="product_id"]').first().html('');
+						$('select[name="product_id"]').first().html(data.options);
 					}
 				});
 			});

@@ -20,7 +20,21 @@ class StorageTransaction extends Model
 		return $this->belongsTo(Organization::class);
 	}
 
-		public function account()
+	public function product()
+	{
+		return $this->belongsTo(Product::class, 'product_id');
+	}
+
+	public function productWithCategories()
+	{
+		
+		return $this->hasManyThrough(ProductCategory::class, Product::class, 'product_id', 'product_category_id', 'category_id');
+		// $st = $this->belongsTo(Product::class, 'product_id')->getResults();
+
+		// return $st->belongsTo(ProductCategory::class, 'category_id', 'product_category_id');
+	}
+
+	public function account()
 	{
 		return $this->belongsTo(Account::class);
 	}

@@ -37,9 +37,14 @@ Route::resource('/employee', 'EmployeeController');
 Route::put('/employee', 'EmployeeController@store');
 Route::resource('/position', 'PositionController');
 Route::resource('/account', 'AccountController');
+
 Route::resource('/product', 'ProductController');
 Route::get('/storagebalance', 'ProductController@storagebalance');
 Route::post('/storagebalance/list', ['as' => 'storagebalance.list', 'uses' => 'ProductController@storagebalanceFiltered']);
+
+Route::get('salesanalysis', 'ProductController@salesanalysis');
+Route::post('/salesanalysis/sales', ['as' => 'salesanalysis.sales', 'uses' => 'ProductController@salesanalysisFiltered']);
+
 Route::resource('/productCategories', 'ProductCategoriesController');
 Route::resource('/partner', 'PartnerController');
 Route::resource('/item', 'ItemController');

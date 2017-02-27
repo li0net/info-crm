@@ -25,7 +25,7 @@
 			@endif
 			<div class="well">
 				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-				{!! Form::model($transaction, ['route' => ['storagetransaction.update', $transaction->id], 'class' => 'form-horizontal', 'method' => 'PUT']) !!}
+				{!! Form::open(['route' => 'storagetransaction.store', 'class' => 'form-horizontal']) !!}
 					{{ Form::hidden('storage_options', null, ['id' => 'storage_options']) }}
 					<div class="row">
 						<div class="form-group">
@@ -52,7 +52,7 @@
 							</div>
 							<div class="col-sm-9">
 								{{ Form::select('type', ['income' => 'Приход', 'expenses' => 'Расход', 'discharge' => 'Списание', 'transfer' => 'Перемещение'],
-																	$transaction->type, 
+																	'income', 
 																	['class' => 'form-control', 'required' => '']) }}
 							</div>
 							<label class="col-sm-1 text-left">
@@ -60,105 +60,41 @@
 							</label>
 						</div>
 						<div class="transaction-type-content">
-							@if ($transaction->type == 'income')
-								<div class="form-group">
-									<div class="col-sm-2 control-label">
-										{{ Form::label('partner_id', 'Контрагент: ') }}
-									</div>
-									<div class="col-sm-9">
-										{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '']) }}
-									</div>
-									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-									</label>
+							<div class="form-group">
+								<div class="col-sm-2 control-label">
+									{{ Form::label('partner_id', 'Контрагент: ') }}
 								</div>
+								<div class="col-sm-9">
+									{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '']) }}
+								</div>
+								<label class="col-sm-1 text-left">
+									<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+								</label>
+							</div>
 
-								<div class="form-group">
-									<div class="col-sm-2 control-label">
-										{{ Form::label('storage_id', 'Склад: ') }}
-									</div>
-									<div class="col-sm-9">
-										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
-									</div>
-									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-									</label>
+							<div class="form-group">
+								<div class="col-sm-2 control-label">
+									{{ Form::label('storage_id', 'Склад: ') }}
 								</div>
-							@elseif ($transaction->type == 'expenses')
-								<div class="form-group">
-									<div class="col-sm-2 control-label">
-										{{ Form::label('client_id', 'Клиент: ') }}
-									</div>
-									<div class="col-sm-9">
-										{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '']) }}
-									</div>
-									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-									</label>
+								<div class="col-sm-9">
+									{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
 								</div>
-
-								<div class="form-group">
-									<div class="col-sm-2 control-label">
-										{{ Form::label('employee_id', 'Сотрудник: ') }}
-									</div>
-									<div class="col-sm-9">
-										{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '']) }}
-									</div>
-									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-									</label>
-								</div>
-
-								<div class="form-group">
-									<div class="col-sm-2 control-label">
-										{{ Form::label('storage_id', 'Склад: ') }}
-									</div>
-									<div class="col-sm-9">
-										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
-									</div>
-									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-									</label>
-								</div>
-							@elseif ($transaction->type == 'discharge')
-								<div class="form-group">
-									<div class="col-sm-2 control-label">
-										{{ Form::label('storage_id', 'Склад: ') }}
-									</div>
-									<div class="col-sm-9">
-										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
-									</div>
-									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-									</label>
-								</div>
-							@else
-								<div class="form-group">
-									<div class="col-sm-2 control-label">
-										{{ Form::label('storage1_id', 'Со склада: ') }}
-									</div>
-									<div class="col-sm-9">
-										{{ Form::select('storage1_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
-									</div>
-									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-									</label>
-								</div>
-								<div class="form-group">
-									<div class="col-sm-2 control-label">
-										{{ Form::label('storage2_id', 'На склад: ') }}
-									</div>
-									<div class="col-sm-9">
-										{{ Form::select('storage2_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
-									</div>
-									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-									</label>
-								</div>
-							@endif
+								<label class="col-sm-1 text-left">
+									<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+								</label>
+							</div>
 						</div>
 
-						<div id="transaction-items" class="form-group collapse in">
+						<div class="form-group">
+							<div class="col-sm-2 control-label">
+								<a href="#transaction-items" data-toggle="collapse" class="btn btn-link btn-xs">
+								<span class="badge label-danger hidden">@{{ transaction_items_count }}</span>
+								&nbsp;&nbsp;Список товаров&nbsp;&nbsp;
+								<i class="fa fa-caret-down"></i></a>
+							</div>
+						</div>
+
+						<div id="transaction-items" class="form-group collapse">
 							<div class="row">
 								<div class="col-sm-2"></div>
 								<div class="col-sm-8">
@@ -181,27 +117,26 @@
 									<div class="col-sm-2"></div>							
 									<div class="col-sm-8" style="padding:0">
 										<div class="col-sm-3">
-											{{ Form::select('product_id', $pr[$transaction->product_id]->pluck('title', 'product_id'), 
-																		  $transaction->product_id, 
-																		  ['class' => 'form-control', 
-																		  'maxlength' => '110', 
-																		  'placeholder' => 'Выберите товар']) }}
+											{{ Form::select('product_id[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'placeholder' => 'Выберите товар']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::text('price',$transaction->price, ['class' => 'form-control']) }}
+											{{ Form::text('price[]', null, ['class' => 'form-control']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::text('amount', $transaction->amount, ['class' => 'form-control']) }}
+											{{ Form::text('amount[]', null, ['class' => 'form-control']) }}
 										</div>
 										<div class="col-sm-1">
-											{{ Form::text('discount', $transaction->discount, ['class' => 'form-control']) }}
+											{{ Form::text('discount[]', null, ['class' => 'form-control']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::text('sum', $transaction->sum, ['class' => 'form-control']) }}
+											{{ Form::text('sum[]', null, ['class' => 'form-control']) }}
 										</div>
 										<div class="col-sm-2">
-											{{ Form::text('code', $transaction->code, ['class' => 'form-control']) }}
+											{{ Form::text('code[]', null, ['class' => 'form-control']) }}
 										</div>
+									</div>
+									<div class="col-sm-2" style="margin-bottom: 15px;">
+										<input type="button" id="add-transaction-item" class="btn btn-info" value="Добавить">
 									</div>
 								</div>
 							</div>
@@ -212,7 +147,7 @@
 								{{ Form::label('is_paidfor', 'Оплата: ') }}
 							</div>
 							<label class="col-sm-9 text-left" style="font-weight: 300">
-								{{ Form::checkbox('is_paidfor', true, $transaction->is_paidfor == true, ['style' => 'margin-right: 10px;']) }}
+								{{ Form::checkbox('is_paidfor', 1, 0, ['style' => 'margin-right: 10px;']) }}
 								Оплачено
 							</label>
 							<label class="col-sm-1 text-left">
@@ -236,15 +171,8 @@
 					<hr>
 
 					<div class="row">
-						<div class="col-sm-8 col-sm-offset-2">
-							<div class="row">
-								<div class="col-sm-6">
-									{!! Html::linkRoute('storagetransaction.show', 'Отмена', [$transaction->id], ['class'=>'btn btn-danger btn-block']) !!}
-								</div>
-								<div class="col-sm-6">
-									{{ Form::submit('Сохранить', ['class'=>'btn btn-success btn-block']) }}
-								</div>
-							</div>
+						<div class="col-sm-6 col-sm-offset-3">
+							{{	Form::submit('Создать новую складскую операцию', ['class' => 'btn btn-success btn-block', 'style' => 'margin-top:20px;']) }}
 						</div>
 					</div>
 				{!! Form::close() !!}	
@@ -386,8 +314,8 @@
 					data: {'storage_id' : $(this).val()},
 					url: "<?php echo route('card.productOptions') ?>",
 					success: function(data) {
-						$('select[name="product_id"]').first().html('');
-						$('select[name="product_id"]').first().html(data.options);
+						$('select[name="product_id[]"]').first().html('');
+						$('select[name="product_id[]"]').first().html(data.options);
 					}
 				});
 			});

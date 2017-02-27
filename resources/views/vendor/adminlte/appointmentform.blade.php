@@ -48,9 +48,11 @@
                                     $value = '';
                                 }?>
                                 <input type="text" name="client_name" id="app_client_name" value="{{$value}}">
-                                @foreach ($errors->get('client_name') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
+                                <div id="client_name_error">
+                                    @foreach ($errors->get('client_name') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
 
                             <div class="col-md-6">
@@ -67,9 +69,11 @@
                                     $value = '';
                                 }?>
                                 <input type="text" name="client_phone" id="app_client_phone" value="{{$value}}">
-                                @foreach ($errors->get('client_phone') as $message)
+                                <div id="client_phone_error">
+                                    @foreach ($errors->get('client_phone') as $message)
                                     <br/>{{$message}}
-                                @endforeach
+                                    @endforeach
+                                </div>
                             </div>
 
                             <div class="col-md-6">
@@ -86,9 +90,11 @@
                                     $value = '';
                                 }?>
                                 <input type="text" name="client_email" id="app_client_email" value="{{$value}}">
-                                @foreach ($errors->get('client_email') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
+                                <div id="client_email_error">
+                                    @foreach ($errors->get('client_email') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
 
                             <div class="col-md-6">
@@ -107,9 +113,11 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                @foreach ($errors->get('service_id') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
+                                <div id="service_id_error">
+                                    @foreach ($errors->get('service_id') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
 
                             <div class="col-md-6">
@@ -126,9 +134,11 @@
                                     $value = '';
                                 }?>
                                 <input type="text" name="note" id="app_note" value="{{$value}}">
-                                @foreach ($errors->get('note') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
+                                <div id="note_error">
+                                    @foreach ($errors->get('note') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
 
 
@@ -151,9 +161,11 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                @foreach ($errors->get('employee_id') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
+                                <div id="employee_id_error">
+                                    @foreach ($errors->get('employee_id') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
 
                             <div class="col-md-6">
@@ -170,9 +182,11 @@
                                     $value = '';
                                 }?>
                                 <input type="text" name="date_from" id="app_date_from" value="{{$value}}">
-                                @foreach ($errors->get('date_from') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
+                                <div id="date_from_error">
+                                    @foreach ($errors->get('date_from') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
                             <div class="col-md-3">
                                 <select name="time_from" id="app_time_from">
@@ -189,9 +203,11 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                @foreach ($errors->get('time_from') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
+                                <div id="time_from_error">
+                                    @foreach ($errors->get('time_from') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
 
                             <!-- duration -->
@@ -213,9 +229,11 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                @foreach ($errors->get('duration_hours') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
+                                <div id="duration_hours_error">
+                                    @foreach ($errors->get('duration_hours') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
                             <div class="col-md-3">
                                 <select name="duration_minutes" id="app_duration_minutes">
@@ -232,9 +250,11 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                @foreach ($errors->get('duration_minutes') as $message)
-                                    <br/>{{$message}}
-                                @endforeach
+                                <div id="duration_minutes_error">
+                                    @foreach ($errors->get('duration_minutes') as $message)
+                                        <br/>{{$message}}
+                                    @endforeach
+                                </div>
                             </div>
 
                             @if ($user->hasAccessTo('appointment_client_data', 'view', 0) >= 1)

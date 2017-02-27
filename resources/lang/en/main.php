@@ -76,6 +76,7 @@ return [
     'appointment:note_label'                => 'Примечания',
     'appointment:client_num_visits'         => 'Количество визитов',
     'appointment:client_last_visit_date'    => 'Последний визит',
+    'appointment:error_duration_not_selected' => 'Duration can\'t be 0',
 
     'user:list_page_header'                 => 'Список пользователей',
 
@@ -190,4 +191,5 @@ return [
     'client_category:edit_success_message'  => 'Изменения сохранены',
     'client_category:create_success_message'=> 'Категория создана',
 
+    'widget:error_time_already_taken'       => 'Unfortunately selected time is already occupied. Please return to previous step and select other time.'
 ];
