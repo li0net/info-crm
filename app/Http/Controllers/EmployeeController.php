@@ -97,6 +97,8 @@ class EmployeeController extends Controller
 		$settings->revenue_pctg = 50;
 		$settings->wage_scheme_id = 0;
 		$settings->schedule_id = 0;
+		$settings->reg_permitted = 1;	// по умолчанию разрешаем запись через виджет
+		$settings->reg_permitted_nomaster = 1;
 
 		$settings->save();
 
