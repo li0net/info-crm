@@ -3,6 +3,6 @@
     {{$msg}}
 </p>
 <p>
-    Please back to previouse step and try with another choose again.
+    Please back to previous step and try with another choose again.
 </p>
 
