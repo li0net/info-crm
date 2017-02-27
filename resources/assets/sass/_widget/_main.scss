@@ -56,8 +56,6 @@ h4 {
   color:$text-color;
 }
 
-
-
 /** header **/
 header{
   height: 60px;
@@ -69,6 +67,9 @@ header{
     text-decoration: none;
     font-size: 19pt;
     line-height: 2.2;
+    &:hover{
+      color: $brand-second;
+    }
   }
 }
 footer{
@@ -178,6 +179,16 @@ footer{
 /** форма отправки заказа **/
 #requestForm {
   margin-top: 15px;
+  .form-message{
+    padding: 10px;
+    &.bg-danger{
+      color: $brand-danger;
+    }
+    &.bg-success{
+      color: #3c763d;
+    }
+
+  }
   .form-control {
     background-color: #fff;
     background-image: none;
@@ -206,7 +217,57 @@ footer{
     color: #FFFFFF;
     border-radius: 20px;
   }
+  .has-error{
+    .form-control {
+      border-bottom: 1px solid $brand-danger;
+    }
+  }
+}
+.modal-body{
+  position: relative;
+  padding: 15px;
+  height: 300px;
+  overflow-y: auto;
 }
 
+/** страница информации **/
+.login-link,
+.info-link{
+  display: none;
+}
+#info-block {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 90px;
+  background-color: #ffffff;
+  .info-header{
+    background-color: $brand-primary;
+    height: 60px;
+    color: #FFFFFF;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 16px;
+    a{
+      display: inline-block;
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 19pt;
+      line-height: 2.2;
+      &:hover{
+        color: $brand-second;
+      }
+    }
+    span{
+      margin-left: 15px;
+    }
+  }
+  .info-body{
+    .info-body-block{
+    }
+  }
+}
 
 

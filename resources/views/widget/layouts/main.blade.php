@@ -22,12 +22,15 @@
                 </div>
             </div>
         </div>
-        <div id="info-block" class="text-center col-sm-12"></div>
+
+        <div id="info-block"></div>
+
         <footer>
             @include('widget.includes.footer')
         </footer>
     </div>
 
     @include('widget.includes.bottom_scripts')
+    @include('widget.includes.modals')
 </body>
 </html>

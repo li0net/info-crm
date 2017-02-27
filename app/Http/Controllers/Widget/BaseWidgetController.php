@@ -38,9 +38,14 @@ class BaseWidgetController extends Controller
         //$this->middleware('auth');
         //$this->middleware('permissions');   //->only(['create', 'edit', 'save']);
 
-        // Hardcode
         // TODO: get super organization id from token
-        $this->superOrganization = superOrganization::find('1');
+        if ( Input::get('sid') ) {
+            $this->superOrganization = superOrganization::find(Input::get('sid'));
+        } else {
+            // Hardcode
+            $this->superOrganization = superOrganization::find('1');
+        }
+
         // шарим superOrganization чтобы была доступна в основном темплейте виджета
         view()->share('superOrganization', $this->superOrganization);
 
@@ -92,7 +97,6 @@ class BaseWidgetController extends Controller
         }
     }
 
-
     /**
      * Отрисовка этапа выбора категории услуг
      * @param Request $request
@@ -108,7 +112,8 @@ class BaseWidgetController extends Controller
         $sc = $this->organization->serviceCategories();
 
         if ($sc->count() == 0) {
-            abort(500, 'Internal server error. No service categories.');
+//            abort(500, 'Internal server error. No service categories.');
+            return $this->showErrorPage('Internal server error. No service categories.');
         }
 
         if ($sc->count() == 1) {
@@ -133,14 +138,16 @@ class BaseWidgetController extends Controller
 
         if (empty($serviceCategoryId)) {
             if (is_null($sc)) {
-                abort(500, 'Internal server error. Service category not set.');
+//                abort(500, 'Internal server error. Service category not set.');
+                return $this->showErrorPage('Internal server error. Service category not set.');
             }
         } else {
             $sc = ServiceCategory::where('service_category_id', $serviceCategoryId)
                 ->where('organization_id', $this->organization->organization_id)
                 ->first();
             if (!$sc) {
-                abort(500, 'Internal server error. Service category error.');
+//                abort(500, 'Internal server error. Service category error.');
+                return $this->showErrorPage('Internal server error. Service category not set.');
             }
         }
         $services = $sc->services();
@@ -168,6 +175,7 @@ class BaseWidgetController extends Controller
 
         if (empty($serviceId)) {
             abort(501, 'Internal server error. Service not set.');
+            return $this->showErrorPage('Internal server error. Service not set.');
         }
 
         $service = Service::where('service_id', $serviceId)
@@ -176,7 +184,8 @@ class BaseWidgetController extends Controller
             ->first();
 
         if ( ! $service) {
-            abort(501, 'Internal server error. Service error.');
+//            abort(501, 'Internal server error. Service error.');
+            return $this->showErrorPage('Internal server error. Service error.');
         }
 
         // Отображаем только тех, что разрешили онлайн запись (в employee_settings)
@@ -191,7 +200,8 @@ class BaseWidgetController extends Controller
             ->get();
 
         if ( $employees->count() == 0 ) {
-            abort(500, 'Internal server error. No employees for service found.');
+//            abort(500, 'Internal server error. No employees for service found.');
+            return $this->showErrorPage('Internal server error. No employees for service found.');
             // TODO: такой вариант не является аномалией, нужно придусмотреть view для него
         }
 
@@ -286,10 +296,10 @@ class BaseWidgetController extends Controller
         return $view->render();
         }
 
-           /**
-            * Отображает форму с полями для ввода имени, телефона, адреса электронной почты и т.д.
-            * @param Request $request
-            */
+   /**
+    * Отображает форму с полями для ввода имени, телефона, адреса электронной почты и т.д.
+    * @param Request $request
+    */
     public function getUserInformationForm(Request $request)
     {
         // все собранные данные для отображения на форме
@@ -307,7 +317,11 @@ class BaseWidgetController extends Controller
         return $view->render();
     }
 
-    // Отображает форму с полями для ввода имени, телефона, адреса электронной почты и т.д.
+    /**
+     * обработка формы создания заявки
+     * @param Request $request
+     * @return string
+     */
     public function handleUserInformationForm(Request $request)
     {
         /*
@@ -412,7 +426,11 @@ class BaseWidgetController extends Controller
         return json_encode($result);
     }
 
-
+    /**
+     * получение информации об организации для инфо-экрана
+     * @param Request $request
+     * @return mixed
+     */
     public function getOrgInformation(Request $request)
     {
         $this->organization = Organization::find(Input::get('org_id'));
@@ -423,8 +441,19 @@ class BaseWidgetController extends Controller
         $view = View::make('widget.pages.org_info', [
             'organization' =>  $this->organization
         ]);
-        $contents = $view->render();
-        return $contents;
+        return $view->render();
+    }
+
+    /**
+     * возвращает вьюху с сообщением об ошибке
+     * @param string $msg
+     * @return mixed
+     */
+    private function showErrorPage($msg = 'Data error') {
+        $view = View::make('widget.pages.error', [
+            'msg' =>  $msg
+        ]);
+        return $view->render();
     }
 
     private function getCommonError($msg = 'Data error') {

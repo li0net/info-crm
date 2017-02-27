@@ -11,6 +11,6 @@
             <div class="description">{{ $organization->category }}</div>
         </div>
         <div class="col-sm-6 description"> {{ $organization->shortinfo }} </div>
-        <div class="col-sm-1"> <i class="fa fa-chevron-right" aria-hidden="true"></i> </div>
+        <div class="col-sm-1 text-right"> <i class="fa fa-chevron-right" aria-hidden="true"></i> </div>
     </a>
 @endforeach

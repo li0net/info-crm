@@ -56,13 +56,15 @@ $(document).ready(function() {
             tabs = activeTab;
         }
 
-
         // показываем кнопку предыдущего таба с отображением выбранного занчения
         $('#wgCarousel').find('#crumb'+tabs+' a').html('<i class="fa ' + icon + ' " aria-hidden="true"></i>'+tabName);
         $('#wgCarousel').find('#crumb'+tabs).removeClass('hidden');
 
         // инкремент количества табов
         tabs++;
+
+        // отображаем ссылку на инфо-страницу организации
+        $(".info-link").show();
 
         // добавляем для нового экрана таб и кнопку(пока скрытую)
 
@@ -82,6 +84,9 @@ $(document).ready(function() {
         updateTabs($(this).data('name'),'fa-flag');
 
         $(".address").html( "<div>" + $(this).data('address') + '<br>' + $(this).data('phone') + "</div>" ).removeClass('hidden');
+        $(".orgname-link").html($(this).data('name'));
+
+
         $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getCategories",  { org_id:orgId },  function() {
             $('#content').removeClass('loadingbox');
             $('#wgCarousel').carousel(tabs);
@@ -103,8 +108,9 @@ $(document).ready(function() {
             $('#wgCarousel').carousel(tabs);
         });
     });
+
     /**
-     *  2 выбор услуги
+     *   Выбрана услуга, подгружаем экран с исполнителями
      */
     $('#content').on('click', 'a.service-row', function(){
         serviceId = $(this).data('id');
@@ -118,8 +124,9 @@ $(document).ready(function() {
             $('#content').removeClass('loadingbox');
         });
     });
+
     /**
-     *  2 выбор исполнителя
+     *   Выбран исполнитель, подгружаем экран с днями
      */
     $('#content').on('click', 'a.employee-row', function(){
         employeeId = $(this).data('id');
@@ -132,8 +139,9 @@ $(document).ready(function() {
             $('#wgCarousel').carousel(tabs);
         });
     });
+
     /**
-     *  2 выбор услуги
+     * Выбран день, подгружаем экран с временными интервалами
      */
     $('#content').on('click', 'a.day-row', function(){
         date = $(this).data('id');
@@ -145,6 +153,10 @@ $(document).ready(function() {
             $('#wgCarousel').carousel(tabs);
         });
     });
+
+    /**
+     *   Выбран временной интервал, подгружаем экран с формой оформления
+     */
     $('#content').on('click', 'a.time-row', function(){
         time = $(this).data('id');
         activeTab = $(this).parents('.item').data('id');
@@ -155,29 +167,71 @@ $(document).ready(function() {
             $('#wgCarousel').carousel(tabs);
         });
     });
+
+    /**
+     * Отправка формы онлайн-заказа
+     */
     $('#content').on('click','#sendRequest', function(){
-        //TODO валидация
-        $('#content').addClass('loadingbox');
-        $.ajax({
-            type: "GET",
-            url: "/api/v1/widget/handleUserInformationForm",
-            dataType: "json",
-            data: { org_id: orgId},
-            data: $('#requestForm').serialize(),
-            success: function(result) {
-                $('#content').removeClass('loadingbox');
-                if( result.res ){
-                    alert('заявка создана');
-                } else {
-                    alert('ошибка');
+        // валидация
+        var message = '';
+        $( ".agree-box" ).removeClass('has-error');
+        $( ".name-box" ).removeClass('has-error');
+        $( ".phone-box" ).removeClass('has-error');
+        $( ".form-message" ).hide().removeClass('bg-success').removeClass('bg-danger');
+
+
+        if ($('#clientName').val() == '') {
+            $( ".name-box" ).addClass('has-error');
+            message = 'Please fill out required fields';
+        }
+        if ($('#clientPhone').val() == '') {
+            $( ".phone-box" ).addClass('has-error');
+            message = 'Please fill out required fields';
+        }
+
+        if ( ! $('#agree').is(":checked")) {
+            $(".agree-box").addClass('has-error');
+            message = 'Please fill out required fields';
+        }
+        if (message == ''){
+            // отправка формы
+            $('#content').addClass('loadingbox');
+            $.ajax({
+                type: "GET",
+                url: "/api/v1/widget/handleUserInformationForm",
+                dataType: "json",
+                data: $('#requestForm').serialize(),
+                success: function(result) {
+                    $('#content').removeClass('loadingbox');
+                    if( result.res ){
+                        $( ".form-message" ).show().html('Заявка создана').addClass('bg-success');
+                        $('#requestForm')[0].reset();
+                    } else {
+                        $( ".form-message" ).show().html('Ошибка').addClass('bg-danger');
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            //отображаем сообщение об ошибке
+            $(".form-message").show().html(message).addClass('bg-danger');
+            return false;
+        }
     });
+
+
+    /**
+     * показ страницы с информацие об организации
+     */
     $('body').on('click', 'a.info-link', function(){
-        console.log('clicken');
         $( "#info-block" ).load( "/api/v1/widget/getOrgInformation",  {org_id:orgId},  function() {
-            $('#content').removeClass('loadingbox');
+            // $( "#info-block" ).show();
+            $( "#info-block" ).fadeIn( "slow", function() {
+                // Animation complete
+            });
         });
     });
+    $('body').on('click', 'a.close-info', function(){
+        $( "#info-block" ).hide();
+    });
+
 });

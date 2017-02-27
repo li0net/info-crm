@@ -6,6 +6,6 @@
         <div class="col-sm-11 name">
             {{$category->online_reservation_name}}
         </div>
-        <div class="col-sm-1"> <i class="fa fa-chevron-right" aria-hidden="true"></i> </div>
+        <div class="col-sm-1 text-right"> <i class="fa fa-chevron-right" aria-hidden="true"></i> </div>
     </a>
 @endforeach
