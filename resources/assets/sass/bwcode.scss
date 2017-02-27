@@ -1,0 +1,37 @@
+#bw_block,
+#bw_frame_block{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+}
+#bw_block{
+  left: 0;
+  background-color:rgba(0, 0, 0, 0.5);
+  z-index:9999;
+}
+#bw_frame_block{
+  width: 500px;
+  background: #6d51aa;
+  z-index:10000;
+  color: #FFF;
+  font-weight: bold;
+  font-size: 25px;
+  text-align: center;
+}
+#bw_block_close{
+  position: absolute !important;
+  right: 510px !important;
+  top: 13px !important;
+  width: 35px !important;
+  height: 35px !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  background-image: url(https://yclients.com/images/icon-close.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: 12px 12px !important;
+  box-sizing: border-box !important;
+}
