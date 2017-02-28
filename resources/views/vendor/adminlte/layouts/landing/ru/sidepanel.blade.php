@@ -10,6 +10,7 @@
                 </button>
                 <div class="dropdown-content">
                     <a class="lang-flag en" href="/locale/en">English</a>
+                    <a class="lang-flag es" href="/locale/es">Español</a>
                 </div>
             </div>
         </div>

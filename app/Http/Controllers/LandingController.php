@@ -10,8 +10,8 @@ class LandingController extends Controller {
     public function index(Request $request) {
         // getting locale
         $locale = App::getLocale();
-        if ( $locale == 'es' OR $locale == 'ca' ){
-            $locale = 'en';
+        if ($locale == 'ca' ){
+            $locale = 'es';
         }
 
         //getting the page for show
