@@ -13,7 +13,10 @@ body{
   font-size: $font-size-base;
   line-height: $line-height-base;
 }
-
+.container500{
+  width:500px;
+  position: relative;
+}
 #cloud-container{
   position:absolute;
   top:0;
@@ -65,8 +68,8 @@ header{
   a{
     color: #FFFFFF;
     text-decoration: none;
-    font-size: 19pt;
-    line-height: 2.2;
+    font-size: 17pt;
+    line-height: 58px;
     &:hover{
       color: $brand-second;
     }
@@ -176,6 +179,11 @@ footer{
     }
   }
 }
+.chevron-block{
+  i.fa {
+    line-height: 44px;
+  }
+}
 /** форма отправки заказа **/
 #requestForm {
   margin-top: 15px;
@@ -239,9 +247,9 @@ footer{
   display: none;
   position: absolute;
   top: 0;
+  bottom: 0;
   left: 0;
-  right: 0;
-  bottom: 90px;
+  width: 500px;
   background-color: #ffffff;
   .info-header{
     background-color: $brand-primary;
@@ -250,6 +258,7 @@ footer{
     font-weight: 900;
     font-size: 18px;
     line-height: 16px;
+    padding-left: 15px;
     a{
       display: inline-block;
       color: #FFFFFF;

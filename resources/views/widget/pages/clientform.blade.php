@@ -38,7 +38,7 @@
     </div>
 
     <div class="form-group">
-        <div class="col-sm-12 text-left agree-box">
+        <div class="col-xs-12 text-left agree-box">
             <div class="checkbox">
                 <label>
                     <input type="checkbox"  id="agree" name="agree">
@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12 text-center">
+    <div class="col-xs-12 text-center">
         <button id="sendRequest" type="button" class="btn btn-default">Записаться</button>
     </div>
 </form>

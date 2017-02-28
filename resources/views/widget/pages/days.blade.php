@@ -3,9 +3,9 @@
 
 @foreach ($days as $day)
     <a class="row day-row" data-id="{{$day}}" data-name="{{$day}}" href="#">
-        <div class="col-sm-11">
+        <div class="col-xs-11">
             {{$day}}
         </div>
-        <div class="col-sm-1 text-right"> <i class="fa fa-chevron-right" aria-hidden="true"></i> </div>
+        <div class="col-xs-1 text-right"> <i class="fa fa-chevron-right" aria-hidden="true"></i> </div>
     </a>
 @endforeach
