@@ -244,13 +244,13 @@ class ProductController extends Controller
 
 	public function salesAnalysis(Request $request)
 	{
-		$transactions = storageTransaction::where('organization_id', $request->user()->organization_id)->with('product')->get()->all();
+		$transactions = storageTransaction::where('organization_id', $request->user()->organization_id)->with('product.category')->get()->all();
 		$employees = Employee::where('organization_id', $request->user()->organization_id)->get()->pluck('name', 'employee_id');
 		$partners = Partner::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'partner_id');
 		$categories = ProductCategory::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'product_category_id');
 		$user = $request->user();
 
-		//$pr = storageTransaction::with('productWithCategories')->get();
+		//dd(storageTransaction::with('product.category')->get());
 
 		$page = Input::get('page', 1);
 		$paginate = 10;
@@ -266,11 +266,14 @@ class ProductController extends Controller
 
 	public function salesAnalysisFiltered(Request $request)
 	{
-		$transactions = storageTransaction::where('organization_id', $request->user()->organization_id)->with('product');
+		$transactions = storageTransaction::where('organization_id', $request->user()->organization_id)->with('product.category');
 		$employees = Employee::where('organization_id', $request->user()->organization_id)->get()->pluck('name', 'employee_id');
 		$partners = Partner::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'partner_id');
 		$categories = ProductCategory::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'product_category_id');
 		$user = $request->user();
+
+		// $ttt = $transactions->get();
+		// dd($ttt[0]->product->category->product_category_id);
 
 		if('' !== $request->employee_id) {
 			$transactions = $transactions->where('employee_id', $request->employee_id);
@@ -280,8 +283,14 @@ class ProductController extends Controller
 			$transactions = $transactions->where('partner_id', $request->partner_id);
 		}
 
+		// if('' !== $request->category_id) {
+		// 	$transactions->where('category_id', $request->category_id);
+		// }
+
 		if('' !== $request->category_id) {
-			$transactions->where('category_id', $request->category_id);
+			$transactions->whereIn('product_id', function($query) use ($request) {
+				$query->select('product_id')->from('products')->where('category_id', $request->category_id);
+			});
 		}
 
 		$filter_start_time = date_create($request->date_from.'00:00:00');
@@ -293,6 +302,8 @@ class ProductController extends Controller
 		$transactions->whereBetween('date', [$filter_start_time, $filter_end_time]);
 
 		$transactions = $transactions->with('product')->get();
+
+		// dd($filter_start_time, $filter_end_time);
 
 		$page = (0 == $request->page) ? 1 : $request->page;
 		$paginate = 10;

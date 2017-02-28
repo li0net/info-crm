@@ -28,6 +28,11 @@ class Product extends Model
 		return $this->belongsTo(Organization::class);
 	}
 
+	public function category()
+    {
+        return $this->belongsTo(ProductCategory::class, 'category_id', 'product_category_id');
+    }
+
 	public function productCategory()
     {
         return $this->belongsTo(ProductCategory::class, 'category_id', 'product_category_id');

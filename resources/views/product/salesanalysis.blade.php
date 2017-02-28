@@ -101,7 +101,7 @@
 							</td>
 							<td>
 								{{ $transaction->amount }}
-								@if($transaction->unit_for_sale == 'pcs') 
+								@if($transaction->product->unit_for_sale == 'pcs') 
 									{{ trans('adminlte_lang::message.pieces') }}&nbsp;
 								@else
 									{{ trans('adminlte_lang::message.milliliters') }}
@@ -170,7 +170,7 @@
 				$.ajax({
 					type: "POST",
 					dataType: 'html',
-					data: {	'date_from'				: $('#date-form').val(),
+					data: {	'date_from'				: $('#date-from').val(),
 							'date_to'				: $('#date-to').val(),
 							'employee_id'			: $('#employee_id').val(),
 							'partner_id'			: $('#partner_id').val(),
@@ -200,7 +200,7 @@
 				$.ajax({
 					type: "POST",
 					dataType: 'html',
-					data: {	'date_from'				: $('#date-form').val(),
+					data: {	'date_from'				: $('#date-from').val(),
 							'date_to'				: $('#date-to').val(),
 							'employee_id'			: $('#employee_id').val(),
 							'partner_id'			: $('#partner_id').val(),
