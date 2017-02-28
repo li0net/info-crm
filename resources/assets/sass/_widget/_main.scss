@@ -13,7 +13,10 @@ body{
   font-size: $font-size-base;
   line-height: $line-height-base;
 }
-
+.container500{
+  width:500px;
+  position: relative;
+}
 #cloud-container{
   position:absolute;
   top:0;
@@ -56,8 +59,6 @@ h4 {
   color:$text-color;
 }
 
-
-
 /** header **/
 header{
   height: 60px;
@@ -67,8 +68,11 @@ header{
   a{
     color: #FFFFFF;
     text-decoration: none;
-    font-size: 19pt;
-    line-height: 2.2;
+    font-size: 17pt;
+    line-height: 58px;
+    &:hover{
+      color: $brand-second;
+    }
   }
 }
 footer{
@@ -175,9 +179,24 @@ footer{
     }
   }
 }
+.chevron-block{
+  i.fa {
+    line-height: 44px;
+  }
+}
 /** форма отправки заказа **/
 #requestForm {
   margin-top: 15px;
+  .form-message{
+    padding: 10px;
+    &.bg-danger{
+      color: $brand-danger;
+    }
+    &.bg-success{
+      color: #3c763d;
+    }
+
+  }
   .form-control {
     background-color: #fff;
     background-image: none;
@@ -206,7 +225,58 @@ footer{
     color: #FFFFFF;
     border-radius: 20px;
   }
+  .has-error{
+    .form-control {
+      border-bottom: 1px solid $brand-danger;
+    }
+  }
+}
+.modal-body{
+  position: relative;
+  padding: 15px;
+  height: 300px;
+  overflow-y: auto;
 }
 
+/** страница информации **/
+.login-link,
+.info-link{
+  display: none;
+}
+#info-block {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 500px;
+  background-color: #ffffff;
+  .info-header{
+    background-color: $brand-primary;
+    height: 60px;
+    color: #FFFFFF;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 16px;
+    padding-left: 15px;
+    a{
+      display: inline-block;
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 19pt;
+      line-height: 2.2;
+      &:hover{
+        color: $brand-second;
+      }
+    }
+    span{
+      margin-left: 15px;
+    }
+  }
+  .info-body{
+    .info-body-block{
+    }
+  }
+}
 
 

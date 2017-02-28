@@ -13,6 +13,7 @@ use App\Service;
 use App\Employee;
 use App\Client;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Illuminate\Support\Facades\Log;
 
 class AppointmentsController extends Controller
 {
@@ -135,6 +136,7 @@ class AppointmentsController extends Controller
         ]);
         */
 
+        Log::info(__METHOD__.' before validation');
         $validator = Validator::make($request->all(), [
             'client_name' => 'required|max:120',
             'client_phone' => 'required|phone_crm', // custom validation rule
@@ -148,28 +150,13 @@ class AppointmentsController extends Controller
             'state' => 'alpha'
         ]);
         if ($validator->fails()) {
-            // Нужно подготовить массив для заполнения селекта с Сотрудниками предоставляющими выбранную услугу
-            $employeesOptions = array();
-            if ($request->input('service_id')) {
-                $service = Service::find($request->input('service_id'));
-                if (!is_null($service)) {
-                    $employees = $service->employees()->limit(1000)->get();
-                    if ($employees->count()>0) {
-                        foreach ($employees AS $employee) {
-                            $employeesOptions[] = [
-                                'value' => $employee->employee_id,
-                                'label' => $employee->name
-                            ];
-                        }
-                    }
-                }
-            }
-//dd($employeesOptions);
+            $errs = $validator->messages();
+            //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
 
-            return redirect('/appointments/create')
-                ->withErrors($validator)
-                ->with('employeesOptions', $employeesOptions)
-                ->withInput();
+            return json_encode([
+                'success'   => false,
+                'validation_errors' => $errs
+            ]);
         }
 
         // валидация duration_minutes и duration_hours (проверяем что они есть в списке из prepareDurationSelects())
@@ -182,9 +169,10 @@ class AppointmentsController extends Controller
             }
         }
         if (!$isInArr) {
-            return back()
-                ->withErrors(['duration_hours' => 'Duration value is invalid.'])
-                ->withInput();
+            return json_encode([
+                'success'   => false,
+                'error'     => 'Duration value is invalid.'
+            ]);
         }
         $isInArr = FALSE;
         foreach ($durationSelects['minutes'] AS $option) {
@@ -194,9 +182,17 @@ class AppointmentsController extends Controller
             }
         }
         if (!$isInArr) {
-            return back()
-                ->withErrors(['duration_minutes' => 'Duration value is invalid.'])
-                ->withInput();
+            return json_encode([
+                'success'   => false,
+                'error'     => 'Duration value is invalid.'
+            ]);
+        }
+        // не позволяем создать запись с 0 длительностью
+        if ($request->input('duration_hours') == '00' AND $request->input('duration_minutes') == '00') {
+            return json_encode([
+                'success'   => false,
+                'validation_errors' => ['duration_minutes' => [trans('main.appointment:error_duration_not_selected')]]
+            ]);
         }
 
         // Ищем клиента
@@ -243,7 +239,10 @@ class AppointmentsController extends Controller
                 ->where('appointment_id', $appId)
                 ->first();
             if (is_null($appointment)) {
-                return 'Record doesn\'t exist';
+                return json_encode([
+                    'success'   => false,
+                    'error'     => 'Data error. Record doesn\'t exist'
+                ]);
             }
             if (empty($request->input('note'))) {
                 $appointment->note = NULL;
@@ -278,7 +277,6 @@ class AppointmentsController extends Controller
         $appointment->save();
 
         //return redirect()->to('/serviceCategories');
-        //return redirect()->to('/');
         echo json_encode(array('success' => true, 'error' => ''));
     }
 

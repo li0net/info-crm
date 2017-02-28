@@ -7,16 +7,16 @@
     <input type="hidden" name="employee_id" value="{{ $data['employeeId'] }}">
     <input type="hidden" name="organization_id" value="{{ $data['organizationId'] }}">
     <input type="hidden" name="service_id" value="{{ $data['serviceId'] }}">
-
+    <div class="form-message"></div>
     <div class="form-group">
-        <div class="input-group">
-            <input type="text" class="form-control" id="clientName" name="client_name" placeholder="Name">
+        <div class="input-group name-box">
+            <input type="text" class="form-control" id="clientName" name="client_name" placeholder="Name" required>
             <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></div>
         </div>
     </div>
     <div class="form-group">
-        <div class="input-group">
-            <input type="text" class="form-control" id="clientPhone" name="client_phone" placeholder="+7 phone">
+        <div class="input-group phone-box">
+            <input type="text" class="form-control" id="clientPhone" name="client_phone" placeholder="+7 phone" required>
             <div class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></div>
         </div>
 
@@ -38,18 +38,16 @@
     </div>
 
     <div class="form-group">
-        <div class="col-sm-12 text-left">
+        <div class="col-xs-12 text-left agree-box">
             <div class="checkbox">
                 <label>
                     <input type="checkbox"  id="agree" name="agree">
-                    Нажимая кнопку "Записаться", Вы соглашаетесь с <a href="#">условиями пользовательского соглашения</a>
+                    Нажимая кнопку "Записаться", Вы соглашаетесь с <a href="#" data-toggle="modal" data-target="#myModal">условиями пользовательского соглашения</a>
                 </label>
             </div>
         </div>
     </div>
-    <div class="col-sm-12 text-center">
+    <div class="col-xs-12 text-center">
         <button id="sendRequest" type="button" class="btn btn-default">Записаться</button>
     </div>
 </form>
-
-

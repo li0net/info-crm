@@ -52,7 +52,7 @@
 				<a href="#"><i class='fa fa-newspaper-o'></i> <span>{{ trans('adminlte_lang::message.dashboard') }}</span><i class="fa fa-angle-left pull-right"></i></a>
 					<ul class="treeview-menu">
 						<li><a href="/stub">{{ trans('adminlte_lang::message.review') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.appointments') }}</a></li>
+						<li><a href="/home">{{ trans('adminlte_lang::message.appointments') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.comments') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.sms') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.calls') }}</a></li>

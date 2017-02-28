@@ -86,7 +86,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-
+            'is_admin' => 1         // первый юзер - админ
         ];
         if (isset($data['phone']) AND trim($data['phone'])!=='') {
             $userData['phone'] = trim($data['phone']);
