@@ -39,15 +39,28 @@ class BaseWidgetController extends Controller
         //$this->middleware('permissions');   //->only(['create', 'edit', 'save']);
 
         // TODO: get super organization id from token
+
+        // Hardcode
+        $this->superOrganization = superOrganization::find('1');
         if ( Input::get('sid') ) {
             $this->superOrganization = superOrganization::find(Input::get('sid'));
-        } else {
-            // Hardcode
-            $this->superOrganization = superOrganization::find('1');
+
+            if ( ! $this->superOrganization) {
+                $this->superOrganization = superOrganization::find('1');
+            }
         }
 
         // шарим superOrganization чтобы была доступна в основном темплейте виджета
         view()->share('superOrganization', $this->superOrganization);
+
+        //выставляем id филиала елсион 1
+        $organizations = $this->superOrganization->organizations();
+        if ($organizations->count() == 1) {
+            $this->organization = $organizations->first();
+            // шарим Organization
+            view()->share('organization', $this->organization);
+        }
+
 
         if (Input::get('org_id')) {
             // TODO: проверить соответсвие организации и токена
@@ -55,6 +68,8 @@ class BaseWidgetController extends Controller
             if (!$this->organization) {
                 abort(401, '401 Unauthorized.');
             }
+            // шарим Organization
+            view()->share('organization', $this->organization);
         }
     }
 

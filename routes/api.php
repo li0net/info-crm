@@ -19,6 +19,7 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/v1/widget/show', 'Widget\BaseWidgetController@getInitScreen');
 Route::get('/v1/widget/getDivisions', 'Widget\BaseWidgetController@getDivisions');
+Route::post('/v1/widget/getDivisions', 'Widget\BaseWidgetController@getDivisions');
 Route::post('/v1/widget/getCategories', 'Widget\BaseWidgetController@getServiceCategories');
 Route::post('/v1/widget/getServices', 'Widget\BaseWidgetController@getServices');
 Route::post('/v1/widget/getEmployees', 'Widget\BaseWidgetController@getEmployees');

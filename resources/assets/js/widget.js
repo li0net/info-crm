@@ -2,7 +2,6 @@
 
 // set variables
 var data;
-var orgId = '';
 var categoryId = '';
 var serviceId = '';
 var employeeId = '';
@@ -87,7 +86,7 @@ $(document).ready(function() {
         $(".orgname-link").html($(this).data('name'));
 
 
-        $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getCategories",  { org_id:orgId },  function() {
+        $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getCategories",  {sid:sid, org_id:orgId},  function() {
             $('#content').removeClass('loadingbox');
             $('#wgCarousel').carousel(tabs);
         });
@@ -103,7 +102,7 @@ $(document).ready(function() {
 
         updateTabs($(this).data('name'), 'fa-list-ul');
 
-        $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getServices",  {sc_id:categoryId, org_id:orgId},  function() {
+        $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getServices",  {sid:sid, sc_id:categoryId, org_id:orgId},  function() {
             $('#content').removeClass('loadingbox');
             $('#wgCarousel').carousel(tabs);
         });
@@ -119,7 +118,7 @@ $(document).ready(function() {
 
         updateTabs($(this).data('name'), 'fa-arrow-circle-right');
 
-        $('#wgCarousel').find("#tab"+tabs).load("/api/v1/widget/getEmployees",  {service_id:serviceId, org_id:orgId},  function() {
+        $('#wgCarousel').find("#tab"+tabs).load("/api/v1/widget/getEmployees",  {sid:sid, service_id:serviceId, org_id:orgId},  function() {
             $('#wgCarousel').carousel(tabs);
             $('#content').removeClass('loadingbox');
         });
@@ -134,7 +133,7 @@ $(document).ready(function() {
 
         updateTabs($(this).data('name'),'fa-user');
 
-        $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getAvailableDays",  {employee_id:employeeId, org_id:orgId, service_id:serviceId},  function() {
+        $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getAvailableDays",  {sid:sid, employee_id:employeeId, org_id:orgId, service_id:serviceId},  function() {
             $('#content').removeClass('loadingbox');
             $('#wgCarousel').carousel(tabs);
         });
@@ -148,7 +147,7 @@ $(document).ready(function() {
         activeTab = $(this).parents('.item').data('id');
         updateTabs($(this).data('name'),'fa-calendar');
 
-        $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getAvailableTime",  {date:date, employee_id:employeeId, org_id:orgId, service_id:serviceId},  function() {
+        $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getAvailableTime",  {sid:sid, date:date, employee_id:employeeId, org_id:orgId, service_id:serviceId},  function() {
             $('#content').removeClass('loadingbox');
             $('#wgCarousel').carousel(tabs);
         });
@@ -162,7 +161,7 @@ $(document).ready(function() {
         activeTab = $(this).parents('.item').data('id');
         updateTabs($(this).data('name'), 'fa-clock-o');
 
-        $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getUserInformationForm",  {time:time, date:date, employee_id:employeeId, org_id:orgId, service_id:serviceId},  function() {
+        $('#wgCarousel').find("#tab"+tabs).load( "/api/v1/widget/getUserInformationForm",  {sid:sid, time:time, date:date, employee_id:employeeId, org_id:orgId, service_id:serviceId},  function() {
             $('#content').removeClass('loadingbox');
             $('#wgCarousel').carousel(tabs);
         });
