@@ -35,8 +35,7 @@ $(document).ready(function () {
                     href: '#'
                 }).appendTo('#bw_block');
                 // высота экрана для фрейма
-                var frameHeight = $(document).height()-7;
-
+                var frameHeight = $( window ).height()-7;
                 $('<iframe/>', {
                     id: 'bw_frame',
                     frameBorder: 0,

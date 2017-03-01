@@ -12,7 +12,7 @@ var activeTab = 0;
 
 $(document).ready(function() {
     /** первоначальная загрузка контента */
-    $("#tab0").load( "/api/v1/widget/getDivisions",  function() {
+    $("#tab0").load( "/api/v1/widget/getDivisions", {sid:sid, org_id:orgId}, function() {
         $('#content').removeClass('loadingbox');
     });
 

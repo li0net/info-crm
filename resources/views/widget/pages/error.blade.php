@@ -1,8 +1,4 @@
-<h1>Error</h1>
+<h1>{{ $title }}</h1>
 <p>
-    {{$msg}}
+    {{ $message }}
 </p>
-<p>
-    Please back to previous step and try with another choose again.
-</p>
-

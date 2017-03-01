@@ -2,5 +2,7 @@
 <script>
     var sid = '{{ $superOrganization->super_organization_id or "" }}'; // set super organization
     var orgId = '{{ $organization->organization_id or "" }}'; // set super organization
+//    console.log('sid ' +sid);
+//    console.log('orgId ' +orgId);
 </script>
 <script src="{{asset('js/widget.js')}}"></script>

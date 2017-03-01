@@ -39,37 +39,38 @@ class BaseWidgetController extends Controller
         //$this->middleware('permissions');   //->only(['create', 'edit', 'save']);
 
         // TODO: get super organization id from token
-
-        // Hardcode
-        $this->superOrganization = superOrganization::find('1');
-        if ( Input::get('sid') ) {
+        if ( Input::get('sid') )
+        {
+            // пробуем найти организацию по переданному sid
             $this->superOrganization = superOrganization::find(Input::get('sid'));
-
-            if ( ! $this->superOrganization) {
-                $this->superOrganization = superOrganization::find('1');
-            }
         }
 
-        // шарим superOrganization чтобы была доступна в основном темплейте виджета
-        view()->share('superOrganization', $this->superOrganization);
+        if ( $this->superOrganization )
+        {
+            // шарим superOrganization чтобы была доступна в основном темплейте виджета
+            view()->share('superOrganization', $this->superOrganization);
 
-        //выставляем id филиала елсион 1
-        $organizations = $this->superOrganization->organizations();
-        if ($organizations->count() == 1) {
-            $this->organization = $organizations->first();
-            // шарим Organization
-            view()->share('organization', $this->organization);
-        }
+            //выставляем id филиала елси он 1
+            $organizations = $this->superOrganization->organizations();
+            if ($organizations->count() == 1)
+            {
+                $this->organization = $organizations->first();
 
-
-        if (Input::get('org_id')) {
-            // TODO: проверить соответсвие организации и токена
-            $this->organization = Organization::find(Input::get('org_id')); // post параметр org_id - organization id
-            if (!$this->organization) {
-                abort(401, '401 Unauthorized.');
+                // шарим Organization
+                view()->share('organization', $this->organization);
             }
-            // шарим Organization
-            view()->share('organization', $this->organization);
+
+            // елси получен org_id, высьавляем id филиала
+            if (Input::get('org_id'))
+            {
+                // TODO: проверить соответсвие организации и токена
+                $this->organization = Organization::find(Input::get('org_id')); // post параметр org_id - organization id
+                if ( $this->organization)
+                {
+                    // шарим Organization
+                    view()->share('organization', $this->organization);
+                }
+            }
         }
     }
 
@@ -96,10 +97,16 @@ class BaseWidgetController extends Controller
      */
     public function getDivisions(Request $request)
     {
+        if( ! $this->superOrganization)
+        {
+            return $this->showEmptyInfoPage('Wrong data!', 'No SuperOrganization ID set.');
+        }
+
         // отображение отделения организации, если их больше 1
         $organizations = $this->superOrganization->organizations();
 
-        if ($organizations->count() > 1) {
+        if ($organizations->count() > 1)
+        {
             // Отрисовка экрана виджета на этапе выбора филиала
             $view = View::make('widget.pages.divisions', [
                 'organizations' => $organizations->getResults()
@@ -121,20 +128,18 @@ class BaseWidgetController extends Controller
     {
         // отображение услуг в данном отделении (или всей организации, если отделение только одно)
         if (is_null($this->organization)) {
-            abort(500, 'Internal server error. Organization not set.');
+            return $this->showEmptyInfoPage('Wrong data!', 'No Organization ID set.');
         }
-
         $sc = $this->organization->serviceCategories();
-
         if ($sc->count() == 0) {
-//            abort(500, 'Internal server error. No service categories.');
-            return $this->showErrorPage('Internal server error. No service categories.');
+            return $this->showEmptyInfoPage('Categories empty!', 'Sorry but this organization have no service categories. Please back one step and try to choose another item.');
         }
-
+        // если категория одна - переходим к отображению услуг
         if ($sc->count() == 1) {
             return $this->getServices($request, $sc->first());
         }
 
+        // отрисовываем категории
         $view = View::make('widget.pages.categories', [
             'categories' => $sc->getResults()
         ]);
@@ -148,28 +153,30 @@ class BaseWidgetController extends Controller
      */
     public function getServices(Request $request, ServiceCategory $sc = NULL)
     {
-        // может не существовать, если у организации только одна категория услуг
         $serviceCategoryId = $request->input('sc_id'); // post параметр sc_id - service category id
 
-        if (empty($serviceCategoryId)) {
-            if (is_null($sc)) {
-//                abort(500, 'Internal server error. Service category not set.');
-                return $this->showErrorPage('Internal server error. Service category not set.');
-            }
+        if ( empty($serviceCategoryId) ) {
+            return $this->showEmptyInfoPage('Something wrong!', 'Service Category  ID was not set');
         } else {
+            // получаем услуги заданной категрии
             $sc = ServiceCategory::where('service_category_id', $serviceCategoryId)
                 ->where('organization_id', $this->organization->organization_id)
                 ->first();
-            if (!$sc) {
-//                abort(500, 'Internal server error. Service category error.');
-                return $this->showErrorPage('Internal server error. Service category not set.');
+            if ( ! $sc)
+            {
+                //ошибка припустой категории
+                return $this->showEmptyInfoPage('Something wrong!', 'Service Category was not found.');
             }
         }
         $services = $sc->services();
-        if ($services->count() == 0) {
-            abort(500, 'Internal server error. No services found.');
+
+        // ошибка при пустых сервисах
+        if ($services->count() == 0)
+        {
+            return $this->showEmptyInfoPage('Services empty!', 'Sorry but no services found for category chosen. Please back one step and try to choose another item.');
         }
 
+        // отрисовываем список категорйи
         $view = View::make('widget.pages.services', [
             'services' => $services->getResults()
         ]);
@@ -184,23 +191,20 @@ class BaseWidgetController extends Controller
     public function getEmployees(Request $request)
     {
         // отображение сотрудников оказывающих эту услугу
-        // + вариант "Мастер не важен"
+        // TODO: добавить вариант "Мастер не важен"
 
         $serviceId = $request->input('service_id'); // post параметр service_id - service id
-
         if (empty($serviceId)) {
-            abort(501, 'Internal server error. Service not set.');
-            return $this->showErrorPage('Internal server error. Service not set.');
+            return $this->showEmptyInfoPage('Something wrong!', 'Service ID not set');
         }
 
+        //получаем сервис
         $service = Service::where('service_id', $serviceId)
             ->join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id')
             ->where('service_categories.organization_id', $this->organization->organization_id)
             ->first();
-
         if ( ! $service) {
-//            abort(501, 'Internal server error. Service error.');
-            return $this->showErrorPage('Internal server error. Service error.');
+            return $this->showEmptyInfoPage('Something wrong!', 'Service with this ID was not found. Please back one step and try to choose another item.');
         }
 
         // Отображаем только тех, что разрешили онлайн запись (в employee_settings)
@@ -215,18 +219,15 @@ class BaseWidgetController extends Controller
             ->get();
 
         if ( $employees->count() == 0 ) {
-//            abort(500, 'Internal server error. No employees for service found.');
-            return $this->showErrorPage('Internal server error. No employees for service found.');
             // TODO: такой вариант не является аномалией, нужно придусмотреть view для него
+            return $this->showEmptyInfoPage('No employees', 'Sorry, but no employees for this service found. Please back one step and try to choose another item.');
         }
 
+        // отрисовываем список исполнителей
         $view = View::make('widget.pages.employees', [
             'employees' => $employees
         ]);
-
         return $view->render();
-        // TODO: добавить вариант "Мастер не важен"
-        // TODO: во view также передаем service_id и пишем его в скрытое поле
     }
 
     /**
@@ -274,12 +275,14 @@ class BaseWidgetController extends Controller
 
         $employee = Employee::find($request->input('employee_id'));
         $days = $employee->getFreeWorkDaysForCurrMonth();
-
+        if ( ! $days){
+            //на всякий случай проверка на пустые дни
+            return $this->showEmptyInfoPage('No free days', 'Sorry, but this employee have no free days in this month anymore. Please back one step and try to choose another one.');
+        }
+        // отрисовываем список дней
         $view = View::make('widget.pages.days', [
             'days' => $days
         ]);
-
-
         return $view->render();
     }
 
@@ -296,6 +299,10 @@ class BaseWidgetController extends Controller
         $service = Service::find($request->input('service_id'));
         $date = $request->input('date');
         $times = $employee->getFreeWorkTimesForDay($date, $service);
+        if ( ! $times){
+            //на всякий случай проверка на пустой массив интервалов
+            return $this->showEmptyInfoPage('No free time', 'Sorry, but this employee have no free time in chosen day anymore. Please back one step and try to choose another one.');
+        }
         // фейковый массив
 
 //        $times = array();
@@ -304,12 +311,13 @@ class BaseWidgetController extends Controller
 //        'work_end' => '2017-02-10 13:00:00'
 //        );
 
+        // отрисовываем список интервалов
         $view = View::make('widget.pages.times', [
             'times' => $times
 
         ]);
         return $view->render();
-        }
+    }
 
    /**
     * Отображает форму с полями для ввода имени, телефона, адреса электронной почты и т.д.
@@ -479,13 +487,16 @@ class BaseWidgetController extends Controller
     }
 
     /**
-     * возвращает вьюху с сообщением об ошибке
-     * @param string $msg
+     * возвращает вьюху с информационным сообщением
+     * @param string $title
+     * @param string $message
      * @return mixed
      */
-    private function showErrorPage($msg = 'Data error') {
+    private function showEmptyInfoPage($title='Error!', $message = 'Data error')
+    {
         $view = View::make('widget.pages.error', [
-            'msg' =>  $msg
+            'title' => $title,
+            'message' => $message
         ]);
         return $view->render();
     }
