@@ -136,28 +136,28 @@ class AppointmentsController extends Controller
         ]);
         */
 
-        // Log::info(__METHOD__.' before validation');
-        // $validator = Validator::make($request->all(), [
-        //     'client_name' => 'required|max:120',
-        //     'client_phone' => 'required|phone_crm', // custom validation rule
-        //     'client_email' => 'email',
-        //     'service_id' => 'required|max:10|exists:services',
-        //     'employee_id' => 'required|max:10|exists:employees',
-        //     'date_from' => 'required|date_format:"Y-m-d"',    // date
-        //     'time_from' => 'required',      // date_format:'H:i'
-        //     'duration_hours' => 'required',
-        //     'duration_minutes' => 'required',
-        //     'state' => 'alpha'
-        // ]);
-        // if ($validator->fails()) {
-        //     $errs = $validator->messages();
-        //     //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
+        Log::info(__METHOD__.' before validation');
+        $validator = Validator::make($request->all(), [
+            'client_name' => 'required|max:120',
+            'client_phone' => 'required|phone_crm', // custom validation rule
+            'client_email' => 'email',
+            'service_id' => 'required|max:10|exists:services',
+            'employee_id' => 'required|max:10|exists:employees',
+            'date_from' => 'required|date_format:"Y-m-d"',    // date
+            'time_from' => 'required',      // date_format:'H:i'
+            'duration_hours' => 'required',
+            'duration_minutes' => 'required',
+            'state' => 'alpha'
+        ]);
+        if ($validator->fails()) {
+            $errs = $validator->messages();
+            //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
 
-        //     return json_encode([
-        //         'success'   => false,
-        //         'validation_errors' => $errs
-        //     ]);
-        // }
+            return json_encode([
+                'success'   => false,
+                'validation_errors' => $errs
+            ]);
+        }
 
         // валидация duration_minutes и duration_hours (проверяем что они есть в списке из prepareDurationSelects())
         $durationSelects = $this->prepareDurationSelects();
@@ -276,8 +276,8 @@ class AppointmentsController extends Controller
 
         $appointment->save();
 
-        return redirect()->route('appointments.index');
-        //echo json_encode(array('success' => true, 'error' => ''));
+        //return redirect()->route('appointments.index');
+        echo json_encode(array('success' => true, 'error' => ''));
     }
 
     public function destroy(Request $request, $id)
@@ -291,7 +291,7 @@ class AppointmentsController extends Controller
             Session::flash('error', 'Заявка не найдена в справочнике!');
         }
 
-        return redirect()->route('appointment.index');
+        return redirect()->route('appointments.index');
     }
 
     protected function prepareServicesSelectData($request)

@@ -622,6 +622,7 @@ $(document).ready(function () {
 						alert("Error:" + data.error);
 					}
 				}
+				window.location.href = '/home';
 			},
 			error: function(data) {
 				var btn = $('#btn_submit_app_form');
