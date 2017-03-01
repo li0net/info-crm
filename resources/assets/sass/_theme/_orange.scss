@@ -1,7 +1,73 @@
 @import "variables";
 
-.skin-blue .main-header .logo {
-  background-color: #367fa9;
-  color: #ffffff;
-  border-bottom: 0 solid transparent;
+.skin-orange{
+  .main-header{
+    .logo,
+    .navbar{
+      background-color: $brand-main;
+      color: $brand-main-text;
+      a{
+        color: $brand-main-text;
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+        &:hover{
+          color:$brand-secondary;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  .main-sidebar {
+    background-color: $brand-secondary-dark;
+    color:$brand-secondary-text;
+    a{
+      color: $brand-main-text;
+      transition: All 0.3s ease;
+      -webkit-transition: All 0.3s ease;
+      -moz-transition: All 0.3s ease;
+      -o-transition: All 0.3s ease;
+      &:hover{
+        background-color:$brand-secondary;
+        text-decoration: none;
+      }
+    }
+    .user-panel{
+      background-color: $brand-secondary;
+    }
+    .datepicker{
+      background-color: $brand-secondary;
+    }
+  }
+  .content-wrapper{
+    background-color: $brand-secondary-text;
+  }
+  .form-control{
+    border-color: $brand-main;
+    border-radius: 20px;
+  }
+  .input-group{
+    .input-group-addon{
+      border-color: $brand-main;
+      border-radius: 20px 0 0 20px;
+      border-right: 0;
+    }
+    .form-control{
+      border-left: 0;
+    }
+  }
+  .btn{
+    .btn-primary{
+      border-color: #5A4A93;
+      background-color: #6d51aa;
+      border-radius: 20px;
+      height: 40px;
+      color: #FFF;
+      font-size: 18px;
+      &:hover{
+        background-color: #5A4A93;
+      }
+    }
+  }
 }
