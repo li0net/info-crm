@@ -22,7 +22,7 @@
 
 		<div class="col-sm-4">
 			<a href="{{ route('storagetransaction.create') }}" class="btn btn-primary pull-right">Новая операция</a>
-			<a href="#" class="btn btn-default m-r pull-right">Выгрузить в Excel</a>
+			<a href="#" class="btn btn-primary m-r pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
 		</div>
 
 		<div class="col-sm-12">
@@ -103,7 +103,7 @@
 	</form>
 	<div class="row">
 		<div class="col-sm-12" id="result_container">
-			<table class="table">
+			<table class="table table-hover table-striped">
 				<thead>
 					<th class="text-center">#</th>
 					<th>Дата</th>

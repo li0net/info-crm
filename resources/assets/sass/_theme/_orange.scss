@@ -1,6 +1,15 @@
 @import "variables";
-
 .skin-orange{
+  /** mains **/
+  a {
+    color: $brand-main;
+    text-decoration: underline;
+    &:hover{
+      color: $brand-secondary;
+      text-decoration: none;
+    }
+  }
+  /** header **/
   .main-header{
     .logo,
     .navbar{
@@ -19,18 +28,45 @@
       }
     }
   }
+  /** sidebar **/
   .main-sidebar {
     background-color: $brand-secondary-dark;
     color:$brand-secondary-text;
-    a{
-      color: $brand-main-text;
-      transition: All 0.3s ease;
-      -webkit-transition: All 0.3s ease;
-      -moz-transition: All 0.3s ease;
-      -o-transition: All 0.3s ease;
-      &:hover{
-        background-color:$brand-secondary;
-        text-decoration: none;
+    li {
+      a{
+        border-left: 0;
+        font-weight: bold;
+        color: $brand-main-text;
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+        border-left: 3px solid transparent;
+        &:hover{
+          border-left: 3px solid $brand-main-text;
+        }
+      }
+      &.active{
+        &>a{
+          background-color:$brand-secondary;
+          border-left: 3px solid $brand-main-text;
+        }
+      }
+    }
+    li.treeview ul li{
+      a{
+        border-left: 0;
+        font-weight: bold;
+        color: $brand-main-text;
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+        &:hover{
+          border-left: 0;
+          background-color:$brand-secondary;
+          text-decoration: none;
+        }
       }
     }
     .user-panel{
@@ -39,10 +75,64 @@
     .datepicker{
       background-color: $brand-secondary;
     }
+    /** datapicker **/
+    .datepicker table tr th{
+      color: $brand-main-text;
+    }
+    .datepicker table tr td{
+      color: $brand-main;
+    }
+    .datepicker table tr td.old,
+    .datepicker table tr td.new {
+      color: #6D6D6D;
+    }
+    .datepicker table tr td.active:hover,
+    .datepicker table tr td.active:hover:hover,
+    .datepicker table tr td.active.disabled:hover,
+    .datepicker table tr td.active.disabled:hover:hover,
+    .datepicker table tr td.active:focus,
+    .datepicker table tr td.active:hover:focus,
+    .datepicker table tr td.active.disabled:focus,
+    .datepicker table tr td.active.disabled:hover:focus,
+    .datepicker table tr td.active:active,
+    .datepicker table tr td.active:hover:active,
+    .datepicker table tr td.active.disabled:active,
+    .datepicker table tr td.active.disabled:hover:active,
+    .datepicker table tr td.active.active,
+    .datepicker table tr td.active:hover.active,
+    .datepicker table tr td.active.disabled.active,
+    .datepicker table tr td.active.disabled:hover.active,
+    .open .dropdown-toggle.datepicker table tr td.active,
+    .open .dropdown-toggle.datepicker table tr td.active:hover,
+    .open .dropdown-toggle.datepicker table tr td.active.disabled,
+    .open .dropdown-toggle.datepicker table tr td.active.disabled:hover {
+      color: $brand-main-text;
+      background: rgba(109,81,180,0.9);
+      border-color: $brand-main;
+      font-weight: bold;
+    }
+    .datepicker table tr th:hover,
+    .datepicker table tr td.day:hover,
+    .datepicker table tr td.day.focused,
+    .datepicker table tr td:hover{
+      color: $brand-main;
+      background: rgba(255,255,255,0.5);
+      border-color: $brand-main;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    }
   }
+  .sidebar-menu li.header {
+    padding: 0;
+  }
+  .sidebar-form {
+    margin-bottom: 1px;
+  }
+  /** content **/
   .content-wrapper{
     background-color: $brand-secondary-text;
   }
+
+  /** form elements **/
   .form-control{
     border-color: $brand-main;
     border-radius: 20px;
@@ -57,17 +147,132 @@
       border-left: 0;
     }
   }
-  .btn{
-    .btn-primary{
-      border-color: #5A4A93;
-      background-color: #6d51aa;
-      border-radius: 20px;
-      height: 40px;
-      color: #FFF;
-      font-size: 18px;
+  select.form-control{
+    option{
+      &:checked,
       &:hover{
-        background-color: #5A4A93;
+        color: $brand-main-text !important;
+        background-color: $brand-main !important;
+        box-shadow: 0 0 10px 100px $brand-main inset !important;
       }
     }
   }
+  select.form-control:focus > option:checked,
+  select.form-control:focus > option:hover {
+    color: $brand-main-text !important;
+    background-color: $brand-main !important;
+    box-shadow: 0 0 10px 100px $brand-main inset !important;
+  }
+  .btn{
+    border-radius: 20px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 21px;
+    color: $brand-main-text;
+    text-decoration: none;
+    transition: All 0.3s ease;
+    -webkit-transition: All 0.3s ease;
+    -moz-transition: All 0.3s ease;
+    -o-transition: All 0.3s ease;
+
+    &.btn-danger{
+      background-color: #C34749;
+      &:hover{
+        background-color: #AE4042;
+        text-decoration: none;
+        color: $brand-main-text;
+      }
+    }
+    &.btn-success,
+    &.btn-primary{
+      border-color: $brand-main-hover;
+      background-color: $brand-main;
+      color: $brand-main-text;
+      &:hover{
+        background-color: $brand-main-hover;
+      }
+    }
+  }
+  .btn-lg, .btn-group-lg > .btn {
+    padding: 0;
+  }
+  .btn-default{
+    color: $brand-main;
+    background-color: $brand-main-text;
+    border-color: $brand-main;
+    i{
+      color: $brand-main;
+    }
+  }
+  .btn-default:hover,
+  .btn-default:focus,
+  .btn-default.focus,
+  .btn-default:active,
+  .btn-default.active,
+  .open > .dropdown-toggle.btn-default {
+    color: $brand-main-text;
+    background-color: $brand-main;
+    border-color: $brand-main-hover;
+    i{
+      color: $brand-main-text;
+    }
+  }
+  /** nav nav-tabs */
+  .nav{
+    &.nav-tabs{
+      li{
+        a{
+          background-color: $brand-main-text;
+          text-decoration: none;
+          border-bottom: 1px solid #ddd;
+        }
+        &.active{
+          a{
+            background-color: $brand-main-text;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+
+          }
+        }
+      }
+    }
+  }
+  /** diff **/
+  .jumbotron,
+  .well {
+    background-color: #fff;
+  }
+  /** tables **/
+  .table.table-striped{
+    & > tbody > tr:nth-of-type(odd) {
+      background-color: #E5E5E5;
+    }
+    thead{
+      tr,
+      tr th{
+        background-color: #A39EAF;
+        color: $brand-main-text;
+      }
+    }
+  }
+
+
 }
+/** paginator**/
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  color: $brand-main-text;
+  background-color: $brand-main;
+  border-color: $brand-main-hover;
+}
+.pagination > li > a, .pagination > li > span {
+  color: $brand-main;
+  background-color: $brand-main-text;
+  border: 1px solid #ddd;
+}
+

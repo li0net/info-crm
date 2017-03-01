@@ -30,7 +30,7 @@
 
 	<div class="row">
 		<div class="col-sm-12">
-			<table class="table">
+			<table class="table table-hover table-striped">
 				<thead>
 					<th>#</th>
 					<th>{{ trans('adminlte_lang::message.position_name') }}</th>

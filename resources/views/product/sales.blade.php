@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table table-hover table-striped">
 	<thead>
 		<th>{{ trans('adminlte_lang::message.article') }}</th>
 		<th>{{ trans('adminlte_lang::message.product_title') }}</th>

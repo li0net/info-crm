@@ -82,7 +82,7 @@
 	</form>
 	<div class="row">
 		<div class="col-sm-12" id="result_container">
-			<table class="table">
+			<table class="table table-hover table-striped">
 				<thead>
 					<th>{{ trans('adminlte_lang::message.article') }}</th>
 					<th>{{ trans('adminlte_lang::message.product_title') }}</th>

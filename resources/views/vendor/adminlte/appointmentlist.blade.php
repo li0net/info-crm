@@ -15,7 +15,7 @@
 		</div>
 	</div>
 @else
-	<table class="table">
+	<table class="table table-hover table-striped">
 		<thead>
 			<th>#</th>
 			<th>{{ trans('adminlte_lang::message.manager') }}</th>

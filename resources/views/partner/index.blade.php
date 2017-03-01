@@ -32,7 +32,7 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-12">
-			<table class="table">
+			<table class="table table-hover table-striped">
 				<thead>
 					<th class="text-center">#</th>
 					<th>{{ trans('adminlte_lang::message.partner_name') }}</th>

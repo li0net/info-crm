@@ -5,7 +5,8 @@
 	<section class="sidebar">
 
 		<!-- Sidebar user panel (optional) -->
-		@if (! Auth::guest())
+		{{--@if (! Auth::guest())--}}
+		@if (FALSE)
 			<div class="user-panel">
 				<div class="pull-left image">
                     <img src="{{ $user->getAvatarUri() }}" class="img-circle" alt="User Image"/>
