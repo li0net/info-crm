@@ -463,5 +463,6 @@ return [
 	'date_from'					=> 'desde',
 	'date_to'					=> 'hasta',
 	'hello'						=> 'Bienvenido!',
-	'section_under_construction'=> 'Esta sección está en desarrollo.'
+	'section_under_construction'=> 'Esta sección está en desarrollo.',
+	'new_appointment'			=> 'Nueva aplicación'
 ];

@@ -64,13 +64,13 @@
 					<ul class="treeview-menu">
 						<li><a href="/stub">{{ trans('adminlte_lang::message.indicators') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.recurrence') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.employees') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.services') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.clients') }}</a></li>
+						<li><a href="{{ url('employee')}}">{{ trans('adminlte_lang::message.employees') }}</a></li>
+						<li><a href="{{ url('/services')}}">{{ trans('adminlte_lang::message.services') }}</a></li>
+						<li><a href="{{ url('clients')}}">{{ trans('adminlte_lang::message.clients') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.finance_report') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.pl_report') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.remnants') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.sales_analysis') }}</a></li>
+						<li><a href="{{ url('/storagebalance') }}">{{ trans('adminlte_lang::message.remnants') }}</a></li>
+						<li><a href="{{ url('/salesanalysis') }}">{{ trans('adminlte_lang::message.sales_analysis') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.settings') }}</a></li>
 					</ul>
 				</li>
@@ -132,7 +132,6 @@
 						<li><a href="/stub">{{ trans('adminlte_lang::message.linking') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.patterns') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.networks') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.information') }}</a></li>
 						<li><a href="{{ url('/employee')}}">{{ trans('adminlte_lang::message.employees') }}</a></li>
 						<li><a href="{{ url('/position')}}">{{ trans('adminlte_lang::message.positions') }}</a></li>
 						<li><a href="{{ url('/users')}}">{{ trans('adminlte_lang::message.users') }}</a></li>

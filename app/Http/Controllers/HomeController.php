@@ -105,7 +105,7 @@ class HomeController extends Controller
 		$itemsForCurrentPage = $appointments->slice($offset, $paginate);
 
 		$appointments = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($appointments), $paginate, $page);
-		$appointments->setPath('home');
+		// $appointments->setPath('home');
 		$appointments->appends(['index' => 'filtered']);
 
 		return View::make('adminlte::appointmentlist', compact('appointments'));

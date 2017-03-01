@@ -21,6 +21,7 @@
 			</div>
 			<div class="col-sm-4">
 				<a href="#" class="btn btn-primary m-r pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
+				<a href="/appointments/create" class="btn btn-primary m-r pull-right">{{ trans('adminlte_lang::message.new_appointment') }}</a>
 			</div>
 		</div>
 		<div class="row">
@@ -141,6 +142,16 @@
 								<td>{{ $appointment->service->name }}</td>
 								<td>{{ $appointment->start }}</td>
 								<td>{{ $appointment->end }}</td>
+								<td class="text-right">
+									@if ($user->hasAccessTo('appointments', 'edit', 0))
+										<a href="{{ route('appointments.edit', $appointment->appointment_id) }}" id="scheme_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+									@endif
+									{{-- @if ($user->hasAccessTo('appointments', 'delete', 0))
+										{!! Form::open(['route' => ['appointments.destroy', $appointment->appointment_id], 'id' => 'form'.$appointment->appointment_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
+											<a href="javascript: submitform('#form{{$appointment->appointment_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+										{!! Form::close() !!}
+									@endif --}}
+								</td>
 							</tr>
 						@endforeach
 					</tbody>

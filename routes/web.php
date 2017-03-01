@@ -58,7 +58,7 @@ Route::post('/storagetransaction/list', ['as' => 'storagetransaction.list', 'use
 Route::get('/storageData', 'StorageController@getStorageData');
 Route::get('/productCategoriesData', 'ProductCategoriesController@getProductCategoriesData');
 Route::resource('/card', 'CardController');
-Route::post('/home', 'HomeController@indexFiltered');
+Route::post('/home', ['as' => 'appointments.index', 'uses' =>'HomeController@indexFiltered']);
 Route::post('/payment/list', ['as' => 'payment.list', 'uses' => 'PaymentController@indexFiltered']);
 Route::post('/payment/beneficiaryOptions', ['as' => 'payment.beneficiaryOptions', 'uses' => 'PaymentController@populateBeneficiaryOptions']);
 Route::post('/wage_scheme/detailedServiceOptions', ['as' => 'wage_scheme.detailedServiceOptions', 
@@ -113,9 +113,10 @@ Route::post('/organization/save', ['as' => 'organization.save', 'uses' => 'Organ
 Route::get('/organization/info/edit', ['as' => 'info.edit', 'uses' => 'OrganizationsController@editInfo']);
 Route::put('/organization/info/save', ['as' => 'info.save', 'uses' => 'OrganizationsController@saveInfo']);
 
-Route::get('/appointments/create', 'AppointmentsController@create');
-Route::get('/appointments/edit/{appt}', 'AppointmentsController@edit');
+Route::get('/appointments/create', ['as' => 'appointments.create', 'uses' => 'AppointmentsController@create']);
+Route::get('/appointments/edit/{appt}', ['as' => 'appointments.edit', 'uses' => 'AppointmentsController@edit']);
 Route::post('/appointments/save', 'AppointmentsController@save');
+Route::get('/appointments/destroy/{appt}', ['as' => 'appointments.destroy', 'uses' => 'AppointmentsController@destroy']);
 Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::get('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::post('/appointments/getClientInfo', 'AppointmentsController@getClientInfo');

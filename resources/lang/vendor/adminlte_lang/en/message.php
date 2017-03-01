@@ -457,5 +457,6 @@ return [
 	'date_from'					=> 'from',
 	'date_to'					=> 'to',
 	'hello'						=> 'Hello!',
-	'section_under_construction'=> 'This section is under construction.'
+	'section_under_construction'=> 'This section is under construction.',
+	'new_appointment'			=> 'New appointment'
 ];

@@ -463,5 +463,6 @@ return [
 	'date_from'					=> 'с',
 	'date_to'					=> 'по',
 	'hello'						=> 'Здравствуйте!',
-	'section_under_construction'=> 'Раздел находится в разработке.'
+	'section_under_construction'=> 'Раздел находится в разработке.',
+	'new_appointment'			=> 'Новая заявка'
 ];
