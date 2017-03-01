@@ -207,5 +207,22 @@ return [
     'client_category:edit_success_message'  => 'Изменения сохранены',
     'client_category:create_success_message'=> 'Категория создана',
 
-    'widget:error_time_already_taken'       => 'Unfortunately selected time is already occupied. Please return to previous step and select other time.'
+    'widget:error_time_already_taken'   => 'Unfortunately selected time is already occupied. Please return to previous step and select other time.',
+    'widget:error_wrong_title'          => 'Something wrong!',
+    'widget:error_no_superorganization' => 'No SuperOrganization ID set.',
+    'widget:error_no_organization'      => 'No Organization ID set.',
+    'widget:error_categories_title'     => 'Categories empty!',
+    'widget:error_categories'           => 'Sorry but this organization have no service categories. Please back one step and try to choose another item.',
+    'widget:error_category_id'          => 'Service Category  ID was not set',
+    'widget:error_services_title'       => 'Services empty!',
+    'widget:error_services'             => 'Sorry but no services found for category chosen. Please back one step and try to choose another item.',
+    'widget:error_service_id'           => 'Service ID not set',
+    'widget:error_service_not_found'    => 'Service with this ID was not found. Please back one step and try to choose another item.',
+    'widget:error_employee_title'       => 'No employees',
+    'widget:error_employee_no'          => 'Sorry, but no employees for this service found. Please back one step and try to choose another item.',
+    'widget:error_days_title'           => 'No free days',
+    'widget:error_days_no'              => 'Sorry, but this employee have no free days in this month anymore. Please back one step and try to choose another one.',
+    'widget:error_times_title'          => 'No free time',
+    'widget:error_times_no'             => 'Sorry, but this employee have no free time in chosen day anymore. Please back one step and try to choose another one.',
+
 ];

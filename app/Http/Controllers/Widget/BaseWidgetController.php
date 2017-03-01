@@ -99,7 +99,7 @@ class BaseWidgetController extends Controller
     {
         if( ! $this->superOrganization)
         {
-            return $this->showEmptyInfoPage('Wrong data!', 'No SuperOrganization ID set.');
+            return $this->showEmptyInfoPage(trans('main.widget:error_wrong_title'), trans('main.widget:error_no_superorganization'));
         }
 
         // отображение отделения организации, если их больше 1
@@ -128,11 +128,11 @@ class BaseWidgetController extends Controller
     {
         // отображение услуг в данном отделении (или всей организации, если отделение только одно)
         if (is_null($this->organization)) {
-            return $this->showEmptyInfoPage('Wrong data!', 'No Organization ID set.');
+            return $this->showEmptyInfoPage(trans('main.widget:error_wrong_title'), trans('main.widget:error_no_organization'));
         }
         $sc = $this->organization->serviceCategories();
         if ($sc->count() == 0) {
-            return $this->showEmptyInfoPage('Categories empty!', 'Sorry but this organization have no service categories. Please back one step and try to choose another item.');
+            return $this->showEmptyInfoPage(trans('main.widget:error_categories_title'), trans('main.widget:error_categories'));
         }
         // если категория одна - переходим к отображению услуг
         if ($sc->count() == 1) {
@@ -156,7 +156,7 @@ class BaseWidgetController extends Controller
         $serviceCategoryId = $request->input('sc_id'); // post параметр sc_id - service category id
 
         if ( empty($serviceCategoryId) ) {
-            return $this->showEmptyInfoPage('Something wrong!', 'Service Category  ID was not set');
+            return $this->showEmptyInfoPage(trans('main.widget:error_wrong_title'), trans('main.widget:error_category_id'));
         } else {
             // получаем услуги заданной категрии
             $sc = ServiceCategory::where('service_category_id', $serviceCategoryId)
@@ -165,7 +165,7 @@ class BaseWidgetController extends Controller
             if ( ! $sc)
             {
                 //ошибка припустой категории
-                return $this->showEmptyInfoPage('Something wrong!', 'Service Category was not found.');
+                return $this->showEmptyInfoPage(trans('main.widget:error_wrong_title'), trans('main.widget:error_category_id'));
             }
         }
         $services = $sc->services();
@@ -173,7 +173,7 @@ class BaseWidgetController extends Controller
         // ошибка при пустых сервисах
         if ($services->count() == 0)
         {
-            return $this->showEmptyInfoPage('Services empty!', 'Sorry but no services found for category chosen. Please back one step and try to choose another item.');
+            return $this->showEmptyInfoPage(trans('main.widget:error_services_title'), trans('main.widget:error_services'));
         }
 
         // отрисовываем список категорйи
@@ -195,7 +195,7 @@ class BaseWidgetController extends Controller
 
         $serviceId = $request->input('service_id'); // post параметр service_id - service id
         if (empty($serviceId)) {
-            return $this->showEmptyInfoPage('Something wrong!', 'Service ID not set');
+            return $this->showEmptyInfoPage(trans('main.widget:error_wrong_title'), trans('main.widget:error_service_id'));
         }
 
         //получаем сервис
@@ -204,7 +204,7 @@ class BaseWidgetController extends Controller
             ->where('service_categories.organization_id', $this->organization->organization_id)
             ->first();
         if ( ! $service) {
-            return $this->showEmptyInfoPage('Something wrong!', 'Service with this ID was not found. Please back one step and try to choose another item.');
+            return $this->showEmptyInfoPage(trans('main.widget:error_wrong_title'), trans('main.widget:error_service_not_found'));
         }
 
         // Отображаем только тех, что разрешили онлайн запись (в employee_settings)
@@ -220,7 +220,7 @@ class BaseWidgetController extends Controller
 
         if ( $employees->count() == 0 ) {
             // TODO: такой вариант не является аномалией, нужно придусмотреть view для него
-            return $this->showEmptyInfoPage('No employees', 'Sorry, but no employees for this service found. Please back one step and try to choose another item.');
+            return $this->showEmptyInfoPage(trans('main.widget:error_employee_title'), trans('main.widget:error_employee_no'));
         }
 
         // отрисовываем список исполнителей
@@ -277,7 +277,7 @@ class BaseWidgetController extends Controller
         $days = $employee->getFreeWorkDaysForCurrMonth();
         if ( ! $days){
             //на всякий случай проверка на пустые дни
-            return $this->showEmptyInfoPage('No free days', 'Sorry, but this employee have no free days in this month anymore. Please back one step and try to choose another one.');
+            return $this->showEmptyInfoPage(trans('main.widget:error_days_title'), trans('main.widget:error_days_no'));
         }
         // отрисовываем список дней
         $view = View::make('widget.pages.days', [
@@ -301,7 +301,7 @@ class BaseWidgetController extends Controller
         $times = $employee->getFreeWorkTimesForDay($date, $service);
         if ( ! $times){
             //на всякий случай проверка на пустой массив интервалов
-            return $this->showEmptyInfoPage('No free time', 'Sorry, but this employee have no free time in chosen day anymore. Please back one step and try to choose another one.');
+            return $this->showEmptyInfoPage(trans('main.widget:error_times_title'), trans('main.widget:error_times_no'));
         }
         // фейковый массив
 
