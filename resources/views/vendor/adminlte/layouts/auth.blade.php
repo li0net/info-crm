@@ -3,8 +3,8 @@
 <head>
     <?php
         $locale = App::getLocale();
-        if ( $locale == 'es' OR $locale == 'ca' ){
-            $locale = 'en';
+        if ( $locale == 'ca' ){
+            $locale = 'es';
         }
         $sidepanel = "adminlte::layouts.landing.{$locale}.sidepanel";
     ?>

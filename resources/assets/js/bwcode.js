@@ -1,7 +1,7 @@
 $(document).ready(function () {
     /** подгружаем нужные стили **/
-    //$('head').append('<link rel="stylesheet" href="http://45.63.43.168/css/bwcode.css" type="text/css" />');
-    $('head').append('<link rel="stylesheet" href="http://localhost:8000/css/bwcode.css" type="text/css" />');
+    $('head').append('<link rel="stylesheet" href="http://45.63.43.168/css/bwcode.css" type="text/css" />');
+    // $('head').append('<link rel="stylesheet" href="http://localhost:8000/css/bwcode.css" type="text/css" />');
 
     /** ссылка-крестик, прячем виджет **/
     $('body').on('click', '#bw_block_close', function(){
@@ -40,7 +40,8 @@ $(document).ready(function () {
                 $('<iframe/>', {
                     id: 'bw_frame',
                     frameBorder: 0,
-                    src: 'http://localhost:8000/api/v1/widget/show?sid='+scId,
+                    // src: 'http://localhost:8000/api/v1/widget/show?sid='+scId,
+                    src: 'http://45.63.43.168/api/v1/widget/show?sid='+scId,
                     width: '500px',
                     height: frameHeight+'px'
                 }).appendTo('#bw_frame_block');
