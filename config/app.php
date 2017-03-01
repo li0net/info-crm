@@ -239,7 +239,7 @@ return [
     'languages' => [
         'ru' => 'Русский',
         'en' => 'English',
-        'ca' => 'Català',
         'es' => 'Español',
+//        'ca' => 'Català',
     ],
 ];
