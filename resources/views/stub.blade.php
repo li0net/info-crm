@@ -8,9 +8,8 @@
 	<div class="row">
         <div class="col-md-12">
             <div class="jumbotron">
-              <h2>Здравствуйте!</h2>
-              <p class="lead">Раздел находится в разработке.</p>
-
+              <h2>{{ trans('adminlte_lang::message.hello') }}</h2>
+              <p class="lead">{{ trans('adminlte_lang::message.section_under_construction') }}</p>
               <hr>
             </div>
         </div>

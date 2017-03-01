@@ -461,5 +461,7 @@ return [
 	'on_date'					=> 'на дату',
 	'sales_analysis'			=> 'Анализ продаж',
 	'date_from'					=> 'с',
-	'date_to'					=> 'по'
+	'date_to'					=> 'по',
+	'hello'						=> 'Здравствуйте!',
+	'section_under_construction'=> 'Раздел находится в разработке.'
 ];

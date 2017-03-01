@@ -461,5 +461,7 @@ return [
 	'on_date'					=> 'hasta la fecha',
 	'sales_analysis'			=> 'Análisis de ventas',
 	'date_from'					=> 'desde',
-	'date_to'					=> 'hasta'
+	'date_to'					=> 'hasta',
+	'hello'						=> 'Bienvenido!',
+	'section_under_construction'=> 'Esta sección está en desarrollo.'
 ];

@@ -455,5 +455,7 @@ return [
 	'on_date'					=> 'on date',
 	'sales_analysis'			=> 'Sales analysis',
 	'date_from'					=> 'from',
-	'date_to'					=> 'to'
+	'date_to'					=> 'to',
+	'hello'						=> 'Hello!',
+	'section_under_construction'=> 'This section is under construction.'
 ];
