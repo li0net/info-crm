@@ -85,8 +85,7 @@ class RegisterController extends Controller
         $userData = [
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'is_admin' => 1         // первый юзер - админ
+            'password' => bcrypt($data['password'])
         ];
         if (isset($data['phone']) AND trim($data['phone'])!=='') {
             $userData['phone'] = trim($data['phone']);
@@ -106,6 +105,7 @@ class RegisterController extends Controller
         $usr = new User();
         $usr->fill($userData);
         $usr->organization_id = $org->organization_id;      // устанавливаем отдельно, т.к. пакетная установка этого поля запрещена
+        $usr->is_admin = 1;                                 // первый юзер - админ, пакетная установка запрещена
         $usr->save();
         DB::commit();
 
