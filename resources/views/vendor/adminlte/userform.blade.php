@@ -119,7 +119,7 @@
 
                                     @if(!isset($crmuser))
                                         <div class="col-md-6">
-                                            <label for="usr_phone">@lang('main.user:password_label')</label>
+                                            <label for="usr_password">@lang('main.user:password_label')</label>
                                         </div>
                                         <div class="col-md-6">
                                             <input type="text" name="password" id="usr_password">
@@ -150,6 +150,15 @@
                                     {{$csrfField}}
 
                                     <input type="hidden" name="user_id" id="permissions_user_id" value="{{$crmuser->user_id}}">
+
+                                    @if ($curruser->is_admin)
+                                        <?php
+                                        $selected = '';
+                                        if (isset($crmuser) AND $crmuser->is_admin) {
+                                            $selected = "checked='checked'";
+                                        }?>
+                                        <p><input type="checkbox" name="is_admin" value="1" {{$selected}}><i class="fa fa-exclamation-circle" aria-hidden="true"></i><strong>@lang('main.user:permissions_is_admin')</strong></p>
+                                    @endif
 
                                     <!-- Права доступа к форме Записей -->
                                     <div>
