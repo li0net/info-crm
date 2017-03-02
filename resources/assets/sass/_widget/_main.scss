@@ -14,7 +14,7 @@ body{
   line-height: $line-height-base;
 }
 .container500{
-  width:500px;
+  width:$widget-width;
   position: relative;
 }
 #cloud-container{
@@ -249,7 +249,7 @@ footer{
   top: 0;
   bottom: 0;
   left: 0;
-  width: 500px;
+  width: $widget-width;
   background-color: #ffffff;
   .info-header{
     background-color: $brand-primary;
