@@ -101,7 +101,9 @@ Route::get('/serviceCategories/create', 'ServiceCategoriesController@create');
 Route::get('/serviceCategories/edit/{serviceCategory}', 'ServiceCategoriesController@edit');
 Route::post('/serviceCategories/save', 'ServiceCategoriesController@save');
 Route::get('/serviceCategories/destroy/{scId}', 'ServiceCategoriesController@destroy');
-
+Route::get('/test', function (){
+          TG::sendMsg('user#320015266', 'Hello + there!');
+     });
 Route::get('/services/create', 'ServicesController@create');
 Route::get('/services/edit/{service}', 'ServicesController@edit');
 Route::post('/services/save', 'ServicesController@save');

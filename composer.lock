@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "91c7075ec6042426cb5e6d46e9e6ef70",
+    "content-hash": "91c4fcd087c8d781ed8b20e0b495e518",
     "packages": [
         {
             "name": "acacha/admin-lte-template-laravel",
@@ -3089,6 +3089,48 @@
                 "environment"
             ],
             "time": "2016-09-01T10:05:43+00:00"
+        },
+        {
+            "name": "williamson/laragram",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jonnywilliamson/laragram.git",
+                "reference": "40d2e31bc40b298dbeb88cedd5a94d7fa254da14"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jonnywilliamson/laragram/zipball/40d2e31bc40b298dbeb88cedd5a94d7fa254da14",
+                "reference": "40d2e31bc40b298dbeb88cedd5a94d7fa254da14",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Williamson\\Laragram\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Williamson",
+                    "email": "jonnywilliamson@gmail.com"
+                }
+            ],
+            "description": "A Laravel Wrapper for telegram-cli",
+            "keywords": [
+                "laravel",
+                "php-cli",
+                "telegram"
+            ],
+            "time": "2016-05-31T22:13:17+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
