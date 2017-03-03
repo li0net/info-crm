@@ -464,5 +464,9 @@ return [
 	'date_to'					=> 'hasta',
 	'hello'						=> 'Bienvenido!',
 	'section_under_construction'=> 'Esta sección está en desarrollo.',
-	'new_appointment'			=> 'Nueva aplicación'
+	'new_appointment'			=> 'Nueva aplicación',
+	'resources'					=> 'Recursos',
+	'new_resource'				=> 'Nuevo recurso',
+	'resource_name'				=> 'Nombre del recurso',
+	'resource_create_new'		=> 'Crear nuevo recurso'
 ];

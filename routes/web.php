@@ -52,6 +52,7 @@ Route::resource('/wage_scheme', 'WageSchemesController');
 Route::resource('/unit', 'UnitController');
 Route::resource('/storage', 'StorageController');
 Route::resource('/payment', 'PaymentController');
+Route::resource('/resource', 'ResourceController');
 Route::resource('/storagetransaction', 'StorageTransactionController');
 Route::post('/storagetransaction/list', ['as' => 'storagetransaction.list', 'uses' => 'StorageTransactionController@indexFiltered']);
 

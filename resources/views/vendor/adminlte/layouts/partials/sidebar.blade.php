@@ -128,7 +128,7 @@
 						<li><a href="{{ url('/organization/info/edit')}}">{{ trans('adminlte_lang::message.information') }}</a></li>
 						<li><a href="{{ url('/services')}}">{{ trans('adminlte_lang::message.services') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.schedule') }}</a></li>
-						<li><a href="/stub">{{ trans('adminlte_lang::message.resources') }}</a></li>
+						<li><a href="{{ url('/resource')}}">{{ trans('adminlte_lang::message.resources') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.linking') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.patterns') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.networks') }}</a></li>

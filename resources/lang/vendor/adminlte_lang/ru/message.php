@@ -464,5 +464,9 @@ return [
 	'date_to'					=> 'по',
 	'hello'						=> 'Здравствуйте!',
 	'section_under_construction'=> 'Раздел находится в разработке.',
-	'new_appointment'			=> 'Новая заявка'
+	'new_appointment'			=> 'Новая заявка',
+	'resources'					=> 'Все ресурсы',
+	'new_resource'				=> 'Новый ресурс',
+	'resource_name'				=> 'Наименование ресурса',
+	'resource_create_new'		=> 'Создать новый ресурс'
 ];
