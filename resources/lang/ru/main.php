@@ -92,6 +92,7 @@ return [
     'user:creation_success_message'         => 'Пользовтель был успешно создан!',
     'user:logo_btn'                         => 'Загрузить фото',
     'user:grid_phone_hidden_message'        => 'скрыт',
+    'user:password_label'                   => 'Пароль',
 
     'user:title_personal_data_settings'     => 'Настройки персональных данных',
     'user:title_section_personal_data'      => 'Личные данные',
@@ -153,6 +154,7 @@ return [
     'user:permissions_view_client_phone_label' => 'Показывать номер телефона в карточке клиента',
     'user:permissions_clients_export_xls_label' => 'Выгружать список клиентов в Excel',
     'user:permissions_statistics_label'     => 'Статистика',
+    'user:permissions_is_admin'             => 'Права администратора',
 
     'client:list_header'                    => 'Клиенты',
     'client:list_page_header'               => 'Клиенты',
