@@ -28,4 +28,6 @@ Route::post('/v1/widget/getAvailableTime', 'Widget\BaseWidgetController@getAvail
 Route::post('/v1/widget/getUserInformationForm', 'Widget\BaseWidgetController@getUserInformationForm');
 Route::get('/v1/widget/handleUserInformationForm', 'Widget\BaseWidgetController@handleUserInformationForm');
 Route::post('/v1/widget/getOrgInformation', 'Widget\BaseWidgetController@getOrgInformation');
+
+Route::get('/v1/widget/locale/{locale?}', ['as' => 'locale.setlocale', 'uses' => 'LocaleController@setLocale']);
 //->middleware('auth:api');
