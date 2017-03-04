@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller
 {
@@ -52,7 +53,10 @@ class UsersController extends Controller
             throw new AccessDeniedHttpException('You don\'t have permission to access this page');
         }
 
-        return view('adminlte::userform', ['crmuser' => $user]);
+        return view('adminlte::userform', [
+            'crmuser' => $user,
+            'curruser' => $request->user()
+        ]);
     }
 
     public function create(Request $request)
@@ -192,6 +196,10 @@ class UsersController extends Controller
         }
 
         foreach ($formData AS $field=>$data) {
+            if (!isset($fieldNameToPermissions[$field])) {
+                continue;
+            }
+
             $hasSuchPermission = FALSE;
             foreach ($userCurrPermissions AS $permission) {
                 //Log::info(__METHOD__ . ' user current permission:' . $permission->object . ' action:' . $permission->action);
@@ -222,6 +230,12 @@ class UsersController extends Controller
 
                 $hasSuchPermission = FALSE;
             }
+        }
+
+        // Делаем юзера админом, только если запрос пришел от текущего админа
+        if (isset($formData['is_admin']) AND $formData['is_admin'] == '1' AND $request->user()->is_admin) {
+            $user->is_admin = 1;
+            $user->save();
         }
 
         return redirect('/users');

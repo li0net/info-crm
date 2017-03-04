@@ -35,6 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'telegram' => [
+        'socket' =>'tcp://45.63.43.168:7778'
+    ]
+
     /*
     | Acacha Llum services...
     |

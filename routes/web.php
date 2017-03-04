@@ -52,6 +52,7 @@ Route::resource('/wage_scheme', 'WageSchemesController');
 Route::resource('/unit', 'UnitController');
 Route::resource('/storage', 'StorageController');
 Route::resource('/payment', 'PaymentController');
+Route::resource('/resource', 'ResourceController');
 Route::resource('/storagetransaction', 'StorageTransactionController');
 Route::post('/storagetransaction/list', ['as' => 'storagetransaction.list', 'uses' => 'StorageTransactionController@indexFiltered']);
 
@@ -101,7 +102,9 @@ Route::get('/serviceCategories/create', 'ServiceCategoriesController@create');
 Route::get('/serviceCategories/edit/{serviceCategory}', 'ServiceCategoriesController@edit');
 Route::post('/serviceCategories/save', 'ServiceCategoriesController@save');
 Route::get('/serviceCategories/destroy/{scId}', 'ServiceCategoriesController@destroy');
-
+Route::get('/test', function (){
+          TG::sendMsg('user#320015266', 'Hello + there!');
+     });
 Route::get('/services/create', 'ServicesController@create');
 Route::get('/services/edit/{service}', 'ServicesController@edit');
 Route::post('/services/save', 'ServicesController@save');

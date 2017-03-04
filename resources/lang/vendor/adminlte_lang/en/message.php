@@ -458,5 +458,9 @@ return [
 	'date_to'					=> 'to',
 	'hello'						=> 'Hello!',
 	'section_under_construction'=> 'This section is under construction.',
-	'new_appointment'			=> 'New appointment'
+	'new_appointment'			=> 'New appointment',
+	'resources'					=> 'Resources',
+	'new_resource'				=> 'New resource',
+	'resource_name'				=> 'Resource name',
+	'resource_create_new'		=> 'Create new resource'
 ];

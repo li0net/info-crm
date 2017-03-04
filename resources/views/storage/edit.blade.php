@@ -16,14 +16,12 @@
 			</div>
 		@endif
 	</div>
-{{-- 	<div class="row">
-		<h4>{{ trans('adminlte_lang::message.information_about_storage') }}</h4>	
-		<hr>
-	</div> --}}	
-		{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
 	<div class="row">
-		{!! Form::model($storage, ['route' => ['storage.update', $storage->storage_id], 'method' => 'PUT']) !!}
-			<div class="col-sm-6 col-sm-offset-3">
+		<div class="col-sm-6 col-sm-offset-3">
+			<h4>{{ trans('adminlte_lang::message.information_about_storage') }}</h4>	
+			<hr>
+			{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
+			{!! Form::model($storage, ['route' => ['storage.update', $storage->storage_id], 'method' => 'PUT']) !!}
 				<div class="well">
 					<div class="form-group">
 						{{ Form::label('title', trans('adminlte_lang::message.storage_title')) }}
@@ -44,7 +42,7 @@
 
 					<div class="form-group">
 						{{ Form::label('description', trans('adminlte_lang::message.description')) }}
-						{{ Form::textarea('description', null, ['class' => 'form-control']) }}
+						{{ Form::textarea('description', null, ['class' => 'form-control', 'cols' => 'auto', 'rows' => 'auto']) }}
 					</div>
 					
 					<hr>
