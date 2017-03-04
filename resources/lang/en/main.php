@@ -148,6 +148,10 @@ return [
     'user:permissions_employee_delete_label' => 'Удаление персонала',
     'user:permissions_schedule_edit_label'  => 'Редактирование графика работы',
     'user:permissions_clients_label'        => 'Клиенты',
+    'user:permissions_view_clients_phone_label' => 'Show phone numbers in client list',
+    'user:permissions_view_client_phone_label' => 'Show phone number in clients card',
+    'user:permissions_clients_export_xls_label' => 'Export client list to Excel',
+    'user:permissions_statistics_label'     => 'Statistics',
     'user:permissions_is_admin'             => 'Administration rights',
 
     'client:list_header'                    => 'Clients',
