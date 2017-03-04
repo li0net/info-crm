@@ -126,6 +126,7 @@
 					<ul class="treeview-menu">
 						<li><a href="{{ url('/organization/edit')}}">{{ trans('adminlte_lang::message.basic_settings') }}</a></li>
 						<li><a href="{{ url('/organization/info/edit')}}">{{ trans('adminlte_lang::message.information') }}</a></li>
+						<li><a href="{{ url('/serviceCategories')}}">{{ trans('adminlte_lang::message.service_categories') }}</a></li>
 						<li><a href="{{ url('/services')}}">{{ trans('adminlte_lang::message.services') }}</a></li>
 						<li><a href="/stub">{{ trans('adminlte_lang::message.schedule') }}</a></li>
 						<li><a href="{{ url('/resource')}}">{{ trans('adminlte_lang::message.resources') }}</a></li>

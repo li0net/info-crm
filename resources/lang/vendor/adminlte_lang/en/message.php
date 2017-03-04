@@ -462,5 +462,6 @@ return [
 	'resources'					=> 'Resources',
 	'new_resource'				=> 'New resource',
 	'resource_name'				=> 'Resource name',
-	'resource_create_new'		=> 'Create new resource'
+	'resource_create_new'		=> 'Create new resource',
+	'service_categories'		=> 'Service Categories'
 ];
