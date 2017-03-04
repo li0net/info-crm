@@ -1,5 +1,5 @@
-<h1>Выборите категории услуги</h1>
-<h4>Онлайн-запись</h4>
+<h1>{{ trans('main.widget:category_head') }}</h1>
+<h4>{{ trans('main.widget:online_registration') }}</h4>
 
 @foreach ($categories as $category)
     <a class="row category-row" data-id="{{ $category->service_category_id }}" data-name="{{ $category->online_reservation_name }}" href="#">

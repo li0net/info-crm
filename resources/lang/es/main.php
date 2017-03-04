@@ -235,4 +235,13 @@ return [
     'widget:error_days_no'              => 'К сожалению, у текущего исполнителя не осталось свободных дней. Попробуйте вернуться на шаг назад и выбрать другой вариант.',
     'widget:error_times_title'          => 'Нет свободного времени!',
     'widget:error_times_no'             => 'К сожалению, у текущего исполнителя не осталось временных интервалов. Попробуйте вернуться на шаг назад и выбрать другой вариант.',
+
+    'widget:division_head'             => 'Choose division',
+    'widget:online_registration'       => 'Online registration',
+    'widget:employee_head'             => 'Choose employee',
+    'widget:service_head'              => 'choose service',
+    'widget:time_head'                 => 'Choose time',
+    'widget:form_head'                 => 'Input your data',
+    'widget:category_head'             => 'Choose service category',
+    'widget:day_head'                  => 'Choose date',
 ];

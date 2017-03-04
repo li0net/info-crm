@@ -1,5 +1,5 @@
-<h1>Выбор даты</h1>
-<h4>Онлайн-запись</h4>
+<h1>{{ trans('main.widget:day_head') }}</h1>
+<h4>{{ trans('main.widget:online_registration') }}</h4>
 
 @foreach ($days as $day)
     <a class="row day-row" data-id="{{$day}}" data-name="{{$day}}" href="#">

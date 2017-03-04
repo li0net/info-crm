@@ -1,5 +1,5 @@
-<h1>Выбор исполнителя</h1>
-<h4>Онлайн-запись</h4>
+<h1>{{ trans('main.widget:employee_head') }}</h1>
+<h4>{{ trans('main.widget:online_registration') }}</h4>
 
 @foreach ($employees as $employee)
     <a class="row employee-row" data-id="{{ $employee->employee_id }}" data-name="{{ $employee->name }}" href="#">
