@@ -77,6 +77,9 @@ return [
     'appointment:client_num_visits'         => 'Количество визитов',
     'appointment:client_last_visit_date'    => 'Последний визит',
     'appointment:error_duration_not_selected' => 'Длительность не может быть равна 0',
+    'appointments:no_permission_to_delete'  => 'У вас нет прав на удаление этой записи',
+    'appointments:delete_successful'   => 'Запись успешно удалена из справочника!',
+    'appointments:delete_not_found'    => 'Запись не найдена в справочнике!',
 
     'user:list_page_header'                 => 'Список пользователей',
 

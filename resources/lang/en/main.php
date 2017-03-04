@@ -77,6 +77,9 @@ return [
     'appointment:client_num_visits'         => 'Количество визитов',
     'appointment:client_last_visit_date'    => 'Последний визит',
     'appointment:error_duration_not_selected' => 'Duration can\'t be 0',
+    'appointments:no_permission_to_delete'  => 'You don\'t have permissions to delete this record',
+    'appointments:delete_successful'        => 'Appointment have been successfully deleted from database!',
+    'appointments:delete_not_found'         => 'Appointment not found in database!',
 
     'user:list_page_header'                 => 'Список пользователей',
 
