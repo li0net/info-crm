@@ -1,5 +1,5 @@
-<h1>Выбор времени</h1>
-<h4>Онлайн-запись</h4>
+<h1>{{ trans('main.widget:time_head') }}</h1>
+<h4>{{ trans('main.widget:online_registration') }}</h4>
 
 @for ($i = 0; $i < count($times); $i++)
     <a class="row time-row" data-id="{{$times[$i]}}" data-name="{{$times[$i]}}"  href="#">

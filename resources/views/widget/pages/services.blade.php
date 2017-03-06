@@ -1,5 +1,5 @@
-<h1>Выбор услуги</h1>
-<h4>Онлайн-запись</h4>
+<h1>{{ trans('main.widget:service_head') }}</h1>
+<h4>{{ trans('main.widget:online_registration') }}</h4>
 
 @foreach ($services as $service)
     <a class="row service-row" data-id="{{ $service->service_id }}"  data-name="{{ $service->name }}" href="#">

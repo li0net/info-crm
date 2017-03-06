@@ -77,6 +77,9 @@ return [
     'appointment:client_num_visits'         => 'Количество визитов',
     'appointment:client_last_visit_date'    => 'Последний визит',
     'appointment:error_duration_not_selected' => 'Длительность не может быть равна 0',
+    'appointments:no_permission_to_delete'  => 'У вас нет прав на удаление этой записи',
+    'appointments:delete_successful'   => 'Запись успешно удалена из справочника!',
+    'appointments:delete_not_found'    => 'Запись не найдена в справочнике!',
 
     'user:list_page_header'                 => 'Список пользователей',
 
@@ -237,4 +240,13 @@ return [
     'widget:error_days_no'              => 'К сожалению, у текущего исполнителя не осталось свободных дней. Попробуйте вернуться на шаг назад и выбрать другой вариант.',
     'widget:error_times_title'          => 'Нет свободного времени!',
     'widget:error_times_no'             => 'К сожалению, у текущего исполнителя не осталось временных интервалов. Попробуйте вернуться на шаг назад и выбрать другой вариант.',
+
+    'widget:division_head'             => 'Выбор филиала',
+    'widget:online_registration'       => 'Онлайн-запись',
+    'widget:employee_head'             => 'Выбор исполнителя',
+    'widget:service_head'              => 'Выбор услуги',
+    'widget:time_head'                 => 'Выбор времени',
+    'widget:form_head'                 => 'Оформление',
+    'widget:category_head'             => 'Выбор категории услуги',
+    'widget:day_head'                  => 'Выбор даты',
 ];

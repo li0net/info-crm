@@ -235,4 +235,13 @@ return [
     'widget:error_days_no'              => 'Por desgracia, este especialista ya no tiene fechas libres. Intente a volver al paso anterior y elegir otra opción.',
     'widget:error_times_title'          => '¡No hay horas libres!',
     'widget:error_times_no'             => 'Por desgracia, este especialista ya no tiene horas libres. Intente a volver al paso anterior y elegir otra opción.',
+
+    'widget:division_head'             => 'Choose division',
+    'widget:online_registration'       => 'Online registration',
+    'widget:employee_head'             => 'Choose employee',
+    'widget:service_head'              => 'choose service',
+    'widget:time_head'                 => 'Choose time',
+    'widget:form_head'                 => 'Input your data',
+    'widget:category_head'             => 'Choose service category',
+    'widget:day_head'                  => 'Choose date',
 ];

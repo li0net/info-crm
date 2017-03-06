@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
-//use Illuminate\Support\Facades\App;
-//use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use App\Appointment;
 use App\Service;
 use App\Employee;
@@ -282,13 +281,18 @@ class AppointmentsController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $appointment = Appointment::where('organization_id', $request->user()->organization_id)->where('appointment_id', $id)->first();
+        if ($request->user()->hasAccessTo('appointments', 'delete', 0)) {
+            $appointment = Appointment::where('organization_id', $request->user()->organization_id)->where('appointment_id', $id)->first();
 
-        if ($appointment) {
-            $appointment->delete();
-            Session::flash('success', 'Заявка успешно удалена из справочника!');
+            if ($appointment) {
+                $appointment->delete();
+                Session::flash('success', trans('main.appointments:delete_successful'));
+            } else {
+                Session::flash('error', trans('main.appointments:delete_not_found'));
+            }
+
         } else {
-            Session::flash('error', 'Заявка не найдена в справочнике!');
+            Session::flash('error', trans('main.appointments:no_permission_to_delete'));
         }
 
         return redirect()->route('appointments.index');

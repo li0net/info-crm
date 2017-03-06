@@ -77,6 +77,9 @@ return [
     'appointment:client_num_visits'         => 'Количество визитов',
     'appointment:client_last_visit_date'    => 'Последний визит',
     'appointment:error_duration_not_selected' => 'Duration can\'t be 0',
+    'appointments:no_permission_to_delete'  => 'You don\'t have permissions to delete this record',
+    'appointments:delete_successful'        => 'Appointment have been successfully deleted from database!',
+    'appointments:delete_not_found'         => 'Appointment not found in database!',
 
     'user:list_page_header'                 => 'Список пользователей',
 
@@ -148,6 +151,10 @@ return [
     'user:permissions_employee_delete_label' => 'Удаление персонала',
     'user:permissions_schedule_edit_label'  => 'Редактирование графика работы',
     'user:permissions_clients_label'        => 'Клиенты',
+    'user:permissions_view_clients_phone_label' => 'Show phone numbers in client list',
+    'user:permissions_view_client_phone_label' => 'Show phone number in clients card',
+    'user:permissions_clients_export_xls_label' => 'Export client list to Excel',
+    'user:permissions_statistics_label'     => 'Statistics',
     'user:permissions_is_admin'             => 'Administration rights',
 
     'client:list_header'                    => 'Clients',
@@ -226,5 +233,14 @@ return [
     'widget:error_days_no'              => 'Sorry, but this employee have no free days in this month anymore. Please back one step and try to choose another one.',
     'widget:error_times_title'          => 'No free time',
     'widget:error_times_no'             => 'Sorry, but this employee have no free time in chosen day anymore. Please back one step and try to choose another one.',
+
+    'widget:division_head'             => 'Choose division',
+    'widget:online_registration'       => 'Online registration',
+    'widget:employee_head'             => 'Choose employee',
+    'widget:service_head'              => 'choose service',
+    'widget:time_head'                 => 'Choose time',
+    'widget:form_head'                 => 'Input your data',
+    'widget:category_head'             => 'Choose service category',
+    'widget:day_head'                  => 'Choose date',
 
 ];

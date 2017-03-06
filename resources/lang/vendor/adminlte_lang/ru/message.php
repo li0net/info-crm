@@ -471,5 +471,6 @@ return [
 	'new_resource'				=> 'Новый ресурс',
 	'resource_name'				=> 'Наименование ресурса',
 	'resource_create_new'		=> 'Создать новый ресурс',
-	'duration'					=> 'Длительность'
+	'duration'					=> 'Длительность',
+	'service_categories'		=> 'Категории услуг'
 ];

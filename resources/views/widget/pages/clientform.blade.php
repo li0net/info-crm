@@ -1,5 +1,5 @@
-<h1>Оформление</h1>
-<h4>Онлайн-запись</h4>
+<h1>{{ trans('main.widget:form_head') }}</h1>
+<h4>{{ trans('main.widget:online_registration') }}</h4>
 
 <form onsubmit="return false;" id ='requestForm'>
     <input type="hidden" name="time" value="{{ $data['time'] }}">

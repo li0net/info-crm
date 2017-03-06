@@ -1,5 +1,5 @@
-<h1>Выбор филиала</h1>
-<h4>Онлайн-запись</h4>
+<h1>{{ trans('main.widget:division_head') }}</h1>
+<h4>{{ trans('main.widget:online_registration') }}</h4>
 
 @foreach ($organizations as $organization)
     <a class="row division-row" data-id="{{ $organization->organization_id }}" data-name="{{ $organization->name}}" data-address="{{ $organization->address}}" data-phone="{{ $organization->phone_1 }}" href="#">

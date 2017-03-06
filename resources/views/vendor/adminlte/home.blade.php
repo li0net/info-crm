@@ -146,11 +146,11 @@
 									@if ($user->hasAccessTo('appointments', 'edit', 0))
 										<a href="{{ route('appointments.edit', $appointment->appointment_id) }}" id="scheme_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
 									@endif
-									{{-- @if ($user->hasAccessTo('appointments', 'delete', 0))
-										{!! Form::open(['route' => ['appointments.destroy', $appointment->appointment_id], 'id' => 'form'.$appointment->appointment_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
+									@if ($user->hasAccessTo('appointments', 'delete', 0))
+										{!! Form::open(['route' => ['appointments.destroy', $appointment->appointment_id], 'id' => 'form'.$appointment->appointment_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'GET']) !!}
 											<a href="javascript: submitform('#form{{$appointment->appointment_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
 										{!! Form::close() !!}
-									@endif --}}
+									@endif
 								</td>
 							</tr>
 						@endforeach
