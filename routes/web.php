@@ -109,6 +109,8 @@ Route::get('/services/create', 'ServicesController@create');
 Route::get('/services/edit/{service}', 'ServicesController@edit');
 Route::post('/services/save', 'ServicesController@save');
 Route::get('/services/destroy/{serviceId}', 'ServicesController@destroy');
+Route::get('/service/employeeOptions', ['as' => 'service.employeeOptions', 'uses' => 'ServicesController@populateEmployeeOptions']);
+Route::get('/service/routingOptions', ['as' => 'service.routingOptions', 'uses' => 'ServicesController@populateRoutingOptions']);
 
 Route::get('/organization/edit', ['as' => 'organization.edit', 'uses' => 'OrganizationsController@edit']);
 Route::post('/organization/save', ['as' => 'organization.save', 'uses' => 'OrganizationsController@save']);

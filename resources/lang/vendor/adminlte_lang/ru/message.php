@@ -144,7 +144,7 @@ return [
 	'backoffice'			  	=> 'Бэк-офис',
 	'profile'				  	=> 'Личный кабинет',
 	'support'				  	=> 'Служба поддержки',
-	'employees'				  	=> 'Все сотрудники',
+	'employees_all'			  	=> 'Все сотрудники',
 	'employee_edit'			  	=> 'Редактирование сотрудника',
 	'employee_create_new'	  	=> 'Создание нового сотрудника',
 	'client_list'			  	=> 'Список клиентов',
@@ -174,6 +174,7 @@ return [
 	'storages'					=> 'Склады',
 	'products'					=> 'Товары',
 	'routings'					=> 'Технологические карты',
+	'routing'					=> 'Технологическая карта',
 	'units'						=> 'Единицы измерения',
 	'operations'				=> 'Складские операции',
 	'inventory'					=> 'Инвентаризация',
@@ -465,8 +466,10 @@ return [
 	'hello'						=> 'Здравствуйте!',
 	'section_under_construction'=> 'Раздел находится в разработке.',
 	'new_appointment'			=> 'Новая заявка',
-	'resources'					=> 'Все ресурсы',
+	'resources_all'				=> 'Все ресурсы',
+	'resources'					=> 'Ресурсы',
 	'new_resource'				=> 'Новый ресурс',
 	'resource_name'				=> 'Наименование ресурса',
-	'resource_create_new'		=> 'Создать новый ресурс'
+	'resource_create_new'		=> 'Создать новый ресурс',
+	'duration'					=> 'Длительность'
 ];

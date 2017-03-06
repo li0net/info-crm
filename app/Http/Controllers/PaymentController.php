@@ -220,15 +220,17 @@ class PaymentController extends Controller
 		$payment_hour = $dt['hour'];
 		$payment_minute = $dt['minute'];
 
-		return view('payment.edit', [	
-										'payment' => $payment, 
-										'items' => $items, 
-										'accounts' => $accounts, 
-										'payment_hours' => $payment_hours, 
-										'payment_minutes' => $payment_minutes,
-										'payment_hour' => $payment_hour, 
-										'payment_minute' => $payment_minute,
-									]);
+		return view(
+			'payment.edit', [	
+				'payment' => $payment, 
+				'items' => $items, 
+				'accounts' => $accounts, 
+				'payment_hours' => $payment_hours, 
+				'payment_minutes' => $payment_minutes,
+				'payment_hour' => $payment_hour, 
+				'payment_minute' => $payment_minute,
+			]
+		);
 	}
 
 	/**

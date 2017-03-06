@@ -144,7 +144,7 @@ return [
 	'backoffice'			  	=> 'backoffice',
 	'profile'				  	=> 'Área de usuarios',
 	'support'				  	=> 'Atención al cliente',
-	'employees'				  	=> 'Todos los empleados',
+	'employees_all'			  	=> 'Todos los empleados',
 	'employee_edit'			  	=> 'Editar a un empleado',
 	'employee_create_new'	  	=> 'Crear a nuevo empleado',
 	'client_list'			  	=> 'Lista de clientes',
@@ -174,6 +174,7 @@ return [
 	'storages'					=> 'Almacenes',
 	'products'					=> 'Productos',
 	'routings'					=> 'Cartas tecnológicas',
+	'routing'					=> 'Carta tecnológicas',
 	'units'						=> 'Unidades de medida',
 	'operations'				=> 'Operaciones de almacén',
 	'inventory'					=> 'Inventario',
@@ -465,8 +466,10 @@ return [
 	'hello'						=> 'Bienvenido!',
 	'section_under_construction'=> 'Esta sección está en desarrollo.',
 	'new_appointment'			=> 'Nueva aplicación',
+	'resources_all'				=> 'Todos los recursos',
 	'resources'					=> 'Recursos',
 	'new_resource'				=> 'Nuevo recurso',
 	'resource_name'				=> 'Nombre del recurso',
-	'resource_create_new'		=> 'Crear nuevo recurso'
+	'resource_create_new'		=> 'Crear nuevo recurso',
+	'duration'					=> 'Duración'
 ];

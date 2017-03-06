@@ -194,9 +194,17 @@
       }
     }
   }
+
+  .btn-sm, .btn-group-sm > .btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
   .btn-lg, .btn-group-lg > .btn {
     padding: 0;
   }
+  
   .btn-default{
     color: $brand-main;
     background-color: $brand-main-text;

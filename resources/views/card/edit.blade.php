@@ -31,7 +31,7 @@
 					<div class="row">
 						<div class="form-group">
 							<div class="col-sm-2 control-label">
-								{{ Form::label('title', trans('adminlte_lang::message.title'), ['class' => 'form-spacing-top']) }}
+								{{ Form::label('title', trans('adminlte_lang::message.title')) }}
 							</div>
 							<div class="col-sm-9">
 								{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
