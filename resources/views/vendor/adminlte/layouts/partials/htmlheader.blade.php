@@ -1,10 +1,19 @@
 <head>
-    <meta charset="UTF-8">
-    <title> BarcelonaInfo - @yield('htmlheader_title', 'Your title here') </title>
+    <meta charset="utf-8">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+
+    <title> BarcelonaInfo - @yield('htmlheader_title', 'Your title here') </title>
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta id="_token" value="{{ csrf_token() }}">
+
+    <meta name="author" content="INFOGROUP.ONLINE">
+    <meta property="og:image" content="/img/crm/logo.jpg"/>
+    <meta property="og:image:type" content="image/jpeg"/>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://infogroup.online"/>
+    <link type="/img/crm/png" href="/img/favicon.png" rel="shortcut icon">
 
     <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/css/ui.jqgrid-bootstrap.css') }}" rel="stylesheet" type="text/css" />
