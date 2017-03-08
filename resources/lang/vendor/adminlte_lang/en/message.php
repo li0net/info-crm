@@ -139,6 +139,7 @@ return [
 	'backoffice'			  	=> 'Backoffice',
 	'profile'				  	=> 'User cabinet',
 	'support'				  	=> 'Support',
+	'employees_all'				=> 'Employees',
 	'employees'				  	=> 'Employees',
 	'employee_edit'			  	=> 'Edit employee',
 	'employee_create_new'	  	=> 'Create new employee',
@@ -168,7 +169,8 @@ return [
 	'reports'				  	=> 'Reports',
 	'storages'				  	=> 'Warehouses',
 	'products'				  	=> 'Products',
-	'routings'				  	=> 'Technological cards',
+	'routings'				  	=> 'Routings',
+	'routing'					=> 'Routing',
 	'units'					  	=> 'Units',
 	'operations'			  	=> 'Warehouse operations',
 	'inventory'		          	=> 'Inventory',
@@ -459,8 +461,11 @@ return [
 	'hello'						=> 'Hello!',
 	'section_under_construction'=> 'This section is under construction.',
 	'new_appointment'			=> 'New appointment',
+	'resources_all'				=> 'Resources',
 	'resources'					=> 'Resources',
 	'new_resource'				=> 'New resource',
 	'resource_name'				=> 'Resource name',
-	'resource_create_new'		=> 'Create new resource'
+	'resource_create_new'		=> 'Create new resource',
+	'duration'					=> 'Duration',
+	'service_categories'		=> 'Service Categories'
 ];
