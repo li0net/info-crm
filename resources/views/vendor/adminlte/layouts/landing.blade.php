@@ -17,11 +17,11 @@
         <meta property="og:description" content="Inscripcion en linea permite no perder nuevos clientes"/>
     @endif
     <meta name="author" content="INFOGROUP.ONLINE">
-    <meta property="og:image" content="/img/landing/logo.jpg"/>
+    <meta property="og:image" content="/img/crm/logo.jpg"/>
     <meta property="og:image:type" content="image/jpeg"/>
     <meta property="og:type" content="website" />
     <meta property="og:url" content="http://infogroup.online"/>
-    <link type="/img/landing/png" href="/img/favicon.png" rel="shortcut icon">
+    <link type="/img/crm/png" href="/img/favicon.png" rel="shortcut icon">
 
 
     <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
