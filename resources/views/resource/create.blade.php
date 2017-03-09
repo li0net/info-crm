@@ -39,6 +39,11 @@
 							{{ Form::label('description', trans('adminlte_lang::message.description')) }}
 							{{ Form::textarea('description', null, ['class' => 'form-control']) }}
 						</div>
+
+						<div class="form-group">
+							{{ Form::label('amount', trans('adminlte_lang::message.resource_amount')) }}
+							{{ Form::text('amount', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+						</div>
 					
 						<hr>
 

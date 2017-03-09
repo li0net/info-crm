@@ -466,6 +466,8 @@ return [
 	'new_resource'				=> 'New resource',
 	'resource_name'				=> 'Resource name',
 	'resource_create_new'		=> 'Create new resource',
+	'resource_unit'				=> 'Unit of measurement',
+	'resource_amount'			=> 'Maximum amount of resource',
 	'duration'					=> 'Duration',
 	'service_categories'		=> 'Service categories'
 ];

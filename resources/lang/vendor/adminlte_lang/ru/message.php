@@ -471,6 +471,8 @@ return [
 	'new_resource'				=> 'Новый ресурс',
 	'resource_name'				=> 'Наименование ресурса',
 	'resource_create_new'		=> 'Создать новый ресурс',
+	'resource_unit'				=> 'Единица измерения',
+	'resource_amount'			=> 'Максимальный объем ресурса',
 	'duration'					=> 'Длительность',
 	'service_categories'		=> 'Категории услуг'
 ];

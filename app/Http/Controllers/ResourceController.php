@@ -59,7 +59,7 @@ class ResourceController extends Controller
         $resource = new Resource;
 
         $resource->name = $request->name;
-        $resource->amount = 1;
+        $resource->amount = $request->amount;
         $resource->description = $request->description;
         $resource->organization_id = $request->user()->organization_id;
 
@@ -118,7 +118,7 @@ class ResourceController extends Controller
         }
 
         $resource->name = $request->name;
-        $resource->amount = 1;
+        $resource->amount = $request->amount;
         $resource->description = $request->description;
         $resource->organization_id = $request->user()->organization_id;
 
