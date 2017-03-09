@@ -14,6 +14,7 @@
 use Illuminate\Support\Facades\Input;
 use App\ServiceCategoriesGridRepository;
 use Carbon\Carbon;
+use App\Service;
 
 //Route::get('/', function () {
 //    return view('welcome');
@@ -102,15 +103,26 @@ Route::get('/serviceCategories/create', 'ServiceCategoriesController@create');
 Route::get('/serviceCategories/edit/{serviceCategory}', 'ServiceCategoriesController@edit');
 Route::post('/serviceCategories/save', 'ServiceCategoriesController@save');
 Route::get('/serviceCategories/destroy/{scId}', 'ServiceCategoriesController@destroy');
+
 Route::get('/test', function (){
-          TG::sendMsg('user#320015266', 'Hello + there!');
+            $service = Service::find(20);
+
+            //$service->employees()->detach();
+            // dd($service->employees);
      });
+
+// Route::get('/test', function (){
+//           TG::sendMsg('user#320015266', 'Hello + there!');
+//      });
+
+
 Route::get('/services/create', 'ServicesController@create');
 Route::get('/services/edit/{service}', 'ServicesController@edit');
 Route::post('/services/save', 'ServicesController@save');
 Route::get('/services/destroy/{serviceId}', 'ServicesController@destroy');
 Route::get('/service/employeeOptions', ['as' => 'service.employeeOptions', 'uses' => 'ServicesController@populateEmployeeOptions']);
 Route::get('/service/routingOptions', ['as' => 'service.routingOptions', 'uses' => 'ServicesController@populateRoutingOptions']);
+Route::get('/service/resourceOptions', ['as' => 'service.resourceOptions', 'uses' => 'ServicesController@populateResourceOptions']);
 
 Route::get('/organization/edit', ['as' => 'organization.edit', 'uses' => 'OrganizationsController@edit']);
 Route::post('/organization/save', ['as' => 'organization.save', 'uses' => 'OrganizationsController@save']);

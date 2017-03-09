@@ -40,7 +40,6 @@ class Employee extends Model
 		return $this->hasMany(Transaction::class);
 	}
 
-	// defining M:N relationship
 	public function services()
 	{
 		return $this->belongsToMany(Service::class, 'employee_provides_service', 'employee_id', 'service_id');

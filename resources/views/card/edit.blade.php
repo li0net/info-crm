@@ -71,7 +71,7 @@
 									<div class="col-sm-2"></div>							
 									<div class="col-sm-8" style="padding:0">
 										<div class="col-sm-5">
-											{{ Form::select('storage_id[]',[], $card_item[0], ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => $card_item[0]]) }}
+											{{ Form::select('storage_id[]', [], $card_item[0], ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => $card_item[0]]) }}
 										</div>
 										<div class="col-sm-5">
 											{{ Form::select('product_id[]', $storages[$card_item[0]]->pluck('title', 'product_id')->all(), $card_item[1], ['class' => 'form-control', 'maxlength' => '110']) }}
