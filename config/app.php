@@ -170,6 +170,7 @@ return [
         App\Providers\LaravelJqgridServiceProviderCustom::class,
 
         'Collective\Html\HtmlServiceProvider',
+        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // Laravel IDE helper
 
         /*
          * View composer provider

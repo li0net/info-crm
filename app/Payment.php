@@ -3,8 +3,43 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Znck\Eloquent\Traits\BelongsToThrough;
 
+/**
+ * App\Payment
+ *
+ * @property int $payment_id
+ * @property string $date
+ * @property int $item_id
+ * @property int $account_id
+ * @property int $beneficiary_id
+ * @property int $author_id
+ * @property string $beneficiary_type
+ * @property float $sum
+ * @property string $description
+ * @property int $organization_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Account $account
+ * @property-read \App\Client $client
+ * @property-read \App\Employee $employee
+ * @property-read \App\Item $item
+ * @property-read \App\Organization $organization
+ * @property-read \App\Partner $partner
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment whereAccountId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment whereAuthorId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment whereBeneficiaryId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment whereBeneficiaryType($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment whereDate($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment whereDescription($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment whereItemId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment whereOrganizationId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment wherePaymentId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment whereSum($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Payment whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Payment extends Model
 {
 	protected $primaryKey = 'payment_id';
@@ -55,19 +90,8 @@ class Payment extends Model
 		return $this->belongsTo(User::class, 'author_id');
 	}
 
-	// public function itemtype() {
- //        return $this->belongsToThrough(Itemtype::class, Item::class);
- //    }
-
 	public function itemtype()
 	{
-		//$this->belongsTo(Item::class, 'item_id', 'item_id');
-		//dd($middle);
-		
 		return $this->item->belongsTo(Itemtype::class, 'itemtype_id', 'itemtype_id');
-		// dd($end);
-
-		// $end = $middle->belongsTo(Itemtype::class, 'itemtype_id', 'itemtype_id')->getResults();
-		// dd($end);
-	}	
+	}
 }
