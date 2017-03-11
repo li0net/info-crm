@@ -158,6 +158,10 @@ return [
     'user:permissions_clients_export_xls_label' => 'Выгружать список клиентов в Excel',
     'user:permissions_statistics_label'     => 'Статистика',
     'user:permissions_is_admin'             => 'Права администратора',
+    'user:permissions_storages_label'       => 'Склады',
+    'user:permissions_finances_label'       => 'Финансы',
+    'user:permissions_wage_schemes_view_label' => 'Схемы рассчета зарплаты - просмотр',
+    'user:permissions_wage_schemes_edit_label' => 'Схемы рассчета зарплаты - редактирование',
 
     'client:list_header'                    => 'Клиенты',
     'client:list_page_header'               => 'Клиенты',

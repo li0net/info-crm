@@ -102,6 +102,8 @@
                     <li><a href="/stub">{{ trans('adminlte_lang::message.settings') }}</a></li>
                 </ul>
             </li>
+
+            @if ($crmuser->hasAccessTo('finances', 'view', null))
             <li class="treeview">
                 <a href="#"><i class='fa fa-rub'></i> <span>{{ trans('adminlte_lang::message.finance') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
@@ -109,7 +111,9 @@
                     <li><a href="{{ url('/partner')}}">{{ trans('adminlte_lang::message.partners') }}</a></li>
                     <li><a href="{{ url('/item')}}">{{ trans('adminlte_lang::message.costs') }}</a></li>
                     <li><a href="/stub">{{ trans('adminlte_lang::message.services') }}</a></li>
-                    <li><a href="{{ url('/wage_scheme')}}">{{ trans('adminlte_lang::message.schemes') }}</a></li>
+                    @if ($crmuser->hasAccessTo('wage_schemes', 'view', null))
+                        <li><a href="{{ url('/wage_scheme')}}">{{ trans('adminlte_lang::message.schemes') }}</a></li>
+                    @endif
                     <li><a href="/stub">{{ trans('adminlte_lang::message.wage') }}</a></li>
                     <li><a href="{{ url('/payment')}}">{{ trans('adminlte_lang::message.payments') }}</a></li>
                     <li><a href="/stub">{{ trans('adminlte_lang::message.documents') }}</a></li>
@@ -122,6 +126,8 @@
                     <li><a href="/stub">{{ trans('adminlte_lang::message.settings') }}</a></li>
                 </ul>
             </li>
+            @endif
+
             <li class="treeview">
                 <a href="#"><i class='fa fa-archive'></i> <span>{{ trans('adminlte_lang::message.stock') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
