@@ -147,6 +147,8 @@ return [
 	'employees_all'			  	=> 'Все сотрудники',
 	'employee_edit'			  	=> 'Редактирование сотрудника',
 	'employee_create_new'	  	=> 'Создание нового сотрудника',
+	'employee_add'	  	        => 'Добавить сотрудника',
+	'resource_add'	  	        => 'Добавить ресурс',
 	'client_list'			  	=> 'Список клиентов',
 	'electronic_cards'		  	=> 'Электронные карты',
 	'loyality'				  	=> 'Программа лояльности',

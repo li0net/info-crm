@@ -143,6 +143,8 @@ return [
 	'employees'				  	=> 'Employees',
 	'employee_edit'			  	=> 'Edit employee',
 	'employee_create_new'	  	=> 'Create new employee',
+    'employee_add'	  	        => 'Add employee',
+    'resource_add'	  	        => 'Add resource',
 	'client_list'			  	=> 'Clients list',
 	'electronic_cards'		  	=> 'Electronic cards',
 	'loyality'				  	=> 'Loyalty program',

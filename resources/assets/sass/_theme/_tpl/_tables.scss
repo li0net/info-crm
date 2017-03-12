@@ -1,40 +1,129 @@
 @import "variables";
 body.skin-orange {
+  .ui-jqgrid{
+    border: none;
+    border-radius: 0;
+    .ui-jqgrid-bdiv table.table-bordered td{
+      border-left: none;
+      border-right: none;
+      border-bottom: none;
+      border-top: 1px solid #FFFFFF;
+    }
+    .ui-jqgrid-hbox,
+    .ui-jqgrid-hdiv{
+      padding: 0;
+    }
+    .ui-jqgrid-pager{
+      padding-right: 20px;
+      border: none;
+    }
+    .ui-pager-control{
+      table.ui-pg-table{
+        td{
+          border: none;border-left: none;
+          border-right: none;
+          border-bottom: none;
+          padding: 3px;
+          border-top: 1px solid #FFFFFF;
+        }
+        tr, td, th, div, span{
+          background-color: transparent;
+          font-size: $font-size-small;
+          line-height: normal;
+          &:hover{
+            background-color: transparent;
+          }
+          input.ui-pg-input{
+            padding: 3px 5px ;
+            line-height: normal;
+            margin-top: 0;
+            font-size: $font-size-small;
+            width: 35px;
+            text-align: center;
+          }
+        }
+
+        .glyphicon{
+          font-size: $font-size-small;
+          color: $brand-main;
+          &:hover{
+            color: $brand-secondary;
+          }
+        }
+      }
+    }
+  }
   table{
+    &.ui-jqgrid-btable,
+    &.ui-common-table,
     &.table{
+      background-color: $body-bg;
+      margin: 0;
       thead{
         tr{
           background-color: rgba(0,0,0,0.4);
           color: $brand-main-text;
           td,th{
+            background-color: transparent;
             border-bottom: 2px solid #FFF;
+            color: $brand-main-text;
             font-size: $font-size;
             text-transform: uppercase;
+            line-height: normal;
+            padding: 0;
+            &:hover{
+              background-color: transparent;
+            }
+            div,
+            span{
+              color: $brand-main-text;
+              font-size: $font-size;
+              &.ui-th-div{
+                height: auto;
+                margin: 0;
+                padding: 5px;
+              }
+              &.ui-icon-desc {
+                margin-top: 12px;
+              }
+              &.ui-icon-asc {
+                margin-top: -1px;
+              }
+            }
+          }
+          &:hover{
+            color: $brand-main-text;
+            background-color: rgba(0,0,0,0.4);
           }
         }
       }
-      tbody{
-        tr{
-          background-color: rgba(0,0,0,0.1);
+      tbody tr,
+      tr {
+        background-color: rgba(0,0,0,0.1);
+        color: $text-color;
+        td,th{
           color: $text-color;
-          td,th{
-            color: $text-color;
-            border-top: 1px solid #FFFFFF;
-            font-size: $font-size;
-          }
-          &:hover{
-            background-color: #F7F7F9;
-          }
+          border-top: 1px solid #FFFFFF;
+          font-size: $font-size;
+          border-left: none;
+          border-right: none;
+          border-bottom: none;
+        }
+        &:hover{
+          background-color: #F7F7F9;
         }
       }
       .table-action-link{
+        margin: 0 4px;
         color: $text-color;
         @include opacity(0.8);
-        margin: 0 5px;
         &:hover{
           @include opacity(1);
         }
       }
     }
+  }
+  .clients-grid-block{
+    //min-height: 650px;
   }
 }

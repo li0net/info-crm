@@ -147,6 +147,8 @@ return [
 	'employees_all'			  	=> 'Todos los empleados',
 	'employee_edit'			  	=> 'Editar a un empleado',
 	'employee_create_new'	  	=> 'Crear a nuevo empleado',
+    'employee_add'	  	        => 'Add employee',
+    'resource_add'	  	        => 'Add resource',
 	'client_list'			  	=> 'Lista de clientes',
 	'electronic_cards'		  	=> 'Tarjetas electrónicas',
 	'loyality'				  	=> 'Programa de fidelización',

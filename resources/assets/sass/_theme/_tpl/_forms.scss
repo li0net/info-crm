@@ -59,6 +59,9 @@ body.skin-orange {
           color: $brand-secondary;
         }
       }
+      &.btn-xs{
+        font-size: $font-size-small;
+      }
     }
     &.btn-primary{
       border-color: $brand-main;
@@ -85,11 +88,13 @@ body.skin-orange {
       }
     }
     &.btn-default{
-      padding: 7px 8px;
       border-color: $brand-main;
       background-color: $body-bg;
       color: $brand-main;
+      padding: 4px 11px;
+      margin-top: 5px;
       i{
+        font-size: $font-size-input;
         margin: 0;
       }
       &:hover{
@@ -111,6 +116,48 @@ body.skin-orange {
     }
   }
 
+
+  /** nav nav-pills */
+  .nav.nav-pills{
+    color: $brand-secondary-text;
+    li{
+      border-radius: 0;
+      &:first-of-type{
+        a{
+          @include border-left-radius(15px);
+        }
+      }
+      &:last-of-type{
+        a{
+          @include border-right-radius(15px);
+        }
+      }
+      &.active{
+        a{
+          background-color: $body-bg;
+          border: 1px solid $brand-secondary;
+          color: $brand-secondary;
+          i{
+            color: $brand-secondary;
+          }
+        }
+      }
+      a {
+        @include border-radius(0px);
+        @include transition-all (0.3s);
+        padding: 3px 5px;
+        font-size: $font-size-input;
+        margin-right: 1px;
+        border: 1px solid $brand-main;
+        color: $brand-secondary-text;
+        background-color: $brand-main;
+        text-decoration: none;
+        &:hover{
+          text-decoration: none;
+        }
+      }
+    }
+  }
   /** nav nav-tabs */
   .nav.nav-tabs{
     background-color: $body-bg;
@@ -202,6 +249,107 @@ body.skin-orange {
     }
 
   }
+
+  /** select 2 **/
+  .select2{
+    width: 100% !important;
+    color: $brand-main;
+    padding: 0;
+    .select2-selection{
+      border: 1px solid $brand-main;
+      @include border-radius(15px);
+      font-size: $font-size-input;
+      padding: 0;
+      height: auto;
+      color: $brand-main;
+      .select2-selection__rendered{
+        padding: 2px 15px;
+        margin: 0;
+        color: $brand-main;
+      }
+    }
+    .select2-selection__arrow{
+      top: 3px;
+      right: 10px;
+      b{
+        border-color: $brand-main transparent transparent transparent;
+      }
+    }
+  }
+  .select2-container--open .select2-dropdown{
+    border: none;
+  }
+  .select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: $brand-main-hover;
+  }
+  .select2-selection.select2-selection--multiple{
+    height:32px;
+    .select2-selection__clear{
+      margin-top: 1px;
+      margin-right: -2px;
+      color: $brand-main;
+    }
+  }
+  .select2-container--default .select2-selection--multiple {
+    .select2-selection__rendered{
+      .select2-selection__choice {
+        background-color: $brand-main;
+        color: $brand-main-text;
+        border: none;
+        border-radius: 15px;
+        cursor: default;
+        float: left;
+        margin-right: 5px;
+        margin-top: 0;
+        padding: 0 10px;
+        .select2-selection__choice__remove{
+          color: $brand-main-text;
+        }
+      }
+      .select2-search__field{
+        margin: 0;
+      }
+    }
+  }
+  .select2-container.select2-container--open{
+    .select2-selection__clear{
+      color: $brand-main-text;
+    }
+    .select2-selection{
+      background-color: $brand-main;
+      .select2-selection__rendered{
+        @include border-radius(15px);
+        border: 1px solid $brand-main-text;
+        color: $brand-main-text;
+      }
+    }
+    .select2-selection__arrow{
+      b{
+        border-color: transparent transparent $brand-main-text transparent;
+      }
+    }
+    ul.select2-results__options{
+      background-color: $brand-main;
+      @include border-bottom-radius(15px);
+      border: none;
+      li{
+        padding-left: 15px;
+        color: $brand-main-text;
+        &:focus,
+        &:hover{
+          background-color: $brand-main-hover;
+        }
+        &.select2-results__option--highlighted{
+          background-color: $brand-main-hover;
+          &:focus,
+          &:hover{
+            background-color: $brand-main-hover;
+          }
+        }
+      }
+    }
+  }
+
   /** bootstrap select **/
   .bootstrap-select{
     width: 100% !important;
@@ -233,7 +381,6 @@ body.skin-orange {
       font-size: $font-size-input;
       padding: 3px 15px;
       //line-height: 19px;
-
       height: auto;
       color: $brand-main;
       .filter-option{
@@ -331,4 +478,10 @@ body.skin-orange {
    color: $text-color;
   @include opacity(0.8);
   font-style: italic;
+}
+.employee-content,
+.resource-content{
+  .select2 {
+    margin-top: 7px;
+  }
 }

@@ -39,7 +39,7 @@
                         <th>{{ trans('adminlte_lang::message.employee_email') }}</th>
                         <th>{{ trans('adminlte_lang::message.employee_phone') }}</th>
                         <th>{{ trans('adminlte_lang::message.employee_position') }}</th>
-                        <th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
+                        <th class="text-right">{{ trans('adminlte_lang::message.actions') }}</th>
                     </tr>
 				</thead>
 				<tbody>

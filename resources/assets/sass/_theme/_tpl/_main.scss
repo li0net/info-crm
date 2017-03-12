@@ -62,7 +62,7 @@ body.skin-orange {
 
   /** boxes **/
   .box{
-    border: 1px solid $brand-main;
+    border: 1px solid #dedede;
     @include border-radius(5px);
     box-shadow: none;
     color: $text-color;
