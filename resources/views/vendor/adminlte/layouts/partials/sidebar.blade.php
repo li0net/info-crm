@@ -5,8 +5,8 @@
     <section class="sidebar">
         <!-- Sidebar toggle button-->
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            <i class="fa fa-times" aria-hidden="true"></i>
         </a>
 
         <!-- Sidebar user panel (optional) -->
@@ -17,12 +17,13 @@
             </div>
             <div class="pull-left info">
                 <p>
-                    @if ($user->organization->name)
-                    {{$user->organization->name}}
-                    @else
-                    @lang('main.organization:default_name')
-                    @endif
-                    <br>
+                    <a class="org-link" href ='/home'>
+                        @if ($user->organization->name)
+                            {{$user->organization->name}}
+                        @else
+                            @lang('main.organization:default_name')
+                        @endif
+                    </a>
                     <small>{{ Auth::user()->name }}</small>
                 </p>
             </div>

@@ -352,6 +352,7 @@ return [
 	'not_cancelled'				=> 'No cancelados',
 	'cancelled'					=> 'Cancelados',
 	'payments_per_page'			=> 'pagos por página',
+    'rows_per_page'			    => 'Filas por página',
 	'date'						=> 'Fecha',
 	'beneficiary_name'			=> 'Denominación de contratante',
 	'purpose'					=> 'Orden de pago',

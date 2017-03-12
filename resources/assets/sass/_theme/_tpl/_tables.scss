@@ -1,0 +1,40 @@
+@import "variables";
+body.skin-orange {
+  table{
+    &.table{
+      thead{
+        tr{
+          background-color: rgba(0,0,0,0.4);
+          color: $brand-main-text;
+          td,th{
+            border-bottom: 2px solid #FFF;
+            font-size: $font-size;
+            text-transform: uppercase;
+          }
+        }
+      }
+      tbody{
+        tr{
+          background-color: rgba(0,0,0,0.1);
+          color: $text-color;
+          td,th{
+            color: $text-color;
+            border-top: 1px solid #FFFFFF;
+            font-size: $font-size;
+          }
+          &:hover{
+            background-color: #F7F7F9;
+          }
+        }
+      }
+      .table-action-link{
+        color: $text-color;
+        @include opacity(0.8);
+        margin: 0 5px;
+        &:hover{
+          @include opacity(1);
+        }
+      }
+    }
+  }
+}

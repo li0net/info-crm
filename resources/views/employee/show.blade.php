@@ -5,65 +5,72 @@
 @endsection
 
 @section('main-content')
-	<div class="row">
-		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-		</div>
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.employee') }}</h1>
+    <!--<ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Forms</a></li>
+        <li class="active">Advanced Elements</li>
+    </ol>-->
+    <br>
+    <a class='btn btn-link link-blue no-padding' href="/employee"><i class="fa fa-angle-double-left" aria-hidden="true"></i>{{trans('adminlte_lang::message.employees')}}</a>
+</section>
 
-		@endif
-	</div>
-	<div class="row">
-		<div class="col-sm-4 col-sm-offset-4">
-			<div class="well">
-				{{ Form::label('employee_id', trans('adminlte_lang::message.employee')) }}
-				<p class="lead">#{{ $employee->employee_id }}</p>
+<div class="row">
+    @if (Session::has('success'))
+        <div class="alert alert-success" role="alert">
+            <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
+        </div>
+    @endif
+</div>
 
-				{{ Form::label('name', trans('adminlte_lang::message.employee_name')) }}
-				<p class="lead">{{ $employee->name }}</p>
-			
-				<dl class="dl-horizontal">
-					<label>Email:</label>
-					<p class="lead">{{ $employee->email }}</p>
-				</dl>
+<div class="row">
+    <div class="col-sm-2 text-center">
+        <div class="logo-block">
+            <div v-if="!image">
+                @if( $employee->avatar_image_name != null)
+                <img src="/images/{{ $employee->avatar_image_name }}" />
+                @else
+                <img src="/images/no-master.png" alt="">
+                @endif
+            </div>
+            <div v-else>
+                <img :src="image" />
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-10">
+        <dl class="dl-horizontal text-block">
+            <dt>{{trans('adminlte_lang::message.employee')}}</dt>
+            <dd>#{{ $employee->employee_id }}</dd>
 
-				<dl class="dl-horizontal">
-					<label>{{ trans('adminlte_lang::message.employee_phone') }}</label>
-					<p class="lead">{{ $employee->phone }}</p>
-				</dl>
+            <dt>{{trans('adminlte_lang::message.employee_name')}}</dt>
+            <dd>{{ $employee->name }}</dd>
 
-				<dl class="dl-horizontal">
-					<label>{{ trans('adminlte_lang::message.employee_position') }}</label>
-					<p class="lead">{{ $employee->position->title }}</p>
-				</dl>
-				
-				<hr>
+            <dt>Email:</dt>
+            <dd>{{ $employee->email }}</dd>
 
-				<div class="row">
-					@if ($user->hasAccessTo('employee', 'edit', 0))
-						<div class="col-sm-6">
-							{!! Html::linkRoute('employee.edit', trans('adminlte_lang::message.edit'), [$employee->employee_id], ['class'=>'btn btn-primary btn-block']) !!}
-						</div>
-					@endif
-					@if ($user->hasAccessTo('employee', 'delete', 0))
-						<div class="col-sm-6">
-							{!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "method" => 'DELETE']) !!}
+            <dt>{{ trans('adminlte_lang::message.employee_phone') }}</dt>
+            <dd>{{ $employee->phone }}</dd>
 
-							{{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger btn-block']) }}
+            <dt>{{ trans('adminlte_lang::message.employee_position') }}</dt>
+            <dd>{{ $employee->position->title }}</dd>
+        </dl>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2 text-left">
+        @if ($user->hasAccessTo('employee', 'delete', 0))
+        {!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "method" => 'DELETE']) !!}
+        {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-info btn-block']) }}
+        {!! Form::close() !!}
+        @endif
+    </div>
+    <div class="col-md-2 text-left">
+        @if ($user->hasAccessTo('employee', 'edit', 0))
+        {!! Html::linkRoute('employee.edit', trans('adminlte_lang::message.edit'), [$employee->employee_id], ['class'=>'btn btn-primary btn-block']) !!}
+        @endif
+    </div>
+</div>
 
-							{!! Form::close() !!}
-						</div>
-					@endif
-				</div>
-
-				<div class="row">
-					<div class="col-sm-12">
-							{{ Html::linkRoute('employee.index', trans('adminlte_lang::message.employees').' »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</div>
 @endsection

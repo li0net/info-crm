@@ -1,0 +1,216 @@
+@import "variables";
+body.skin-orange {
+  /** sidebar **/
+  .main-sidebar {
+    background-color: $brand-secondary-dark;
+    color:$brand-secondary-text;
+    padding-top: 60px;
+    a,p,div,span,small{
+      color:$brand-secondary-text;
+    }
+    .sidebar-toggle {
+      text-decoration: none;
+      float: none;
+      background-color: transparent;
+      padding: 0;
+      position: absolute;
+      color:$brand-secondary-text;
+      font-size: 21px;
+      padding: 0;
+      z-index: 10000;
+      top: 2px;
+      i{
+        font-size: 21px;
+      }
+    }
+    .user-panel{
+      background-color: $brand-secondary;
+      margin-bottom: 2px;
+      & > .image > img {
+        border: 2px solid $body-bg;
+      }
+      a{
+        text-decoration: underline;
+        font-size: $font-size-small;
+        &:hover{
+          color: $brand-main;
+          text-decoration: underline;
+        }
+        &.org-link{
+          display: block;
+          padding: 10px 0 7px 0;
+          font-size: $font-size;
+        }
+      }
+      small, .small {
+        font-size: $font-size-small;
+      }
+      .links{
+        margin-top: 15px;
+      }
+    }
+    .sidebar-menu{
+      i{
+        font-size: 16px;
+      }
+      >li {
+        >a{
+          font-size: $font-size-main;
+          font-weight: bold;
+          color: $body-bg;
+          @include transition-all (0.3s);
+          border-left: 4px solid transparent;
+          text-decoration: none;
+          &:hover{
+            border-left: 4px solid $body-bg;
+            background-color:$brand-secondary;
+          }
+        }
+        &.active{
+          &>a{
+            background-color:$brand-secondary;
+            border-left: 4px solid $body-bg;
+          }
+        }
+        &.header {
+          padding: 0;
+        }
+        &.treeview ul li{
+          a{
+            border-right: 4px solid transparent;
+            border-left: 0;
+            text-decoration: none;
+            font-weight: bold;
+            color: $brand-main-text;
+            @include transition-all (0.3s);
+            &:hover{
+              background-color: transparent;
+              border-right: 4px solid $body-bg;
+              border-left: 0;
+              text-decoration: none;
+            }
+          }
+        }
+      }
+    }
+    /** datapicker **/
+    .sidebar-form{
+      margin-bottom: 2px;
+    }
+    .datepicker{
+      background-color: $brand-secondary;
+      table {
+        width: 100%;
+        tr th{
+          color: $brand-main-text;
+          font-size: $font-size-small;
+        }
+        tr td{
+          color: $brand-main;
+          font-size: $font-size-small;
+        }
+        tr td.old,
+        tr td.new {
+          color: #6D6D6D;
+          font-size: $font-size-small;
+        }
+        tr th:hover,
+        tr td.day:hover,
+        tr td.day.focused,
+        tr td:hover{
+          color: $brand-main;
+          background: rgba(255,255,255,0.5);
+          border-color: $brand-main;
+          text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+        }
+      }
+    }
+    .datepicker table tr td.active:hover,
+    .datepicker table tr td.active:hover:hover,
+    .datepicker table tr td.active.disabled:hover,
+    .datepicker table tr td.active.disabled:hover:hover,
+    .datepicker table tr td.active:focus,
+    .datepicker table tr td.active:hover:focus,
+    .datepicker table tr td.active.disabled:focus,
+    .datepicker table tr td.active.disabled:hover:focus,
+    .datepicker table tr td.active:active,
+    .datepicker table tr td.active:hover:active,
+    .datepicker table tr td.active.disabled:active,
+    .datepicker table tr td.active.disabled:hover:active,
+    .datepicker table tr td.active.active,
+    .datepicker table tr td.active:hover.active,
+    .datepicker table tr td.active.disabled.active,
+    .datepicker table tr td.active.disabled:hover.active,
+    .open .dropdown-toggle.datepicker table tr td.active,
+    .open .dropdown-toggle.datepicker table tr td.active:hover,
+    .open .dropdown-toggle.datepicker table tr td.active.disabled,
+    .open .dropdown-toggle.datepicker table tr td.active.disabled:hover {
+      color: $brand-main-text;
+      background: rgba(109,81,180,0.9);
+      border-color: $brand-main;
+      font-weight: bold;
+    }
+  }
+}
+
+/** collapsed sidebar **/
+body.skin-orange{
+  &.sidebar-mini{
+    .main-sidebar {
+      .sidebar{
+        position: relative;
+      }
+      .sidebar .sidebar-toggle{
+        right: 6px;
+        color: $body-bg;
+        .fa-times{
+          display: block;
+        }
+        .fa-chevron-right{
+          display: none;
+        }
+      }
+    }
+    &.sidebar-collapse{
+      .main-sidebar{
+        .sidebar {
+          .sidebar-toggle {
+            right: -32px;
+            color: $body-bg;
+            padding: 3px;
+            padding-left: 9px;
+            width: 30px;
+            background-color: $brand-secondary;
+            .fa-times{
+              display: none;
+            }
+            .fa-chevron-right{
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+  &.sidebar-mini.sidebar-collapse .main-sidebar .user-panel > .info,
+  &.sidebar-mini.sidebar-collapse .main-sidebar .user-panel > .links,
+  &.sidebar-mini.sidebar-collapse .sidebar-form,
+  &.sidebar-mini.sidebar-collapse .sidebar-menu > li > a > span,
+  &.sidebar-mini.sidebar-collapse .sidebar-menu > li > .treeview-menu,
+  &.sidebar-mini.sidebar-collapse .sidebar-menu > li > a > .pull-right,
+  &.sidebar-mini.sidebar-collapse .sidebar-menu li.header {
+    display: none !important;
+    -webkit-transform: translateZ(0);
+  }
+  &.sidebar-mini.sidebar-collapse .sidebar-menu > li {
+    a{
+      padding: 16px 5px 16px 15px;
+    }
+  }
+  &.sidebar-mini.sidebar-collapse .main-header .navbar {
+    margin-left: 0;
+  }
+  &.sidebar-mini.sidebar-collapse .main-header .logo {
+    width: auto;
+  }
+}

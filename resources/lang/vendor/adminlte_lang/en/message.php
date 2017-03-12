@@ -347,6 +347,7 @@ return [
 	'not_cancelled'				=> 'Not cancelled',
 	'cancelled'					=> 'Cancelled',
 	'payments_per_page'			=> 'payments per page',
+    'rows_per_page'			    => 'Rows per page',
 	'date'						=> 'Date',
 	'beneficiary_name'			=> 'Beneficiary name',
 	'purpose'					=> 'Purpose',
