@@ -345,6 +345,43 @@
                                         <p><input type="checkbox" name="clients_export_xls_view" value="1" {{$selected}}>@lang('main.user:permissions_clients_export_xls_label')</p>
                                     </div>
 
+                                    <!-- Права доступа к финансам -->
+                                    <div>
+                                        <?php
+                                        $selected = '';
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
+                                                if ($permission->object == 'finances' AND $permission->access_level == '1') {
+                                                    $selected = "checked='checked'";
+                                                }
+                                            }
+                                        }?>
+                                        <p><input type="checkbox" name="finances_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_finances_label')</strong></p>
+
+                                        <?php
+                                        $selected = '';
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
+                                                if ($permission->object == 'wage_schemes' AND $permission->action == 'view' AND $permission->access_level == '1') {
+                                                    $selected = "checked='checked'";
+                                                }
+                                            }
+                                        }?>
+                                        <p><input type="checkbox" name="wage_schemes_view" value="1" {{$selected}}>@lang('main.user:permissions_wage_schemes_view_label')</p>
+
+                                        <?php
+                                        $selected = '';
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
+                                                if ($permission->object == 'wage_schemes' AND $permission->action == 'edit' AND $permission->access_level == '1') {
+                                                    $selected = "checked='checked'";
+                                                }
+                                            }
+                                        }?>
+                                        <p><input type="checkbox" name="wage_schemes_edit" value="1" {{$selected}}>@lang('main.user:permissions_wage_schemes_edit_label')</p>
+                                    </div>
+
+                                    <!-- Права доступа к складам -->
                                     <div>
                                         <?php
                                         $selected = '';
@@ -356,6 +393,20 @@
                                             }
                                         }?>
                                         <p><input type="checkbox" name="statistics_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_statistics_label')</strong></p>
+                                    </div>
+
+                                    <!-- Права доступа к складам -->
+                                    <div>
+                                        <?php
+                                        $selected = '';
+                                        if (isset($crmuser)) {
+                                            foreach($crmuser->accessPermissions()->get() AS $permission) {
+                                                if ($permission->object == 'storages' AND $permission->access_level == '1') {
+                                                    $selected = "checked='checked'";
+                                                }
+                                            }
+                                        }?>
+                                        <p><input type="checkbox" name="storages_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_storages_label')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">

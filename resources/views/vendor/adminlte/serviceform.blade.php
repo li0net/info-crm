@@ -30,12 +30,14 @@
 					<a data-toggle="tab" href="#menu3">{{ trans('adminlte_lang::message.resources') }}</a>
 				</li>
 			</ul>
-
-			<div class="tab-content">
-				<div id="menu1" class="tab-pane fade in active">
-					{!! Form::open(['url' => '/services/save', 'id' => 'service_form__basic_settings']) !!}
-						{{ Form::hidden('employee-options', null, ['id' => 'employee-options']) }}
-						{{ Form::hidden('routing-options', null, ['id' => 'routing-options']) }}
+					
+			{!! Form::open(['url' => '/services/save', 'id' => 'service_form']) !!}
+				{{ Form::hidden('employee-options', null, ['id' => 'employee-options']) }}
+				{{ Form::hidden('routing-options', null, ['id' => 'routing-options']) }}
+				{{ Form::hidden('resource-options', null, ['id' => 'resource-options']) }}
+				{{-- {{ Form::hidden('id', 'service_form__basic_settings') }}		 --}}
+				<div class="tab-content">
+					<div id="menu1" class="tab-pane fade in active">
 						@if (isset($service))
 							<input type="hidden" name="service_id" id="sc_service_id" value="{{$service->service_id}}">
 						@endif
@@ -150,11 +152,14 @@
 								<button type="submit" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
 							</div>
 						</div> --}}
-					{!! Form::close() !!}
-				</div>
-				<div id="menu2" class="tab-pane fade">
-					{{-- <h4>{{ trans('adminlte_lang::message.section_under_construction') }}</h4> --}}
-					{!! Form::open(['url' => '#', 'id' => 'service_form__employees']) !!}
+					</div>
+					<div id="menu2" class="tab-pane fade">
+						{{-- <h4>{{ trans('adminlte_lang::message.section_under_construction') }}</h4> --}}
+						{{-- {!! Form::open(['url' => 'services/save', 'id' => 'service_form__employees']) !!}
+						{{ Form::hidden('id', 'service_form__employees') }} --}}
+						@if (isset($service))
+							{{ Form::hidden('service_id', $service->service_id) }}
+						@endif
 						<div class="row m-t">
 							{{ Form::label('employee', trans('adminlte_lang::message.employee'), ['class' => 'col-sm-3 text-left small']) }}
 							{{ Form::label('duration', trans('adminlte_lang::message.duration'), ['class' => 'col-sm-4 text-left small']) }}
@@ -163,71 +168,127 @@
 						<div class="row">
 							<div class="col-sm-12"><hr></div>
 						</div>
-						<div class="employee-content m-b">
-							<div class="row">
-								<div class="col-sm-3">
-									{{ Form::select(
-										'service-employee', 
-										[], //$service_employees, 
-										null, //$service_employee, 
-										['class' => 'form-control', 'required' => '']) 
-									}}
-								</div>
-								<div class="col-sm-2">
-									{{ Form::select(
-										'service-duration-hour', 
-										$service_duration_hours, 
-										null, //$service_duration_hour, 
-										['class' => 'form-control', 'required' => '']) 
-									}}
-								</div>
-								<div class="col-sm-2">
-									{{ Form::select(
-										'service-duration-minute', 
-										$service_duration_minutes, 
-										null, //$service_duration_minute, 
-										['class' => 'form-control', 'required' => '']) 
-									}}
-								</div>
-								<div class="col-sm-3">
-									{{ Form::select(
-										'service-routing', 
-										[], //$service_routings, 
-										null, //$service_routing, 
-										['class' => 'form-control', 'required' => '']) 
-									}}
-								</div>
-								<div class="col-sm-2">
-									<button type="button" id="delete-employee" class="btn btn-sm btn-white center-block">
-										<i class="fa fa-trash-o"></i>
-									</button>
-								</div>
+							<div class="employee-content m-b">
+								@if (isset($service))
+									@foreach($service_attached_employees as $service_attached_employee)
+										<div class="row">
+											<div class="col-sm-3">
+												{{ Form::select(
+													'service-employee[]', 
+													$service_employees, 
+													$service_attached_employee->pivot->employee_id,
+													[
+														'class' => 'form-control', 
+														'required' => '',
+														'data-initial-value' => $service_attached_employee->pivot->employee_id
+													]) 
+												}}
+											</div>
+											<div class="col-sm-2">
+												{{ Form::select(
+													'service-duration-hour[]', 
+													$service_duration_hours, 
+													date_parse($service_attached_employee->pivot->duration)['hour'],
+													['class' => 'form-control', 'required' => '']) 
+												}}
+											</div>
+											<div class="col-sm-2">
+												{{ Form::select(
+													'service-duration-minute[]', 
+													$service_duration_minutes, 
+													date_parse($service_attached_employee->pivot->duration)['minute'], 
+													['class' => 'form-control', 'required' => '']) 
+												}}
+											</div>
+											<div class="col-sm-3">
+												{{ Form::select(
+													'service-routing[]', 
+													$service_routings, 
+													$service_attached_employee->pivot->routing_id, 
+													[
+														'class' => 'form-control', 
+														'required' => '',
+														'data-initial-value' => $service_attached_employee->pivot->routing_id
+													]) 
+												}}
+											</div>
+											<div class="col-sm-2">
+												<button type="button" id="delete-employee" class="btn btn-sm btn-white center-block">
+													<i class="fa fa-trash-o"></i>
+												</button>
+											</div>
+										</div>
+									@endforeach
+								@endif
 							</div>
-						</div>
 						<input type="button" id="add-employee" class="btn btn-sm btn-success" value="Добавить сотрудника">
-					{!! Form::close() !!}
-				</div>
-				<div id="menu3" class="tab-pane fade">
-					<h4>{{ trans('adminlte_lang::message.section_under_construction') }}</h4>
-					<hr>
-					{!! Form::open(['url' => '#', 'id' => 'service_form__resources']) !!}
-				</div>
-
-				<hr>
-						
-				<div class="row">
-					<div class="col-sm-6 col-sm-offset-3">
+					</div>
+					<div id="menu3" class="tab-pane fade">
+						@if (isset($service))
+							{{ Form::hidden('service_id', $service->service_id) }}
+						@endif
+						<div class="row m-t">
+							{{ Form::label('resource', trans('adminlte_lang::message.resource_name'), ['class' => 'col-sm-6 text-left small']) }}
+							{{ Form::label('amount', trans('adminlte_lang::message.amount'), ['class' => 'col-sm-4 text-left small']) }}
+						</div>
 						<div class="row">
-							<div class="col-sm-6">
-								{!! Html::linkRoute('employee.update', trans('adminlte_lang::message.cancel'), null, ['class'=>'btn btn-danger btn-block']) !!}
+							<div class="col-sm-12"><hr></div>
+						</div>
+							<div class="resource-content m-b">
+								@if (isset($service))
+									@foreach($resources_attached_service as $resource_attached_service)
+										<div class="row">
+											<div class="col-sm-6">
+												{{ Form::select(
+													'service-resource[]', 
+													[], 
+													$resource_attached_service->pivot->resource_id,
+													[
+														'class' => 'form-control', 
+														'required' => '',
+														'data-initial-value' => $resource_attached_service->pivot->resource_id
+													]) 
+												}}
+											</div>
+											<div class="col-sm-4">
+												{{ Form::text(
+													'amount[]', 
+													$resource_attached_service->pivot->amount,
+													[
+														'class' => 'form-control', 
+														'required' => ''
+													]) 
+												}}
+											</div>
+											<div class="col-sm-2">
+												<button type="button" id="delete-resource" class="btn btn-sm btn-white center-block">
+													<i class="fa fa-trash-o"></i>
+												</button>
+											</div>
+										</div>
+									@endforeach
+								@endif
 							</div>
-							<div class="col-sm-6">
-								{{ Form::button(trans('adminlte_lang::message.save'), ['class'=>'btn btn-success btn-block', 'id' => 'form_submit']) }}
+						<input type="button" id="add-resource" class="btn btn-sm btn-success" value="Добавить ресурс">
+					</div>
+
+					<hr>
+						
+					<div class="row">
+						<div class="col-sm-6 col-sm-offset-3">
+							<div class="row">
+								<div class="col-sm-6">
+									{!! Html::linkRoute('employee.update', trans('adminlte_lang::message.cancel'), null, ['class'=>'btn btn-danger btn-block']) !!}
+								</div>
+								<div class="col-sm-6">
+									{{ Form::button(trans('adminlte_lang::message.save'), ['class'=>'btn btn-success btn-block', 'id' => 'form_submit']) }}
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			{!! Form::close() !!}
+			{{-- </div> --}}
 		</div>
 	</div>
 </div>
@@ -237,12 +298,12 @@
 	<script>
 		$(document).ready(function(){
 			$('#add-employee').on('click', function(e){
-				$('.employee-content').prepend('<div class="row"><div class="col-sm-3"><select required="required" name="service-employee" class="form-control"></select></div> <div class="col-sm-2"><select required="required" name="service-duration-hour" class="form-control"><option value="0">0 ч</option><option value="1">1 ч</option><option value="2">2 ч</option><option value="3">3 ч</option><option value="4">4 ч</option><option value="5">5 ч</option><option value="6">6 ч</option><option value="7">7 ч</option><option value="8">8 ч</option><option value="9">9 ч</option></select></div> <div class="col-sm-2"><select required="required" name="service-duration-minute" class="form-control"><option value="00">00 мин</option><option value="15">15 мин</option><option value="30">30 мин</option><option value="45">45 мин</option></select></div> <div class="col-sm-3"><select required="required" name="service-routing" class="form-control"></select></div> <div class="col-sm-2"><button type="button" id="delete-employee" class="btn btn-sm btn-white center-block"><i class="fa fa-trash-o"></i></button></div></div>');
+				$('.employee-content').prepend('<div class="row"><div class="col-sm-3"><select required="required" name="service-employee[]" class="form-control"></select></div> <div class="col-sm-2"><select required="required" name="service-duration-hour[]" class="form-control"><option value="0">0 ч</option><option value="1">1 ч</option><option value="2">2 ч</option><option value="3">3 ч</option><option value="4">4 ч</option><option value="5">5 ч</option><option value="6">6 ч</option><option value="7">7 ч</option><option value="8">8 ч</option><option value="9">9 ч</option></select></div> <div class="col-sm-2"><select required="required" name="service-duration-minute[]" class="form-control"><option value="00">00 мин</option><option value="15">15 мин</option><option value="30">30 мин</option><option value="45">45 мин</option></select></div> <div class="col-sm-3"><select required="required" name="service-routing[]" class="form-control"></select></div> <div class="col-sm-2"><button type="button" id="delete-employee" class="btn btn-sm btn-white center-block"><i class="fa fa-trash-o"></i></button></div></div>');
 
-					sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-employee"]').first();
+					sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-employee[]"]').first();
 					sel.html($('#employee-options').val());
 
-					sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-routing"]').first();
+					sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-routing[]"]').first();
 					sel.html($('#routing-options').val());
 			});
 
@@ -250,20 +311,33 @@
 				$(this).parent().parent().remove();
 			});
 
+			$('#add-resource').on('click', function(e){
+				$('.resource-content').prepend('<div class="row"><div class="col-sm-6"><select required="required" name="service-resource[]" class="form-control"></select></div> <div class="col-sm-4"><input type="text" name="amount[]" class="form-control" value="0"></div> <div class="col-sm-2"><button type="button" id="delete-resource" class="btn btn-sm btn-white center-block"><i class="fa fa-trash-o"></i></button></div></div>');
+
+					sel = $('.resource-content').children('.row').first().children('.col-sm-6').children('select[name="service-resource[]"]').first();
+					sel.html($('#resource-options').val());
+			});
+
+			$('.resource-content').on('click', '#delete-resource', function(e){
+				$(this).parent().parent().remove();
+			});
+
 			$('#form_submit').on('click', function() {
-				var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
+				$('#service_form').submit();
 
-				if(activeTab == '#menu1') {
-					$('#service_form__basic_settings').submit();
-				}
+				// var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
 
-				if(activeTab == '#menu2') {
-					$('#service_form__employees').submit();
-				}
+				// if(activeTab == '#menu1') {
+				// 	$('#service_form__basic_settings').submit();
+				// }
+
+				// if(activeTab == '#menu2') {
+				// 	$('#service_form__employees').submit();
+				// }
 				
-				if(activeTab == '#menu3') {
-					$('#service_form__resources').submit();
-				}
+				// if(activeTab == '#menu3') {
+				// 	$('#service_form__resources').submit();
+				// }
 			});
 
 			$.ajax({
@@ -272,27 +346,25 @@
 				url: '/service/employeeOptions',
 				data: {},
 				success: function(data) {
-					//$('select[name="service-employee"]').html('');
-					//$('select[name="service-employee"]').html(data.options);
-					$('select[name="service-employee"]').html('');
-					$('select[name="service-employee"]').html(data.options);
+					$('select[name="service-employee[]"]').html('');
+					$('select[name="service-employee[]"]').html(data.options);
 
 					$('#employee-options').val(data.options);
 					// $('select.form-control[name="products_cats_detailed[]"]').find('option').remove();
 					// $('select.form-control[name="products_cats_detailed[]"]').append(options);
 
-					// $('select.form-control[name="products_cats_detailed[]"]').each(function() {
-					// 	var initialValue = $(this).attr('data-initial-value');
+					$('select.form-control[name="service-employee[]"]').each(function() {
+						var initialValue = $(this).attr('data-initial-value');
 						
-					// 	if ( 0 != initialValue ) {
-					// 		$(this).val(initialValue);
-					// 	} else {
-					// 		$(this).val($(this).find('option').first().val());
-					// 	}
-					// });
+						if ( 0 != initialValue ) {
+							$(this).val(initialValue);
+						} else {
+							$(this).val($(this).find('option').first().val());
+						}
+					});
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log('Error while processing products data range!');
+					console.log('Error while processing employee data range!');
 				}
 			});
 
@@ -302,25 +374,49 @@
 				url: '/service/routingOptions',
 				data: {},
 				success: function(data) {
-					$('select[name="service-routing"]').html('');
-					$('select[name="service-routing"]').html(data.options);
+					$('select[name="service-routing[]"]').html('');
+					$('select[name="service-routing[]"]').html(data.options);
 
 					$('#routing-options').val(data.options);
-					// $('select.form-control[name="products_cats_detailed[]"]').find('option').remove();
-					// $('select.form-control[name="products_cats_detailed[]"]').append(options);
 
-					// $('select.form-control[name="products_cats_detailed[]"]').each(function() {
-					// 	var initialValue = $(this).attr('data-initial-value');
+					$('select.form-control[name="service-routing[]"]').each(function() {
+						var initialValue = $(this).attr('data-initial-value');
 						
-					// 	if ( 0 != initialValue ) {
-					// 		$(this).val(initialValue);
-					// 	} else {
-					// 		$(this).val($(this).find('option').first().val());
-					// 	}
-					// });
+						if ( 0 != initialValue ) {
+							$(this).val(initialValue);
+						} else {
+							$(this).val($(this).find('option').first().val());
+						}
+					});
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log('Error while processing products data range!');
+					console.log('Error while processing routing data range!');
+				}
+			});
+
+			$.ajax({
+				type: "GET",
+				dataType: 'json',
+				url: '/service/resourceOptions',
+				data: {},
+				success: function(data) {
+					$('select[name="service-resource[]"]').html('');
+					$('select[name="service-resource[]"]').html(data.options);
+
+					$('#resource-options').val(data.options);
+
+					$('select.form-control[name="service-resource[]"]').each(function() {
+						var initialValue = $(this).attr('data-initial-value');
+						
+						if ( 0 != initialValue ) {
+							$(this).val(initialValue);
+						} else {
+							$(this).val($(this).find('option').first().val());
+						}
+					});
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log('Error while processing resource data range!');
 				}
 			});
 		});

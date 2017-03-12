@@ -472,6 +472,11 @@ return [
 	'new_resource'				=> 'Новый ресурс',
 	'resource_name'				=> 'Наименование ресурса',
 	'resource_create_new'		=> 'Создать новый ресурс',
+	'resource_unit'				=> 'Единица измерения',
+	'resource_amount'			=> 'Максимальный объем ресурса',
 	'duration'					=> 'Длительность',
-	'service_categories'		=> 'Категории услуг'
+	'service_categories'		=> 'Категории услуг',
+	'permission_denied' 		=> 'У вас нет разрешения для доступа к этой странице!',
+	'permission_denied_explanation' => 'Если вы считаете это ошибкой, подалуйства обратитесь к администратору для выдачи соответсвующего разрешения',
+	'permission_denied_goback'	=> 'Вернуться на предыдущую страницу'
 ];

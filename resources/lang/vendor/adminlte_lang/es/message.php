@@ -472,5 +472,8 @@ return [
 	'new_resource'				=> 'Nuevo recurso',
 	'resource_name'				=> 'Nombre del recurso',
 	'resource_create_new'		=> 'Crear nuevo recurso',
-	'duration'					=> 'Duración'
+	'resource_unit'				=> 'Unidad de medida',
+	'resource_amount'			=> 'La cantidad máxima de un recurso',
+	'duration'					=> 'Duración',
+	'service_categories'		=> 'Categorías de servicios'
 ];

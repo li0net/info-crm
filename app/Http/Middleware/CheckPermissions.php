@@ -133,15 +133,104 @@ class CheckPermissions
                 'objectName'    => 'settings_manage_users',
                 'action'        => 'edit',
                 'objectId'      => 0,
-                'accessLevel'  => 1
+                'accessLevel'   => 1
             ],
 
             'ClientsController'     => [        // Клиенты (в целом, включая просмотр)
                 'objectName'    => 'clients',
                 'action'        => 'view',
                 'objectId'      => NULL,
+                'accessLevel'   => 1
+            ],
+
+            'StorageController' => [        // Склад (в целом, включая просмотр)
+                'objectName'    => 'storages',
+                'action'        => 'view',
+                'objectId'      => NULL,
+                'accessLevel'   => 1
+            ],
+            'ProductController@storagebalance' => [  // Склад (просмотр балансов)
+                'objectName'    => 'storages',
+                'action'        => 'view',
+                'objectId'      => NULL,
+                'accessLevel'   => 1
+            ],
+            'ProductController@storagebalanceFiltered' => [  // Склад (просмотр фильтрованных балансов)
+                'objectName'    => 'storages',
+                'action'        => 'view',
+                'objectId'      => NULL,
+                'accessLevel'   => 1
+            ],
+
+            'AccountController' => [        // Финансы (в целом, включая просмотр)
+                'objectName'    => 'finances',
+                'action'        => 'view',
+                'objectId'      => NULL,
+                'accessLevel'   => 1
+            ],
+            'ProductController@salesanalysis' => [        // Финансы (в целом, включая просмотр)
+                'objectName'    => 'finances',
+                'action'        => 'view',
+                'objectId'      => NULL,
+                'accessLevel'   => 1
+            ],
+            'ProductController@salesanalysisFiltered' => [ // Финансы (в целом, включая просмотр)
+                'objectName'    => 'finances',
+                'action'        => 'view',
+                'objectId'      => NULL,
+                'accessLevel'   => 1
+            ],
+            'WageSchemesController' => [        // Финансы (в целом, включая просмотр)
+                'objectName'    => 'finances',
+                'action'        => 'view',
+                'objectId'      => NULL,
+                'accessLevel'   => 1
+            ],
+
+
+            'WageSchemesController@index' => [  // Схемы рассчета зарплат - просмотр
+                'objectName'    => 'wage_schemes',
+                'action'        => 'view',
+                'objectId'     => '0',
                 'accessLevel'  => 1
-            ]
+            ],
+            'WageSchemesController@show' => [  // Схемы рассчета зарплат - просмотр
+                'objectName'    => 'wage_schemes',
+                'action'        => 'view',
+                'objectId'     => '0',
+                'accessLevel'  => 1
+            ],
+
+            'WageSchemesController@store' => [  // Схемы рассчета зарплат - редактирование
+                'objectName'    => 'wage_schemes',
+                'action'        => 'edit',
+                'objectId'     => '0',
+                'accessLevel'  => 1
+            ],
+            'WageSchemesController@create' => [  // Схемы рассчета зарплат - редактирование
+                'objectName'    => 'wage_schemes',
+                'action'        => 'edit',
+                'objectId'     => '0',
+                'accessLevel'  => 1
+            ],
+            'WageSchemesController@destroy' => [  // Схемы рассчета зарплат - редактирование
+                'objectName'    => 'wage_schemes',
+                'action'        => 'edit',
+                'objectId'     => '0',
+                'accessLevel'  => 1
+            ],
+            'WageSchemesController@update'  => [  // Схемы рассчета зарплат - редактирование
+                'objectName'    => 'wage_schemes',
+                'action'        => 'edit',
+                'objectId'     => '0',
+                'accessLevel'  => 1
+            ],
+            'WageSchemesController@edit'  => [  // Схемы рассчета зарплат - редактирование
+                'objectName'    => 'wage_schemes',
+                'action'        => 'edit',
+                'objectId'     => '0',
+                'accessLevel'  => 1
+            ],
 
             /*
             Показывать номера телефонов в списке клиентов
@@ -176,9 +265,8 @@ class CheckPermissions
         $controllerMethod = class_basename($action);      // AppointmentsController@create
         list($controller, $action) = explode('@', $controllerMethod); // 'AppointmentsController', 'create'
 
-        Log::info(__METHOD__.' controller:'.$controller.' action:'.$action);
+        //Log::info(__METHOD__.' controller:'.$controller.' action:'.$action);
 
-        // check permissions
         // сначала проверяем есть ли ограничение на весь контроллер целиком (например возможен запрет на доступ к Журналу записей)
         // TODO: такая схема может не подойти, нужна проверка (Журнал записей может состоять из нескольких контроллеров)
         //  в принципе ничего не мешает иметь в $protectedObjects несколько записей на одну защищаемую сущность

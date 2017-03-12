@@ -467,6 +467,11 @@ return [
 	'new_resource'				=> 'New resource',
 	'resource_name'				=> 'Resource name',
 	'resource_create_new'		=> 'Create new resource',
+	'resource_unit'				=> 'Unit of measurement',
+	'resource_amount'			=> 'Maximum amount of resource',
 	'duration'					=> 'Duration',
-	'service_categories'		=> 'Service Categories'
+	'service_categories'		=> 'Service categories',
+	'permission_denied' 		=> 'Yot don\'t have permission to access this page!',
+	'permission_denied_explanation' => 'If you feel that this is a mistake please contact your administrator to get required permissions.',
+	'permission_denied_goback'	=> 'Go back'
 ];

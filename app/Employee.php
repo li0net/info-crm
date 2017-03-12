@@ -5,6 +5,40 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * App\Employee
+ *
+ * @property int $employee_id
+ * @property string $name
+ * @property string $email
+ * @property string $phone
+ * @property int $organization_id
+ * @property int $position_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $spec
+ * @property string $descr
+ * @property string $avatar_image_name
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Appointment[] $appointments
+ * @property-read \App\Organization $organization
+ * @property-read \App\Position $position
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Schedule[] $schedules
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Service[] $services
+ * @property-read \App\EmployeeSetting $settings
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Transaction[] $transactions
+ * @method static \Illuminate\Database\Query\Builder|\App\Employee whereAvatarImageName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Employee whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Employee whereDescr($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Employee whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Employee whereEmployeeId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Employee whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Employee whereOrganizationId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Employee wherePhone($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Employee wherePositionId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Employee whereSpec($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Employee whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Employee extends Model
 {
 	protected $primaryKey = 'employee_id';
@@ -40,7 +74,6 @@ class Employee extends Model
 		return $this->hasMany(Transaction::class);
 	}
 
-	// defining M:N relationship
 	public function services()
 	{
 		return $this->belongsToMany(Service::class, 'employee_provides_service', 'employee_id', 'service_id');

@@ -34,6 +34,11 @@
 						{{ Form::label('description', trans('adminlte_lang::message.description')) }}
 						{{ Form::textarea('description', null, ['class' => 'form-control']) }}
 					</div>
+
+					<div class="form-group">
+						{{ Form::label('amount', trans('adminlte_lang::message.resource_amount')) }}
+						{{ Form::text('amount', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+					</div>
 					
 					<hr>
 
@@ -41,8 +46,12 @@
 						<div class="col-sm-8 col-sm-offset-2">
 							<div class="row">
 								<div class="col-sm-6">
-									{!! Html::linkRoute('resource.show', trans('adminlte_lang::message.cancel'), [$resource->resource_id], 
-																												 ['class'=>'btn btn-danger btn-block']) !!}
+									{!! Html::linkRoute(
+										'resource.show', 
+										trans('adminlte_lang::message.cancel'), 
+										[$resource->resource_id], 
+										['class'=>'btn btn-danger btn-block']
+									)!!}
 								</div>
 								<div class="col-sm-6">
 									{{ Form::submit(trans('adminlte_lang::message.save'), ['class'=>'btn btn-success btn-block']) }}

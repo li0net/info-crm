@@ -17,4 +17,9 @@ class Resource extends Model
 	{
 		return $this->belongsTo(Organization::class);
 	}
+
+	public function services()
+    {
+        return $this->belongsToMany(Service::class, 'resources_attached_service', 'resource_id', 'service_id');
+    }
 }

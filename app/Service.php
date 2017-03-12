@@ -26,10 +26,16 @@ class Service extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    // defining M:N relationship
     public function employees()
     {
-        return $this->belongsToMany(Employee::class, 'employee_provides_service', 'service_id', 'employee_id');
+        return $this->belongsToMany(Employee::class, 'employee_provides_service', 'service_id', 'employee_id')
+                    ->withPivot('duration', 'routing_id');
+    }
+
+    public function resources()
+    {
+        return $this->belongsToMany(Resource::class, 'resources_attached_service', 'service_id', 'resource_id')
+                    ->withPivot('amount');
     }
 
     public function appointments() {

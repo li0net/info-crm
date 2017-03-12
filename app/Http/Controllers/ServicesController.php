@@ -6,6 +6,7 @@ use App\Service;
 use App\Card;
 use App\Employee;
 use App\Resource;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Session;
@@ -131,6 +132,9 @@ class ServicesController extends Controller
 		$service_duration_hours = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('09:00:00'), 60, '', ' ч', 'G');
 		$service_duration_minutes = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('01:00:00'), 15, '', ' мин', 'i');
 
+		$service_attached_employees = $service->employees;
+		$resources_attached_service = $service->resources;
+
 		return view(
 			'adminlte::serviceform', 
 			compact(
@@ -140,7 +144,9 @@ class ServicesController extends Controller
 				'service_duration_minutes',
 				'service_routings',
 				'service_employees',
-				'service'
+				'service',
+				'service_attached_employees',
+				'resources_attached_service'
 			)
 		);
 	}
@@ -186,9 +192,35 @@ class ServicesController extends Controller
 		$service->price_min = $request->input('price_min');
 		$service->price_max = $request->input('price_max');
 		$service->duration = $request->input('duration');
-		$service->save();
 
-		return redirect()->to('/services');
+        $service->save();
+
+       	$input = $request->input();
+
+       	$service->employees()->detach();
+       	$service->resources()->detach();
+
+        for ($i = 0; $i < count($input['service-employee']); $i++) { 
+            $time = Carbon::createFromTime(
+            	$input['service-duration-hour'][$i], 
+            	$input['service-duration-minute'][$i],
+            	0
+            );
+
+            $service->employees()->attach(
+            	$input['service-employee'][$i], 
+            	['duration' => $time, 'routing_id' => $input['service-routing'][$i]]
+            );
+        }
+
+        for ($i = 0; $i < count($input['service-resource']); $i++) { 
+            $service->resources()->attach(
+            	$input['service-resource'][$i], 
+            	['amount' => $input['amount'][$i]]
+            );
+        }
+
+        return redirect()->to('/services');
 	}
 
 	protected function prepareSelectData($request) {
@@ -218,6 +250,16 @@ class ServicesController extends Controller
     {
     	if($request->ajax()){
     		$options = Card::where('organization_id', $request->user()->organization_id)->pluck('title', 'card_id');
+    		
+    		$data = view('services.options', compact('options'))->render();
+    		return response()->json(['options' => $data]);
+    	}
+    }
+
+    public function populateResourceOptions(Request $request)
+    {
+    	if($request->ajax()){
+    		$options = Resource::where('organization_id', $request->user()->organization_id)->pluck('name', 'resource_id');
     		
     		$data = view('services.options', compact('options'))->render();
     		return response()->json(['options' => $data]);

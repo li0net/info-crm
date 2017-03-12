@@ -176,12 +176,30 @@ class UsersController extends Controller
                 'object_id'     => NULL,
                 'access_level'  => 1
             ],
-            'statistics_view' =>[
-                'object'        => 'statistics',
+            'storages_view'     => [
+                'object'        => 'storages',
                 'action'        => 'view',
                 'object_id'     => NULL,
                 'access_level'  => 1
-            ]
+            ],
+            'finances_view'     => [
+                'object'        => 'finances',
+                'action'        => 'view',
+                'object_id'     => NULL,
+                'access_level'  => 1
+            ],
+            'wage_schemes_view'     => [
+                'object'        => 'wage_schemes',
+                'action'        => 'view',
+                'object_id'     => '0',
+                'access_level'  => 1
+            ],
+            'wage_schemes_edit'     => [
+                'object'        => 'wage_schemes',
+                'action'        => 'edit',
+                'object_id'     => '0',
+                'access_level'  => 1
+            ],
         ];
 
         $userCurrPermissions = $user->accessPermissions()->get();

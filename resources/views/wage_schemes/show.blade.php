@@ -117,20 +117,22 @@
 				
 				<div class="row"><hr></div>
 
-				<div class="row">
-					@if ($user->hasAccessTo('wage_scheme', 'edit', 0))
-						<div class="col-sm-6">
-							{!! Html::linkRoute('wage_scheme.edit', trans('adminlte_lang::message.edit'), [$scheme->scheme_id], ['class'=>'btn btn-primary btn-block']) !!}
-						</div>
-					@endif
-					@if ($user->hasAccessTo('wage_scheme', 'delete', 0))
-						<div class="col-sm-6">
-							{!! Form::open(['route' => ['wage_scheme.destroy', $scheme->scheme_id], "method" => 'DELETE']) !!}
-								{{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger btn-block']) }}
-							{!! Form::close() !!}
-						</div>
-					@endif
-				</div>
+				@if ($crmuser->hasAccessTo('wage_schemes', 'edit', '0'))
+					<div class="row">
+						@if ($user->hasAccessTo('wage_scheme', 'edit', 0))
+							<div class="col-sm-6">
+								{!! Html::linkRoute('wage_scheme.edit', trans('adminlte_lang::message.edit'), [$scheme->scheme_id], ['class'=>'btn btn-primary btn-block']) !!}
+							</div>
+						@endif
+						@if ($user->hasAccessTo('wage_scheme', 'delete', 0))
+							<div class="col-sm-6">
+								{!! Form::open(['route' => ['wage_scheme.destroy', $scheme->scheme_id], "method" => 'DELETE']) !!}
+									{{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger btn-block']) }}
+								{!! Form::close() !!}
+							</div>
+						@endif
+					</div>
+				@endif
 
 				<div class="row">
 					<div class="col-sm-12">
