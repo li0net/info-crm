@@ -30,7 +30,7 @@
 
     {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
     {!! Form::open(['route' => 'account.store', 'class'=>'form-horizontal']) !!}
-    <div class="text-right col-sm-12">
+    <div class="col-sm-12 m-t">
         <div class="form-group">
             {{ Form::label('title', trans('adminlte_lang::message.account_create_new'), ['class' => 'col-sm-3 control-label text-right']) }}
             <div class="col-sm-9">
@@ -46,7 +46,7 @@
         <div class="form-group">
             {{ Form::label('type', trans('adminlte_lang::message.account_type'), ['class' => 'col-sm-3 control-label text-right']) }}
             <div class="col-sm-9">
-                {{ Form::select('type', ['cash' => trans('adminlte_lang::message.cash'), 'noncache' => trans('adminlte_lang::message.non-cash')], 'cash', ['class' => 'selectpicker', 'required' => '']) }}
+                {{ Form::select('type', ['cash' => trans('adminlte_lang::message.cash'), 'noncache' => trans('adminlte_lang::message.non-cash')], 'cash', ['class' => 'js-select-basic-single', 'required' => '']) }}
             </div>
         </div>
         <div class="form-group">

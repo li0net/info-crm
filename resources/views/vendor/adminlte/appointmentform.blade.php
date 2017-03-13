@@ -130,7 +130,7 @@
 
                 <div class="form-group">
                     <label for="app_service_id">@lang('main.appointment:service_id_label')</label>
-                    <select name="service_id" id="app_service_id" class = "form-control">
+                    <select name="service_id" id="app_service_id" class = " js-select-basic-single">
                         @foreach($servicesOptions as $service)
                         <option
                                 @if (old('service_id') AND old('service_id') == $service['value'])
@@ -171,7 +171,7 @@
 
                 <div class="form-group">
                     <label for="app_employee_id">@lang('main.appointment:employee_id_label')</label>
-                    <select name="employee_id" id="app_employee_id" class = "form-control">
+                    <select name="employee_id" id="app_employee_id" class = " js-select-basic-single">
                         @if (isset($employeesOptions) OR session()->has('employeesOptions'))
                         <?php if(!isset($employeesOptions)) $employeesOptions = session('employeesOptions');?>
                         @foreach($employeesOptions AS $employee)
@@ -214,7 +214,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <select name="time_from" id="app_time_from" class = "form-control">
+                            <select name="time_from" id="app_time_from" class = " js-select-basic-single">
                                 @foreach($timeOptions as $time)
                                 <option
                                         @if (old('time_from') AND old('time_from') == $time['value'])
@@ -241,7 +241,7 @@
                     <label for="app_duration">@lang('main.appointment:duration')</label>
                     <div class="row">
                         <div class="col-sm-6">
-                            <select name="duration_hours" id="app_duration_hours" class = "form-control">
+                            <select name="duration_hours" id="app_duration_hours" class = " js-select-basic-single">
                                 @foreach($hoursOptions as $hour)
                                 <option
                                         @if (old('duration_hours') AND old('duration_hours') == $hour['value'])
@@ -262,7 +262,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <select name="duration_minutes" id="app_duration_minutes" class = "form-control">
+                            <select name="duration_minutes" id="app_duration_minutes" class = " js-select-basic-single">
                                 @foreach($minutesOptions as $minute)
                                 <option
                                         @if (old('duration_minutes') AND old('duration_minutes') == $minute['value'])
@@ -311,13 +311,11 @@
             <div class="col-sm-8 tab-pane fade" id="goods_history">
                 @include('appointment.tpl.goods_history')
             </div>
-
         </div>
-        <div class="col-sm-12">
-            <hr/>
+
+        <div class="col-sm-12 m-t text-right">
             <button type="submit" id="btn_submit_app_form" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
         </div>
-
 
         {!! Form::close() !!}
     </div>

@@ -646,6 +646,7 @@ $(document).ready(function () {
 		allowClear: true
 	});
 	$(".js-select-basic-single").select2({
+        placeholder: "---",
         minimumResultsForSearch: Infinity
     });
 

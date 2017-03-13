@@ -133,7 +133,16 @@ body.skin-orange {
       border-color: $brand-main-hover;
     }
   }
+  /** lists **/
+  .dl-horizontal {
+    dt {
+      width: 250px;
+    }
+    dd {
+      margin-left: 270px;
+    }
 
+  }
   /** alerts **/
   .alert{
     display: none;

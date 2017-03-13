@@ -18,7 +18,7 @@
 		</div>
 	</div>
 @else
-	<table class="table table-hover table-striped">
+	<table class="table table-hover table-condensed">
 		<thead>
 			<th class="text-center">#</th>
 			<th>Дата</th>

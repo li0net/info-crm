@@ -14,14 +14,14 @@ body.skin-orange {
     }
   }
   p.form-text,
-  .form-text{
+  .form-text {
     color: $text-color;
     font-size: $font-size;
     font-weight: normal;
   }
 
   /** buttons **/
-  .btn{
+  .btn {
     display: inline-block;
     @include border-radius(15px);
     //height: 30px;
@@ -33,82 +33,82 @@ body.skin-orange {
     border: 1px solid $brand-main-text;
     text-decoration: none;
     @include transition-all (0.3s);
-    &:hover{
+    &:hover {
       text-decoration: none;
     }
-    i{
+    i {
       margin-right: 10px;
     }
-    &.btn-xs{
+    &.btn-xs {
       padding: 1px 5px;
       font-size: $font-size-input;
       line-height: 1.5;
       height: auto;
-      i{
+      i {
         margin-right: 3px;
       }
     }
-    &.btn-link{
+    &.btn-link {
       border: none;
-      &.no-padding{
+      &.no-padding {
         padding: 3px 0;
       }
-      &.link-blue{
+      &.link-blue {
         color: $brand-main;
-        &:hover{
+        &:hover {
           color: $brand-secondary;
         }
       }
-      &.btn-xs{
+      &.btn-xs {
         font-size: $font-size-small;
       }
     }
-    &.btn-primary{
+    &.btn-primary {
       border-color: $brand-main;
       background-color: $brand-main;
       color: $body-bg;
-      &:hover{
-        i{
+      &:hover {
+        i {
           color: $body-bg;
         }
         background-color: $brand-main-hover;
       }
     }
-    &.btn-info{
+    &.btn-info {
       border-color: $brand-main;
       background-color: $body-bg;
       color: $brand-main;
-      &:hover{
+      &:hover {
         background-color: $body-bg;
         border-color: $brand-secondary;
         color: $brand-secondary;
-        i{
+        i {
           color: $brand-secondary;
         }
       }
     }
-    &.btn-default{
+    &.btn-default {
       border-color: $brand-main;
       background-color: $body-bg;
       color: $brand-main;
       padding: 4px 11px;
       margin-top: 5px;
-      i{
+      i {
         font-size: $font-size-input;
         margin: 0;
       }
-      &:hover{
+      &:hover {
         color: $brand-secondary;
         border-color: $brand-secondary;
         background-color: $body-bg;
-        i{
+        i {
           color: $brand-secondary;
         }
       }
     }
-    &.btn-danger{
+    &.btn-danger {
       background-color: #C34749;
-      &:hover{
+      &:hover {
         background-color: #AE4042;
         text-decoration: none;
         color: $brand-main-text;
@@ -116,28 +116,55 @@ body.skin-orange {
     }
   }
 
+  /** nav modal-menu */
 
-  /** nav nav-pills */
-  .nav.nav-pills{
-    color: $brand-secondary-text;
-    li{
+  .nav.modal-menu.nav-tabs.nav-stacked {
+    background-color: $body-bg;
+    padding: 0;
+    li {
+      border: none;
       border-radius: 0;
-      &:first-of-type{
-        a{
+      background-color: $brand-main;
+      color: $brand-main-text;
+      text-decoration: none;
+      padding-left: 15px;
+      &.nav-header {
+        background-color: transparent;
+        color: $text-color;
+        &:hover {
+          background-color: transparent;
+        }
+      }
+      &:hover {
+        background-color: $brand-main-hover;
+      }
+      &.active {
+        color: $brand-main;
+        background-color: $brand-main-text;
+      }
+    }
+  }
+  /** nav nav-pills */
+  .nav.nav-pills {
+    color: $brand-secondary-text;
+    li {
+      border-radius: 0;
+      &:first-of-type {
+        a {
           @include border-left-radius(15px);
         }
       }
-      &:last-of-type{
-        a{
+      &:last-of-type {
+        a {
           @include border-right-radius(15px);
         }
       }
-      &.active{
-        a{
+      &.active {
+        a {
           background-color: $body-bg;
           border: 1px solid $brand-secondary;
           color: $brand-secondary;
-          i{
+          i {
             color: $brand-secondary;
           }
         }
@@ -152,48 +179,48 @@ body.skin-orange {
         color: $brand-secondary-text;
         background-color: $brand-main;
         text-decoration: none;
-        &:hover{
+        &:hover {
           text-decoration: none;
         }
       }
     }
   }
   /** nav nav-tabs */
-  .nav.nav-tabs{
+  .nav.nav-tabs {
     background-color: $body-bg;
     border-bottom: 0;
-    li{
+    li {
       border: none;
       border-radius: 0;
-      a{
+      a {
         border: none;
         border-radius: 0;
         background-color: $brand-main;
         color: $brand-main-text;
         text-decoration: none;
-        &:hover{
+        &:hover {
           background-color: $brand-main-hover;
         }
       }
-      &.active{
-        a{
+      &.active {
+        a {
           color: $brand-main;
           background-color: $brand-main-text;
         }
       }
     }
   }
-  .tab-content{
+  .tab-content {
     padding: 10px;
   }
 
   /** form elements **/
-  .form-group{
-    p{
+  .form-group {
+    p {
       padding-top: 7px;
     }
   }
-  .form-control{
+  .form-control {
     border: 1px solid $brand-main;
     @include border-radius(15px);
     color: $brand-main;
@@ -203,45 +230,45 @@ body.skin-orange {
     //height: 30px;
     margin-top: 7px;
   }
-  .input-group{
-    .input-group-addon{
+  .input-group {
+    padding-top: 7px;
+    .input-group-addon {
+      margin-top: 7px;
       border: 1px solid $brand-main;
       background-clip: padding-box;
       font-size: $font-size-input;
       padding: 5px 15px;
       line-height: 19px;
-      margin-top: 7px;
+
       background-color: $brand-main;
       color: $brand-main-text;
-    }
-    .input-group-addon{
       @include border-radius(20px 0 0 20px);
       border-right-width: 0px;
       border-left-width: 1px;
     }
-    .form-control{
+    .form-control {
       border-right-width: 1px;
       border-left-width: 0px;
       margin-top: 0;
     }
-    &.input-group-addon-left{
-      .input-group-addon{
+    &.input-group-addon-left {
+      .input-group-addon {
         @include border-radius(20px 0 0 20px);
         border-right: 0;
       }
-      .form-control{
+      .form-control {
         margin-top: 0;
         border-right-width: 1px;
         border-left-width: 0px;
       }
     }
-    &.input-group-addon-right{
-      .input-group-addon{
+    &.input-group-addon-right {
+      .input-group-addon {
         @include border-radius(0 20px 20px 0);
         border-right-width: 1px;
         border-left-width: 0px;
       }
-      .form-control{
+      .form-control {
         border-right-width: 0px;
         border-left-width: 1px;
         margin-top: 0;
@@ -251,47 +278,48 @@ body.skin-orange {
   }
 
   /** select 2 **/
-  .select2{
+  .select2 {
+    margin-top: 7px;
     width: 100% !important;
     color: $brand-main;
     padding: 0;
-    .select2-selection{
+    .select2-selection {
       border: 1px solid $brand-main;
       @include border-radius(15px);
       font-size: $font-size-input;
       padding: 0;
       height: auto;
       color: $brand-main;
-      .select2-selection__rendered{
+      .select2-selection__rendered {
         padding: 2px 15px;
         margin: 0;
         color: $brand-main;
       }
     }
-    .select2-selection__arrow{
+    .select2-selection__arrow {
       top: 3px;
       right: 10px;
-      b{
+      b {
         border-color: $brand-main transparent transparent transparent;
       }
     }
   }
-  .select2-container--open .select2-dropdown{
+  .select2-container--open .select2-dropdown {
     border: none;
   }
   .select2-container--default .select2-results__option[aria-selected=true] {
     background-color: $brand-main-hover;
   }
-  .select2-selection.select2-selection--multiple{
-    height:32px;
-    .select2-selection__clear{
+  .select2-selection.select2-selection--multiple {
+    height: 32px;
+    .select2-selection__clear {
       margin-top: 1px;
       margin-right: -2px;
       color: $brand-main;
     }
   }
   .select2-container--default .select2-selection--multiple {
-    .select2-selection__rendered{
+    .select2-selection__rendered {
       .select2-selection__choice {
         background-color: $brand-main;
         color: $brand-main-text;
@@ -302,47 +330,47 @@ body.skin-orange {
         margin-right: 5px;
         margin-top: 0;
         padding: 0 10px;
-        .select2-selection__choice__remove{
+        .select2-selection__choice__remove {
           color: $brand-main-text;
         }
       }
-      .select2-search__field{
+      .select2-search__field {
         margin: 0;
       }
     }
   }
-  .select2-container.select2-container--open{
-    .select2-selection__clear{
+  .select2-container.select2-container--open {
+    .select2-selection__clear {
       color: $brand-main-text;
     }
-    .select2-selection{
+    .select2-selection {
       background-color: $brand-main;
-      .select2-selection__rendered{
+      .select2-selection__rendered {
         @include border-radius(15px);
         border: 1px solid $brand-main-text;
         color: $brand-main-text;
       }
     }
-    .select2-selection__arrow{
-      b{
+    .select2-selection__arrow {
+      b {
         border-color: transparent transparent $brand-main-text transparent;
       }
     }
-    ul.select2-results__options{
+    ul.select2-results__options {
       background-color: $brand-main;
       @include border-bottom-radius(15px);
       border: none;
-      li{
+      li {
         padding-left: 15px;
         color: $brand-main-text;
         &:focus,
-        &:hover{
+        &:hover {
           background-color: $brand-main-hover;
         }
-        &.select2-results__option--highlighted{
+        &.select2-results__option--highlighted {
           background-color: $brand-main-hover;
           &:focus,
-          &:hover{
+          &:hover {
             background-color: $brand-main-hover;
           }
         }
@@ -351,16 +379,16 @@ body.skin-orange {
   }
 
   /** bootstrap select **/
-  .bootstrap-select{
+  .bootstrap-select {
     width: 100% !important;
-    .bs-caret{
+    .bs-caret {
       right: 15px;
-      .caret{
+      .caret {
         color: $brand-main;
       }
     }
-    &.open{
-      .btn-default{
+    &.open {
+      .btn-default {
         width: 98%;
         border: 1px solid $brand-main-text;
         color: $brand-main-text;
@@ -368,13 +396,13 @@ body.skin-orange {
         background-color: $brand-main;
         z-index: 10000;
         span,
-        .caret{
+        .caret {
           color: $brand-main-text;
         }
       }
     }
 
-    .btn-default{
+    .btn-default {
       width: 100%;
       border: 1px solid $brand-main;
       @include border-radius(15px);
@@ -383,33 +411,33 @@ body.skin-orange {
       //line-height: 19px;
       height: auto;
       color: $brand-main;
-      .filter-option{
+      .filter-option {
         color: $brand-main;
       }
     }
-    .dropdown-menu{
+    .dropdown-menu {
       background-color: $brand-main;
-      border: 1px solid #FFF;
+      border: 1px solid #FFFFFF;
       padding: 39px 0 10px 0;
       margin-top: -38px;
       z-index: 1000;
       @include border-radius(22px);
-      li{
+      li {
         color: $brand-main-text;
-        span{
+        span {
           color: $brand-main-text;
         }
-        a{
+        a {
           color: $brand-main-text;
           background-color: $brand-main;
           outline: none;
-          &:hover{
+          &:hover {
             outline: none;
             background-color: $brand-main-hover;
           }
         }
-        &.selected{
-          a{
+        &.selected {
+          a {
             outline: none;
             color: $brand-main-text;
             background-color: $brand-main-hover;
@@ -418,10 +446,10 @@ body.skin-orange {
       }
     }
   }
-  select.form-control{
-    option{
+  select.form-control {
+    option {
       &:checked,
-      &:hover{
+      &:hover {
         color: $brand-main-text !important;
         background-color: $brand-main !important;
         box-shadow: 0 0 10px 100px $brand-main inset !important;

@@ -5,6 +5,14 @@
 @endsection
 
 @section('main-content')
+    <section class="content-header">
+        <h1>{{ trans('adminlte_lang::message.storages') }}</h1>
+        <!--<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Forms</a></li>
+            <li class="active">Advanced Elements</li>
+        </ol>-->
+    </section>
 	<div class="row">
 		@if (Session::has('success'))
 			<div class="alert alert-success" role="alert">
@@ -12,15 +20,10 @@
 			</div>
 		@endif
 	</div>
-
 	<div class="row">
-		<div class="col-sm-8">
-			<h4>{{ trans('adminlte_lang::message.storages') }}</h4>
-		</div>	
-
-		<div class="col-sm-4">
-			<a href="{{ route('storage.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.new_storage') }}</a>
-			<a href="#" class="btn btn-success m-r pull-right">{{ trans('adminlte_lang::message.move_goods') }}</a>
+		<div class="col-sm-12">
+			<a href="{{ route('storage.create') }}" class="btn btn-primary">{{ trans('adminlte_lang::message.new_storage') }}</a>
+			<a href="#" class="btn btn-info">{{ trans('adminlte_lang::message.move_goods') }}</a>
 		</div>
 		<div class="col-sm-12">
 			<hr>	
@@ -28,7 +31,7 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-12">
-			<table class="table table-hover table-striped">
+			<table class="table table-hover table-condensed">
 				<thead>
 					<th class="text-center">#</th>
 					<th>{{ trans('adminlte_lang::message.storage_title') }}</th>

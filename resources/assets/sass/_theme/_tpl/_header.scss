@@ -58,7 +58,7 @@ body.skin-orange {
             line-height: 58px;
             .caret{
               border-top: 4px dashed #fff;
-              margin-bottom: 8px;
+              margin-bottom: 0;
             }
             .dropbtn {
               background-color: transparent;
@@ -67,6 +67,9 @@ body.skin-orange {
               font-size: 16px;
               cursor: pointer;
               border: none;
+              margin: 0 0 0 0;
+              border-radius: 0;
+
               &.btn-flag{
                 &.ru{
                   background: url(/img/crm/flags/ru.png) 0 0 no-repeat;

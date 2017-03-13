@@ -5,34 +5,32 @@
 @endsection
 
 @section('main-content')
+    <section class="content-header">
+        <h1>{{ trans('adminlte_lang::message.partners') }}</h1>
+        <!--<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Forms</a></li>
+            <li class="active">Advanced Elements</li>
+        </ol>-->
+    </section>
 	<div class="row">
 		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>{{ trans('adminlte_lang::message.partner_create_new') }}</strong> {{ Session::get('success') }}
-		</div>
-
+            <div class="alert alert-success" role="alert">
+                <strong>{{ trans('adminlte_lang::message.partner_create_new') }}</strong> {{ Session::get('success') }}
+            </div>
 		@endif
-	</div>
-
-	<div class="row">
-		<div class="col-sm-4">
-			<h4>{{ trans('adminlte_lang::message.partners') }}</h4>
-		</div>	
-
-		<div class="col-sm-8">
+		<div class="col-sm-12 m-t">
 			<a href="{{ route('partner.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.partner_create_new') }}</a>
-			<a href="#" class="btn btn-default m-r pull-right">{{ trans('adminlte_lang::message.load_from_excel') }}</a>
-			<a href="#" class="btn btn-default m-r pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
+			<a href="#" class="btn btn-info m-r pull-right">{{ trans('adminlte_lang::message.load_from_excel') }}</a>
+			<a href="#" class="btn btn-info m-r pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
 		</div>
-
 		<div class="col-sm-12">
-			<hr>	
+			<hr>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-sm-12">
-			<table class="table table-hover table-striped">
+			<table class="table table-hover table-condensed">
 				<thead>
 					<th class="text-center">#</th>
 					<th>{{ trans('adminlte_lang::message.partner_name') }}</th>
@@ -71,11 +69,11 @@
 							</td>
 							<td class="text-right" style="min-width: 100px;">
 								@if ($user->hasAccessTo('partner', 'edit', 0))
-									<a href="{{ route('partner.edit', $partner->partner_id) }}" id="partner_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+									<a href="{{ route('partner.edit', $partner->partner_id) }}" id="partner_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
 								@endif
 								@if ($user->hasAccessTo('partner', 'delete', 0))
 									{!! Form::open(['route' => ['partner.destroy', $partner->partner_id], 'id' => 'form'.$partner->partner_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$partner->partner_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$partner->partner_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	
