@@ -156,6 +156,10 @@ return [
     'user:permissions_clients_export_xls_label' => 'Export client list to Excel',
     'user:permissions_statistics_label'     => 'Statistics',
     'user:permissions_is_admin'             => 'Administration rights',
+    'user:permissions_storages_label'       => 'Storages',
+    'user:permissions_finances_label'       => 'Finances',
+    'user:permissions_wage_schemes_view_label' => 'Wage schemes - view',
+    'user:permissions_wage_schemes_edit_label' => 'Wage schemes - edit',
 
     'client:list_header'                    => 'Clients',
     'client:list_page_header'               => 'Clients',

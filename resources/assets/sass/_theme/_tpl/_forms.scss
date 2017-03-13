@@ -1,0 +1,515 @@
+@import "variables";
+body.skin-orange {
+  form {
+    a,
+    p,
+    div,
+    span,
+    label,
+    .form-text,
+    .checkbox label {
+      color: $text-color;
+      font-size: $font-size;
+      font-weight: normal;
+    }
+  }
+  p.form-text,
+  .form-text {
+    color: $text-color;
+    font-size: $font-size;
+    font-weight: normal;
+  }
+
+  /** buttons **/
+  .btn {
+    display: inline-block;
+    @include border-radius(15px);
+    //height: 30px;
+    padding: 3px 15px;
+    font-size: $font-size-input;
+    font-weight: 500;
+    //line-height: 19px;
+    color: $brand-main-text;
+    border: 1px solid $brand-main-text;
+    text-decoration: none;
+    @include transition-all (0.3s);
+    &:hover {
+      text-decoration: none;
+    }
+    i {
+      margin-right: 10px;
+    }
+    &.btn-xs {
+      padding: 1px 5px;
+      font-size: $font-size-input;
+      line-height: 1.5;
+      height: auto;
+      i {
+        margin-right: 3px;
+      }
+    }
+    &.btn-link {
+      border: none;
+      &.no-padding {
+        padding: 3px 0;
+      }
+      &.link-blue {
+        color: $brand-main;
+        &:hover {
+          color: $brand-secondary;
+        }
+      }
+      &.btn-xs {
+        font-size: $font-size-small;
+      }
+    }
+    &.btn-primary {
+      border-color: $brand-main;
+      background-color: $brand-main;
+      color: $body-bg;
+      &:hover {
+        i {
+          color: $body-bg;
+        }
+        background-color: $brand-main-hover;
+      }
+    }
+    &.btn-info {
+      border-color: $brand-main;
+      background-color: $body-bg;
+      color: $brand-main;
+      &:hover {
+        background-color: $body-bg;
+        border-color: $brand-secondary;
+        color: $brand-secondary;
+        i {
+          color: $brand-secondary;
+        }
+      }
+    }
+    &.btn-default {
+      border-color: $brand-main;
+      background-color: $body-bg;
+      color: $brand-main;
+      padding: 4px 11px;
+      margin-top: 5px;
+      i {
+        font-size: $font-size-input;
+        margin: 0;
+      }
+      &:hover {
+        color: $brand-secondary;
+        border-color: $brand-secondary;
+        background-color: $body-bg;
+        i {
+          color: $brand-secondary;
+        }
+      }
+    }
+    &.btn-danger {
+      background-color: #C34749;
+      &:hover {
+        background-color: #AE4042;
+        text-decoration: none;
+        color: $brand-main-text;
+      }
+    }
+  }
+
+  /** nav modal-menu */
+
+  .nav.modal-menu.nav-tabs.nav-stacked {
+    background-color: $body-bg;
+    padding: 0;
+    li {
+      border: none;
+      border-radius: 0;
+      background-color: $brand-main;
+      color: $brand-main-text;
+      text-decoration: none;
+      padding-left: 15px;
+      &.nav-header {
+        background-color: transparent;
+        color: $text-color;
+        &:hover {
+          background-color: transparent;
+        }
+      }
+      &:hover {
+        background-color: $brand-main-hover;
+      }
+      &.active {
+        color: $brand-main;
+        background-color: $brand-main-text;
+      }
+    }
+  }
+  /** nav nav-pills */
+  .nav.nav-pills {
+    color: $brand-secondary-text;
+    li {
+      border-radius: 0;
+      &:first-of-type {
+        a {
+          @include border-left-radius(15px);
+        }
+      }
+      &:last-of-type {
+        a {
+          @include border-right-radius(15px);
+        }
+      }
+      &.active {
+        a {
+          background-color: $body-bg;
+          border: 1px solid $brand-secondary;
+          color: $brand-secondary;
+          i {
+            color: $brand-secondary;
+          }
+        }
+      }
+      a {
+        @include border-radius(0px);
+        @include transition-all (0.3s);
+        padding: 3px 5px;
+        font-size: $font-size-input;
+        margin-right: 1px;
+        border: 1px solid $brand-main;
+        color: $brand-secondary-text;
+        background-color: $brand-main;
+        text-decoration: none;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  /** nav nav-tabs */
+  .nav.nav-tabs {
+    background-color: $body-bg;
+    border-bottom: 0;
+    li {
+      border: none;
+      border-radius: 0;
+      a {
+        border: none;
+        border-radius: 0;
+        background-color: $brand-main;
+        color: $brand-main-text;
+        text-decoration: none;
+        &:hover {
+          background-color: $brand-main-hover;
+        }
+      }
+      &.active {
+        a {
+          color: $brand-main;
+          background-color: $brand-main-text;
+        }
+      }
+    }
+  }
+  .tab-content {
+    padding: 10px;
+  }
+
+  /** form elements **/
+  .form-group {
+    p {
+      padding-top: 7px;
+    }
+  }
+  .form-control {
+    border: 1px solid $brand-main;
+    @include border-radius(15px);
+    color: $brand-main;
+    font-size: $font-size-input;
+    padding: 5px 15px;
+    line-height: 19px;
+    //height: 30px;
+    margin-top: 7px;
+  }
+  .input-group {
+    padding-top: 7px;
+    .input-group-addon {
+      margin-top: 7px;
+      border: 1px solid $brand-main;
+      background-clip: padding-box;
+      font-size: $font-size-input;
+      padding: 5px 15px;
+      line-height: 19px;
+
+      background-color: $brand-main;
+      color: $brand-main-text;
+      @include border-radius(20px 0 0 20px);
+      border-right-width: 0px;
+      border-left-width: 1px;
+    }
+    .form-control {
+      border-right-width: 1px;
+      border-left-width: 0px;
+      margin-top: 0;
+    }
+    &.input-group-addon-left {
+      .input-group-addon {
+        @include border-radius(20px 0 0 20px);
+        border-right: 0;
+      }
+      .form-control {
+        margin-top: 0;
+        border-right-width: 1px;
+        border-left-width: 0px;
+      }
+    }
+    &.input-group-addon-right {
+      .input-group-addon {
+        @include border-radius(0 20px 20px 0);
+        border-right-width: 1px;
+        border-left-width: 0px;
+      }
+      .form-control {
+        border-right-width: 0px;
+        border-left-width: 1px;
+        margin-top: 0;
+      }
+    }
+
+  }
+
+  /** select 2 **/
+  .select2 {
+    margin-top: 7px;
+    width: 100% !important;
+    color: $brand-main;
+    padding: 0;
+    .select2-selection {
+      border: 1px solid $brand-main;
+      @include border-radius(15px);
+      font-size: $font-size-input;
+      padding: 0;
+      height: auto;
+      color: $brand-main;
+      .select2-selection__rendered {
+        padding: 2px 15px;
+        margin: 0;
+        color: $brand-main;
+      }
+    }
+    .select2-selection__arrow {
+      top: 3px;
+      right: 10px;
+      b {
+        border-color: $brand-main transparent transparent transparent;
+      }
+    }
+  }
+  .select2-container--open .select2-dropdown {
+    border: none;
+  }
+  .select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: $brand-main-hover;
+  }
+  .select2-selection.select2-selection--multiple {
+    height: 32px;
+    .select2-selection__clear {
+      margin-top: 1px;
+      margin-right: -2px;
+      color: $brand-main;
+    }
+  }
+  .select2-container--default .select2-selection--multiple {
+    .select2-selection__rendered {
+      .select2-selection__choice {
+        background-color: $brand-main;
+        color: $brand-main-text;
+        border: none;
+        border-radius: 15px;
+        cursor: default;
+        float: left;
+        margin-right: 5px;
+        margin-top: 0;
+        padding: 0 10px;
+        .select2-selection__choice__remove {
+          color: $brand-main-text;
+        }
+      }
+      .select2-search__field {
+        margin: 0;
+      }
+    }
+  }
+  .select2-container.select2-container--open {
+    .select2-selection__clear {
+      color: $brand-main-text;
+    }
+    .select2-selection {
+      background-color: $brand-main;
+      .select2-selection__rendered {
+        @include border-radius(15px);
+        border: 1px solid $brand-main-text;
+        color: $brand-main-text;
+      }
+    }
+    .select2-selection__arrow {
+      b {
+        border-color: transparent transparent $brand-main-text transparent;
+      }
+    }
+    ul.select2-results__options {
+      background-color: $brand-main;
+      @include border-bottom-radius(15px);
+      border: none;
+      li {
+        padding-left: 15px;
+        color: $brand-main-text;
+        &:focus,
+        &:hover {
+          background-color: $brand-main-hover;
+        }
+        &.select2-results__option--highlighted {
+          background-color: $brand-main-hover;
+          &:focus,
+          &:hover {
+            background-color: $brand-main-hover;
+          }
+        }
+      }
+    }
+  }
+
+  /** bootstrap select **/
+  .bootstrap-select {
+    width: 100% !important;
+    .bs-caret {
+      right: 15px;
+      .caret {
+        color: $brand-main;
+      }
+    }
+    &.open {
+      .btn-default {
+        width: 98%;
+        border: 1px solid $brand-main-text;
+        color: $brand-main-text;
+        margin: 0 1%;
+        background-color: $brand-main;
+        z-index: 10000;
+        span,
+        .caret {
+          color: $brand-main-text;
+        }
+      }
+    }
+
+    .btn-default {
+      width: 100%;
+      border: 1px solid $brand-main;
+      @include border-radius(15px);
+      font-size: $font-size-input;
+      padding: 3px 15px;
+      //line-height: 19px;
+      height: auto;
+      color: $brand-main;
+      .filter-option {
+        color: $brand-main;
+      }
+    }
+    .dropdown-menu {
+      background-color: $brand-main;
+      border: 1px solid #FFFFFF;
+      padding: 39px 0 10px 0;
+      margin-top: -38px;
+      z-index: 1000;
+      @include border-radius(22px);
+      li {
+        color: $brand-main-text;
+        span {
+          color: $brand-main-text;
+        }
+        a {
+          color: $brand-main-text;
+          background-color: $brand-main;
+          outline: none;
+          &:hover {
+            outline: none;
+            background-color: $brand-main-hover;
+          }
+        }
+        &.selected {
+          a {
+            outline: none;
+            color: $brand-main-text;
+            background-color: $brand-main-hover;
+          }
+        }
+      }
+    }
+  }
+  select.form-control {
+    option {
+      &:checked,
+      &:hover {
+        color: $brand-main-text !important;
+        background-color: $brand-main !important;
+        box-shadow: 0 0 10px 100px $brand-main inset !important;
+      }
+    }
+    &:focus > option:checked,
+    &:focus > option:hover {
+      color: $brand-main-text !important;
+      background-color: $brand-main !important;
+      box-shadow: 0 0 10px 100px $brand-main inset !important;
+    }
+  }
+}
+/** placeholders **/
+&::-webkit-input-placeholder,
+&::-moz-placeholder,
+&:-ms-input-placeholder ,
+&:-moz-placeholder {
+  color: $text-color;
+  @include opacity(0.8);
+  font-style: italic;
+}
+::-webkit-input-placeholder {
+   color: $text-color;
+  @include opacity(0.8);
+  font-style: italic;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: $text-color;
+  @include opacity(0.8);
+  font-style: italic;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+   color: $text-color;
+  @include opacity(0.8);
+  font-style: italic;
+}
+
+:-ms-input-placeholder { /* IE 10+ */
+   color: $text-color;
+  @include opacity(0.8);
+  font-style: italic;
+}
+
+::-ms-input-placeholder { /* Edge */
+   color: $text-color;
+  @include opacity(0.8);
+  font-style: italic;
+}
+
+:placeholder-shown { /* Standard one last! */
+   color: $text-color;
+  @include opacity(0.8);
+  font-style: italic;
+}
+.employee-content,
+.resource-content{
+  .select2 {
+    margin-top: 7px;
+  }
+}

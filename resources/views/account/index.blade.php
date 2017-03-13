@@ -30,14 +30,14 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-12">
-			<table class="table table-hover table-striped">
+			<table class="table table-hover table-condensed">
 				<thead>
 					<th class="text-center">#</th>
 					<th>{{ trans('adminlte_lang::message.account_name') }}</th>
 					<th>{{ trans('adminlte_lang::message.account_balance') }}</th>
 					<th>{{ trans('adminlte_lang::message.account_income') }}</th>
 					<th>{{ trans('adminlte_lang::message.account_expenses') }}</th>
-					<th></th>
+					<th>{{ trans('adminlte_lang::message.actions') }}</th>
 				</thead>
 				<tbody>
 					@foreach($accounts as $account)
@@ -61,13 +61,13 @@
 								<br> 
 								<small>{{ trans('adminlte_lang::message.account_expenses_descr') }}</small>
 							</td>
-							<td class="text-right">
+							<td class="text-center">
 								@if ($user->hasAccessTo('account', 'edit', 0))
-									<a href="{{ route('account.edit', $account->account_id) }}" id="account_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+									<a href="{{ route('account.edit', $account->account_id) }}" id="account_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
 								@endif
 								@if ($user->hasAccessTo('account', 'delete', 0))
 									{!! Form::open(['route' => ['account.destroy', $account->account_id], 'id' => 'form'.$account->account_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$account->account_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$account->account_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	

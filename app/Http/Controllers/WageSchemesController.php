@@ -15,6 +15,12 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class WageSchemesController extends Controller
 {
+	public function __construct()
+	{
+		$this->middleware('auth');
+		$this->middleware('permissions');   //->only(['create', 'edit', 'save']);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -22,6 +28,12 @@ class WageSchemesController extends Controller
 	 */
 	public function index(Request $request)
 	{
+		// Проверяем есть ли у юзера права на просмотр Схем начисления зарплат
+		$accessLevel = $request->user()->hasAccessTo('wage_schemes', 'view', null);
+		if ($accessLevel < 1) {
+			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+		}
+
 		$schemes = WageScheme::where('organization_id', $request->user()->organization_id)->get()->all();
 
 		$page = Input::get('page', 1);
@@ -42,6 +54,12 @@ class WageSchemesController extends Controller
 	 */
 	public function create(Request $request)
 	{
+		// Проверяем есть ли у юзера права на редактирование Схем начисления зарплат
+		$accessLevel = $request->user()->hasAccessTo('wage_schemes', 'edit', '0');
+		if ($accessLevel < 1) {
+			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+		}
+
 		$service_ctgs = ServiceCategory::where('organization_id', $request->user()->organization_id)
 										->orderBy('name')
 										->with('services')
@@ -65,6 +83,12 @@ class WageSchemesController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		// Проверяем есть ли у юзера права на редактирование Схем начисления зарплат
+		$accessLevel = $request->user()->hasAccessTo('wage_schemes', 'edit', '0');
+		if ($accessLevel < 1) {
+			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+		}
+
 		$this->validate($request, [
 			'scheme_name' => 'required',
 			'services_percent' => 'required',
@@ -118,9 +142,15 @@ class WageSchemesController extends Controller
 	 */
 	public function show($id)
 	{
-		$scheme = WageScheme::find($id);
+		// Проверяем есть ли у юзера права на просмотр Схем начисления зарплат
+		$accessLevel = Input::user()->hasAccessTo('wage_schemes', 'view', '0');
+		if ($accessLevel < 1) {
+			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+		}
 
-		return view('wage_schemes.show', ['scheme' => $scheme]);
+		$scheme = WageScheme::where('organization_id', Input::user()->organization_id)->where('scheme_id', $id)->first();
+
+		return view('wage_schemes.show', ['scheme' => $scheme, 'crmuser' => Input::user()]);
 	}
 
 	/**
@@ -131,7 +161,14 @@ class WageSchemesController extends Controller
 	 */
 	public function edit(Request $request, $id)
 	{
-		$scheme = WageScheme::find($id);
+		// Проверяем есть ли у юзера права на редактирование Схем начисления зарплат
+		$accessLevel = $request->user()->hasAccessTo('wage_schemes', 'edit', '0');
+		if ($accessLevel < 1) {
+			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+		}
+
+		$scheme = WageScheme::where('organization_id', $request->user()->organization_id)->where('scheme_id', $id)->first();
+
 		$service_ctgs = ServiceCategory::where('organization_id', $request->user()->organization_id)
 										->orderBy('name')
 										->with('services')
@@ -178,6 +215,12 @@ class WageSchemesController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
+		// Проверяем есть ли у юзера права на редактирование Схем начисления зарплат
+		$accessLevel = $request->user()->hasAccessTo('wage_schemes', 'edit', '0');
+		if ($accessLevel < 1) {
+			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+		}
+
 		$accessLevel = $request->user()->hasAccessTo('wage_schemes', 'edit', 0);
 		if ($accessLevel < 1) {
 			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
@@ -239,6 +282,12 @@ class WageSchemesController extends Controller
 	 */
 	public function destroy(Request $request, $id)
 	{
+		// Проверяем есть ли у юзера права на редактирование Схем начисления зарплат
+		$accessLevel = $request->user()->hasAccessTo('wage_schemes', 'edit', '0');
+		if ($accessLevel < 1) {
+			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+		}
+
 		$scheme = WageScheme::where('organization_id', $request->user()->organization_id)->where('scheme_id', $id)->first();
 
 		if ($scheme) {

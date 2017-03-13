@@ -17,6 +17,12 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class ProductController extends Controller
 {
+	public function __construct()
+	{
+		$this->middleware('auth');
+		$this->middleware('permissions');   //->only(['create', 'edit', 'save']);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -244,7 +250,7 @@ class ProductController extends Controller
 
 	public function salesAnalysis(Request $request)
 	{
-		$transactions = storageTransaction::where('organization_id', $request->user()->organization_id)->with('product.category')->get()->all();
+		$transactions = StorageTransaction::where('organization_id', $request->user()->organization_id)->with('product.category')->get()->all();
 		$employees = Employee::where('organization_id', $request->user()->organization_id)->get()->pluck('name', 'employee_id');
 		$partners = Partner::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'partner_id');
 		$categories = ProductCategory::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'product_category_id');
@@ -266,7 +272,7 @@ class ProductController extends Controller
 
 	public function salesAnalysisFiltered(Request $request)
 	{
-		$transactions = storageTransaction::where('organization_id', $request->user()->organization_id)->with('product.category');
+		$transactions = StorageTransaction::where('organization_id', $request->user()->organization_id)->with('product.category');
 		$employees = Employee::where('organization_id', $request->user()->organization_id)->get()->pluck('name', 'employee_id');
 		$partners = Partner::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'partner_id');
 		$categories = ProductCategory::where('organization_id', $request->user()->organization_id)->get()->pluck('title', 'product_category_id');

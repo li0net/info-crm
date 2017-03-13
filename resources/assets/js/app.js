@@ -243,8 +243,8 @@ $(document).ready(function () {
 				{index: 'client_id', name: 'client_id', key: true, width: 60, hidden: true, search: false},
 				{index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
 				{index: 'phone', name: 'phone', width: 100, search: true, stype: 'text'},
-				{index: 'total_bought', name: 'total_bought', width: 70, search: false},
-				{index: 'discount', name: 'discount', width: 60, search: false}
+				{index: 'total_bought', align:'center', name: 'total_bought', width: 70, search: false},
+				{index: 'discount', align:'center', name: 'discount', width: 60, search: false}
 			],
 			sortname: 'name',
 			sortorder: 'asc',
@@ -645,7 +645,12 @@ $(document).ready(function () {
 		templateResult: formatClientCatColor,
 		allowClear: true
 	});
-	function formatClientCatColor(cat) {
+	$(".js-select-basic-single").select2({
+        placeholder: "---",
+        minimumResultsForSearch: Infinity
+    });
+
+    function formatClientCatColor(cat) {
 		if (!cat.id) { return cat.text; }
 		var $category = $(
 			'<span style="background-color:' + cat.element.getAttribute('data-color') + '">' + cat.text + '</span>'
@@ -891,10 +896,10 @@ function ServiceCategoryFormatEditColumn(cellvalue, options, rowObject)
 	var urlDel = '';
 
 	if (window.Settings.permissions_service_edit !== undefined && window.Settings.permissions_service_edit == 1) {
-		url = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+		url = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
 	}
 	if (window.Settings.permissions_service_delete !== undefined && window.Settings.permissions_service_delete == 1) {
-		urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/destroy/' + cellvalue + '" class="btn btn-default"><i class="fa fa-trash-o"></i></a>';
+		urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
 	}
 
 	return url + urlDel;
@@ -906,10 +911,10 @@ function ServiceFormatEditColumn(cellvalue, options, rowObject)
 	var urlDel = '';
 
 	if (window.Settings.permissions_service_edit !== undefined && window.Settings.permissions_service_edit == 1) {
-		url = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+		url = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
 	}
 	if (window.Settings.permissions_service_delete !== undefined && window.Settings.permissions_service_delete == 1) {
-		urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/destroy/' + cellvalue + '" class="btn btn-default"><i class="fa fa-trash-o"></i></a>';
+		urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
 	}
 
 	return url + urlDel;
@@ -923,8 +928,8 @@ function UserFormatEditColumn(cellvalue, options, rowObject)
 
 function ClientCategoryFormatEditColumn(cellvalue, options, rowObject)
 {
-	var url = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/edit/' + cellvalue + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
-	var urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/destroy/' + cellvalue + '" class="btn btn-default"><i class="fa fa-trash-o"></i></a>';
+	var url = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
+	var urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
 
 	return  url + urlDel;
 }

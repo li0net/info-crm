@@ -1,0 +1,134 @@
+@import "variables";
+
+body.skin-orange {
+  /** header **/
+  .main-header{
+    height: 60px;
+    background-color: $brand-main;
+    color: $body-bg;
+    .navbar-static-top{
+      height: 60px;
+      margin-left: 0;
+      .navbar-custom-menu{
+        width: 100%;
+        .logo{
+          float: right;
+          margin: 0;
+          height: 60px;
+          line-height: 60px;
+          width: auto;
+          img{
+            height: 52px;
+            width: auto;
+            margin: 0 0 8px 0;
+          }
+        }
+        .login{
+          height: 60px;
+          background-color: $brand-main;
+          color: $body-bg;
+          line-height: 60px;
+          width:auto;
+          float: left;
+          img{
+            margin: 15px 8px 0 20px;
+            width: 27px;
+            height: auto;
+            float: left;
+            border: 1px solid $body-bg;
+          }
+          &>a{
+            margin: 0 5px 0 3px ;
+            color: $body-bg;
+            font-size: 120%;
+            font-weight: bold;
+            @include transition-all (0.3s);
+            background: transparent;
+            text-decoration: none;
+            &:hover{
+              background: transparent;
+              color:$brand-secondary;
+              text-decoration: none;
+            }
+          }
+
+          .dropdown {
+            position: relative;
+            display: inline-block;
+            line-height: 58px;
+            .caret{
+              border-top: 4px dashed #fff;
+              margin-bottom: 0;
+            }
+            .dropbtn {
+              background-color: transparent;
+              color: white;
+              padding: 0 0 0 28px;
+              font-size: 16px;
+              cursor: pointer;
+              border: none;
+              margin: 0 0 0 0;
+              border-radius: 0;
+
+              &.btn-flag{
+                &.ru{
+                  background: url(/img/crm/flags/ru.png) 0 0 no-repeat;
+                }
+                &.en{
+                  background: url(/img/crm/flags/us.png) 0 0 no-repeat;
+                }
+                &.es{
+                  background: url(/img/crm/flags/es.png) 0 0 no-repeat;
+                }
+              }
+            }
+            &:hover {
+              .dropbtn {
+                background-color: #3e8e41;
+              }
+              .dropdown-content {
+                display: block;
+              }
+            }
+          }
+          .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            min-width: 110px;
+            z-index: 1000;
+            top: 45px;
+            a {
+              color: black;
+              text-decoration: none;
+              display: block;
+              &.lang-flag{
+                font-size: 13px;
+                padding: 0 5px 0 38px;
+                line-height: 35px;
+                &.ru{
+                  background: url(/img/crm/flags/ru.png) 5px center no-repeat;
+                }
+                &.en{
+                  background: url(/img/crm/flags/us.png) 5px center no-repeat;
+                }
+                &.es{
+                  background: url(/img/crm/flags/es.png) 5px center no-repeat;
+                }
+                &.ca{
+                  background: url(/img/crm/flags/ca.png) 5px center no-repeat;
+                }
+                &:hover {
+                  background-color: #f1f1f1
+                }
+              }
+            }
+          }
+        }
+
+      }
+    }
+
+  }
+}

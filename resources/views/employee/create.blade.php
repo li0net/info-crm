@@ -9,72 +9,77 @@
 @endsection --}}
 
 @section('main-content')
+    <section class="content-header">
+        <h1>{{ trans('adminlte_lang::message.employee_create_new') }}</h1>
+        <!--<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Forms</a></li>
+            <li class="active">Advanced Elements</li>
+        </ol>-->
+    </section>
+    {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
+    {!! Form::open(['route' => ['employee.store'], 'method' => 'PUT', 'files' => 'true', 'class'=>'form-horizontal']) !!}
+        <div class="col-sm-9 col-sm-offset-3">
+            @if (count($errors) > 0)
+            <div class="alert alert-error">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+        </div>
+        <div class="col-sm-8">
 
-	<div class="row">
-		<div class="col-sm-6 col-sm-offset-3">
-			<h4>{{ trans('adminlte_lang::message.employee_create_new') }}</h4>	
-			<hr>	
-			@if (count($errors) > 0)
-				<div class="alert alert-danger">
-					<ul>
-						@foreach ($errors->all() as $error)
-							<li>{{ $error }}</li>
-						@endforeach
-					</ul>
-				</div>
-			@endif
-			<div class="well">
-				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-				{!! Form::open(['route' => ['employee.store'], 'method' => 'PUT', 'files' => 'true']) !!}
-					<div class="col-sm-8 b-r">	
-						<div class="form-group">
-							{{ Form::label('name', trans('adminlte_lang::message.employee_name'), ['class' => 'form-spacing-top']) }}
-							{{ Form::text('name', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '70']) }}
-						</div>
+            <div class="form-group">
+                {{ Form::label('name', trans('adminlte_lang::message.employee_name'), ['class' => 'col-sm-3 control-label text-right']) }}
+                <div class="col-sm-9">
+                    {{ Form::text('name', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '70', 'placeholder' => trans('adminlte_lang::message.employee_name')]) }}
+                </div>
+            </div>
 
-						<div class="form-group">
-							{{ Form::label('email', trans('adminlte_lang::message.employee_email'), ['class' => 'form-spacing-top']) }}
-							{{ Form::text('email', null, ['class' => 'form-control', 'email' => '']) }}
-						</div>
+            <div class="form-group">
+                {{ Form::label('email', trans('adminlte_lang::message.employee_email'), ['class' => 'col-sm-3 control-label text-right']) }}
+                <div class="col-sm-9">
+                    {{ Form::text('email', null, ['class' => 'form-control', 'email' => '', 'placeholder'=>trans('adminlte_lang::message.employee_email')]) }}
+                </div>
+            </div>
 
-						<div class="form-group">
-							{{ 	Form::label('phone', trans('adminlte_lang::message.employee_phone')) }}
-							{{ 	Form::text('phone', null, ['class' => 'form-control', 'required' => '']) }}
-						</div>
-				
-						<div class="form-group">
-							{{ 	Form::label('position_id', trans('adminlte_lang::message.employee_position')) }}
-							{{	Form::select('position_id', $items, 1, ['class' => 'form-control', 'required' => '']) }}
-						</div>
-					</div>
+            <div class="form-group">
+                {{ 	Form::label('phone', trans('adminlte_lang::message.employee_phone'), ['class' => 'col-sm-3 control-label text-right']) }}
+                <div class="col-sm-9">
+                    {{ 	Form::text('phone', null, ['class' => 'form-control', 'required' => '', 'placeholder'=>trans('adminlte_lang::message.employee_phone')]) }}
+                </div>
+            </div>
 
-					<div class="col-sm-4 text-center">
-						<label class="ctrl-label">{{ trans('adminlte_lang::message.photo') }}</label>
-						<div class="logo-block">
-							<div v-if="!image">
-								<img src="/images/no-master.png" alt="">
-							</div>
-							<div v-else>
-								<img :src="image" />
-							</div>
-						</div>
-						<span class="btn btn-success btn-file">
-							{{ trans('adminlte_lang::message.load_photo') }}<input type="file" name="avatar" @change="onFileChange">
-						</span>
-					</div>
+            <div class="form-group">
+                {{ 	Form::label('position_id', trans('adminlte_lang::message.employee_position'), ['class' => 'col-sm-3 control-label text-right']) }}
+                <div class="col-sm-9">
+                    {{	Form::select('position_id', $items, 1, ['class' => 'selectpicker', 'required' => '', 'placeholder'=>trans('adminlte_lang::message.employee_position')]) }}
+                </div>
+            </div>
+        </div>
 
-					<hr>
-
-					<div class="row">
-						<div class="col-sm-6 col-sm-offset-3">
-							{{	Form::submit(trans('adminlte_lang::message.employee_create_new'), ['class' => 'btn btn-success btn-lg btn-block']) }}
-						</div>
-					</div>
-					
-				{!! Form::close() !!}	
-			</div>
-		</div>
-	</div>
+        <div class="col-sm-4 text-center">
+            <label class="ctrl-label">{{ trans('adminlte_lang::message.photo') }}</label>
+            <div class="logo-block">
+                <div v-if="!image">
+                    <img src="/images/no-master.png" alt="">
+                </div>
+                <div v-else>
+                    <img :src="image" />
+                </div>
+            </div>
+            <span class="btn btn-info btn-file">
+                {{ trans('adminlte_lang::message.load_photo') }}<input type="file" name="avatar" @change="onFileChange">
+            </span>
+        </div>
+        <hr>
+        <div class="col-sm-12 text-right">
+            {{	Form::submit(trans('adminlte_lang::message.save'), ['class' => 'btn btn-primary']) }}
+        </div>
+    {!! Form::close() !!}
 
 @endsection
 

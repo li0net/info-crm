@@ -4,7 +4,6 @@
     @lang('main.appointment:list_page_header')
 @endsection
 
-
 @section('main-content')
     <div class="container-fluid spark-screen">
         <div class="row">
@@ -43,7 +42,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="row m-t">
                         {!! Form::open(['url' => '/appointments/save', 'id' => 'appointment_form']) !!}
@@ -105,14 +103,10 @@
                                 <div class="col-sm-8 tab-pane fade" id="goods_history">
                                     @include('appointment.tpl.goods_history')
                                 </div>
-
                             </div>
-                            <div class="col-sm-12">
-                                <hr/>
+                            <div class="col-sm-12 m-t text-right">
                                 <button type="submit" id="btn_submit_app_form" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
                             </div>
-                             
-                           
                         {!! Form::close() !!}
                     </div>
                 </div>

@@ -21,7 +21,9 @@
 		</div>	
 
 		<div class="col-sm-2">
-			<a href="{{ route('wage_scheme.create') }}" class="btn btn-primary btn-block">{{ trans('adminlte_lang::message.new_scheme') }}</a>
+			@if ($user->hasAccessTo('wage_schemes', 'edit', '0'))
+				<a href="{{ route('wage_scheme.create') }}" class="btn btn-primary btn-block">{{ trans('adminlte_lang::message.new_scheme') }}</a>
+			@endif
 		</div>
 
 		<div class="col-sm-12">
@@ -30,7 +32,7 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-12">
-			<table class="table table-hover table-striped">
+			<table class="table table-hover table-condensed">
 				<thead>
 					<th class="text-center">#</th>
 					<th>{{ trans('adminlte_lang::message.scheme_name') }}</th>
@@ -76,8 +78,7 @@
 							<td class="text-right">
 								@if ($user->hasAccessTo('wage_schemes', 'edit', 0))
 									<a href="{{ route('wage_scheme.edit', $scheme->scheme_id) }}" id="scheme_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
-								@endif
-								@if ($user->hasAccessTo('wage_schemes', 'delete', 0))
+
 									{!! Form::open(['route' => ['wage_scheme.destroy', $scheme->scheme_id], 'id' => 'form'.$scheme->scheme_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
 										<a href="javascript: submitform('#form{{$scheme->scheme_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}

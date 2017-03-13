@@ -12,6 +12,14 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class StorageController extends Controller
 {
+
+
+	public function __construct()
+	{
+		$this->middleware('auth');
+		$this->middleware('permissions');   //->only(['create', 'edit', 'save']);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *

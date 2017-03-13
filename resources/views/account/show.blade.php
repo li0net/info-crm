@@ -5,63 +5,65 @@
 @endsection
 
 @section('main-content')
-	<div class="row">
+    <section class="content-header">
+        <h1>@lang('adminlte_lang::message.account_information')</h1>
+        <!--<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Forms</a></li>
+            <li class="active">Advanced Elements</li>
+        </ol>-->
+    </section>
+	<div class="row m-t">
 		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
-		</div>
-
+            <div class="alert alert-success" role="alert">
+                <strong>Успешно:</strong> {{ Session::get('success') }}
+            </div>
 		@endif
-	</div>
-	<div class="row">
-		<div class="col-sm-4 col-sm-offset-4">
-			<div class="well">
-				{{ Form::label('title', trans('adminlte_lang::message.account_name')) }}
-				<p class="lead">{{ $account->title }}</p>
+		<div class="col-sm-12">
+            <dl class="dl-horizontal">
+                <dt>
+                    {{ trans('adminlte_lang::message.account_name') }}
+                </dt>
+                <dd>
+                    {{ $account->title }}
+                </dd>
 
-				{{ Form::label('type', trans('adminlte_lang::message.account_type')) }}
-				<p class="lead">
-					@if ($account->type == "cash")
-						{{ trans('adminlte_lang::message.cash') }}
-					@else
-						{{ trans('adminlte_lang::message.non-cash') }}
-					@endif
-				</p>
-			
-				<dl class="dl-horizontal">
-					<label>{{ trans('adminlte_lang::message.balance') }}</label>
-					<p class="lead">{{ $account->balance }}</p>
-				</dl>
-
-				{{ Form::label('comment', trans('adminlte_lang::message.description')) }}
-				<p class="lead">{{ $account->comment }}</p>
-				
-				<hr>
-
-				<div class="row">
-					@if ($user->hasAccessTo('account', 'edit', 0))
-						<div class="col-sm-6">
-							{!! Html::linkRoute('account.edit', trans('adminlte_lang::message.edit'), [$account->account_id], ['class'=>'btn btn-primary btn-block']) !!}
-						</div>
-					@endif
-					@if ($user->hasAccessTo('account', 'delete', 0))
-						<div class="col-sm-6">
-							{!! Form::open(['route' => ['account.destroy', $account->account_id], "method" => 'DELETE']) !!}
-
-							{{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger btn-block']) }}
-
-							{!! Form::close() !!}
-						</div>
-					@endif
-				</div>
-
-				<div class="row">
-					<div class="col-sm-12">
-							{{ Html::linkRoute('account.index', trans('adminlte_lang::message.accounts').' »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
-					</div>
-				</div>
-			</div>
-		</div>
+                <dt>
+                    {{ trans('adminlte_lang::message.account_type') }}
+                </dt>
+                <dd>
+                    @if ($account->type == "cash")
+                    {{ trans('adminlte_lang::message.cash') }}
+                    @else
+                    {{ trans('adminlte_lang::message.non-cash') }}
+                    @endif
+                </dd>
+                <dt>
+                    {{ trans('adminlte_lang::message.balance') }}
+                </dt>
+                <dd>
+                    {{ $account->balance }}
+                </dd>
+                <dt>
+                    {{ trans('adminlte_lang::message.description') }}
+                </dt>
+                <dd>
+                    {{ $account->comment }}
+                </dd>
+            </dl>
+        </div>
+        @if ($user->hasAccessTo('account', 'edit', 0))
+            <div class="col-sm-6">
+                {{ Html::linkRoute('account.index', trans('adminlte_lang::message.accounts').' »', [], ['class' => 'btn btn-info']) }}
+                {!! Html::linkRoute('account.edit', trans('adminlte_lang::message.edit'), [$account->account_id], ['class'=>'btn btn-info']) !!}
+            </div>
+        @endif
+        @if ($user->hasAccessTo('account', 'delete', 0))
+            <div class="col-sm-6 text-right">
+                {!! Form::open(['route' => ['account.destroy', $account->account_id], "method" => 'DELETE']) !!}
+                    {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-primary']) }}
+                {!! Form::close() !!}
+            </div>
+        @endif
 	</div>
 @endsection

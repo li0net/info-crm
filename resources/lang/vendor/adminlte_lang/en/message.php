@@ -143,6 +143,8 @@ return [
 	'employees'				  	=> 'Employees',
 	'employee_edit'			  	=> 'Edit employee',
 	'employee_create_new'	  	=> 'Create new employee',
+    'employee_add'	  	        => 'Add employee',
+    'resource_add'	  	        => 'Add resource',
 	'client_list'			  	=> 'Clients list',
 	'electronic_cards'		  	=> 'Electronic cards',
 	'loyality'				  	=> 'Loyalty program',
@@ -347,6 +349,7 @@ return [
 	'not_cancelled'				=> 'Not cancelled',
 	'cancelled'					=> 'Cancelled',
 	'payments_per_page'			=> 'payments per page',
+    'rows_per_page'			    => 'Rows per page',
 	'date'						=> 'Date',
 	'beneficiary_name'			=> 'Beneficiary name',
 	'purpose'					=> 'Purpose',
@@ -469,5 +472,8 @@ return [
 	'resource_unit'				=> 'Unit of measurement',
 	'resource_amount'			=> 'Maximum amount of resource',
 	'duration'					=> 'Duration',
-	'service_categories'		=> 'Service categories'
+	'service_categories'		=> 'Service categories',
+	'permission_denied' 		=> 'Yot don\'t have permission to access this page!',
+	'permission_denied_explanation' => 'If you feel that this is a mistake please contact your administrator to get required permissions.',
+	'permission_denied_goback'	=> 'Go back'
 ];

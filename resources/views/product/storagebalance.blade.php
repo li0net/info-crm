@@ -5,6 +5,14 @@
 @endsection
 
 @section('main-content')
+    <section class="content-header">
+        <h1>{{ trans('adminlte_lang::message.storage_balances') }}</h1>
+        <!--<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Forms</a></li>
+            <li class="active">Advanced Elements</li>
+        </ol>-->
+    </section>
 	<div class="row">
 		@if (Session::has('success'))
 			<div class="alert alert-success" role="alert">
@@ -14,14 +22,9 @@
 	</div>
 
 	<div class="row">
-		<div class="col-sm-4">
-			<h4>{{ trans('adminlte_lang::message.storage_balances') }}</h4>
-		</div>	
-
-		<div class="col-sm-8">
-			<a href="#" class="btn btn-default m-r pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
+		<div class="col-sm-12">
+			<a href="#" class="btn btn-info pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
 		</div>
-
 		<div class="col-sm-12">
 			<hr>	
 		</div>
@@ -38,13 +41,13 @@
 					</div>
 				</div>
 				<div class="col-sm-4">
-					{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 
+					{{ Form::select('storage_id', $storages, null, ['class' => ' js-select-basic-single',
 																    'required' => '', 
 																    'id' => 'storage_id', 
 																    'placeholder' => trans('adminlte_lang::message.storages')]) }}			
 				</div>
 				<div class="col-sm-4">
-					{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 
+					{{ Form::select('partner_id', $partners, null, ['class' => ' js-select-basic-single',
 																	'required' => '', 
 																	'id' => 'partner_id', 
 																	'placeholder' => trans('adminlte_lang::message.partners')]) }}
@@ -52,37 +55,42 @@
 			</div>
 			<div class="row m-b">
 				<div class="col-sm-4">
-					{{ Form::select('category_id', $categories, null, ['class' => 'form-control', 
+					{{ Form::select('category_id', $categories, null, ['class' => ' js-select-basic-single',
 																	   'required' => '', 
 																	   'id' => 'category_id', 
 																	   'placeholder' => trans('adminlte_lang::message.categories')]) }}
 				</div>
 				<div class="col-sm-4">
-					<select class="form-control" name="show_critical_balance">
+					<select class=" js-select-basic-single" name="show_critical_balance">
 						<option selected="" value="0">{{ trans('adminlte_lang::message.dont_show_critical_balances') }}</option>
 						<option value="1">{{ trans('adminlte_lang::message.show_critical_balances') }}</option>
 					</select>
 				</div>
-				<div class="form-inline">
-					<div class="col-sm-4">
-						<select name="editable_length" aria-controls="editable" class="form-control input-sm">
-							<option selected="" value="25">25</option>
-							<option value="50">50</option>
-							<option value="100">100</option>
-						</select>&nbsp;&nbsp;{{ trans('adminlte_lang::message.products_per_page') }}
-					</div>
+				<div class="form-horizontal col-sm-4">
+                    <div class="form-group">
+                        <label for="editable_length" class="col-sm-9 control-label text-right">
+                            {{ trans('adminlte_lang::message.products_per_page') }}
+                        </label>
+                        <div class="col-sm-3">
+                            <select name="editable_length" aria-controls="editable" class=" js-select-basic-single">
+                                <option selected="" value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div>
 				</div>
 			</div>
 			<div class="row m-b ">
-				<div class="col-sm-2 col-sm-offset-10">
-					<input type="button" class="btn btn-success btn-sm pull-right" value={{ trans('adminlte_lang::message.show') }} id='form_submit'>
+				<div class="col-sm-12 text-right">
+					<input type="button" class="btn btn-primary" value={{ trans('adminlte_lang::message.show') }} id='form_submit'>
 				</div>
 			</div>
 		</fieldset>
 	</form>
 	<div class="row">
 		<div class="col-sm-12" id="result_container">
-			<table class="table table-hover table-striped">
+			<table class="table table-hover table-condensed">
 				<thead>
 					<th>{{ trans('adminlte_lang::message.article') }}</th>
 					<th>{{ trans('adminlte_lang::message.product_title') }}</th>

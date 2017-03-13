@@ -7,21 +7,24 @@
 @section('main-content')
 	<div class="row">
 		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-		</div>
-
+            <div class="alert alert-success" role="alert">
+                <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
+            </div>
 		@endif
 	</div>
 	<div class="container-fluid spark-screen">
-		<div class="row">
-			<div class="col-sm-8 text-left">
-				<h4>{{ trans('adminlte_lang::message.schedule') }}</h4>
-			</div>
-			<div class="col-sm-4">
-				<a href="#" class="btn btn-primary m-r pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
-				<a href="/appointments/create" class="btn btn-primary m-r pull-right">{{ trans('adminlte_lang::message.new_appointment') }}</a>
+        <section class="content-header">
+            <h1>{{ trans('adminlte_lang::message.schedule') }}</h1>
+            <!--<ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Forms</a></li>
+                <li class="active">Advanced Elements</li>
+            </ol>-->
+        </section>
+        <div class="row">
+			<div class="text-right">
+				<a href="#" class="btn btn-info pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
+				<a href="/appointments/create" class="btn btn-info pull-right m-r">{{ trans('adminlte_lang::message.new_appointment') }}</a>
 			</div>
 		</div>
 		<div class="row">
@@ -35,15 +38,15 @@
 				</div>
 				<div class="col-sm-3">
 					{{ Form::label('filter-service', trans('adminlte_lang::message.service_name'), ['class' => 'ctrl-label']) }}
-					{{ Form::select('filter-service', $services, null,  ['class' => 'form-control', '@change' => 'onSelectChange', 'v-model' => 'filter_service', 'placeholder' => '- все -']) }}
+					{{ Form::select('filter-service', $services, null,  ['class' => 'selectpicker', '@change' => 'onSelectChange', 'v-model' => 'filter_service', 'placeholder' => '- все -']) }}
 				</div>
 				<div class="col-sm-3">
 					{{ Form::label('filter-start-time', trans('adminlte_lang::message.start_time'), ['class' => 'ctrl-label']) }}
-					{{ Form::select('filter-start-time', $sessionStart, null,  ['class' => 'form-control', '@change' => 'onSelectChange', 'v-model' => 'filter_start_time']) }}
+					{{ Form::select('filter-start-time', $sessionStart, null,  ['class' => 'selectpicker', '@change' => 'onSelectChange', 'v-model' => 'filter_start_time']) }}
 				</div>
 				<div class="col-sm-3">
 					{{ Form::label('filter-end-time', trans('adminlte_lang::message.end_time'), ['class' => 'ctrl-label']) }}
-					{{ Form::select('filter-end-time', $sessionEnd, null,  ['class' => 'form-control', '@change' => 'onSelectChange', 'v-model' => 'filter_end_time']) }}
+					{{ Form::select('filter-end-time', $sessionEnd, null,  ['class' => 'selectpicker', '@change' => 'onSelectChange', 'v-model' => 'filter_end_time']) }}
 				</div>
 			{{ Form::close() }} --}}
 			<form method="post" action="#" class="form">
@@ -53,27 +56,27 @@
 					<div class="row m-b">
 						<div class="col-sm-3">
 							{{ Form::label('filter-date-from', trans('adminlte_lang::message.appointment_time'), ['class' => 'ctrl-label']) }}
-							<div class="input-group">
+							<div class="input-group input-group-addon-left">
 								<span class="input-group-addon">c&nbsp;&nbsp;</span>
 								<input class="form-control hasDatepicker" name="start_date" data-days-offset="-1" type="text" id="filter-date-from">
 							</div>
 						</div>
 						<div class="col-sm-3">
 							{{ Form::label('filter-date-to', null, ['class' => 'ctrl-label', 'style' => 'visibility:hidden']) }}
-							<div class="input-group">
+							<div class="input-group input-group-addon-left">
 								<span class="input-group-addon">по</span>
 								<input class="form-control hasDatepicker" name="end_date" type="text" id="filter-date-to">
 							</div>
 						</div>
 						<div class="col-sm-3">
 							{{ Form::label('filter-employee-id', trans('adminlte_lang::message.manager'), ['class' => 'ctrl-label']) }}
-							{{ Form::select('filter-employee-id', $employees, null,  ['class' => 'form-control',
+							{{ Form::select('filter-employee-id', $employees, null,  ['class' => 'selectpicker',
 																					  'id' => 'filter-employee-id', 
 																					  'placeholder' => 'Все сотрудники']) }}
 						</div>	    	
 						<div class="col-sm-3">
 							{{ Form::label('filter-client-id', trans('adminlte_lang::message.client_name'), ['class' => 'ctrl-label']) }}
-							{{ Form::select('filter-client-id', $clients, null, ['class' => 'form-control', 
+							{{ Form::select('filter-client-id', $clients, null, ['class' => 'selectpicker',
 																		  		 'id' => 'filter-client-id', 
 																				 'placeholder' => 'Все клиенты']) }}
 						</div>	
@@ -83,7 +86,7 @@
 						</div>
 						<div class="col-sm-3">
 							{{ Form::label('filter-service-id', trans('adminlte_lang::message.service_name'), ['class' => 'ctrl-label']) }}
-							{{ Form::select('filter-service-id', $services, null,  ['class' => 'form-control', 
+							{{ Form::select('filter-service-id', $services, null,  ['class' => 'selectpicker',
 																					'id' => 'filter-service-id',
 																					'placeholder' => 'Все услуги']) }}
 						</div>
@@ -94,24 +97,22 @@
 																		  'finished' => 'Клиент пришел',
 																		  'confirmed' => 'Клиент подтвердил'], 
 																		 null,  
-																		 ['class' => 'form-control',
+																		 ['class' => 'selectpicker',
 																		  'id' => 'filter-appointment-status',
 																		  'placeholder' => 'Любой статус']) }}
 						</div>
 						<div class="form-inline">
 							<div class="col-sm-3">
-								{{ Form::label('records-on-page', null, ['class' => 'ctrl-label', 'style' => 'visibility:hidden']) }}
-								<br>
-								{{ Form::select('records-on-page', [25 => '25', 
+								{{ Form::label('records-on-page', trans('adminlte_lang::message.rows_per_page'), ['class' => 'ctrl-label']) }}
+								{{ Form::select('records-on-page', [25 => '25',
 															   		50 => '50', 
-															   		100 => '100',], null,  ['class' => 'form-control', 'id' => 'records-on-page']) }}
-								&nbsp;&nbsp;операций на странице           
+															   		100 => '100',], null,  ['class' => 'selectpicker', 'id' => 'records-on-page']) }}
 							</div>
 						</div>
 					</div>
 					<div class="row m-b ">
 						<div class="col-sm-2 col-sm-offset-10">
-							<input type="button" class="btn btn-success btn-sm pull-right" value="Показать" id='form_submit'>
+							<input type="button" class="btn btn-primary btn-sm pull-right" value="Показать" id='form_submit'>
 						</div>
 					</div>
 				</fieldset>
@@ -123,7 +124,7 @@
 
 		<div class="row">
 			<div class="col-sm-12" id="result_container">
-				<table class="table table-hover table-striped">
+				<table class="table table-hover table-condensed">
 					<thead>
 						<th>#</th>
 						<th>{{ trans('adminlte_lang::message.manager') }}</th>
@@ -131,6 +132,7 @@
 						<th>{{ trans('adminlte_lang::message.service_name') }}</th>
 						<th>{{ trans('adminlte_lang::message.start_time') }}</th>
 						<th>{{ trans('adminlte_lang::message.end_time') }}</th>
+						<th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
 					</thead>
 
 					<tbody>
@@ -142,13 +144,13 @@
 								<td>{{ $appointment->service->name }}</td>
 								<td>{{ $appointment->start }}</td>
 								<td>{{ $appointment->end }}</td>
-								<td class="text-right">
+								<td class="text-center">
 									@if ($user->hasAccessTo('appointments', 'edit', 0))
-										<a href="{{ route('appointments.edit', $appointment->appointment_id) }}" id="scheme_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+										<a href="{{ route('appointments.edit', $appointment->appointment_id) }}" id="scheme_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
 									@endif
 									@if ($user->hasAccessTo('appointments', 'delete', 0))
 										{!! Form::open(['route' => ['appointments.destroy', $appointment->appointment_id], 'id' => 'form'.$appointment->appointment_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'GET']) !!}
-											<a href="javascript: submitform('#form{{$appointment->appointment_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+											<a href="javascript: submitform('#form{{$appointment->appointment_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
 										{!! Form::close() !!}
 									@endif
 								</td>
