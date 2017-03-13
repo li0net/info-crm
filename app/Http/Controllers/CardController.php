@@ -17,13 +17,14 @@ class CardController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 *
-	 * @return \Illuminate\Http\Response
-	 */
+	 * @return View
+     */
 	public function index(Request $request)
 	{
 		$cards = Card::where('organization_id', $request->user()->organization_id)->get()->all();
 		$items = array();
-		$cards_items = array();
+		$card_items = array();
+        $user = $request->user();
 
 		foreach($cards as $card) {
 			$items[] = json_decode($card->card_items);
@@ -68,7 +69,7 @@ class CardController extends Controller
 			$i++;
 		}
 
-		return view('card.index', ['user' => $request->user()])->withcards($cards);
+		return view('card.index', compact('user','cards'));
 	}
 
 	/**

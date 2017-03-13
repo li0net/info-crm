@@ -21,15 +21,33 @@
 
                 <div class="well">
                     <div class="row">
-                        <ul class="nav nav-pills nav-justified" id="appointment_tabs_header" role="tablist">
-                            <li class="active"><a href="#tab_client_wait" role="pill" data-toggle="pill"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;@lang('main.appointment:client_wait_tab_label')</a></li>
-                            <li><a href="#tab_client_came" role="pill" data-toggle="pill"><i class="fa fa-plus-circle"></i>&nbsp;@lang('main.appointment:client_came_tab_label')</a></li>
-                            <li><a href="#tab_client_didnt_came" role="pill" data-toggle="pill"><i class="fa fa-minus-circle" aria-hidden="true"></i>&nbsp;@lang('main.appointment:client_didnt_came_tab_label')</a></li>
-                            <li><a href="#tab_client_confirm" role="pill" data-toggle="pill"><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;@lang('main.appointment:client_confirm_tab_label')</a></li>
-                        </ul>
+                        <div class="form-group m-b">
+                            <div class="col-sm-12">
+                                <div class="btn-group in_status" data-toggle="buttons">
+                                    <label class="btn btn-outline btn-success btn-sm active">
+                                        <input type="radio" name="options" id="option1" autocomplete="off" checked>
+                                        <i class="fa fa-clock-o"></i> <span class="hidden-xs">ожидание клиента</span>
+                                    </label>
+                                    <label class="btn btn-outline btn-success btn-sm">
+                                        <input type="radio" name="options" id="option2" autocomplete="off">
+                                        <i class="fa fa-plus-circle"></i> <span class="hidden-xs">клиент пришел</span>
+                                    </label>
+                                    <label class="btn btn-outline btn-success btn-sm">
+                                        <input type="radio" name="options" id="option3" autocomplete="off">
+                                        <i class="fa fa-minus-circle"></i> <span class="hidden-xs">клиент не пришел</span>
+                                    </label>
+                                    <label class="btn btn-outline btn-success btn-sm">
+                                        <input type="radio" name="options" id="option4" autocomplete="off">
+                                        <i class="fa fa-check-circle"></i> <span class="hidden-xs">клиент подтвердил</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="row m-t">
                         {!! Form::open(['url' => '/appointments/save', 'id' => 'appointment_form']) !!}
+                            {{ Form::hidden('storage_options', null, ['id' => 'storage_options']) }}
                             @if (isset($appointment))
                                 <input type="hidden" name="appointment_id" id="app_appointment_id" value="{{$appointment->appointment_id}}">
                             @endif
@@ -50,250 +68,27 @@
                                             <i class="fa fa-cubes"></i> Списание расходников</li>
                                     <br>
                                     <li class="modal-menu-header client_header_tab nav-header" style="display: list-item;">Клиент</li><br>
-                                        <li class="modal-menu-l client_tab list-group-item first-item" id="rec_client_fulldata" data-target="client_edit" style="display: block;">
+                                        <li class="modal-menu-l client_tab list-group-item first-item" id="#rec_client_fulldata" data-target="client_edit" style="display: block;">
                                             <i class="fa fa-user"></i> Данные клиента</li>
-                                        <li class="modal-menu-l visit_history_tab list-group-item" data-target="visit_history" style="display: block;">
+                                        <li class="modal-menu-l visit_history_tab list-group-item" data-target="#visit_history" style="display: block;">
                                             <i class="fa fa-list-alt"></i> История посещений</li>
-                                        <li class="modal-menu-l client_stats_tab list-group-item" data-target="client_stats" style="display: block;">
+                                        <li class="modal-menu-l client_stats_tab list-group-item" data-target="#client_stats" style="display: block;">
                                             <i class="fa fa-pie-chart"></i> Статистика</li>
-                                        <li class="modal-menu-l sms_history_tab list-group-item" data-target="sms_history" style="display: block;">
+                                        <li class="modal-menu-l sms_history_tab list-group-item" data-target="#sms_history" style="display: block;">
                                             <i class="fa fa-envelope"></i> Отправленные SMS</li>
-                                        <li class="modal-menu-l sms_tab list-group-item" data-target="body_sms" style="display: block;">
+                                        <li class="modal-menu-l sms_tab list-group-item" data-target="#body_sms" style="display: block;">
                                             <i class="fa fa-send"></i> Отправить SMS</li>
-                                        <li class="modal-menu-l card_tab list-group-item" data-target="body_card" style="display: block;">
+                                        <li class="modal-menu-l card_tab list-group-item" data-target="#body_card" style="display: block;">
                                             <i class="fa fa-qrcode"></i> Электронная карта</li>
-                                        <li class="modal-menu-l client_loyalty_cards_tab list-group-item" data-target="client_loyalty_cards_body"  style="display: block;"><i class="fa fa-credit-card">
-                                            </i> Карты лояльности</li>
-                                        <li class="modal-menu-l phone_call_tabs list-group-item" data-target="phone_call_body" style="display: block;"><i class="fa fa-phone">
-                                            </i> История звонков</li>
+                                        <li class="modal-menu-l client_loyalty_cards_tab list-group-item" data-target="client_loyalty_cards_body"  style="display: block;">
+                                            <i class="fa fa-credit-card"></i> Карты лояльности</li>
+                                        <li class="modal-menu-l phone_call_tabs list-group-item" data-target="phone_call_body" style="display: block;">
+                                            <i class="fa fa-phone"></i> История звонков</li>
                                 </ul>
                             </div>
                             <div class="tab-content">
-                                <div class="col-sm-8 tab-pane fade active" id="body_record">
-                                    <div class="form-group">
-                                        <label for="app_client_name">@lang('main.appointment:client_name_label')</label>
-                                        <?php
-                                            $old = old('client_name');
-                                            if (!is_null($old)) {
-                                                $value = $old;
-                                            } elseif (isset($appointment)) {
-                                                $value = $appointment->client->name;
-                                            } else {
-                                                $value = '';
-                                        }?>
-                                        <input type="text" name="client_name" id="app_client_name" class = "form-control" value="{{$value}}">
-                                        <div id="client_name_error">
-                                            @foreach ($errors->get('client_name') as $message)
-                                                <br/>{{$message}}
-                                            @endforeach
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="app_client_phone">@lang('main.appointment:client_phone_label')</label>
-                                        <?php
-                                            $old = old('client_phone');
-                                            if (!is_null($old)) {
-                                                $value = $old;
-                                            } elseif (isset($appointment)) {
-                                                $value = $appointment->client->phone;
-                                            } else {
-                                                $value = '';
-                                        }?>
-                                        <input type="text" name="client_phone" id="app_client_phone" class = "form-control" value="{{$value}}">
-                                        <div id="client_phone_error">
-                                            @foreach ($errors->get('client_phone') as $message)
-                                                <br/>{{$message}}
-                                            @endforeach
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="app_client_email">@lang('main.appointment:client_email_label')</label>
-                                        <?php
-                                            $old = old('client_email');
-                                            if (!is_null($old)) {
-                                                $value = $old;
-                                            } elseif (isset($appointment)) {
-                                                $value = $appointment->client->email;
-                                            } else {
-                                                $value = '';
-                                        }?>
-                                        <input type="text" name="client_email" id="app_client_email" class = "form-control" value="{{$value}}">
-                                        <div id="client_email_error">
-                                            @foreach ($errors->get('client_email') as $message)
-                                                <br/>{{$message}}
-                                            @endforeach
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="app_service_id">@lang('main.appointment:service_id_label')</label>
-                                        <select name="service_id" id="app_service_id" class = "form-control">
-                                            @foreach($servicesOptions as $service)
-                                                <option
-                                                    @if (old('service_id') AND old('service_id') == $service['value'])
-                                                    selected="selected"
-                                                    @elseif (!old('service_id') AND isset($appointment) AND $appointment->service_id == $service['value'])
-                                                    selected="selected"
-                                                    @endif
-                                                    value="{{$service['value']}}">{{$service['label']}}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <div id="service_id_error">
-                                            @foreach ($errors->get('service_id') as $message)
-                                                <br/>{{$message}}
-                                            @endforeach
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="app_note">@lang('main.appointment:note_label')</label>
-                                        <?php
-                                            $old = old('note');
-                                            if (!is_null($old)) {
-                                                $value = $old;
-                                            } elseif (isset($appointment)) {
-                                                $value = $appointment->note;
-                                            } else {
-                                                $value = '';
-                                        }?>
-                                        <input type="text" name="note" id="app_note" class = "form-control" value="{{$value}}">
-                                        <div id="note_error">
-                                            @foreach ($errors->get('note') as $message)
-                                                <br/>{{$message}}
-                                            @endforeach
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <label for="app_employee_id">@lang('main.appointment:employee_id_label')</label>
-                                        <select name="employee_id" id="app_employee_id" class = "form-control">
-                                            @if (isset($employeesOptions) OR session()->has('employeesOptions'))
-                                                <?php if(!isset($employeesOptions)) $employeesOptions = session('employeesOptions');?>
-                                                @foreach($employeesOptions AS $employee)
-                                                    <option
-                                                        @if (old('employee_id') AND old('employee_id') == $employee['value'])
-                                                        selected="selected"
-                                                        @elseif (!old('employee_id') AND isset($appointment) AND $appointment->employee_id == $employee['value'])
-                                                        selected="selected"
-                                                        @endif
-                                                        value="{{$employee['value']}}">{{$employee['label']}}
-                                                    </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <div id="employee_id_error">
-                                            @foreach ($errors->get('employee_id') as $message)
-                                                <br/>{{$message}}
-                                            @endforeach
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="app_date_from">@lang('main.appointment:date_time_from')</label>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <?php
-                                                    $old = old('date_from');
-                                                        if (!is_null($old)) {
-                                                            $value = $old;
-                                                        } elseif (isset($appointment)) {
-                                                            $value = date('Y-m-d', strtotime($appointment->start));
-                                                        } else {
-                                                            $value = '';
-                                                    }?>
-                                                <input type="text" name="date_from" id="app_date_from" class = "form-control" value="{{$value}}">
-                                                <div id="date_from_error">
-                                                    @foreach ($errors->get('date_from') as $message)
-                                                        <br/>{{$message}}
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <select name="time_from" id="app_time_from" class = "form-control">
-                                                    @foreach($timeOptions as $time)
-                                                        <option
-                                                            @if (old('time_from') AND old('time_from') == $time['value'])
-                                                            selected="selected"
-                                                            @elseif (!old('time_from') AND isset($appointment) AND date('H:i', strtotime($appointment->start)) == $time['value'])
-                                                            selected="selected"
-                                                            @elseif (!old('time_from') AND !isset($appointment) AND isset($time['selected']) AND $time['selected'] == true)
-                                                            selected="selected"
-                                                            @endif
-                                                            value="{{$time['value']}}">{{$time['label']}}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div id="time_from_error">
-                                            @foreach ($errors->get('time_from') as $message)
-                                                <br/>{{$message}}
-                                            @endforeach
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="app_duration">@lang('main.appointment:duration')</label>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <select name="duration_hours" id="app_duration_hours" class = "form-control">
-                                                    @foreach($hoursOptions as $hour)
-                                                        <option
-                                                            @if (old('duration_hours') AND old('duration_hours') == $hour['value'])
-                                                            selected="selected"
-                                                            @elseif ( !old('duration_hours') AND isset($appointment) AND ( (int)floor((strtotime($appointment->end)-strtotime($appointment->start)) / 3600) == $time['value']) )
-                                                            selected="selected"
-                                                            @elseif ( !old('duration_hours') AND !isset($appointment) AND isset($hour['selected']) AND $hour['selected'] == true)
-                                                            selected="selected"
-                                                            @endif
-                                                            value="{{$hour['value']}}">{{$hour['label']}}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <div id="duration_hours_error">
-                                                    @foreach ($errors->get('duration_hours') as $message)
-                                                        <br/>{{$message}}
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <select name="duration_minutes" id="app_duration_minutes" class = "form-control">
-                                                    @foreach($minutesOptions as $minute)
-                                                        <option
-                                                            @if (old('duration_minutes') AND old('duration_minutes') == $minute['value'])
-                                                            selected="selected"
-                                                            @elseif ( !old('duration_minutes') AND isset($appointment) AND ( ((strtotime($appointment->end)-strtotime($appointment->start))%3600) / 60 == $minute['value']) )
-                                                            selected="selected"
-                                                            @elseif ( !old('duration_minutes') AND !isset($appointment) AND isset($minute['selected']) AND $minute['selected'] == true)
-                                                            selected="selected"
-                                                            @endif
-                                                            value="{{$minute['value']}}">{{$minute['label']}}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <div id="duration_minutes_error">
-                                                    @foreach ($errors->get('duration_minutes') as $message)
-                                                        <br/>{{$message}}
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group">
-                                            @if ($user->hasAccessTo('appointment_client_data', 'view', 0) >= 1)
-                                                <div class="col-sm-12" id="app_client_info_container">
-                                                    @if(isset($clientInfo))
-                                                        <hr/>{!! $clientInfo !!}
-                                                    @endif
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
+                                <div class="col-sm-8 tab-pane fade in active" id="body_record">
+                                    @include('appointment.tpl.body_record')
                                 </div>
                                 <div class="col-sm-8 tab-pane fade" id="body_status">
                                     @include('appointment.tpl.body_status')
@@ -327,13 +122,51 @@
 @endsection
 
 @section('page-specific-scripts')
-    <script>
-        $(document).ready(function(){
-            $('#app_date_from').datepicker()
-                .on('show', function(e) {
-                    $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-top');
-                    $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-bottom');
+    <script type="text/javascript">
+        $(document).ready(function($) {
+            var options = '';
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: '/storageData',
+                data: {},
+                success: function(data) {
+                    for (var i = 0; i < data.length; i++) {
+                        options = options + '<option value=' + data[i].storage_id + '>' + data[i].title + '</option>';
+                    }
+
+                    $('#storage_options').val(options);
+
+                    $('select.form-control[name="storage_id[]"]').find('option').remove();
+                    $('select.form-control[name="storage_id[]"]').append(options);
+
+                    $('select.form-control[name="storage_id[]"]').each(function() {
+                        var initialValue = $(this).attr('data-initial-value');
+
+                        if ( 0 != initialValue ) {
+                            $(this).val(initialValue);
+                        } else {
+                            $(this).val($(this).find('option').first().val());
+                        }
+                    });
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('Error while processing services data range!');
+                }
+            });
+
+            $('#vis_sale_box_1').on('change', 'select[name="storage_id[]"]', function(e){
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'storage_id' : $(this).val()},
+                    url: "<?php echo route('card.productOptions') ?>",
+                    success: function(data) {
+                        $(e.target).parent().next().children('select[name="product_id[]"]').first().html('');
+                        $(e.target).parent().next().children('select[name="product_id[]"]').first().html(data.options);
+                    }
                 });
+            });
         });
     </script>
 @endsection
