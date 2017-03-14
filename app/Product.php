@@ -14,6 +14,7 @@ class Product extends Model
 		'barcode',
 		'category',
 		'price',
+        'amount',
 		'unit_for_sale',
 		'is_equal',
 		'unit_for_disposal',

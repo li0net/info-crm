@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Session;
 use App\Appointment;
 use App\Service;
 use App\Employee;
+use App\Storage;
 use App\Client;
+use App\Product;
+use App\StorageTransaction;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Illuminate\Support\Facades\Log;
 
@@ -24,7 +27,6 @@ class AppointmentsController extends Controller
 
         $this->middleware('permissions')->only(['create', 'edit', 'save']);
     }
-
 
     public function view(ServiceCategory $appointment) {
         return view('adminlte::servicecategoryview', compact('serviceCategory'));
@@ -70,6 +72,13 @@ class AppointmentsController extends Controller
         $servicesOptions = $this->prepareServicesSelectData($request);
         $timeOptions = $this->prepareTimesSelectData();
         $durationSelects = $this->prepareDurationSelects();
+        $transactions = StorageTransaction::where('appointment_id', $appt->appointment_id)->get();
+        $storages = Storage::where('organization_id', $request->user()->organization_id)
+            ->orderBy('title')
+            ->with('products')
+            ->get()
+            ->pluck('products', 'storage_id');
+
         /*
         // закомментировано, т.к. преобразовываем в часы и минуты во вьюшке
         // при добавлении таймзон, нужно будет делать это здесь
@@ -114,12 +123,19 @@ class AppointmentsController extends Controller
             'minutesOptions' => $durationSelects['minutes'],
             'employeesOptions' => $employeesOptions,
             'employees'=> $employees,
+            'transactions'=> $transactions,
+            'storages'=> $storages,
             'user' => $request->user(),
             'clientInfo' => $clientInfo
         ]);
     }
 
-    public function save(Request $request) {
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function save(Request $request)
+    {
         // TODO: добавить поле с заметкой
         //dd($request->all());
         /*
@@ -152,7 +168,7 @@ class AppointmentsController extends Controller
         ]);
         */
 
-        Log::info(__METHOD__.' before validation');
+        Log::info(__METHOD__ . ' before validation');
         $validator = Validator::make($request->all(), [
             'client_name' => 'required|max:120',
             'client_phone' => 'required|phone_crm', // custom validation rule
@@ -170,7 +186,7 @@ class AppointmentsController extends Controller
             //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
 
             return json_encode([
-                'success'   => false,
+                'success' => false,
                 'validation_errors' => $errs
             ]);
         }
@@ -186,8 +202,8 @@ class AppointmentsController extends Controller
         }
         if (!$isInArr) {
             return json_encode([
-                'success'   => false,
-                'error'     => 'Duration value is invalid.'
+                'success' => false,
+                'error' => 'Duration value is invalid.'
             ]);
         }
         $isInArr = FALSE;
@@ -199,14 +215,14 @@ class AppointmentsController extends Controller
         }
         if (!$isInArr) {
             return json_encode([
-                'success'   => false,
-                'error'     => 'Duration value is invalid.'
+                'success' => false,
+                'error' => 'Duration value is invalid.'
             ]);
         }
         // не позволяем создать запись с 0 длительностью
         if ($request->input('duration_hours') == '00' AND $request->input('duration_minutes') == '00') {
             return json_encode([
-                'success'   => false,
+                'success' => false,
                 'validation_errors' => ['duration_minutes' => [trans('main.appointment:error_duration_not_selected')]]
             ]);
         }
@@ -242,7 +258,7 @@ class AppointmentsController extends Controller
 
         $appId = $request->input('appointment_id');
         // определить создание это или редактирование (по наличию поля service_category_id)
-        // если редактирвоание - проверить что объект принадлежить текущему пользователю
+        // если редактирвоание - проверить что объект принадлежит текущему пользователю
         if (!is_null($appId)) {  // редактирование
             // Проверяем есть ли у юзера права на редактирование Записи
             $accessLevel = $request->user()->hasAccessTo('appointment', 'edit', 0);
@@ -251,20 +267,28 @@ class AppointmentsController extends Controller
             }
 
             $appointment = Appointment::
-                where('organization_id', $request->user()->organization_id)
+            where('organization_id', $request->user()->organization_id)
                 ->where('appointment_id', $appId)
                 ->first();
             if (is_null($appointment)) {
                 return json_encode([
-                    'success'   => false,
-                    'error'     => 'Data error. Record doesn\'t exist'
+                    'success' => false,
+                    'error' => 'Data error. Record doesn\'t exist'
                 ]);
             }
             if (empty($request->input('note'))) {
                 $appointment->note = NULL;
             }
-            $appointment->state = $request->input('state');
+            $appointment->state = 'created'; //TODO: Правильно считывать состояние визита
 
+            //Cторнирование складских операций по продаже товаров и восстановление остатков на складах
+            $transactions = StorageTransaction::where('organization_id', $request->user()->organization_id)->where('appointment_id', $appointment->appointment_id)->get();
+            foreach($transactions as $transaction) {
+                $product = Product::where('organization_id', $request->user()->organization_id)->where('product_id', $transaction->product_id)->get()->first();
+                $product->amount += $transaction->amount;
+                $product->save();
+                $transaction->delete();
+            }
         } else {    // создание
             // Проверяем есть ли у юзера права на создание Записи
             $accessLevel = $request->user()->hasAccessTo('appointment', 'create', 0);
@@ -275,15 +299,14 @@ class AppointmentsController extends Controller
             $appointment = new Appointment();
             $appointment->organization_id = $request->user()->organization_id;
         }
-
         // TODO: проверять что данный диапазон времени (start - end) не занят у работника (если работник не важен - искать хотябы одного свободного с этой услугой?)
 
         $appointment->client_id = $client->client_id;
         $appointment->service_id = $request->input('service_id');
         // преобразовываем date_from, time_from в timestamp start
-        $appointment->start = $request->input('date_from').' '.$request->input('time_from');
+        $appointment->start = $request->input('date_from') . ' ' . $request->input('time_from');
         // преобразовываем duration_hours, duration_minutes в timestamp end
-        $endTs = strtotime($appointment->start.' + '.$request->input('duration_hours').' hours '.$request->input('duration_minutes').' minutes');
+        $endTs = strtotime($appointment->start . ' + ' . $request->input('duration_hours') . ' hours ' . $request->input('duration_minutes') . ' minutes');
         $appointment->end = date('Y-m-d H:i:s', $endTs);
         $appointment->employee_id = $request->input('employee_id');
         if (!empty($request->input('note'))) {
@@ -291,6 +314,38 @@ class AppointmentsController extends Controller
         }
 
         $appointment->save();
+
+        for ($i = 0; $i < count($request->storage_id); $i++) {
+            $transaction = new storageTransaction;
+
+            $transaction->appointment_id = $appointment->appointment_id;
+            $transaction->date = date_create($request->input('date-from') . $request->input('time-from'));
+            date_format($transaction->date, 'U = Y-m-d H:i:s');
+
+            $transaction->type = 'expenses';
+            $transaction->client_id = 0;
+            $transaction->employee_id = $request->master_id[$i];
+            $transaction->storage1_id = $request->storage_id[$i];
+            $transaction->storage2_id = 0;
+            $transaction->partner_id = 0;
+            $transaction->account_id = 0;
+            $transaction->description = 'Продажа товара во время визита клиента.';
+            $transaction->is_paidfor = true;
+            $transaction->product_id = $request->product_id[$i];
+            $transaction->price = $request->price[$i];
+            $transaction->amount = $request->amount[$i];
+            $transaction->discount = $request->discount[$i];
+            $transaction->sum = $request->sum[$i];
+            $transaction->code = 0;
+            $transaction->organization_id = $request->user()->organization_id;
+            $transaction->transaction_items = '';
+
+            $product = Product::where('organization_id', $request->user()->organization_id)->where('product_id', $transaction->product_id)->get()->first();
+            $product->amount -= $transaction->amount;
+            $product->save();
+
+            $transaction->save();
+        }
 
         //return redirect()->route('appointments.index');
         echo json_encode(array('success' => true, 'error' => ''));

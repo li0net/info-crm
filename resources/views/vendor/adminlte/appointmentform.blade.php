@@ -158,10 +158,10 @@
                 success: function(data) {
                     $('#employee_options').val(data.options);
 
-                    $('select.form-control[name="employee_id[]"]').find('option').remove();
-                    $('select.form-control[name="employee_id[]"]').append(data.options);
+                    $('select.form-control[name="master_id[]"]').find('option').remove();
+                    $('select.form-control[name="master_id[]"]').append(data.options);
 
-                    $('select.form-control[name="employee_id[]"]').each(function() {
+                    $('select.form-control[name="master_id[]"]').each(function() {
                         var initialValue = $(this).attr('data-initial-value');
 
                         if ( 0 != initialValue ) {
@@ -191,13 +191,13 @@
 
             $('#add_good_transaction').on('click', function(e) {
                 $('.goods_transactions_box').append(
-                    '<div id="vis_sale_box_1" class="goods_sale m-b col-sm-12"><div class="row"><div class="col-sm-4"><label>Склад</label></div> <div class="col-sm-4"><label>Товар</label></div> <div class="col-sm-4"><label>Сотрудник</label></div></div> <div class="row"><div class="col-sm-4"><select data-initial-value="0" name="storage_id[]" class="form-control input-sm"></select></div> <div class="col-sm-4"><select data-initial-value="0" name="product_id[]" class="form-control input-sm"></select></div> <div class="col-sm-4"><select data-initial-value="0" name="employee_id[]" class="form-control input-sm"></option></select></div></div> <div class="row"><div class="col-sm-2"><label>Количество</label></div> <div class="col-sm-2"><label>Цена, ₽</label></div> <div class="col-sm-2"><label>Скидка, %</label></div> <div class="col-sm-2"><label>Итог, ₽</label></div></div> <div class="row"><div class="col-sm-2 "><input data-number="1" type="text" name="amount" value="1" placeholder="Кол-во" class="form-control input-sm sg_amount add_goods_amount_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="price" value="0" class="form-control input-sm sg_price add_goods_price_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="discount" value="0" class="form-control input-sm sg_discount add_goods_discount_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="real" value="0" class="form-control input-sm sg_cost add_goods_cost_input_1"></div> <div class="col-sm-4"><input type="button" id="remove_good_transaction" value="Отменить" class="btn btn-white btn-sm center-block"></div></div></div>');
+                    '<div id="vis_sale_box_1" class="goods_sale m-b col-sm-12"><div class="row"><div class="col-sm-4"><label>Склад</label></div> <div class="col-sm-4"><label>Товар</label></div> <div class="col-sm-4"><label>Сотрудник</label></div></div> <div class="row"><div class="col-sm-4"><select data-initial-value="0" name="storage_id[]" class="form-control input-sm"></select></div> <div class="col-sm-4"><select data-initial-value="0" name="product_id[]" class="form-control input-sm"></select></div> <div class="col-sm-4"><select data-initial-value="0" name="master_id[]" class="form-control input-sm"></option></select></div></div> <div class="row"><div class="col-sm-2"><label>Количество</label></div> <div class="col-sm-2"><label>Цена, ₽</label></div> <div class="col-sm-2"><label>Скидка, %</label></div> <div class="col-sm-2"><label>Итог, ₽</label></div></div> <div class="row"><div class="col-sm-2 "><input data-number="1" type="text" name="amount[]" value="1" placeholder="Кол-во" class="form-control input-sm sg_amount add_goods_amount_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="price[]" value="0" class="form-control input-sm sg_price add_goods_price_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="discount[]" value="0" class="form-control input-sm sg_discount add_goods_discount_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="sum[]" value="0" class="form-control input-sm sg_cost add_goods_cost_input_1"></div> <div class="col-sm-4"><input type="button" id="remove_good_transaction" value="Отменить" class="btn btn-white btn-sm center-block"></div></div></div>');
 
                 $('select.form-control[name="storage_id[]"]').last().find('option').remove();
                 $('select.form-control[name="storage_id[]"]').last().append($('#storage_options').val());
 
-                $('select.form-control[name="employee_id[]"]').last().find('option').remove();
-                $('select.form-control[name="employee_id[]"]').last().append($('#employee_options').val());
+                $('select.form-control[name="master_id[]"]').last().find('option').remove();
+                $('select.form-control[name="master_id[]"]').last().append($('#employee_options').val());
             });
 
             $('.goods_transactions_box').on('click', '#remove_good_transaction', function(e) {
