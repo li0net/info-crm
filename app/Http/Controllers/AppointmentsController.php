@@ -349,6 +349,15 @@ class AppointmentsController extends Controller
         return $servicesOptions;
     }
 
+    public function populateEmployeeOptions(Request $request)
+    {
+        if($request->ajax()){
+            $options = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
+            $data = view('services.options', compact('options'))->render();
+            return response()->json(['options' => $data]);
+        }
+    }
+
     protected function prepareEmployeesSelectData($request)
     {
         // Все сотрудники организации
