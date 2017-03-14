@@ -38,15 +38,15 @@
 				</div>
 				<div class="col-sm-3">
 					{{ Form::label('filter-service', trans('adminlte_lang::message.service_name'), ['class' => 'ctrl-label']) }}
-					{{ Form::select('filter-service', $services, null,  ['class' => 'selectpicker', '@change' => 'onSelectChange', 'v-model' => 'filter_service', 'placeholder' => '- все -']) }}
+					{{ Form::select('filter-service', $services, null,  ['class' => 'js-select-basic-single', '@change' => 'onSelectChange', 'v-model' => 'filter_service', 'placeholder' => '- все -']) }}
 				</div>
 				<div class="col-sm-3">
 					{{ Form::label('filter-start-time', trans('adminlte_lang::message.start_time'), ['class' => 'ctrl-label']) }}
-					{{ Form::select('filter-start-time', $sessionStart, null,  ['class' => 'selectpicker', '@change' => 'onSelectChange', 'v-model' => 'filter_start_time']) }}
+					{{ Form::select('filter-start-time', $sessionStart, null,  ['class' => 'js-select-basic-single', '@change' => 'onSelectChange', 'v-model' => 'filter_start_time']) }}
 				</div>
 				<div class="col-sm-3">
 					{{ Form::label('filter-end-time', trans('adminlte_lang::message.end_time'), ['class' => 'ctrl-label']) }}
-					{{ Form::select('filter-end-time', $sessionEnd, null,  ['class' => 'selectpicker', '@change' => 'onSelectChange', 'v-model' => 'filter_end_time']) }}
+					{{ Form::select('filter-end-time', $sessionEnd, null,  ['class' => 'js-select-basic-single', '@change' => 'onSelectChange', 'v-model' => 'filter_end_time']) }}
 				</div>
 			{{ Form::close() }} --}}
 			<form method="post" action="#" class="form">
@@ -70,13 +70,13 @@
 						</div>
 						<div class="col-sm-3">
 							{{ Form::label('filter-employee-id', trans('adminlte_lang::message.manager'), ['class' => 'ctrl-label']) }}
-							{{ Form::select('filter-employee-id', $employees, null,  ['class' => 'selectpicker',
+							{{ Form::select('filter-employee-id', $employees, null,  ['class' => 'js-select-basic-single',
 																					  'id' => 'filter-employee-id', 
 																					  'placeholder' => 'Все сотрудники']) }}
 						</div>	    	
 						<div class="col-sm-3">
 							{{ Form::label('filter-client-id', trans('adminlte_lang::message.client_name'), ['class' => 'ctrl-label']) }}
-							{{ Form::select('filter-client-id', $clients, null, ['class' => 'selectpicker',
+							{{ Form::select('filter-client-id', $clients, null, ['class' => 'js-select-basic-single',
 																		  		 'id' => 'filter-client-id', 
 																				 'placeholder' => 'Все клиенты']) }}
 						</div>	
@@ -86,7 +86,7 @@
 						</div>
 						<div class="col-sm-3">
 							{{ Form::label('filter-service-id', trans('adminlte_lang::message.service_name'), ['class' => 'ctrl-label']) }}
-							{{ Form::select('filter-service-id', $services, null,  ['class' => 'selectpicker',
+							{{ Form::select('filter-service-id', $services, null,  ['class' => 'js-select-basic-single',
 																					'id' => 'filter-service-id',
 																					'placeholder' => 'Все услуги']) }}
 						</div>
@@ -97,7 +97,7 @@
 																		  'finished' => 'Клиент пришел',
 																		  'confirmed' => 'Клиент подтвердил'], 
 																		 null,  
-																		 ['class' => 'selectpicker',
+																		 ['class' => 'js-select-basic-single',
 																		  'id' => 'filter-appointment-status',
 																		  'placeholder' => 'Любой статус']) }}
 						</div>
@@ -106,7 +106,7 @@
 								{{ Form::label('records-on-page', trans('adminlte_lang::message.rows_per_page'), ['class' => 'ctrl-label']) }}
 								{{ Form::select('records-on-page', [25 => '25',
 															   		50 => '50', 
-															   		100 => '100',], null,  ['class' => 'selectpicker', 'id' => 'records-on-page']) }}
+															   		100 => '100',], null,  ['class' => 'js-select-basic-single', 'id' => 'records-on-page']) }}
 							</div>
 						</div>
 					</div>

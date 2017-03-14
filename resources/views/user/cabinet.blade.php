@@ -130,7 +130,7 @@
                             <div class="form-group">
                                 <label for="usr_lang" class="col-sm-3 control-label text-right">@lang('main.user:lang_label_usercabinet')</label>
                                 <div class="col-sm-9">
-                                    <select name="lang" id="usr_lang" class="selectpicker">
+                                    <select name="lang" id="usr_lang" class="js-select-basic-single">
                                         @foreach($langOptions AS $lang)
                                         <option
                                         @if (old('lang') AND old('lang') == $lang['value'])
