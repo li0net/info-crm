@@ -104,17 +104,16 @@ Route::get('/serviceCategories/edit/{serviceCategory}', 'ServiceCategoriesContro
 Route::post('/serviceCategories/save', 'ServiceCategoriesController@save');
 Route::get('/serviceCategories/destroy/{scId}', 'ServiceCategoriesController@destroy');
 
-Route::get('/test', function (){
-            $service = Service::find(20);
-
-            //$service->employees()->detach();
-            // dd($service->employees);
-     });
+//Route::get('/test', function (){
+//            $service = Service::find(20);
+//
+//            //$service->employees()->detach();
+//            // dd($service->employees);
+//     });
 
 // Route::get('/test', function (){
 //           TG::sendMsg('user#320015266', 'Hello + there!');
 //      });
-
 
 Route::get('/services/create', 'ServicesController@create');
 Route::get('/services/edit/{service}', 'ServicesController@edit');
@@ -137,6 +136,7 @@ Route::get('/appointments/destroy/{appt}', ['as' => 'appointments.destroy', 'use
 Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::get('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::post('/appointments/getClientInfo', 'AppointmentsController@getClientInfo');
+Route::get('/appointments/employeeOptions', ['as' => 'appointments.employeeOptions', 'uses' => 'appointmentsController@populateEmployeeOptions']);
 
 Route::get('/users/create', 'UsersController@create');
 Route::get('/users/edit/{user}', 'UsersController@edit');

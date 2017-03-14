@@ -31,21 +31,36 @@ class AppointmentsController extends Controller
     }
 
     // форма создания Записи
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create(Request $request) {
         $servicesOptions = $this->prepareServicesSelectData($request);
         $timeOptions = $this->prepareTimesSelectData();
         $durationSelects = $this->prepareDurationSelects();
+        $storages = Storage::where('organization_id', $request->user()->organization_id)
+            ->orderBy('title')
+            ->with('products')
+            ->get()
+            ->pluck('products', 'storage_id');
 
         return view('adminlte::appointmentform', [
             'servicesOptions' => $servicesOptions,
             'timeOptions' => $timeOptions,
             'hoursOptions' => $durationSelects['hours'],
             'minutesOptions' => $durationSelects['minutes'],
-            'user' => $request->user()
+            'user' => $request->user(),
+            'storages' => $storages
         ]);
     }
 
     // форма редактирования Записи
+    /**
+     * @param Request $request
+     * @param Appointment $appt
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
     public function edit(Request $request, Appointment $appt) {
         // TODO: выводить ошибку в красивом шаблоне
         if ($request->user()->organization_id != $appt->employee->organization_id) {
@@ -55,7 +70,6 @@ class AppointmentsController extends Controller
         $servicesOptions = $this->prepareServicesSelectData($request);
         $timeOptions = $this->prepareTimesSelectData();
         $durationSelects = $this->prepareDurationSelects();
-
         /*
         // закомментировано, т.к. преобразовываем в часы и минуты во вьюшке
         // при добавлении таймзон, нужно будет делать это здесь
@@ -73,6 +87,8 @@ class AppointmentsController extends Controller
         {
             $employeesOptions[] = ['value' => $employee->employee_id, 'label' => $employee->name];
         }
+
+        $employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
 
         // Готовим данные клиента
         $clientInfo = '';
@@ -97,6 +113,7 @@ class AppointmentsController extends Controller
             'hoursOptions' => $durationSelects['hours'],
             'minutesOptions' => $durationSelects['minutes'],
             'employeesOptions' => $employeesOptions,
+            'employees'=> $employees,
             'user' => $request->user(),
             'clientInfo' => $clientInfo
         ]);
@@ -330,6 +347,15 @@ class AppointmentsController extends Controller
         }
 
         return $servicesOptions;
+    }
+
+    public function populateEmployeeOptions(Request $request)
+    {
+        if($request->ajax()){
+            $options = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
+            $data = view('services.options', compact('options'))->render();
+            return response()->json(['options' => $data]);
+        }
     }
 
     protected function prepareEmployeesSelectData($request)
