@@ -52,7 +52,7 @@
                             <div class="form-group">
                                 {{ Form::label('position_id', trans('adminlte_lang::message.employee_position'), ['class' => 'col-sm-3 control-label text-right']) }}
                                 <div class="col-sm-9">
-                                    {{ Form::select('position_id', $items, $employee->position_id, ['class' => 'selectpicker', 'required' => '']) }}
+                                    {{ Form::select('position_id', $items, $employee->position_id, ['class' => 'js-select-basic-single', 'required' => '']) }}
                                 </div>
                             </div>
 
@@ -213,10 +213,10 @@
                         <div class="col-sm-7 text-left">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    {{ Form::select('session_start', $sessionStart, null, ['class' => 'selectpicker']) }}
+                                    {{ Form::select('session_start', $sessionStart, null, ['class' => 'js-select-basic-single']) }}
                                 </div>
                                 <div class="col-sm-6">
-                                    {{ Form::select('session_end', $sessionEnd, null, ['class' => 'selectpicker']) }}
+                                    {{ Form::select('session_end', $sessionEnd, null, ['class' => 'js-select-basic-single']) }}
                                 </div>
                             </div>
                         </div>
@@ -226,7 +226,7 @@
                         <div class="col-sm-7 text-left">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    {{ Form::select('add_interval', $addInterval, null, ['class' => 'selectpicker']) }}
+                                    {{ Form::select('add_interval', $addInterval, null, ['class' => 'js-select-basic-single']) }}
                                 </div>
                             </div>
                         </div>
