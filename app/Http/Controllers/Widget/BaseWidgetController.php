@@ -191,8 +191,6 @@ class BaseWidgetController extends Controller
     public function getEmployees(Request $request)
     {
         // отображение сотрудников оказывающих эту услугу
-        // TODO: добавить вариант "Мастер не важен"
-
         $serviceId = $request->input('service_id'); // post параметр service_id - service id
         if (empty($serviceId)) {
             return $this->showEmptyInfoPage(trans('main.widget:error_wrong_title'), trans('main.widget:error_service_id'));
@@ -222,6 +220,17 @@ class BaseWidgetController extends Controller
             // TODO: такой вариант не является аномалией, нужно придусмотреть view для него
             return $this->showEmptyInfoPage(trans('main.widget:error_employee_title'), trans('main.widget:error_employee_no'));
         }
+
+        // добавляем вариант "Мастер не важен"
+        $anyEmployee = array(
+            'employee_id'   => 'any_employee',
+            'name'          => trans('main.widget:employee_doesnot_matter_text'),
+            'avatar'        => null,
+            'position_name' => '',
+            'description'   => ''
+        );
+        // Мастер не важен на первом месте
+        array_unshift($employees, (object)$anyEmployee);
 
         // отрисовываем список исполнителей
         $view = View::make('widget.pages.employees', [
@@ -273,8 +282,17 @@ class BaseWidgetController extends Controller
             'is_nonworking' => false
         );*/
 
-        $employee = Employee::find($request->input('employee_id'));
-        $days = $employee->getFreeWorkDaysForCurrMonth();
+        if ($request->input('employee_id') == 'any_employee') {
+            $service = Service::find($request->input('service_id'));
+            if (!$service) {
+                return json_encode($this->getCommonError());
+            }
+            $days = $service->getFreeWorkDaysForCurrMonth();
+        } else {
+            $employee = Employee::find($request->input('employee_id'));
+            $days = $employee->getFreeWorkDaysForCurrMonth();
+        }
+
         if ( ! $days){
             //на всякий случай проверка на пустые дни
             return $this->showEmptyInfoPage(trans('main.widget:error_days_title'), trans('main.widget:error_days_no'));
@@ -295,11 +313,22 @@ class BaseWidgetController extends Controller
     {
         $formData = $request->only(['service_id', 'employee_id', 'date']);  // post параметр service_id, employee_id, day
 
-        $employee = Employee::find($request->input('employee_id'));
-        $service = Service::find($request->input('service_id'));
         $date = $request->input('date');
-        $times = $employee->getFreeWorkTimesForDay($date, $service);
-        if ( ! $times){
+
+        if ($request->input('employee_id') == 'any_employee') {
+            $service = Service::find($request->input('service_id'));
+            if (!$service) {
+                return json_encode($this->getCommonError());
+            }
+            $times = $service->getFreeWorkTimesForDay($date);
+
+        } else {
+            $employee = Employee::find($request->input('employee_id'));
+            $service = Service::find($request->input('service_id'));
+            $times = $employee->getFreeWorkTimesForDay($date, $service);
+        }
+
+        if ( ! $times) {
             //на всякий случай проверка на пустой массив интервалов
             return $this->showEmptyInfoPage(trans('main.widget:error_times_title'), trans('main.widget:error_times_no'));
         }
@@ -394,22 +423,36 @@ class BaseWidgetController extends Controller
         $endTs = strtotime($appStart.' + '.$sDurationHours.' hours '.$sDurationMinutes.' minutes');
         $appEnd = date('Y-m-d H:i:s', $endTs);
 
-        // Проверка что данное время все еще свободно у мастера
-        $employee = Employee::find($request->input('employee_id'))->where('organization_id', $request->input('organization_id'))->first();
-        if (!$employee) return json_encode($this->getCommonError());
-        $freeTimesForService = $employee->getFreeWorkTimesForDay($request->input('date'), $service);
-        if ($freeTimesForService === FALSE OR count($freeTimesForService) == 0) {
-            return json_encode($this->getCommonError(trans('main.widget:error_time_already_taken')));
-        }
-        $timeIsFree = false;
-        foreach ($freeTimesForService AS $freeTime) {
-            if ($request->input('time') == $freeTime) {
-                $timeIsFree = true;
-                break;
+        // если выбран вариант 'Мастер не нужен', нужно по service_id и выбранному времени случайно отобрать работника (employee)
+        if ($request->input('employee_id') == 'any_employee') {
+            $timeIntervals = $service->getFreeTimeIntervals($appStart, $appEnd);
+            if (count($timeIntervals) == 0) {
+                return json_encode($this->getCommonError(trans('main.widget:error_time_already_taken')));
             }
-        }
-        if (!$timeIsFree) {
-            return json_encode($this->getCommonError(trans('main.widget:error_time_already_taken')));
+            $rndIdx = mt_rand(0, count($timeIntervals));
+            $employee = $timeIntervals[$rndIdx]->employee_id;
+            $employee = Employee::find($employee)->where('organization_id', $request->input('organization_id'))->first();
+            if (!$employee) return json_encode($this->getCommonError());
+
+        } else {
+            $employee = Employee::find($request->input('employee_id'))->where('organization_id', $request->input('organization_id'))->first();
+            if (!$employee) return json_encode($this->getCommonError());
+
+            // Проверка что данное время все еще свободно у мастера
+            $freeTimesForService = $employee->getFreeWorkTimesForDay($request->input('date'), $service);
+            if ($freeTimesForService === FALSE OR count($freeTimesForService) == 0) {
+                return json_encode($this->getCommonError(trans('main.widget:error_time_already_taken')));
+            }
+            $timeIsFree = false;
+            foreach ($freeTimesForService AS $freeTime) {
+                if ($request->input('time') == $freeTime) {
+                    $timeIsFree = true;
+                    break;
+                }
+            }
+            if (!$timeIsFree) {
+                return json_encode($this->getCommonError(trans('main.widget:error_time_already_taken')));
+            }
         }
 
         // Ищем клиента
@@ -450,7 +493,7 @@ class BaseWidgetController extends Controller
         $appointment->service_id = $request->input('service_id');
         $appointment->start = $appStart;
         $appointment->end = $appEnd;
-        $appointment->employee_id = $request->input('employee_id');
+        $appointment->employee_id = $employee->employee_id;
         if (!empty($request->input('client_comment'))) {
             $appointment->note = $request->input('client_comment');
         }
