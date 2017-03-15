@@ -16,7 +16,7 @@
                      <div class="dropdown-content">
                          @foreach (Config::get('app.languages') as $lang => $language)
                          @if ($lang != App::getLocale())
-                         <a class="lang-flag {{$lang}}" href="/api/v1/widget/locale/{{$lang}}">{{$language}}</a>
+                            <a class="lang-flag {{$lang}}" href="/locale/{{$lang}}">{{$language}}</a>
                          @endif
                          @endforeach
                      </div>

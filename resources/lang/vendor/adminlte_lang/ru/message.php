@@ -53,7 +53,7 @@ return [
 	'createdby'               	=> 'Created by',
 	'seecode'                 	=> 'See code at',
 	'online'                  	=> 'Online',
-	'home'                    	=> 'Home',
+	'home'                    	=> 'Главная',
 	'header'                  	=> '',
 	'anotherlink'             	=> 'Another Link',
 	'multilevel'              	=> 'Multilevel',

@@ -1,7 +1,12 @@
 @import "variables";
 body.skin-orange {
+  .sidebar-mini.sidebar-collapse .main-sidebar {
+    width: $sidebar-width-collapse !important;
+  }
+
   /** sidebar **/
   .main-sidebar {
+    width: $sidebar-width;
     background-color: $brand-secondary-dark;
     color:$brand-secondary-text;
     padding-top: 60px;
@@ -28,6 +33,9 @@ body.skin-orange {
       margin-bottom: 2px;
       & > .image > img {
         border: 2px solid $body-bg;
+      }
+      .info{
+        padding: 15px 5px 5px 10px;
       }
       a{
         text-decoration: underline;

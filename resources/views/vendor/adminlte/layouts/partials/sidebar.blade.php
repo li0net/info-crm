@@ -17,14 +17,7 @@
             </div>
             <div class="pull-left info">
                 <p>
-                    <a class="org-link" href ='/home'>
-                        @if ($user->organization->name)
-                            {{$user->organization->name}}
-                        @else
-                            @lang('main.organization:default_name')
-                        @endif
-                    </a>
-                    <small>{{ Auth::user()->name }}</small>
+                    {{ Auth::user()->name }}
                 </p>
             </div>
             <div class="clearfix"></div>
@@ -67,7 +60,7 @@
         <ul class="sidebar-menu">
             <li class="header">{{ trans('adminlte_lang::message.header') }}</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ url('/employee') }}"><i class='fa fa-black-tie'></i> <span>{{ trans('adminlte_lang::message.employees') }}</span></a></li>
+            <li class="active1"><a href="{{ url('/employee') }}"><i class='fa fa-black-tie'></i> <span>{{ trans('adminlte_lang::message.employees') }}</span></a></li>
             <li class="treeview">
                 <a href="#"><i class='fa fa-users'></i> <span>{{ trans('adminlte_lang::message.clients') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">

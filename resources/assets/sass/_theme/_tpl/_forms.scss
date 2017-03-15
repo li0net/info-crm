@@ -187,17 +187,24 @@ body.skin-orange {
   }
   /** nav nav-tabs */
   .nav.nav-tabs {
-    background-color: $body-bg;
+    background-color: $brand-main;
     border-bottom: 0;
     li {
       border: none;
       border-radius: 0;
+      margin-bottom: 0;
+      &:first-of-type{
+        margin-left: 10px;
+      }
       a {
         border: none;
         border-radius: 0;
         background-color: $brand-main;
         color: $brand-main-text;
         text-decoration: none;
+        i{
+          margin-right: 5px;
+        }
         &:hover {
           background-color: $brand-main-hover;
         }
@@ -223,7 +230,7 @@ body.skin-orange {
   .form-control {
     border: 1px solid $brand-main;
     @include border-radius(15px);
-    color: $brand-main;
+    color: $text-color;
     font-size: $font-size-input;
     padding: 5px 15px;
     line-height: 19px;
@@ -281,7 +288,7 @@ body.skin-orange {
   .select2 {
     margin-top: 7px;
     width: 100% !important;
-    color: $brand-main;
+    color: $text-color;
     padding: 0;
     .select2-selection {
       border: 1px solid $brand-main;
@@ -289,17 +296,18 @@ body.skin-orange {
       font-size: $font-size-input;
       padding: 0;
       height: auto;
-      color: $brand-main;
+      color: $text-color;
       .select2-selection__rendered {
         padding: 2px 15px;
         margin: 0;
-        color: $brand-main;
+        color: $text-color;
       }
     }
     .select2-selection__arrow {
       top: 3px;
       right: 10px;
       b {
+        border-width: 7px 6px 0 6px;
         border-color: $brand-main transparent transparent transparent;
       }
     }
@@ -315,7 +323,7 @@ body.skin-orange {
     .select2-selection__clear {
       margin-top: 1px;
       margin-right: -2px;
-      color: $brand-main;
+      color: $text-color;
     }
   }
   .select2-container--default .select2-selection--multiple {
@@ -347,12 +355,13 @@ body.skin-orange {
       background-color: $brand-main;
       .select2-selection__rendered {
         @include border-radius(15px);
-        border: 1px solid $brand-main-text;
+        border: 2px solid $brand-main-text;
         color: $brand-main-text;
       }
     }
     .select2-selection__arrow {
       b {
+        border-width: 0 6px 7px 6px;
         border-color: transparent transparent $brand-main-text transparent;
       }
     }
@@ -384,7 +393,7 @@ body.skin-orange {
     .bs-caret {
       right: 15px;
       .caret {
-        color: $brand-main;
+        color: $text-color;
       }
     }
     &.open {
@@ -469,41 +478,55 @@ body.skin-orange {
 &:-ms-input-placeholder ,
 &:-moz-placeholder {
   color: $text-color;
+  font-size: $font-size;
+  padding: 0;
   @include opacity(0.8);
   font-style: italic;
 }
 ::-webkit-input-placeholder {
-   color: $text-color;
+  color: $text-color;
+  font-size: $font-size;
+  padding: 0;
   @include opacity(0.8);
   font-style: italic;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: $text-color;
+  color: $text-color;
+  font-size: $font-size;
+  padding: 0;
   @include opacity(0.8);
   font-style: italic;
 }
 
 ::-moz-placeholder { /* Firefox 19+ */
-   color: $text-color;
+  color: $text-color;
+  font-size: $font-size;
+  padding: 0;
   @include opacity(0.8);
   font-style: italic;
 }
 
 :-ms-input-placeholder { /* IE 10+ */
    color: $text-color;
+  font-size: $font-size;
+  padding: 0;
   @include opacity(0.8);
   font-style: italic;
 }
 
 ::-ms-input-placeholder { /* Edge */
-   color: $text-color;
+  color: $text-color;
+  font-size: $font-size;
+  padding: 0;
   @include opacity(0.8);
   font-style: italic;
 }
 
 :placeholder-shown { /* Standard one last! */
-   color: $text-color;
+  color: $text-color;
+  font-size: $font-size;
+  padding: 0;
   @include opacity(0.8);
   font-style: italic;
 }

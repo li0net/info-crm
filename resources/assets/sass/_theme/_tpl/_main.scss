@@ -10,7 +10,37 @@ body.skin-orange {
   }
   /** headers **/
   .content-header {
-    padding: 5px 15px 0 15px;
+    padding: 0px 15px 0 15px;
+    margin-bottom: 15px;
+    /**breadcrumb**/
+    .breadcrumb{
+      margin-top: 0;
+      margin-bottom: 0;
+      padding: 10px 0 5px 0;
+      top: 0;
+      right: 0;
+      position: relative;
+      background: transparent !important;
+      margin-left: 0;
+      float: none;
+      > li + li:before {
+        content: '/';
+      }
+      > li{
+        color: $text-color;
+        font-size: $font-size;
+        a{
+          font-size: $font-size;
+          color: $brand-main;
+          text-decoration: none;
+          &:hover{
+            text-decoration: none;
+            color: $brand-secondary;
+          }
+        }
+      }
+
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -18,7 +48,7 @@ body.skin-orange {
     font-weight: normal;
   }
   h1 {
-    font-size: 30pt;
+    font-size: 28pt;
   }
   h2 {
     font-size: 17pt;
@@ -62,19 +92,75 @@ body.skin-orange {
 
   /** boxes **/
   .box{
-    border: 1px solid #dedede;
-    @include border-radius(5px);
+    border: none;
     box-shadow: none;
     color: $text-color;
-    .box-header{
+    @include border-radius(0);
+    .box-header,
+    .box-header.with-border{
+      border: none;
+      @include border-radius(0);
+      padding-left: 0;
+      padding-bottom: 5px;
       color: $text-color;
-      font-weight: bold;
+      font-size: $font-size;
+      font-weight: normal;
+      h3{
+        color: $text-color;
+        font-size: $font-size-input;
+        font-weight: bold;
+      }
+    }
+    .box-body{
+      padding: 10px 10px 30px 10px;
+      border: 1px solid $brand-main;
+      @include border-radius(15px);
+      min-height: 185px;
+      .boxfoot{
+        margin-top: 10px;
+      }
+      .btn-boxfoot{
+        @include border-radius(15px);
+        margin: 0;
+        position: absolute;
+        bottom: 0;
+        right: -1px;
+        -webkit-border-top-right-radius: 0;
+        border-top-right-radius: 0;
+        -webkit-border-bottom-left-radius: 0;
+        border-bottom-left-radius: 0;
+        &.pull-left{
+          @include border-radius(15px);
+          position: absolute;
+          bottom: 0;
+          left: -1px;
+          -webkit-border-top-left-radius: 0;
+          border-top-left-radius: 0;
+          -webkit-border-bottom-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+        &.pull-right{
+          @include border-radius(15px);
+          position: absolute;
+          bottom: 0;
+          right: -1px;
+          -webkit-border-top-right-radius: 0;
+          border-top-right-radius: 0;
+          -webkit-border-bottom-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+
+      }
     }
   }
 
   /** content **/
   .content-wrapper{
     background-color: $brand-secondary-text;
+    text-align: left;
+    .container{
+      margin-left: 0;
+    }
   }
 
   /** diff **/
@@ -145,7 +231,7 @@ body.skin-orange {
   }
   /** alerts **/
   .alert{
-    //display: none;
+    display: none;
     padding: 5px 5px 5px 0;
     margin-bottom: 15px;
     border: none;

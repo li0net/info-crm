@@ -75,8 +75,8 @@
                     <li>
                         <a id="a_clients_delete_all_found" class='btn btn-link link-blue btn-xs' href="#">
                             <i class="fa fa-trash-o"></i>
+                            @lang('main.client:list_delete_all_found')
                         </a>
-                        @lang('main.client:list_delete_all_found')
                     </li>
                     <li>
                         <a id="a_clients_add_selected_to_category" class='btn btn-link link-blue btn-xs disabled' href="#" onclick="alert('Not implemented yet');">
