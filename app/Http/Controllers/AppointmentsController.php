@@ -312,6 +312,9 @@ class AppointmentsController extends Controller
         if (!empty($request->input('note'))) {
             $appointment->note = $request->input('note');
         }
+        $appointment->service_price = $request->input('service_price');
+        $appointment->service_discount = $request->input('service_discount');
+        $appointment->service_sum = $request->input('service_sum');
 
         $appointment->save();
 
