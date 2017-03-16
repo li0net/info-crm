@@ -172,7 +172,7 @@ class Employee extends Model
 	 * @return array
 	 *
 	 */
-	private function subtractAppointmentsPeriodFromWorkSchedule(&$schedules, $apt) {
+	public function subtractAppointmentsPeriodFromWorkSchedule(&$schedules, $apt) {
 		/*
 		Функция берет дату начала записи и, пробегаясь по массиву интервалов расписаний ищет подходящий. Найдя, бъет его на 2 новых или сокращает
 

@@ -253,4 +253,5 @@ return [
     'widget:form_head'                 => 'Оформление',
     'widget:category_head'             => 'Выбор категории услуги',
     'widget:day_head'                  => 'Выбор даты',
+    'widget:employee_doesnot_matter_text' => 'Мастер не важен'
 ];

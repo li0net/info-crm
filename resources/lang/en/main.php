@@ -246,5 +246,6 @@ return [
     'widget:form_head'                 => 'Input your data',
     'widget:category_head'             => 'Choose service category',
     'widget:day_head'                  => 'Choose date',
+    'widget:employee_doesnot_matter_text' => 'Employee doesn\'t matter'
 
 ];
