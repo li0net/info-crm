@@ -230,6 +230,7 @@ class BaseWidgetController extends Controller
             'description'   => ''
         );
         // Мастер не важен на первом месте
+        $employees = $employees->toArray();
         array_unshift($employees, (object)$anyEmployee);
 
         // отрисовываем список исполнителей
@@ -498,7 +499,7 @@ class BaseWidgetController extends Controller
             $appointment->note = $request->input('client_comment');
         }
         // TODO: поменять, когда появится поддержка 'Мастер не важен'
-        $appointment->is_employee_important = 1;
+        $appointment->is_employee_important = ($request->input('employee_id') == 'any_employee') ? 0 : 1;
         $appointment->source = 'widget';
 
         $appointment->save();
