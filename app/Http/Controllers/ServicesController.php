@@ -159,7 +159,8 @@ class ServicesController extends Controller
 			'description' => 'present',
 			'price_min' => 'required|numeric',
 			'price_max' => 'required|numeric',
-			'duration'  => 'required|date_format:"H:i:s"'
+			'duration'  => 'required|date_format:"H:i:s"',
+			'max_num_appointments' => 'integer|max:3'
 		]);
 
 		$sId = $request->input('service_id');
@@ -192,6 +193,7 @@ class ServicesController extends Controller
 		$service->price_min = $request->input('price_min');
 		$service->price_max = $request->input('price_max');
 		$service->duration = $request->input('duration');
+		$service->max_num_appointments = $request->input('max_num_appointments');
 
         $service->save();
 
@@ -200,25 +202,29 @@ class ServicesController extends Controller
        	$service->employees()->detach();
        	$service->resources()->detach();
 
-        for ($i = 0; $i < count($input['service-employee']); $i++) { 
-            $time = Carbon::createFromTime(
-            	$input['service-duration-hour'][$i], 
-            	$input['service-duration-minute'][$i],
-            	0
-            );
+        if (isset($input['service-employee'])) {
+			for ($i = 0; $i < count($input['service-employee']); $i++) {
+				$time = Carbon::createFromTime(
+					$input['service-duration-hour'][$i],
+					$input['service-duration-minute'][$i],
+					0
+				);
 
-            $service->employees()->attach(
-            	$input['service-employee'][$i], 
-            	['duration' => $time, 'routing_id' => $input['service-routing'][$i]]
-            );
-        }
+				$service->employees()->attach(
+					$input['service-employee'][$i],
+					['duration' => $time, 'routing_id' => $input['service-routing'][$i]]
+				);
+			}
+		}
 
-        for ($i = 0; $i < count($input['service-resource']); $i++) { 
-            $service->resources()->attach(
-            	$input['service-resource'][$i], 
-            	['amount' => $input['amount'][$i]]
-            );
-        }
+		if (isset($input['service-resource'])) {
+			for ($i = 0; $i < count($input['service-resource']); $i++) {
+				$service->resources()->attach(
+					$input['service-resource'][$i],
+					['amount' => $input['amount'][$i]]
+				);
+			}
+		}
 
         return redirect()->to('/services');
 	}

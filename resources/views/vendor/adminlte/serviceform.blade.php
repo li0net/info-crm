@@ -159,6 +159,26 @@
                         @endforeach
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label text-right" for="s_price_max">@lang('main.service:max_num_appointments')</label>
+                    <div class="col-sm-9">
+                        <?php
+                        $old = old('max_num_appointments');
+                        if (!is_null($old)) {
+                            $value = $old;
+                        } elseif (isset($service)) {
+                            $value = $service->max_num_appointments;
+                        } else {
+                            $value = '';
+                        }?>
+                        <input type="text" name="max_num_appointments" id="s_max_num_appointments" class="form-control" value="{{$value}}">
+                        @foreach ($errors->get('max_num_appointments') as $message)
+                            <?='<br/>'?>{{$message}}
+                        @endforeach
+                    </div>
+                </div>
+
                 {{-- <hr>
                 <div class="row">
                     <div class="col-sm-12">
