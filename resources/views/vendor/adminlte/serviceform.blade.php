@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	@lang('main.service_category:list_page_header')
+@lang('main.service_category:list_page_header')
 @endsection
 
 @section('main-content')
@@ -51,8 +51,8 @@
                     <input type="hidden" name="service_id" id="sc_service_id" value="{{$service->service_id}}">
                     @endif
                     <div class="form-group">
-                        <label class="col-sm-3 control-label text-right" for="s_service_category_id">@lang('main.service:service_category_label')</label>
-                        <div class="col-sm-9">
+                        <label class="col-sm-4 control-label text-right" for="s_service_category_id">@lang('main.service:service_category_label')</label>
+                        <div class="col-sm-8">
                             <select name="service_category_id" id="s_service_category_id" class="js-select-basic-single">
                                 @foreach($serviceCategoriesOptions as $serviceCategory)
                                 <option
@@ -72,8 +72,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label text-right" for="s_name">@lang('main.service:name_label')</label>
-                        <div class="col-sm-9">
+                        <label class="col-sm-4 control-label text-right" for="s_name">@lang('main.service:name_label')</label>
+                        <div class="col-sm-8">
                             <?php
                             $old = old('name');
                             if (!is_null($old)) {
@@ -90,8 +90,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label text-right" for="s_price_min">@lang('main.service:price_min_label')</label>
-                        <div class="col-sm-9">
+                        <label class="col-sm-4 control-label text-right" for="s_price_min">@lang('main.service:price_min_label')</label>
+                        <div class="col-sm-8">
                             <?php
                             $old = old('price_min');
                             if (!is_null($old)) {
@@ -108,8 +108,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label text-right" for="s_price_max">@lang('main.service:price_max_label')</label>
-                        <div class="col-sm-9">
+                        <label class="col-sm-4 control-label text-right" for="s_price_max">@lang('main.service:price_max_label')</label>
+                        <div class="col-sm-8">
                             <?php
                             $old = old('price_max');
                             if (!is_null($old)) {
@@ -126,8 +126,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label text-right" for="s_duration">@lang('main.service:duration_label')</label>
-                        <div class="col-sm-9">
+                        <label class="col-sm-4 control-label text-right" for="s_duration">@lang('main.service:duration_label')</label>
+                        <div class="col-sm-8">
                             <select name="duration" id="s_duration" class="js-select-basic-single">
                                 @foreach($durationOptions as $duration)
                                 <option
@@ -148,8 +148,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label text-right" for="s_description">@lang('main.service:description_label')</label>
-                        <div class="col-sm-9">
+                        <label class="col-sm-4 control-label text-right" for="s_description">@lang('main.service:description_label')</label>
+                        <div class="col-sm-8">
                             <?php
                             $old = old('description');
                             if (!is_null($old)) {
@@ -165,6 +165,26 @@
                             @endforeach
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label text-right" for="s_price_max">@lang('main.service:max_num_appointments')</label>
+                        <div class="col-sm-8">
+                            <?php
+                            $old = old('max_num_appointments');
+                            if (!is_null($old)) {
+                                $value = $old;
+                            } elseif (isset($service)) {
+                                $value = $service->max_num_appointments;
+                            } else {
+                                $value = '';
+                            }?>
+                            <input type="text" name="max_num_appointments" id="s_max_num_appointments" class="form-control" value="{{$value}}">
+                            @foreach ($errors->get('max_num_appointments') as $message)
+                            <?='<br/>'?>{{$message}}
+                            @endforeach
+                        </div>
+                    </div>
+
                     {{-- <hr>
                     <div class="row">
                         <div class="col-sm-12">
@@ -301,144 +321,143 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('page-specific-scripts')
-	<script>
-		$(document).ready(function(){
-			$('#add-employee').on('click', function(e){
-				$('.employee-content').prepend('<div class="row"><div class="col-sm-3"><select required="required" name="service-employee[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><select required="required" name="service-duration-hour[]" class="js-select-basic-single"><option value="0">0 ч</option><option value="1">1 ч</option><option value="2">2 ч</option><option value="3">3 ч</option><option value="4">4 ч</option><option value="5">5 ч</option><option value="6">6 ч</option><option value="7">7 ч</option><option value="8">8 ч</option><option value="9">9 ч</option></select></div> <div class="col-sm-2"><select required="required" name="service-duration-minute[]" class="js-select-basic-single"><option value="00">00 мин</option><option value="15">15 мин</option><option value="30">30 мин</option><option value="45">45 мин</option></select></div> <div class="col-sm-3"><select required="required" name="service-routing[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><button type="button" id="delete-employee" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>');
-                sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-employee[]"]').first();
-                sel.html($('#employee-options').val());
+<script>
+    $(document).ready(function(){
+        $('#add-employee').on('click', function(e){
+            $('.employee-content').prepend('<div class="row"><div class="col-sm-3"><select required="required" name="service-employee[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><select required="required" name="service-duration-hour[]" class="js-select-basic-single"><option value="0">0 ч</option><option value="1">1 ч</option><option value="2">2 ч</option><option value="3">3 ч</option><option value="4">4 ч</option><option value="5">5 ч</option><option value="6">6 ч</option><option value="7">7 ч</option><option value="8">8 ч</option><option value="9">9 ч</option></select></div> <div class="col-sm-2"><select required="required" name="service-duration-minute[]" class="js-select-basic-single"><option value="00">00 мин</option><option value="15">15 мин</option><option value="30">30 мин</option><option value="45">45 мин</option></select></div> <div class="col-sm-3"><select required="required" name="service-routing[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><button type="button" id="delete-employee" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>');
+            sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-employee[]"]').first();
+            sel.html($('#employee-options').val());
 
-                sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-routing[]"]').first();
-                sel.html($('#routing-options').val());
+            sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-routing[]"]').first();
+            sel.html($('#routing-options').val());
 
-                $(".employee-content .js-select-basic-single").select2({
-                    theme: "alt-control",
-                    placeholder: "choose the one",
-                    minimumResultsForSearch: Infinity
+            $(".employee-content .js-select-basic-single").select2({
+                theme: "alt-control",
+                placeholder: "choose the one",
+                minimumResultsForSearch: Infinity
+            });
+        });
+
+        $('.employee-content').on('click', '#delete-employee', function(e){
+            $(this).parent().parent().remove();
+        });
+
+        $('#add-resource').on('click', function(e){
+            $('.resource-content').prepend('<div class="row"><div class="col-sm-6"><select required="required" name="service-resource[]" class="js-select-basic-single"></select></div> <div class="col-sm-4"><input type="text" name="amount[]" class="form-control" value="0"></div> <div class="col-sm-2"><button type="button" id="delete-resource" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>');
+            sel = $('.resource-content').children('.row').first().children('.col-sm-6').children('select[name="service-resource[]"]').first();
+            sel.html($('#resource-options').val());
+
+            $(".resource-content .js-select-basic-single").select2({
+                theme: "alt-control",
+                placeholder: "choose the one",
+                minimumResultsForSearch: Infinity
+            });
+        });
+
+        $('.resource-content').on('click', '#delete-resource', function(e){
+            $(this).parent().parent().remove();
+        });
+
+        $('#form_submit').on('click', function() {
+            $('#service_form').submit();
+
+            // var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
+
+            // if(activeTab == '#menu1') {
+            // 	$('#service_form__basic_settings').submit();
+            // }
+
+            // if(activeTab == '#menu2') {
+            // 	$('#service_form__employees').submit();
+            // }
+
+            // if(activeTab == '#menu3') {
+            // 	$('#service_form__resources').submit();
+            // }
+        });
+
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: '/service/employeeOptions',
+            data: {},
+            success: function(data) {
+                $('select[name="service-employee[]"]').html('');
+                $('select[name="service-employee[]"]').html(data.options);
+
+                $('#employee-options').val(data.options);
+                // $('select.form-control[name="products_cats_detailed[]"]').find('option').remove();
+                // $('select.form-control[name="products_cats_detailed[]"]').append(options);
+
+                $('select.form-control[name="service-employee[]"]').each(function() {
+                    var initialValue = $(this).attr('data-initial-value');
+
+                    if ( 0 != initialValue ) {
+                        $(this).val(initialValue);
+                    } else {
+                        $(this).val($(this).find('option').first().val());
+                    }
                 });
-			});
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log('Error while processing employee data range!');
+            }
+        });
 
-			$('.employee-content').on('click', '#delete-employee', function(e){
-				$(this).parent().parent().remove();
-			});
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: '/service/routingOptions',
+            data: {},
+            success: function(data) {
+                $('select[name="service-routing[]"]').html('');
+                $('select[name="service-routing[]"]').html(data.options);
 
-			$('#add-resource').on('click', function(e){
-				$('.resource-content').prepend('<div class="row"><div class="col-sm-6"><select required="required" name="service-resource[]" class="js-select-basic-single"></select></div> <div class="col-sm-4"><input type="text" name="amount[]" class="form-control alt-control" value="0"></div> <div class="col-sm-2"><button type="button" id="delete-resource" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>');
-                sel = $('.resource-content').children('.row').first().children('.col-sm-6').children('select[name="service-resource[]"]').first();
-                sel.html($('#resource-options').val());
+                $('#routing-options').val(data.options);
 
-                $(".resource-content .js-select-basic-single").select2({
-                    theme: "alt-control",
-                    placeholder: "choose the one",
-                    minimumResultsForSearch: Infinity
+                $('select.form-control[name="service-routing[]"]').each(function() {
+                    var initialValue = $(this).attr('data-initial-value');
+
+                    if ( 0 != initialValue ) {
+                        $(this).val(initialValue);
+                    } else {
+                        $(this).val($(this).find('option').first().val());
+                    }
                 });
-			});
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log('Error while processing routing data range!');
+            }
+        });
 
-			$('.resource-content').on('click', '#delete-resource', function(e){
-				$(this).parent().parent().remove();
-			});
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: '/service/resourceOptions',
+            data: {},
+            success: function(data) {
+                $('select[name="service-resource[]"]').html('');
+                $('select[name="service-resource[]"]').html(data.options);
 
-			$('#form_submit').on('click', function() {
-				$('#service_form').submit();
+                $('#resource-options').val(data.options);
 
-				// var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
+                $('select.form-control[name="service-resource[]"]').each(function() {
+                    var initialValue = $(this).attr('data-initial-value');
 
-				// if(activeTab == '#menu1') {
-				// 	$('#service_form__basic_settings').submit();
-				// }
-
-				// if(activeTab == '#menu2') {
-				// 	$('#service_form__employees').submit();
-				// }
-				
-				// if(activeTab == '#menu3') {
-				// 	$('#service_form__resources').submit();
-				// }
-			});
-
-			$.ajax({
-				type: "GET",
-				dataType: 'json',
-				url: '/service/employeeOptions',
-				data: {},
-				success: function(data) {
-					$('select[name="service-employee[]"]').html('');
-					$('select[name="service-employee[]"]').html(data.options);
-
-					$('#employee-options').val(data.options);
-					// $('select.form-control[name="products_cats_detailed[]"]').find('option').remove();
-					// $('select.form-control[name="products_cats_detailed[]"]').append(options);
-
-					$('select.form-control[name="service-employee[]"]').each(function() {
-						var initialValue = $(this).attr('data-initial-value');
-						
-						if ( 0 != initialValue ) {
-							$(this).val(initialValue);
-						} else {
-							$(this).val($(this).find('option').first().val());
-						}
-					});
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log('Error while processing employee data range!');
-				}
-			});
-
-			$.ajax({
-				type: "GET",
-				dataType: 'json',
-				url: '/service/routingOptions',
-				data: {},
-				success: function(data) {
-					$('select[name="service-routing[]"]').html('');
-					$('select[name="service-routing[]"]').html(data.options);
-
-					$('#routing-options').val(data.options);
-
-					$('select.form-control[name="service-routing[]"]').each(function() {
-						var initialValue = $(this).attr('data-initial-value');
-						
-						if ( 0 != initialValue ) {
-							$(this).val(initialValue);
-						} else {
-							$(this).val($(this).find('option').first().val());
-						}
-					});
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log('Error while processing routing data range!');
-				}
-			});
-
-			$.ajax({
-				type: "GET",
-				dataType: 'json',
-				url: '/service/resourceOptions',
-				data: {},
-				success: function(data) {
-					$('select[name="service-resource[]"]').html('');
-					$('select[name="service-resource[]"]').html(data.options);
-
-					$('#resource-options').val(data.options);
-
-					$('select.form-control[name="service-resource[]"]').each(function() {
-						var initialValue = $(this).attr('data-initial-value');
-						
-						if ( 0 != initialValue ) {
-							$(this).val(initialValue);
-						} else {
-							$(this).val($(this).find('option').first().val());
-						}
-					});
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log('Error while processing resource data range!');
-				}
-			});
-		});
-	</script>
+                    if ( 0 != initialValue ) {
+                        $(this).val(initialValue);
+                    } else {
+                        $(this).val($(this).find('option').first().val());
+                    }
+                });
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log('Error while processing resource data range!');
+            }
+        });
+    });
+</script>
 @endsection

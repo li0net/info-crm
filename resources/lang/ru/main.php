@@ -47,6 +47,7 @@ return [
     'service:create_new_btn_label'          => 'Новая услуга',
     'service:delete_success_message'        => 'Услуга удалена!',
     'service:delete_error_message'          => 'Услуга не найдена.',
+    'service:max_num_appointments'          => 'Максимальное количество одновременно обслуживаемых клиентов',
 
     'organization:default_name'             => 'BarcelonaCRM',
     'organization:form_page_header'         => 'Основные настройки',

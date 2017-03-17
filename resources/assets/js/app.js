@@ -83,7 +83,9 @@ const app = new Vue({
 			card_items_count: 0,
 			transaction_items_count: 0,
 			services_ctgs_options: '',
-			storage_options: ''
+			storage_options: '',
+			service_name: 'Услуга не выбрана',
+			service_employee: 'Сотрудник не выбран'
 		}
 	},
 	methods: {
