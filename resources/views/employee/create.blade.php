@@ -22,7 +22,7 @@
             <div class="col-sm-12">
                 {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
                 {!! Form::open(['route' => ['employee.store'], 'method' => 'PUT', 'files' => 'true', 'class'=>'form-horizontal']) !!}
-                <div class="col-sm-9 col-sm-offset-3">
+                <div class="col-sm-8 col-sm-offset-3">
                     @if (count($errors) > 0)
                     <div class="alert alert-error">
                         <ul>
@@ -36,29 +36,29 @@
                 <div class="col-sm-8">
 
                     <div class="form-group">
-                        {{ Form::label('name', trans('adminlte_lang::message.employee_name'), ['class' => 'col-sm-3 control-label text-right']) }}
-                        <div class="col-sm-9">
+                        {{ Form::label('name', trans('adminlte_lang::message.employee_name'), ['class' => 'col-sm-4 control-label text-right']) }}
+                        <div class="col-sm-8">
                             {{ Form::text('name', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '70', 'placeholder' => trans('adminlte_lang::message.employee_name')]) }}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        {{ Form::label('email', trans('adminlte_lang::message.employee_email'), ['class' => 'col-sm-3 control-label text-right']) }}
-                        <div class="col-sm-9">
+                        {{ Form::label('email', trans('adminlte_lang::message.employee_email'), ['class' => 'col-sm-4 control-label text-right']) }}
+                        <div class="col-sm-8">
                             {{ Form::text('email', null, ['class' => 'form-control', 'email' => '', 'placeholder'=>trans('adminlte_lang::message.employee_email')]) }}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        {{ 	Form::label('phone', trans('adminlte_lang::message.employee_phone'), ['class' => 'col-sm-3 control-label text-right']) }}
-                        <div class="col-sm-9">
+                        {{ 	Form::label('phone', trans('adminlte_lang::message.employee_phone'), ['class' => 'col-sm-4 control-label text-right']) }}
+                        <div class="col-sm-8">
                             {{ 	Form::text('phone', null, ['class' => 'form-control', 'required' => '', 'placeholder'=>trans('adminlte_lang::message.employee_phone')]) }}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        {{ 	Form::label('position_id', trans('adminlte_lang::message.employee_position'), ['class' => 'col-sm-3 control-label text-right']) }}
-                        <div class="col-sm-9">
+                        {{ 	Form::label('position_id', trans('adminlte_lang::message.employee_position'), ['class' => 'col-sm-4 control-label text-right']) }}
+                        <div class="col-sm-8">
                             {{	Form::select('position_id', $items, 1, ['class' => 'js-select-basic-single', 'required' => '', 'placeholder'=>trans('adminlte_lang::message.employee_position')]) }}
                         </div>
                     </div>

@@ -165,7 +165,7 @@ return [
 
     'client:list_header'                    => 'Клиенты',
     'client:list_page_header'               => 'Клиенты',
-    'client:list_actions'                   => 'Действия',
+    'client:list_actions'                   => 'Управление',
     'client:list_filters'                   => 'Фильтры',
     'client:search_button_label'            => 'Искать',
     'client:search_field_placeholder'       => 'Поиск (по имени, телефону или Email)',

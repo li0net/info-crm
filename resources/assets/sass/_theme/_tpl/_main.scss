@@ -77,13 +77,20 @@ body.skin-orange {
     color: $text-grey-color;
   }
   /** links **/
-  a {
+  a ,
+  a.fa {
     color: $brand-main;
     text-decoration: underline;
     @include transition-all (0.3s);
     &:hover {
       color: $brand-secondary;
       text-decoration: underline;
+    }
+    &.fa{
+      text-decoration: none;
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
   .fat{
@@ -156,7 +163,7 @@ body.skin-orange {
 
   /** content **/
   .content-wrapper{
-    background-color: $brand-secondary-text;
+    background-color: $brand-main-text;
     text-align: left;
     .container{
       margin-left: 0;
@@ -254,7 +261,7 @@ body.skin-orange {
     &.alert-error,
     &.alert-error span,
     &.alert-error .close {
-      color: #dd4b39 !important;
+      color: $red-color !important;
       background: transparent !important;
     }
     &.alert-success,

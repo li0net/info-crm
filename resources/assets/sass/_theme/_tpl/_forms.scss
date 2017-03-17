@@ -107,7 +107,7 @@ body.skin-orange {
       }
     }
     &.btn-danger {
-      background-color: #C34749;
+      background-color: $red-color;
       &:hover {
         background-color: #AE4042;
         text-decoration: none;
@@ -117,7 +117,6 @@ body.skin-orange {
   }
 
   /** nav modal-menu */
-
   .nav.modal-menu.nav-tabs.nav-stacked {
     background-color: $body-bg;
     padding: 0;
@@ -146,7 +145,7 @@ body.skin-orange {
   }
   /** nav nav-pills */
   .nav.nav-pills {
-    color: $brand-secondary-text;
+    color: $brand-main-text;
     li {
       border-radius: 0;
       &:first-of-type {
@@ -176,7 +175,7 @@ body.skin-orange {
         font-size: $font-size-input;
         margin-right: 1px;
         border: 1px solid $brand-main;
-        color: $brand-secondary-text;
+        color: $brand-main-text;
         background-color: $brand-main;
         text-decoration: none;
         &:hover {
@@ -236,6 +235,7 @@ body.skin-orange {
     line-height: 19px;
     //height: 30px;
     margin-top: 7px;
+
   }
   .input-group {
     padding-top: 7px;
@@ -469,6 +469,136 @@ body.skin-orange {
       color: $brand-main-text !important;
       background-color: $brand-main !important;
       box-shadow: 0 0 10px 100px $brand-main inset !important;
+    }
+  }
+  /** alternative control **/
+  .alt-control-bar{
+    .col-sm-1,
+    .col-sm-2,
+    .col-sm-3,
+    .col-sm-4,
+    .col-sm-5,
+    .col-sm-6,
+    .col-sm-8,
+    .col-sm-9,
+    .col-sm-10,
+    .col-sm-11,
+    .col-sm-12{
+      padding-left: 1px;
+      padding-right: 1px;
+    }
+    .btn.btn-danger{
+      margin-left: 10px;
+      color: $red-color;
+      background-color: transparent;
+      @include border-radius(0);
+      padding: 1px;
+      font-size: $font-size-input;
+      i{
+        font-size: $font-size-input;
+      }
+    }
+    .form-control,
+    &.form-control{
+      border: 1px solid $brand-main-text;
+      @include border-radius(0);
+      color: $text-color;
+      background-color: rgba(0,0,0,0.1);
+      font-size: $font-size;
+      padding: 5px 15px;
+      //line-height: 19px;
+      height: 30px;
+      margin: 0;
+      &:hover,
+      &:hover,
+      &:focus {
+        border-color: $brand-main-text;
+        outline: 0;
+        box-shadow: none;
+      }
+    }
+    .select2-container--alt-control,
+    .select2{
+      margin-top: 0;
+      width: 100% !important;
+      color: $text-color;
+      padding: 0;
+      .select2-selection{
+        border: 1px solid $brand-main-text;
+        @include border-radius(0);
+        color: $text-color;
+        background-color: rgba(0,0,0,0.1);
+        font-size: $font-size;
+        padding: 0;
+        //line-height: 19px;
+        height: 30px;
+        margin: 0;
+        .select2-selection__rendered {
+          padding: 1px  15px 0 15px ;
+          margin: 0;
+          color: $text-color;
+        }
+      }
+      .select2-selection__arrow {
+        height: 26px;
+        position: absolute;
+        width: 20px;
+        top: 3px;
+        right: 10px;
+        b {
+          border-style: solid;
+          height: 0;
+          left: 50%;
+          margin-left: -4px;
+          margin-top: -2px;
+          position: absolute;
+          top: 50%;
+          width: 0;
+          border-width: 5px 4px 0 4px;
+          border-color: $text-color transparent transparent transparent;
+        }
+      }
+    }
+  }
+  .select2-container.select2-container--alt-control.select2-container--open{
+    .select2-selection__clear {
+      color: $brand-main-text;
+    }
+    .select2-selection {
+      background-color: rgba(0,0,0,0.1);
+      .select2-selection__rendered {
+        @include border-radius(0);
+        border: 0;
+        color: $text-color;
+      }
+    }
+    .select2-selection__arrow {
+      b {
+        border-width: 0 4px 5px 4px;
+        border-color: transparent transparent $text-color transparent;
+      }
+    }
+    ul.select2-results__options {
+      max-height: 200px;
+      overflow-y: auto;
+      background-color: rgba(0,0,0,0.1);
+      @include border-bottom-radius(0);
+      border: none;
+      li {
+        padding-left: 15px;
+        color: $text-color;
+        &:focus,
+        &:hover {
+          background-color: rgba(0,0,0,0.2);
+        }
+        &.select2-results__option--highlighted {
+          background-color: rgba(0,0,0,0.2);
+          &:focus,
+          &:hover {
+            background-color: rgba(0,0,0,0.2);
+          }
+        }
+      }
     }
   }
 }
