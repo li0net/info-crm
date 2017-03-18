@@ -486,6 +486,7 @@ $(document).ready(function () {
 		format: 'yyyy-mm-dd',
 		firstDay: 1
 	});
+
 	// Service dropdown change event
 	$('#app_service_id').change(function() {
 		// удаляем все опции из селекта с сотрудниками
