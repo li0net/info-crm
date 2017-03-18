@@ -42,29 +42,29 @@
                             {!! Form::hidden('id', 'employee_form__info') !!}
                             <div class="col-sm-8">
                                 <div class="form-group">
-                                    {{ Form::label('name',trans('adminlte_lang::message.employee_name'), ['class' => 'col-sm-3 control-label text-right']) }}
-                                    <div class="col-sm-9">
+                                    {{ Form::label('name',trans('adminlte_lang::message.employee_name'), ['class' => 'col-sm-4 control-label text-right']) }}
+                                    <div class="col-sm-8">
                                         {{ Form::text('name', null, ['class' => 'text-left form-control', 'placeholder' => trans('adminlte_lang::message.name_example')]) }}
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    {{ Form::label('position_id', trans('adminlte_lang::message.employee_position'), ['class' => 'col-sm-3 control-label text-right']) }}
-                                    <div class="col-sm-9">
+                                    {{ Form::label('position_id', trans('adminlte_lang::message.employee_position'), ['class' => 'col-sm-4 control-label text-right']) }}
+                                    <div class="col-sm-8">
                                         {{ Form::select('position_id', $items, $employee->position_id, ['class' => 'js-select-basic-single', 'required' => '']) }}
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    {{ Form::label('spec', trans('adminlte_lang::message.employee_specialization'), ['class' => 'col-sm-3 control-label text-right']) }}
-                                    <div class="col-sm-9">
+                                    {{ Form::label('spec', trans('adminlte_lang::message.employee_specialization'), ['class' => 'col-sm-4 control-label text-right']) }}
+                                    <div class="col-sm-8">
                                         {{ Form::text('spec', null, ['class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.specialization_example')]) }}
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    {{ Form::label('descr', trans('adminlte_lang::message.description'), ['class' => 'col-sm-3 control-label text-right']) }}
-                                    <div class="col-sm-9">
+                                    {{ Form::label('descr', trans('adminlte_lang::message.description'), ['class' => 'col-sm-4 control-label text-right']) }}
+                                    <div class="col-sm-8">
                                         {{ Form::textarea('descr', null, ['class' => 'form-control']) }}
                                     </div>
                                 </div>
@@ -85,8 +85,8 @@
                                     </div>
                                 </div>
                                 <span class="btn btn-info btn-file">
-                                {{ trans('adminlte_lang::message.load_photo') }}<input type="file" name="avatar" @change="onFileChange">
-                            </span>
+                                    {{ trans('adminlte_lang::message.load_photo') }}<input type="file" name="avatar" @change="onFileChange">
+                                </span>
                             </div>
                             {!! Form::close() !!}
                         </div>
@@ -118,8 +118,8 @@
                                     {{ Form::checkbox('online_reg_notify', 1, $settings[0]->online_reg_notify, ['class'=>'flat-red', 'style' => 'margin-right: 10px']) }}
                                     {{ trans('adminlte_lang::message.send_notes_online_records') }}
                                 </label>
-                                <label class="col-sm-1 text-left hidden hidden">
-                                    <a class="fa fa-info-circle" id="'online_reg_notify" original-title="">&nbsp;</a>
+                                <label class="col-sm-1 text-left">
+                                    <a class="fa fa-info-circle" id="online_reg_notify" original-title="">&nbsp;</a>
                                 </label>
                             </div>
                             <div class="form-group">
@@ -128,7 +128,7 @@
                                     {{ Form::checkbox('phone_reg_notify', 1, $settings[0]->phone_reg_notify, ['style' => 'margin-right: 10px']) }}
                                     {{ trans('adminlte_lang::message.send_notes_phone_records') }}
                                 </label>
-                                <label class="col-sm-1 text-left hidden">
+                                <label class="col-sm-1 text-left">
                                     <a class="fa fa-info-circle" id="phone_reg_notify" original-title="">&nbsp;</a>
                                 </label>
                             </div>
@@ -138,7 +138,7 @@
                                     {{ Form::checkbox('online_reg_notify_del', 1, $settings[0]->online_reg_notify_del, ['style' => 'margin-right: 10px']) }}
                                     {{ trans('adminlte_lang::message.send_online_record_removal') }}
                                 </label>
-                                <label class="col-sm-1 text-left hidden">
+                                <label class="col-sm-1 text-left">
                                     <a class="fa fa-info-circle" id="online_reg_notify_del" original-title="">&nbsp;</a>
                                 </label>
                             </div>
@@ -148,7 +148,7 @@
                                     {{ Form::text('phone_for_notify', null, ['class' => 'text-left form-control',
                                     'placeholder' => trans('adminlte_lang::message.example').'+7 495 123 45 67']) }}
                                 </div>
-                                <label class="col-sm-1 text-left hidden">
+                                <label class="col-sm-1 text-left">
                                     <a class="fa fa-info-circle" id="phone_for_notify" original-title="">&nbsp;</a>
                                 </label>
                             </div>
@@ -158,7 +158,7 @@
                                     {{ Form::text('email_for_notify', null, ['class' => 'text-left form-control',
                                     'placeholder' => trans('adminlte_lang::message.example').'info@mail.com']) }}
                                 </div>
-                                <label class="col-sm-1 text-left hidden">
+                                <label class="col-sm-1 text-left">
                                     <a class="fa fa-info-circle" id="email_for_notify" original-title="">&nbsp;</a>
                                 </label>
                             </div>
@@ -168,7 +168,7 @@
                                     {{ Form::checkbox('client_data_notify', 1, $settings[0]->client_data_notify, ['style' => 'margin-right: 10px']) }}
                                     {{ trans('adminlte_lang::message.send_data_of_clients') }}
                                 </label>
-                                <label class="col-sm-1 text-left hidden">
+                                <label class="col-sm-1 text-left">
                                     <a class="fa fa-info-circle" id="client_data_notify" original-title="">&nbsp;</a>
                                 </label>
                             </div>
@@ -187,7 +187,7 @@
                                         {{ trans('adminlte_lang::message.forbid_online_record') }}
                                     </label>
                                 </div>
-                                <label class="col-sm-1 text-left hidden">
+                                <label class="col-sm-1 text-left">
                                     <a class="fa fa-info-circle" id="reg_permitted" original-title="">&nbsp;</a>
                                 </label>
                             </div>
@@ -253,7 +253,7 @@
                                     {{ Form::checkbox('is_rejected', 1, $settings[0]->is_rejected, ['style' => 'margin-right: 10px']) }}
                                     {{ trans('adminlte_lang::message.dissmissed') }}
                                 </label>
-                                <label class="col-sm-1 text-left hidden">
+                                <label class="col-sm-1 text-left">
                                     <a class="fa fa-info-circle" id="is_rejected" original-title="">&nbsp;</a>
                                 </label>
                             </div>
@@ -301,9 +301,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12">
-                    {!! Html::linkRoute('employee.show', trans('adminlte_lang::message.cancel'), [$employee->employee_id], ['class'=>'btn btn-info pull-left']) !!}
-                    {{ Form::button(trans('adminlte_lang::message.save'), ['class'=>'btn btn-primary  pull-right', 'id' => 'form_submit']) }}
+                <div class="col-sm-12 text-right">
+                    {!! Html::linkRoute('employee.show', trans('adminlte_lang::message.cancel'), [$employee->employee_id], ['class'=>'btn btn-info m-r']) !!}
+                    {{ Form::button(trans('adminlte_lang::message.save'), ['class'=>'btn btn-primary  ', 'id' => 'form_submit']) }}
                 </div>
             </div>
             {{-- {!! Form::close() !!} --}}

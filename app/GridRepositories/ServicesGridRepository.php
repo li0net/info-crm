@@ -17,13 +17,13 @@ class ServicesGridRepository extends EloquentRepositoryAbstract {
             ->where('service_categories.organization_id', $orgId);
 
         $this->visibleColumns = [
-            'services.service_id',
             'services.name',
             'service_categories.name AS service_category_id',
             'services.description',
             'services.price_min',
             'services.price_max',
-            'services.duration'
+            'services.duration',
+            'services.service_id'
         ];
 
         $this->orderBy = [

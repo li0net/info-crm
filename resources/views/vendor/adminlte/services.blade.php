@@ -4,15 +4,13 @@
     @lang('main.service:list_page_header')
 @endsection
 
-
 @section('main-content')
     <section class="content-header">
         <h1>@lang('main.service:list_page_header')</h1>
-        <!--<ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Forms</a></li>
-            <li class="active">Advanced Elements</li>
-        </ol>-->
+        <ol class="breadcrumb">
+            <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+            <li class="active">@lang('main.service:list_page_header')</li>
+        </ol>
     </section>
     <div class="row">
         @if ($user->hasAccessTo('service', 'edit', 0) >= 1)

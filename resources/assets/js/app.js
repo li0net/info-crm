@@ -191,15 +191,15 @@ $(document).ready(function () {
 		mtype: "GET",
 		styleUI : 'Bootstrap',
 		datatype: "json",
-		colNames:['Управление', 'Название', 'Категория услуг', 'Описание', 'Мин. цена', 'Макс. цена', 'Длительность'],
+		colNames:['Название', 'Категория услуг', 'Описание', 'Мин. цена', 'Макс. цена', 'Длительность','Управление'],
 		colModel: [
-			{ index: 'service_id', name: 'service_id', key: true, width: 60, formatter:ServiceFormatEditColumn },
 			{ index: 'name', name: 'name', width: 110 },
 			{ index: 'service_category_id', name: 'service_category_id', width: 110 },
 			{ index: 'description', name: 'description', width: 160 },
-			{ index: 'price_min', name: 'price_min', formatter:'currency', width: 70 },
-			{ index: 'price_max', name: 'price_max', formatter:'currency', width: 70 },
-			{ index: 'duration', name: 'duration', formatter:'date', formatoptions:{srcformat:"H:i:s", newformat:"G:i", decimalPlaces: 2, prefix: "$ "}, width: 70 }
+			{ index: 'price_min', name: 'price_min', formatter:'currency', width: 70, align:'center'},
+			{ index: 'price_max', name: 'price_max', formatter:'currency', width: 70, align:'center'},
+			{ index: 'duration', name: 'duration', formatter:'date', formatoptions:{srcformat:"H:i:s", newformat:"G:i", decimalPlaces: 2, prefix: "$ "}, width: 70, align:'center' },
+            { index: 'service_id', name: 'service_id', key: true, width: 60, formatter:ServiceFormatEditColumn, align:'center'  }
 		],
 		sortname: 'name',
 		sortorder: 'asc',
@@ -648,7 +648,13 @@ $(document).ready(function () {
 		templateResult: formatClientCatColor,
 		allowClear: true
 	});
-	$(".js-select-basic-single").select2({
+
+	$(".alt-control-bar .js-select-basic-single").select2({
+        theme: "alt-control",
+	    placeholder: "---",
+        minimumResultsForSearch: Infinity
+    });
+    $(".js-select-basic-single").select2({
         placeholder: "---",
         minimumResultsForSearch: Infinity
     });

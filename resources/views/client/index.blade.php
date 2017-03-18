@@ -7,13 +7,11 @@
 @section('main-content')
 <section class="content-header">
     <h1>@lang('main.client:list_header')</h1>
-    <!--<ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Forms</a></li>
-        <li class="active">Advanced Elements</li>
-    </ol>-->
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.client_list') }}</li>
+    </ol>
 </section>
-
 <div class="row">
     @if (Session::has('success'))
         <div class="alert alert-success" role="alert">

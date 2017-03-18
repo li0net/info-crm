@@ -8,10 +8,10 @@ body.skin-orange {
   .main-sidebar {
     width: $sidebar-width;
     background-color: $brand-secondary-dark;
-    color:$brand-secondary-text;
+    color:$brand-main-text;
     padding-top: 60px;
     a,p,div,span,small{
-      color:$brand-secondary-text;
+      color:$brand-main-text;
     }
     .sidebar-toggle {
       text-decoration: none;
@@ -19,7 +19,7 @@ body.skin-orange {
       background-color: transparent;
       padding: 0;
       position: absolute;
-      color:$brand-secondary-text;
+      color:$brand-main-text;
       font-size: 21px;
       padding: 0;
       z-index: 10000;
