@@ -57,7 +57,7 @@
 
 <div class="form-group">
     <label for="app_service_id">@lang('main.appointment:service_id_label')</label>
-    <select name="service_id" id="app_service_id" class = "form-control" v-model.lazy = "service_name">
+    <select name="service_id" id="app_service_id" class = "form-control">
         @foreach($servicesOptions as $service)
             <option
                 @if (old('service_id') AND old('service_id') == $service['value'])
@@ -95,13 +95,12 @@
     </div>
 </div>
 
-
 <div class="form-group">
     <label for="app_employee_id">@lang('main.appointment:employee_id_label')</label>
-    <select name="employee_id" id="app_employee_id" class = "form-control" v-model.lazy = "service_employee">
+    <select name="employee_id" id="app_employee_id" class = "form-control">
         @if (isset($employeesOptions) OR session()->has('employeesOptions'))
             <?php if(!isset($employeesOptions)) $employeesOptions = session('employeesOptions');?>
-            @foreach($employeesOptions AS $employee)
+            @foreach($employeesOptions as $employee)
                 <option
                     @if (old('employee_id') AND old('employee_id') == $employee['value'])
                     selected="selected"

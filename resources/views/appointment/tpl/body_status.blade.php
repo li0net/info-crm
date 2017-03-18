@@ -21,18 +21,16 @@
     <div class="row m-b">
         <div class="col-sm-3">
             @if(isset($appointment))
-                {{--<label>{{ $appointment->service->name }}</label>--}}
-                {{ Form::label('', $appointment->service->name, ['v-model' => 'service_name']) }}
+                {{ Form::label('', $appointment->service->name, ['id' => 'service_name']) }}
             @else
-                <label>@{{ service_name }}</label>
+                {{ Form::label('', 'Услуга не выбрана', ['id' => 'service_name']) }}
             @endif
         </div>
         <div class="col-sm-3">
             @if(isset($appointment))
-                {{--<label>{{ $appointment->employee->name }}</label>--}}
-                {{ Form::label('', $appointment->employee->name, ['v-model' => 'service_employee']) }}
+                {{ Form::label('', $appointment->employee->name, ['id' => 'service_employee']) }}
             @else
-                <label>@{{ service_employee }}</label>
+                {{ Form::label('', 'Сотрудник не выбран', ['id' => 'service_employee']) }}
             @endif
         </div>
         <div class="col-sm-2">
