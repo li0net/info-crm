@@ -487,33 +487,6 @@ $(document).ready(function () {
 		firstDay: 1
 	});
 
-	// Service dropdown change event
-	$('#app_service_id').change(function() {
-		// удаляем все опции из селекта с сотрудниками
-		$("#app_employee_id option").each(function() {
-			$(this).remove();
-		});
-
-		var that = this;
-		$.ajax({
-			type: "POST",
-			url: "/appointments/getEmployeesForService/"+$(that).val(),
-			data: {},
-			success: function(data) {
-				var data = $.parseJSON(data);
-				//if ( console && console.log ) {
-					//console.log( "Employees data:", data);
-				//}
-
-				for (var i in data) {
-					$('<option>').val(data[i].value).text(data[i].label).appendTo('#app_employee_id');
-				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Server error:'+textStatus);
-			}
-		});
-	});
 	$('#app_client_phone').blur(function() {
 		if($("#app_client_info_container").length == 0) {
 			return;
