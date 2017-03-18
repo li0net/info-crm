@@ -316,6 +316,18 @@ class AppointmentsController extends Controller
         $appointment->service_discount = $request->input('service_discount');
         $appointment->service_sum = $request->input('service_sum');
 
+        if ( $request->input('remind_by_sms_in')) {
+            $appointment->remind_by_sms_in = $request->input('remind_by_sms_in_value');
+        } else {
+            $appointment->remind_by_sms_in = 0;
+        }
+
+        if ( $request->input('remind_by_email_in')) {
+            $appointment->remind_by_email_in = $request->input('remind_by_email_in_value');
+        } else {
+            $appointment->remind_by_email_in = 0;
+        }
+
         $appointment->save();
 
         for ($i = 0; $i < count($request->storage_id); $i++) {

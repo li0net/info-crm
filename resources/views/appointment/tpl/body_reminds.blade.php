@@ -12,65 +12,72 @@
             <div class="form-group"><label class="col-sm-3 control-label">Напоминания</label>
                 <div class="col-sm-2">
                     <div class="checkbox">
-                        <label> <input type="checkbox" id="send_sms_time" value="1" checked="checked"> SMS</label>
+                        <label for="remind_by_sms_in">
+                            {{ Form::checkbox('remind_by_sms_in', true, isset($appointment) && $appointment->remind_by_sms_in > 0), ['id' => 'remind_by_sms_in'] }}
+                            SMS
+                        </label>
                     </div>
                 </div>
                 <div class="col-sm-3">
-                    <select id="rec_sms_hours" class="form-control input-sm" style="">
-                        <option selected="selected" value="1">1 час</option>
-                        <option value="2">2 часа</option>
-                        <option value="3">3 часа</option>
-                        <option value="4">4 часа</option>
-                        <option value="5">5 часов</option>
-                        <option value="6">6 часов</option>
-                        <option value="9">9 часов</option>
-                        <option value="12">12 часов</option>
-                        <option value="15">15 часов</option>
-                        <option value="18">18 часов</option>
-                        <option value="21">21 час</option>
-                        <option value="24">24 часа</option>
-                        <option value="48">2 дня</option>
-                        <option value="72">3 дня</option>
-                        <option value="120">5 дней</option>
-                        <option value="168">7 дней</option>
-                    </select>
+                    {{ Form::select(
+                        'remind_by_sms_in_value',
+                        ['1' => '1 час',
+                         '2' => '2 часа',
+                         '3' => '3 часа',
+                         '4' => '4 часа',
+                         '5' => '5 часов',
+                         '6' => '6 часов',
+                         '9' => '9 часов',
+                         '12' => '12 часов',
+                         '15' => '15 часов',
+                         '18' => '18 часов',
+                         '21' => '21 час',
+                         '24' => '1 день',
+                         '48' => '2 дня',
+                         '72' => '3 дня',
+                         '120' => '5 дней',
+                         '168' => '7 дней'],
+                         isset($appointment) && $appointment->remind_by_sms_in > 0 ? $appointment->remind_by_sms_in : null,
+                         ['id' => 'remind_by_sms_in_value', 'class' => 'form-control input-sm']
+                    )}}
                 </div>
-                <div class="col-sm-3">
-                    до визита                        </div>
-
+                <div class="col-sm-3">до визита</div>
             </div>
 
             <div class="form-group"><label class="col-sm-3 control-label">&nbsp;</label>
                 <div class="col-sm-2">
                     <div class="checkbox">
-                        <label> <input type="checkbox" id="send_email_time" value="1" checked="checked"> Email</label>
+                        <label for="remind_by_email_in">
+                            {{ Form::checkbox('remind_by_email_in', true, isset($appointment) && $appointment->remind_by_email_in > 0), ['id' => 'remind_by_email_in'] }}
+                            Email
+                        </label>
                     </div>
                 </div>
                 <div class="col-sm-3">
-                    <select id="rec_email_hours" class="form-control input-sm" data-placeholder="1 час" style="">
-                        <option value="1">1 час</option>
-                        <option value="2">2 часа</option>
-                        <option value="3">3 часа</option>
-                        <option value="4">4 часа</option>
-                        <option value="5">5 часов</option>
-                        <option value="6">6 часов</option>
-                        <option value="9">9 часов</option>
-                        <option selected="selected" value="12">12 часов</option>
-                        <option value="15">15 часов</option>
-                        <option value="18">18 часов</option>
-                        <option value="21">21 час</option>
-                        <option value="24">24 часа</option>
-                        <option value="48">2 дня</option>
-                        <option value="72">3 дня</option>
-                        <option value="120">5 дней</option>
-                        <option value="168">7 дней</option>
-                    </select>
+                    {{ Form::select(
+                        'remind_by_email_in_value',
+                        ['1' => '1 час',
+                         '2' => '2 часа',
+                         '3' => '3 часа',
+                         '4' => '4 часа',
+                         '5' => '5 часов',
+                         '6' => '6 часов',
+                         '9' => '9 часов',
+                         '12' => '12 часов',
+                         '15' => '15 часов',
+                         '18' => '18 часов',
+                         '21' => '21 час',
+                         '24' => '1 день',
+                         '48' => '2 дня',
+                         '72' => '3 дня',
+                         '120' => '5 дней',
+                         '168' => '7 дней'],
+                         isset($appointment) && $appointment->remind_by_email_in > 0 ? $appointment->remind_by_email_in : '12',
+                         ['id' => 'remind_by_email_in_value', 'class' => 'form-control input-sm']
+                    )}}
                 </div>
-                <div class="col-sm-3">
-                    до визита                        </div>
-
+                <div class="col-sm-3">до визита</div>
             </div>
-
         </div>
     </div>
 </div>
