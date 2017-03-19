@@ -189,7 +189,7 @@ class Employee extends Model
                 }
             }
 
-            if (count($singleRecordIntervals)) {
+            if (count($singleRecordIntervals) > 0) {
                 usort($singleRecordIntervals, function ($a, $b) {
                     $aS = new \DateTime($a['start']);
                     $bS = new \DateTime($b['start']);
@@ -261,11 +261,13 @@ class Employee extends Model
 					$newSegnemts = array(
 						(object) array(
 							'work_start' 	=> $schedules[$i]->work_start,
-							'work_end' 		=> $apt->start
+							'work_end' 		=> $apt->start,
+                            'employee_id'   => (isset($schedules[$i]->employee_id)) ? $schedules[$i]->employee_id : null
 						),
 						(object) array(
 							'work_start' 	=> $apt->end,
-							'work_end' 		=> $schedules[$i]->work_end
+							'work_end' 		=> $schedules[$i]->work_end,
+                            'employee_id'   => (isset($schedules[$i]->employee_id)) ? $schedules[$i]->employee_id : null
 						)
 					);
 					$newSchedulesP1 = array_slice($schedules, 0, $i);

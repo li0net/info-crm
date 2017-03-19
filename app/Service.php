@@ -129,21 +129,38 @@ class Service extends Model
         // Отбираем записи в пределах того же срока и тоже Сортируем по возрастанию (по дате начала)
         $appts = DB::select(
             "SELECT ".
-            "(CASE WHEN start < '$startDateTime' THEN '$startDateTime' ELSE start END) AS start, ".
-            "(CASE WHEN `end` > '$endDateTime' THEN '$endDateTime' ELSE `end` END) AS `end` ".
+                "(CASE WHEN start < '$startDateTime' THEN '$startDateTime' ELSE start END) AS start, ".
+                "(CASE WHEN `end` > '$endDateTime' THEN '$endDateTime' ELSE `end` END) AS `end` ".
             "FROM appointments ".
             "WHERE employee_id IN ('".implode("','", $employees)."') AND (start BETWEEN '$startDateTime' AND '$endDateTime') OR (end BETWEEN '$startDateTime' AND '$endDateTime') ".
-            "ORDER BY start ASC",
-            [$this->employee_id]
+            "ORDER BY start ASC"
         );
         if (count($appts) == 0) {
             return $schedules;
         }
 
         $emp = new Employee();
+        if ($this->max_num_appointments > 1) {
+            // Обработка записи более одного клиента на один интервал времени
+            $singleRecordIntervals = array();
+            foreach ($appts AS $appt) {
+                $apptsNew[] = [
+                    'start' => $appt->start,
+                    'end' => $appt->end
+                ];
+            }
+
+            // передаем максимальное кол-во одновременных записей и отобранные записи такого типа, чтобы получить интервалы в которых макс кол-во записей уже достигнуто
+            $filteredIntervals = $emp->filterMaxNumReachedIntervals($apptsNew, $this->max_num_appointments);
+
+            if (count($filteredIntervals) > 0) {
+                $appts = $filteredIntervals;
+            }
+        }
+
         //В пхп в цикле проходим по массиву записей (appointments) и вызываем функцию X(массив интервалов расписаний, конкретная запись) которая вернет новый массив интервалов расписаний
         foreach($appts AS $apt) {
-            $emp->subtractAppointmentsPeriodFromWorkSchedule($schedules, $apt);
+            $emp->subtractAppointmentsPeriodFromWorkSchedule($schedules, (object)$apt);
         }
 
         return $schedules;
