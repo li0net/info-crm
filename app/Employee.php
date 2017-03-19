@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * App\Employee
@@ -130,35 +131,82 @@ class Employee extends Model
 				"(CASE WHEN work_end > '$endDateTime' THEN '$endDateTime' ELSE work_end END) AS work_end ".
 			"FROM schedules ".
 			"WHERE employee_id=? AND ".
-			"(work_start >= '$startDateTime' AND work_end <= '$endDateTime')  OR ".
-			"(work_start < '$startDateTime' AND work_end > '$startDateTime' AND work_end <= '$endDateTime') OR ".
-			"(work_start >= '$startDateTime' AND work_start<'$endDateTime' AND work_end > '$endDateTime') OR ".
-			"(work_start < '$startDateTime' AND work_end > '$endDateTime') ".
+			"(".
+                "(work_start >= '$startDateTime' AND work_end <= '$endDateTime')  OR ".
+			    "(work_start < '$startDateTime' AND work_end > '$startDateTime' AND work_end <= '$endDateTime') OR ".
+			    "(work_start >= '$startDateTime' AND work_start<'$endDateTime' AND work_end > '$endDateTime') OR ".
+			    "(work_start < '$startDateTime' AND work_end > '$endDateTime')".
+			") ".
 			"ORDER BY work_start ASC",
 			[$this->employee_id]
 		);
 		if (count($schedules) == 0) {
 			return array();
 		}
+        //Log::info(__METHOD__.' controller: schedules count'.count($schedules));
 
 		// TODO: хорошо бы не давать создавать записи которые заканчиваются позже чем рабочий интервал работника
 		// Отбираем записи в пределах того же срока и тоже Сортируем по возрастанию (по дате начала)
 		$appts = DB::select(
 			"SELECT ".
- 				"(CASE WHEN start < '$startDateTime' THEN '$startDateTime' ELSE start END) AS start, ".
-				"(CASE WHEN `end` > '$endDateTime' THEN '$endDateTime' ELSE `end` END) AS `end` ".
-			"FROM appointments ".
-			"WHERE employee_id=? AND (start BETWEEN '$startDateTime' AND '$endDateTime') OR (end BETWEEN '$startDateTime' AND '$endDateTime') ".
-			"ORDER BY start ASC",
+ 				"(CASE WHEN a.start < '$startDateTime' THEN '$startDateTime' ELSE start END) AS start, ".
+				"(CASE WHEN a.`end` > '$endDateTime' THEN '$endDateTime' ELSE `end` END) AS `end`, ".
+                "s.max_num_appointments ".
+			"FROM appointments a ".
+            "JOIN services s ON s.service_id=a.service_id ".
+			"WHERE a.employee_id=? AND (a.start BETWEEN '$startDateTime' AND '$endDateTime') OR (a.end BETWEEN '$startDateTime' AND '$endDateTime') ".
+			"ORDER BY a.start ASC",
 			[$this->employee_id]
 		);
 		if (count($appts) == 0) {
 			return $schedules;
 		}
+        //Log::info(__METHOD__.' controller: appts count'.count($appts));
+
+		// Обработка записи более одного клиента на один интервал времени
+        $apptsByMaxClients = array();
+        $singleRecordIntervals = array();
+        foreach ($appts AS $appt) {
+            // Если у Service кол-во одновременно обслуживаемых клиентов (max_num_appointments) > 1
+            if ($appt->max_num_appointments > 1) {
+                $apptsByMaxClients[$appt->max_num_appointments][] = [
+                    'start' => $appt->start,
+                    'end'   => $appt->end
+                ];
+            } else {
+                $singleRecordIntervals[] = [
+                    'start' => $appt->start,
+                    'end'   => $appt->end
+                ];
+            }
+        }
+        if (count($apptsByMaxClients)>0) {
+            foreach ($apptsByMaxClients AS $maxNum => $selAppts) {
+                // передаем максимальное кол-во одновременных записей и отобранные записи такого типа, чтобы получить интервалы в которых макс кол-во записей уже достигнуто
+                $filteredIntervals = $this->filterMaxNumReachedIntervals($selAppts, $maxNum);
+                if (count($filteredIntervals) > 0) {
+                    $singleRecordIntervals = array_merge($singleRecordIntervals, $filteredIntervals);
+                }
+            }
+
+            if (count($singleRecordIntervals)) {
+                usort($singleRecordIntervals, function ($a, $b) {
+                    $aS = new \DateTime($a['start']);
+                    $bS = new \DateTime($b['start']);
+
+                    if ($aS == $bS) {
+                        return 0;
+                    }
+                    return ($aS < $bS) ? -1 : 1;
+                });
+            }
+        }
+
+        $appts = $singleRecordIntervals;
 
 		//В пхп в цикле проходим по массиву записей (appointments) и вызываем функцию X(массив интервалов расписаний, конкретная запись) которая вернет новый массив интервалов расписаний
 		foreach($appts AS $apt) {
-			$this->subtractAppointmentsPeriodFromWorkSchedule($schedules, $apt);
+			$this->subtractAppointmentsPeriodFromWorkSchedule($schedules, (object)$apt);
 		}
 
 		return $schedules;
@@ -317,4 +365,105 @@ class Employee extends Model
 
 		return $availableTimes;
 	}
+
+    public function filterMaxNumReachedIntervals($appts, $maxNum) {
+        /*
+        1) Сортируем все записи по SD (start date) - $appts УЖЕ СОРТИРОВАНЫ, т.к. ORDER BY a.start
+        2) Во вложенном цикле берем i запись и проходимся по всем остальным j до тех пор пока EDi (end date i записи) > SDj
+            2.1) проверяем есть ли пересечение (очевидно, что по условию выше пересечение будет, если найдется хоть одна такая запись j) - интервал пересечения SDj до (EDi>EDj) ? EDj : EDi
+            2.2) записываем интервал пересечения и кол-во в структуру вида
+                    $intercections = array(
+                        array(
+                            'start' => SDj,
+                            'end'   => IE (interval end из 2.1),
+                            'count' => 1 // потребуется для последующего поиска пересечений среди пересечений
+                        ),
+                        ..
+                    )
+
+        3) Пробегаемся по $intercections также во вложенном цикле, если находим пересечение пересечений записываем в
+                    $intercectionsNew = array(
+                        array(
+                            'start' => SDj,
+                            'end'   => IE (interval end из 2.1),
+                            'count' => $intercections[i]['count'] + $intercections[j]['count'] + 1
+                        ),
+                        ..
+                    )
+        */
+
+        //Log::info(__METHOD__.' $appts:'.print_r($appts, TRUE));
+        $intersections = [];
+        for ($i=0; $i<count($appts); $i++) {
+            $iS = new \DateTime($appts[$i]['start']);
+            $iE = new \DateTime($appts[$i]['end']);
+
+            for ($j=$i+1; $j<count($appts); $j++) {
+                //if ($i == $j) continue;
+
+                $jS = new \DateTime($appts[$j]['start']);
+                $jE = new \DateTime($appts[$j]['end']);
+                if ($jS >= $iE) break;   // Во вложенном цикле берем i запись и проходимся по всем остальным j до тех пор пока EDi (end date i записи) > SDj
+
+                //(EDi>EDj) ? EDj : EDi
+                $intE = ($iE > $jE) ? $jE : $iE;
+                $intersections[] = [
+                    'start'     => $jS,
+                    'end'       => $intE,
+                    'count'     => 1
+                ];
+            }
+        }
+
+        $maxNumReached = FALSE;
+        //Log::info(__METHOD__.' $intersections:'.print_r($intersections, TRUE));
+        do {
+            $intersectionsNew = [];
+
+            for ($i=0; $i<count($intersections); $i++) {
+                $iS = $intersections[$i]['start'];
+                $iE = $intersections[$i]['end'];
+
+                for ($j=$i+1; $j<count($intersections); $j++) {
+                    //if ($i == $j) continue;
+
+                    $jS = $intersections[$j]['start'];
+                    $jE = $intersections[$j]['end'];
+                    if ($jS > $iE) break;   // Во вложенном цикле берем i запись и проходимся по всем остальным j до тех пор пока EDi (end date i записи) > SDj
+
+                    //(EDi>EDj) ? EDj : EDi
+                    $intE = ($iE > $jE) ? $jE : $iE;
+                    $intersectionsNew[] = [
+                        'start'     => $jS,
+                        'end'       => $intE,
+                        'count'     => $intersections[$i]['count'] + $intersections[$j]['count'] + 1
+                    ];
+                    //Log::info(__METHOD__.' $intersectionsNew:'.print_r($intersectionsNew, TRUE));
+
+                    // Если ВСЕ пересечения достигли предельного уровня записываем в $maxNumReached = TRUE;
+                    if (($intersections[$i]['count'] + $intersections[$j]['count'] + 1) >= $maxNum) {
+                        $maxNumReached = TRUE;
+                    } else {
+                        $maxNumReached = FALSE;
+                    }
+                }
+            }
+
+            if (count($intersectionsNew) > 0) $intersections = $intersectionsNew;
+            if ($maxNumReached) break;
+        } while (count($intersectionsNew)>0);
+
+        $res = [];
+        foreach ($intersections AS $intersection) {
+            if ($intersection['count'] >= $maxNum) {
+                $res[] = [
+                    'start' => $intersection['start']->format('Y-m-d H:i:s'),
+                    'end'   => $intersection['end']->format('Y-m-d H:i:s')
+                ];
+            }
+        }
+
+        return $res;
+    }
+
 }
