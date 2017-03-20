@@ -146,7 +146,7 @@
                                 {{ Form::label('phone_for_notify', trans('adminlte_lang::message.phone_num_to_notify'), ['class' => 'col-sm-4 text-right ctrl-label']) }}
                                 <div class="col-sm-7">
                                     {{ Form::text('phone_for_notify', null, ['class' => 'text-left form-control',
-                                    'placeholder' => trans('adminlte_lang::message.example').'+7 495 123 45 67']) }}
+                                    'placeholder' => trans('adminlte_lang::message.example').'7 495 123 45 67']) }}
                                 </div>
                                 <label class="col-sm-1 text-left">
                                     <a class="fa fa-info-circle" id="phone_for_notify" original-title="">&nbsp;</a>
