@@ -122,6 +122,26 @@
                             @endforeach
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="o_currency" class="col-sm-3 control-label">@lang('main.organization:currency_label')</label>
+                        <div class="col-sm-9">
+                            <?php
+                            $old = old('currency');
+                            if (!is_null($old)) {
+                                $value = $old;
+                            } elseif (isset($organization)) {
+                                $value = $organization->currency;
+                            } else {
+                                $value = '';
+                            }?>
+                            {{ Form::select('currency', ['rur' => 'RUR', 'usd' => 'USD', 'eur' => 'EUR'], $value, ['id' => 'o_currency', 'class' => 'form-control']) }}
+                            @foreach ($errors->get('currency') as $message)
+                                <?='<br/>'?>{{$message}}
+                            @endforeach
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="o_info" class="col-sm-3 control-label">@lang('main.organization:info_label')</label>
                         <div class="col-sm-9">

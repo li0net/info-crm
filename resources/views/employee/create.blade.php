@@ -45,14 +45,14 @@
                     <div class="form-group">
                         {{ Form::label('email', trans('adminlte_lang::message.employee_email'), ['class' => 'col-sm-4 control-label text-right']) }}
                         <div class="col-sm-8">
-                            {{ Form::text('email', null, ['class' => 'form-control', 'email' => '', 'placeholder'=>trans('adminlte_lang::message.employee_email')]) }}
+                            {{ Form::text('email', null, ['class' => 'form-control', 'email' => '', 'placeholder' => trans('adminlte_lang::message.example').'info@mail.com']) }}
                         </div>
                     </div>
 
                     <div class="form-group">
                         {{ 	Form::label('phone', trans('adminlte_lang::message.employee_phone'), ['class' => 'col-sm-4 control-label text-right']) }}
                         <div class="col-sm-8">
-                            {{ 	Form::text('phone', null, ['class' => 'form-control', 'required' => '', 'placeholder'=>trans('adminlte_lang::message.employee_phone')]) }}
+                            {{ 	Form::text('phone', null, ['class' => 'form-control', 'required' => '', 'placeholder' => trans('adminlte_lang::message.phone_format')]) }}
                         </div>
                     </div>
 

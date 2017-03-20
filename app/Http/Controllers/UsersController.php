@@ -30,6 +30,10 @@ class UsersController extends Controller
                 'label'     => 'en'
             ],
             [
+                'value'     => 'es',
+                'label'     => 'es'
+            ],
+            [
                 'value'     => 'ru',
                 'label'     => 'ru',
                 'selected'  => true

@@ -135,6 +135,7 @@ class OrganizationsController extends Controller
         }
         $organization->country = $request->input('country');
         $organization->city = $request->input('city');
+        $organization->currency = $request->input('currency');
         $organization->info = $request->input('info');
 
         $organization->save();

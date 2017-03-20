@@ -109,20 +109,6 @@
                 <span>{{$client->comment}}</span>
             </dd>
 
-            <dt><span>@lang('main.client:sms_label')</span></dt>
-            <dd>
-                <?php
-                if ($client->birthday_sms == '1') { $checked = "checked"; } else { $checked = "";}
-                ?>
-                <input type="checkbox" disabled="disabled" name="birthday_sms" id="c_birthday_sms" {{$checked}} value="1">&nbsp;@lang('main.client:birthday_sms_label')
-                <br>
-
-                <?php
-                if ($client->do_not_send_sms == '1') { $checked = "checked"; } else { $checked = ""; }
-                ?>
-                <input type="checkbox" disabled="disabled" name="do_not_send_sms" id="c_do_not_send_sms" {{$checked}} value="1">&nbsp;@lang('main.client:do_not_send_sms_label')
-            </dd>
-
             <dt><span>@lang('main.client:online_record_label')</span></dt>
             <dd>
                 <?php

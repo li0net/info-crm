@@ -86,7 +86,7 @@
                         } else {
                             $value = '';
                         }?>
-                        <input type="text" class="form-control" name="phone" id="c_phone" value="{{$value}}" placeholder="@lang('main.client:phone_label')">
+                        {{ Form::text('phone', $value, ['id' => 'c_phone', 'class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.example').'7 495 232 00 20']) }}
                         @foreach ($errors->get('phone') as $message)
                         <br/>{{$message}}
                         @endforeach
@@ -107,7 +107,7 @@
                         } else {
                             $value = '';
                         }?>
-                        <input type="text" class="form-control" name="email" id="c_email" value="{{$value}}" placeholder="@lang('main.client:email_label')">
+                            {{ Form::text('email', $value, ['id' => 'c_email', 'class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.example').'info@mail.com']) }}
                         @foreach ($errors->get('email') as $message)
                         <?='<br/>'?>{{$message}}
                         @endforeach
@@ -236,38 +236,6 @@
                         @foreach ($errors->get('comment') as $message)
                         <?='<br/>'?>{{$message}}
                         @endforeach
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="c_birthday_sms" class="col-sm-3 control-label">@lang('main.client:sms_label')</label>
-                    <div class="col-sm-9">
-                        <?php
-                        $old = old('birthday_sms');
-                        if (!is_null($old)) {
-                            if ($old == '1') { $checked = "checked"; } else { $checked = ""; }
-                        } elseif (isset($client)) {
-                            if ($client->birthday_sms == '1') { $checked = "checked"; } else { $checked = ""; }
-                        } else {
-                            $checked = "";
-                        }?>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="birthday_sms" id="c_birthday_sms" {{$checked}} value="1">&nbsp;@lang('main.client:birthday_sms_label')
-                            </label>
-                        </div>
-                        <?php
-                        $old = old('do_not_send_sms');
-                        if (!is_null($old)) {
-                            if ($old == '1') { $checked = "checked"; } else { $checked = ""; }
-                        } elseif (isset($client)) {
-                            if ($client->do_not_send_sms == '1') { $checked = "checked"; } else { $checked = ""; }
-                        } else {
-                            $checked = "";
-                        }?>
-                        <div class="checkbox">
-                            <label><input type="checkbox" name="do_not_send_sms" id="c_do_not_send_sms" {{$checked}} value="1">&nbsp;@lang('main.client:do_not_send_sms_label')</label>
-                        </div>
-
                     </div>
                 </div>
                 <div class="form-group">
