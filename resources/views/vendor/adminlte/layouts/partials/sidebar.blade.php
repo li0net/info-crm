@@ -91,7 +91,7 @@
                     <li><a href="{{ url('clients')}}">{{ trans('adminlte_lang::message.clients') }}</a></li>
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.finance_report') }}</a></li>--}}
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.pl_report') }}</a></li>--}}
-                    <li><a href="{{ url('/storagebalance') }}">{{ trans('adminlte_lang::message.remnants') }}</a></li>
+                    <li><a href="{{ url('/storagebalance') }}">{{ trans('adminlte_lang::message.stock_balance') }}</a></li>
                     <li><a href="{{ url('/salesanalysis') }}">{{ trans('adminlte_lang::message.sales_analysis') }}</a></li>
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.settings') }}</a></li>--}}
                 </ul>

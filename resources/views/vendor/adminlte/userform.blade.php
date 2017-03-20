@@ -54,7 +54,7 @@
                                         } else {
                                             $value = '';
                                         }?>
-                                        <input type="text" name="name" id="usr_name" value="{{$value}}">
+                                        {{ Form::text('name', $value, ['id' => 'usr_name', 'class' => 'form-control']) }}
                                         @foreach ($errors->get('name') as $message)
                                             <br/>{{$message}}
                                         @endforeach
@@ -73,7 +73,7 @@
                                         } else {
                                             $value = '';
                                         }?>
-                                        <input type="text" name="info" id="usr_info" value="{{$value}}">
+                                        {{ Form::text('info', $value, ['id' => 'usr_info', 'class' => 'form-control']) }}
                                         @foreach ($errors->get('info') as $message)
                                             <br/>{{$message}}
                                         @endforeach
@@ -92,7 +92,7 @@
                                         } else {
                                             $value = '';
                                         }?>
-                                        <input type="text" name="email" id="usr_email" value="{{$value}}">
+                                        {{ Form::text('email', $value, ['id' => 'usr_email', 'class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.example').'info@mail.com']) }}
                                         @foreach ($errors->get('email') as $message)
                                             <br/>{{$message}}
                                         @endforeach
@@ -111,7 +111,7 @@
                                         } else {
                                             $value = '';
                                         }?>
-                                        <input type="text" name="phone" id="usr_phone" value="{{$value}}">
+                                        {{ Form::text('phone', $value, ['id' => 'usr_phone', 'class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.example').'7 495 232 20 00']) }}
                                         @foreach ($errors->get('phone') as $message)
                                             <br/>{{$message}}
                                         @endforeach

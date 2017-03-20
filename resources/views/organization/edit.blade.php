@@ -81,7 +81,7 @@
 
                         <div class="col-sm-5 text-center">
                             <div id='map' style='height:300px; margin-top: 15px; margin-bottom: 15px;' class='map-block'></div>
-                            <div class="alert alert-info">{{ trans('adminlte_lang::message.map_instruction') }}</div>
+                            <div class="alert-info">{{ trans('adminlte_lang::message.map_instruction') }}</div>
                         </div>
                         {!! Form::close() !!}
                     </div>

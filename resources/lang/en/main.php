@@ -57,6 +57,7 @@ return [
     'organization:timezone_label'           => 'Current time',
     'organization:country_label'            => 'Country',
     'organization:city_label'               => 'City',
+    'organization:currency_label'           => 'Currency',
     'organization:logo_label'               => 'Logo',
     'organization:logo_btn'                 => 'Upload photo',
     'organization:info_label'               => 'Description',

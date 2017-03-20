@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Appointment;
+use App\Account;
 use App\Service;
 use App\Employee;
 use App\Storage;
@@ -41,6 +42,9 @@ class AppointmentsController extends Controller
         $servicesOptions = $this->prepareServicesSelectData($request);
         $timeOptions = $this->prepareTimesSelectData();
         $durationSelects = $this->prepareDurationSelects();
+        $accounts = Account::where('organization_id', $request->user()->organization_id)
+            ->get()
+            ->pluck('title', 'account_id');
         $storages = Storage::where('organization_id', $request->user()->organization_id)
             ->orderBy('title')
             ->with('products')
@@ -53,7 +57,8 @@ class AppointmentsController extends Controller
             'hoursOptions' => $durationSelects['hours'],
             'minutesOptions' => $durationSelects['minutes'],
             'user' => $request->user(),
-            'storages' => $storages
+            'storages' => $storages,
+            'accounts' => $accounts
         ]);
     }
 

@@ -69,8 +69,6 @@
                 </tbody>
                 <tbody id="info-section-1" style="display:none;" class="info-section" data-id="1">
 
-
-
                 <tr class="small total-row">
                     <td colspan="2" class="text-right">
                         <span class="section-subtotal-title" id="section-subtotal-title-1" style="display: none;">Итог:</span>
@@ -81,19 +79,17 @@
                 </tr>
                 </tbody>
                 <tbody class="section-header">
-                <tr class="details-row info-toggle" data-section-id="2">
-                    <td>Деловой</td>
-                    <td>0</td>
-                    <td id="section-header-paid-2">0</td>
-                    <td id="section-header-unpaid-2">0</td>
-                    <td class="text-center">
-                        <button id="toggle-info-section-2-btn" class="btn btn-link btn-xs"><i class="fa fa-caret-down"></i></button>
-                    </td>
-                </tr>
+                    <tr class="details-row info-toggle" data-section-id="2">
+                        <td>Деловой</td>
+                        <td>0</td>
+                        <td id="section-header-paid-2">0</td>
+                        <td id="section-header-unpaid-2">0</td>
+                        <td class="text-center">
+                            <button id="toggle-info-section-2-btn" class="btn btn-link btn-xs"><i class="fa fa-caret-down"></i></button>
+                        </td>
+                    </tr>
                 </tbody>
                 <tbody id="info-section-2" style="display:none;" class="info-section" data-id="2">
-
-
 
                 <tr class="small total-row">
                     <td colspan="2" class="text-right">
@@ -126,10 +122,11 @@
             <h3>Оплата в кассу</h3>
             <div class="row">
                 <div class="col-sm-8">
-                    <select id="new-transaction-account-id" class="form-control input-sm" data-placeholder="Выберите">
-                        <option value="87128">Основная касса</option>
-                        <option value="87129">Расчетный счет</option>
-                    </select>
+                    {{ Form::select('new-transaction-account-id', $accounts, null, ['class' => 'form-control input-sm']) }}
+                    {{--<select id="new-transaction-account-id" class="form-control input-sm" data-placeholder="Выберите">--}}
+                        {{--<option value="87128">Основная касса</option>--}}
+                        {{--<option value="87129">Расчетный счет</option>--}}
+                    {{--</select>--}}
                 </div>
                 <div class="col-sm-2">
                     <input id="new-transaction-amount" class="form-control input-sm" type="text" value="0">

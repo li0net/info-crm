@@ -257,7 +257,8 @@
                                 <div class="form-group">
                                     <label for="new_phone" class="col-sm-3 control-label">@lang('main.user:new_phone_label_usercabinet')</label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="new_phone" id="usr_new_phone" value="" class="form-control" placeholder="@lang('main.user:new_phone_label_usercabinet')">
+                                        {{ Form::text('new_phone', $value, ['id' => 'usr_new_phone', 'class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.example').'7 495 232 20 00']) }}
+                                        {{--<input type="text" name="new_phone" id="usr_new_phone" value="" class="form-control" placeholder="@lang('main.user:new_phone_label_usercabinet')">--}}
                                         <p class="help-block">@lang('main.user:help_text_phone_usercabinet')</p>
                                         @foreach ($errors->get('new_phone') as $message)
                                         <br/>{{$message}}
@@ -273,7 +274,6 @@
                                 <h4 class="fat">@lang('main.user:change_email_heading')</h4>
                             </div>
                             <form id="usercabinet_email_form" methos="post" action="/user/updateEmail">
-
                                 <div class="col-sm-9 col-sm-offset-3">
                                     <div class="alert alert-success" id="email_form_success_alert">
                                         <button type="button" class="close" data-dismiss="alert"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
@@ -285,7 +285,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="form-group">
                                     <label for="usr_new_password" class="col-sm-3 control-label text-right">@lang('main.user:current_email_label_usercabinet')</label>
                                     <div class="form-group col-sm-9">
@@ -295,7 +294,7 @@
                                 <div class="form-group">
                                     <label for="usr_new_password" class="col-sm-3 control-label text-right">@lang('main.user:new_email_label_usercabinet')</label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="new_email" id="usr_new_email" value="" class="form-control" placeholder="@lang('main.user:new_email_label_usercabinet')">
+                                        {{ Form::text('new_email', $value, ['id' => 'usr_new_email', 'class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.example').'info@mail.com']) }}
                                         <p class="help-block">@lang('main.user:help_text_email_usercabinet')</p>
                                         @foreach ($errors->get('new_email') as $message)
                                         <br/>{{$message}}

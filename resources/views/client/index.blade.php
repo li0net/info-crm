@@ -43,24 +43,24 @@
     <div class="col-md-4">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">@lang('main.client:list_actions')</h3>
+               {{--<h3 class="box-title">@lang('main.client:list_actions')</h3>--}}
             </div><!-- /.box-header -->
             <div class="box-body">
-                <h4>SMS</h4>
-                <ul class="list-unstyled m-b">
-                    <li>
-                        <a id="a_send_sms_to_selected" href="#" class="disabled btn btn-link link-blue btn-xs" onclick="alert('Not implemented yet');">
-                            <i class="fa fa-paper-plane"></i>
-                            @lang('main.client:list_send_sms_to_selected')
-                        </a>
-                    </li>
-                    <li>
-                        <a id="a_send_sms_to_all_found" class='btn btn-link link-blue btn-xs' href="#" onclick="alert('Not implemented yet');">
-                            <i class="fa fa-paper-plane"></i>
-                            @lang('main.client:list_send_sms_to_all_found')
-                        </a>
-                    </li>
-                </ul>
+                {{--<h4>SMS</h4>--}}
+                {{--<ul class="list-unstyled m-b">--}}
+                    {{--<li>--}}
+                        {{--<a id="a_send_sms_to_selected" href="#" class="disabled btn btn-link link-blue btn-xs" onclick="alert('Not implemented yet');">--}}
+                            {{--<i class="fa fa-paper-plane"></i>--}}
+                            {{--@lang('main.client:list_send_sms_to_selected')--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                        {{--<a id="a_send_sms_to_all_found" class='btn btn-link link-blue btn-xs' href="#" onclick="alert('Not implemented yet');">--}}
+                            {{--<i class="fa fa-paper-plane"></i>--}}
+                            {{--@lang('main.client:list_send_sms_to_all_found')--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
+                {{--</ul>--}}
 
                 <h4>@lang('main.client:list_actions')</h4>
                 <ul class="list-unstyled m-b">
@@ -83,7 +83,7 @@
                         </a>
                     </li>
                     <li>
-                        <a id="a_clients_add_all_found_to_category"class='btn btn-link link-blue btn-xs' href="#" onclick="alert('Not implemented yet');">
+                        <a id="a_clients_add_all_found_to_category" class='btn btn-link link-blue btn-xs' href="#" onclick="alert('Not implemented yet');">
                             <i class="fa fa-users"></i>
                             @lang('main.client:list_add_all_found_to_category')
                         </a>
