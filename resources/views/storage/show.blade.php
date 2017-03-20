@@ -5,57 +5,50 @@
 @endsection
 
 @section('main-content')
+<section class="content-header">
+    <h1>{{ $storage->title }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.stock') }}</li>
+        <li class="active">{{ $storage->title }}</li>
+    </ol>
+</section>
+<div class="container">
 	<div class="row">
 		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-		</div>
-
+            <div class="alert alert-success" role="alert">
+                <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
+            </div>
 		@endif
 	</div>
 	<div class="row">
-		<div class="col-sm-6 col-sm-offset-3">
-			<div class="well">
-				{{ Form::label('title', trans('adminlte_lang::message.storage_title')) }}
-				<p class="lead">{{ $storage->title }}</p>
+		<div class="col-sm-12">
+            <dl class="dl-horizontal">
+                <dt>{{ trans('adminlte_lang::message.storage_title') }}</dt>
+                <dd>{{ $storage->title }}</dd>
 
-				{{ Form::label('type', trans('adminlte_lang::message.storage_type')) }}
-				<p class="lead">
-					@if( $storage->type == 0 )
-						{{ trans('adminlte_lang::message.writeoff_supplies') }}
-					@else
-						{{ trans('adminlte_lang::message.sale_goods') }}
-					@endif
-				</p>
+                <dt>{{ trans('adminlte_lang::message.storage_type') }} </dt>
+                <dd>
+                    @if( $storage->type == 0 )
+                    {{ trans('adminlte_lang::message.writeoff_supplies') }}
+                    @else
+                    {{ trans('adminlte_lang::message.sale_goods') }}
+                    @endif
+                </dd>
 
-				{{ Form::label('description', trans('adminlte_lang::message.description')) }}
-				<p class="lead">{{ $storage->description }}</p>
-				
-				<hr>
-
-				<div class="row">
-					@if ($user->hasAccessTo('storage', 'edit', 0))
-						<div class="col-sm-6">
-							{!! Html::linkRoute('storage.edit', trans('adminlte_lang::message.edit'), [$storage->storage_id], ['class'=>'btn btn-primary btn-block']) !!}
-						</div>
-					@endif
-					@if ($user->hasAccessTo('storage', 'delete', 0))
-						<div class="col-sm-6">
-							{!! Form::open(['route' => ['storage.destroy', $storage->storage_id], "method" => 'DELETE']) !!}
-								{{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger btn-block']) }}
-							{!! Form::close() !!}
-						</div>
-					@endif
-				</div>
-
-				<div class="row">
-					<div class="col-sm-12">
-							{{ Html::linkRoute('storage.index', trans('adminlte_lang::message.storages').' »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 
-																													'style' => 'margin-top:15px']) }}
-					</div>
-				</div>
-			</div>
-		</div>
+                <dt>{{ trans('adminlte_lang::message.description') }}</dt>
+                <dd>{{ $storage->description }}</dd>
+            </dl>
+        </div>
+        <div class="col-sm-12">
+            @if ($user->hasAccessTo('storage', 'edit', 0))
+                {!! Html::linkRoute('storage.edit', trans('adminlte_lang::message.edit'), [$storage->storage_id], ['class'=>'btn btn-primary pull-right']) !!}
+            @endif
+            @if ($user->hasAccessTo('storage', 'delete', 0))
+                {!! Form::open(['route' => ['storage.destroy', $storage->storage_id], "method" => 'DELETE', "class" => 'pull-right m-r']) !!}
+                    {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger ']) }}
+                {!! Form::close() !!}
+            @endif
+        </div>
 	</div>
 @endsection

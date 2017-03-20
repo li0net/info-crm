@@ -5,6 +5,15 @@
 @endsection
 
 @section('main-content')
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.resources') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.settings') }}</li>
+        <li class="active">{{ trans('adminlte_lang::message.resources') }}</li>
+    </ol>
+</section>
+<div class="container-fluid">
 	<div class="row">
 		@if (Session::has('success'))
 			<div class="alert alert-success" role="alert">
@@ -12,14 +21,9 @@
 			</div>
 		@endif
 	</div>
-
 	<div class="row">
-		<div class="col-sm-8">
-			<h4>{{ trans('adminlte_lang::message.resources') }}</h4>
-		</div>	
-
-		<div class="col-sm-4">
-			<a href="{{ route('resource.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.new_resource') }}</a>
+		<div class="col-sm-12 text-right">
+			<a href="{{ route('resource.create') }}" class="btn btn-primary">{{ trans('adminlte_lang::message.new_resource') }}</a>
 		</div>
 		<div class="col-sm-12">
 			<hr>	
@@ -32,7 +36,7 @@
 					<th class="text-center">#</th>
 					<th>{{ trans('adminlte_lang::message.resource_name') }}</th>
 					<th>{{ trans('adminlte_lang::message.description') }}</th>
-					<th></th>
+					<th class="text-left">{{ trans('adminlte_lang::message.actions') }}</th>
 				</thead>
 				<tbody>
 					@foreach($resources as $resource)
@@ -40,13 +44,14 @@
 							<th class="text-center">{{ $resource->resource_id }}</th>
 							<td>{{ $resource->title }}</td>
 							<td>{{ $resource->description }}</td>
-							<td class="text-right">
+							<td  class="text-left">
 								@if ($user->hasAccessTo('resource', 'edit', 0))
-									<a href="{{ route('resource.edit', $resource->resource_id) }}" id="resource_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+									<a href="{{ route('resource.edit', $resource->resource_id) }}" id="resource_edit" class="table-action-link pull-left"><i class='fa fa-pencil'></i></a>
 								@endif
+
 								@if ($user->hasAccessTo('resource', 'delete', 0))
-									{!! Form::open(['route' => ['resource.destroy', $resource->resource_id], 'id' => 'form'.$resource->resource_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$resource->resource_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+									{!! Form::open(['route' => ['resource.destroy', $resource->resource_id], 'id' => 'form'.$resource->resource_id, 'class' => 'pull-left', 'method' => 'DELETE']) !!}
+										<a href="javascript: submitform('#form{{$resource->resource_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	

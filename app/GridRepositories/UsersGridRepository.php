@@ -17,10 +17,10 @@ class UsersGridRepository extends EloquentRepositoryAbstract {
             ->where('users.organization_id', $orgId);
 
         $this->visibleColumns = [
-            'users.user_id',
             'users.name',
             'users.phone',
             'users.email',
+            'users.user_id',
 
             //'access_permissions.object',
             //'access_permissions.action'

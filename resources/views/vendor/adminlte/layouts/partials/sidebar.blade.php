@@ -91,7 +91,7 @@
                     <li><a href="{{ url('clients')}}">{{ trans('adminlte_lang::message.clients') }}</a></li>
                     <li><a href="/stub">{{ trans('adminlte_lang::message.finance_report') }}</a></li>
                     <li><a href="/stub">{{ trans('adminlte_lang::message.pl_report') }}</a></li>
-                    <li><a href="{{ url('/storagebalance') }}">{{ trans('adminlte_lang::message.remnants') }}</a></li>
+                    <li><a href="{{ url('/storagebalance') }}">{{ trans('adminlte_lang::message.storage_balances') }}</a></li>
                     <li><a href="{{ url('/salesanalysis') }}">{{ trans('adminlte_lang::message.sales_analysis') }}</a></li>
                     <li><a href="/stub">{{ trans('adminlte_lang::message.settings') }}</a></li>
                 </ul>
@@ -104,7 +104,7 @@
                     <li><a href="{{ url('/account')}}">{{ trans('adminlte_lang::message.accounts') }}</a></li>
                     <li><a href="{{ url('/partner')}}">{{ trans('adminlte_lang::message.partners') }}</a></li>
                     <li><a href="{{ url('/item')}}">{{ trans('adminlte_lang::message.costs') }}</a></li>
-                    <li><a href="/stub">{{ trans('adminlte_lang::message.services') }}</a></li>
+                    <li><a href="/services">{{ trans('adminlte_lang::message.services') }}</a></li>
                     @if ($crmuser->hasAccessTo('wage_schemes', 'view', null))
                         <li><a href="{{ url('/wage_scheme')}}">{{ trans('adminlte_lang::message.schemes') }}</a></li>
                     @endif

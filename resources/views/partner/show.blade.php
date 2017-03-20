@@ -5,21 +5,23 @@
 @endsection
 
 @section('main-content')
-    <section class="content-header">
-        <h1>{{ trans('adminlte_lang::message.partner_information') }}</h1>
-        <!--<ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Forms</a></li>
-            <li class="active">Advanced Elements</li>
-        </ol>-->
-    </section>
-	<div class="row m-t">
-		@if (Session::has('success'))
-			<div class="alert alert-success" role="alert">
-				<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-			</div>
-		@endif
-		<div class="col-sm-12">
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.partner_information') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.finance') }}</li>
+        <li><a href="{{ url('/partner')}}">{{ trans('adminlte_lang::message.partners') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.partner_information') }}</li>
+    </ol>
+</section>
+<div class="container">
+    <div class="row">
+        @if (Session::has('success'))
+        <div class="alert alert-success" role="alert">
+            <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
+        </div>
+        @endif
+        <div class="col-sm-12">
             <dl class="dl-horizontal">
                 <dt>{{  trans('adminlte_lang::message.partner_name') }}</dt>
                 <dd>{{ $partner->title }}</dd>
@@ -57,26 +59,16 @@
                 <dd>{{ $partner->description }}</dd>
             </dl>
         </div>
-        <div class="col-sm-12 m-t">
-            <div class="col-sm-6">
-            {{ Html::linkRoute('partner.index', trans('adminlte_lang::message.partners').' »', [], ['class' => 'btn btn-info']) }}
+        <div class="m-t text-right">
             @if ($user->hasAccessTo('partner', 'edit', 0))
-                {!! Html::linkRoute('partner.edit', trans('adminlte_lang::message.edit'), [$partner->partner_id], ['class'=>'btn btn-primary']) !!}
+            {!! Html::linkRoute('partner.edit', trans('adminlte_lang::message.edit'), [$partner->partner_id], ['class'=>'btn btn-primary pull-right']) !!}
             @endif
-            </div>
             @if ($user->hasAccessTo('partner', 'delete', 0))
-                <div class="col-sm-6 text-right">
-                    {!! Form::open(['route' => ['partner.destroy', $partner->partner_id], 'method' => 'DELETE']) !!}
-                        {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-info']) }}
-                    {!! Form::close() !!}
-                </div>
+            {!! Form::open(['route' => ['partner.destroy', $partner->partner_id], 'method' => 'DELETE', 'class' => 'pull-right']) !!}
+            {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger m-r']) }}
+            {!! Form::close() !!}
             @endif
         </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-
-            </div>
-        </div>
-	</div>
+    </div>
+</div>
 @endsection

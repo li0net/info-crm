@@ -18,10 +18,14 @@
                 <a href="{{$newServiceUrl}}" class="btn btn-primary">@lang('main.service:create_new_btn_label')</a>
             </div>
         @endif
+        <div class="col-sm-12">
+            <hr>
+        </div>
         <div class="col-md-12 m-t">
             <table id="services_grid"></table>
             <div id="services_grid_pager"></div>
         </div>
+
     </div>
     <script type="text/javascript">
         @if ($crmuser->hasAccessTo('service', 'edit', 0) >= 1)

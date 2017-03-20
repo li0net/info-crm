@@ -9,7 +9,16 @@
 @endsection --}}
 
 @section('main-content')
-
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.information_about_payroll_scheme') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.finance') }}</li>
+        <li><a href="{{ url('/wage_scheme')}}">{{ trans('adminlte_lang::message.schemes') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.information_about_payroll_scheme') }}</li>
+    </ol>
+</section>
+<div class="container">
 	<div class="row">
 		<div class="col-sm-6 col-sm-offset-3">
 			<h4>{{ trans('adminlte_lang::message.information_about_payroll_scheme') }}</h4>	
