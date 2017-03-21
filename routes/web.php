@@ -137,7 +137,7 @@ Route::get('/appointments/destroy/{appt}', ['as' => 'appointments.destroy', 'use
 Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::get('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::post('/appointments/getClientInfo', 'AppointmentsController@getClientInfo');
-Route::get('/appointments/employeeOptions', ['as' => 'appointments.employeeOptions', 'uses' => 'appointmentsController@populateEmployeeOptions']);
+Route::get('/appointments/employeeOptions', ['as' => 'appointments.employeeOptions', 'uses' => 'AppointmentsController@populateEmployeeOptions']);
 
 Route::get('/users/create', 'UsersController@create');
 Route::get('/users/edit/{user}', 'UsersController@edit');
