@@ -128,6 +128,7 @@ Route::post('/organization/save', ['as' => 'organization.save', 'uses' => 'Organ
 
 Route::get('/organization/info/edit', ['as' => 'info.edit', 'uses' => 'OrganizationsController@editInfo']);
 Route::put('/organization/info/save', ['as' => 'info.save', 'uses' => 'OrganizationsController@saveInfo']);
+Route::post('/organization/info/save', ['as' => 'info.save', 'uses' => 'OrganizationsController@saveInfo']);
 
 Route::get('/appointments/create', ['as' => 'appointments.create', 'uses' => 'AppointmentsController@create']);
 Route::get('/appointments/edit/{appt}', ['as' => 'appointments.edit', 'uses' => 'AppointmentsController@edit']);

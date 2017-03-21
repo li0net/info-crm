@@ -25,7 +25,7 @@
                     <a data-toggle="tab" href="#menu2"><i class="fa fa-id-card-o" aria-hidden="true"></i>{{ trans('adminlte_lang::message.description') }}</a>
                 </li>
                 <li class="">
-                    <a data-toggle="tab" href="#menu3"><i class="fa fa-picture-o" aria-hidden="true"></i>{{ trans('adminlte_lang::message.photo') }}</a>
+                    <a data-toggle="tab" href="#menu3"><i class="fa fa-picture-o" aria-hidden="true"></i>@lang('main.organization:logo_label')</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -86,33 +86,40 @@
                         {!! Form::close() !!}
                     </div>
                 </div>
-
                 <div id="menu2" class="tab-pane fade">
                     {!! Form::model($organization, ['route' => 'info.save', 'method' => 'PUT', "id" => "organization_form__description"]) !!}
+                    {!! Form::hidden('id', 'organization_form__description') !!}
                     <div class="form-group">
                         {{ Form::textarea('info', null, ['class' => 'form-control']) }}
                     </div>
                     {!! Form::close() !!}
                 </div>
-
                 <div id="menu3" class="tab-pane fade">
-                    {!! Form::model($organization, ['route' => 'info.save', 'method' => 'PUT', "id" => "organization_form__gallery"]) !!}
-                    <div class="logo-block">
-                        <img src="/images/no-master.png" alt="">
-                    </div>
+                    {!! Form::model($organization, ['route' => 'info.save', 'enctype'=>'multipart/form-data', 'method' => 'POST', "id" => "organization_form__gallery"]) !!}
+                        {!! Form::hidden('id', 'organization_form__gallery') !!}
+                        <div class="text-center">
+                            <div class="logo-block">
+                                <div v-if="!image">
+                                    <img src="{{$organization->getLogoUri()}}" >
+                                </div>
+                                <div v-else>
+                                    <img :src="image"/>
+                                </div>
+                            </div>
+                            <span class="btn btn-info btn-file">
+                                @lang('main.user:logo_btn')
+                                <input type="file" @change="onFileChange" name="logo_image" id="o_logo_image" accept=".jpg,.jpeg,.png,.bmp,.gif" class="">
+                            </span>
+
+                            @foreach ($errors->get('logo_image') as $message)
+                            <?='<br/>'?>{{$message}}
+                            @endforeach
+                        </div>
                     {!! Form::close() !!}
                 </div>
-
                 <hr>
-
-                <div class="row">
-                    <div class="col-sm-4 col-sm-offset-4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                {{ Form::button(trans('adminlte_lang::message.save'), ['class'=>'btn btn-success btn-block', 'id' => 'form_submit']) }}
-                            </div>
-                        </div>
-                    </div>
+                <div class="m-t text-right">
+                    {{ Form::button(trans('adminlte_lang::message.save'), ['class'=>'btn btn-primary', 'id' => 'form_submit']) }}
                 </div>
             </div>
             {{-- {!! Form::close() !!} --}}
@@ -200,9 +207,10 @@
 				if(activeTab == '#menu2') {
 					$('#organization_form__description').submit();
 				}
-				
+
 				if(activeTab == '#menu3') {
-					$('#employee_form__gallery').submit();
+				    console.log('menu3');
+					$('#organization_form__gallery').submit();
 				}
 			});
 		});

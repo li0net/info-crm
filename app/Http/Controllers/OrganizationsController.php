@@ -170,9 +170,40 @@ class OrganizationsController extends Controller
         }
 
         if ($request->input('id') == 'organization_form__gallery') {
-            //todo: save gallery images
-        }
+            // Проверяем, действительно ли загруженный файл - изображение
+            if(isset($_FILES["logo_image"]["tmp_name"]) AND trim($_FILES["logo_image"]["tmp_name"]) != '') {
+                $targetDir = public_path()."/uploaded_images/logo/main/";
+                $imageUploadErrors = array();
+                $imageFileType = pathinfo($targetDir.basename($_FILES["logo_image"]["name"]), PATHINFO_EXTENSION);
+                $fileName = $org->organization_id.'.'.$imageFileType;
+                $targetFile = $targetDir.$fileName;
 
+                $check = getimagesize($_FILES["logo_image"]["tmp_name"]);
+                if($check === false) {
+                    $imageUploadErrors[] = "File is not an image";
+                }
+
+                // не более 5Мбайт
+                if ($_FILES["logo_image"]["size"] > 5242880) {
+                    $imageUploadErrors[] = "Sorry, your file is too large.";
+                }
+
+                if (count($imageUploadErrors) > 0) {
+                    return back()
+                        ->withErrors( new MessageBag(array('logo_image' => $imageUploadErrors)) )
+                        ->withInput();
+                    // if everything is ok, try to upload file
+                } else {
+                    if (!move_uploaded_file($_FILES["logo_image"]["tmp_name"], $targetFile)) {
+                        Log::error('Failed to move uploaded file', ['targetFile' => $targetFile]);
+                        dd('Failed to move uploaded file targetFile = '. $targetFile);
+                    } else {
+                        // if uploaded  - save file as logo
+                        $org->logo_image = $fileName;
+                    }
+                }
+            }
+        }
         $org->save();
 
         Session::flash('success', trans('adminlte_lang::message.org_info_saved'));
