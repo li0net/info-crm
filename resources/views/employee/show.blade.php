@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="box">
+        <div class="box box-primary">
             <div class="box-body">
                 <div class="col-sm-2 text-center">
                     <div class="logo-block">

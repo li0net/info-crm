@@ -25,124 +25,119 @@
         </li>
     </ol>
 </section>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <ul class="nav nav-tabs" id="user_tabs_header" role="tablist">
-                    <li class="active"><a href="#tab_user_properties" role="tab" data-toggle="tab"><i class="fa address-book-o" aria-hidden="true"></i>&nbsp;@lang('main.user:properties_tab_label')</a></li>
-                    @if(isset($crmuser))
-                    <li><a href="#tab_user_permissions" role="tab" data-toggle="pill"><i class="fa gears"></i>&nbsp;@lang('main.user:permissions_tab_label')</a></li>
-                    @endif
-                </ul>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs" id="user_tabs_header" role="tablist">
+                <li class="active"><a href="#tab_user_properties" role="tab" data-toggle="tab"><i class="fa address-book-o" aria-hidden="true"></i>&nbsp;@lang('main.user:properties_tab_label')</a></li>
+                @if(isset($crmuser))
+                <li><a href="#tab_user_permissions" role="tab" data-toggle="pill"><i class="fa gears"></i>&nbsp;@lang('main.user:permissions_tab_label')</a></li>
+                @endif
+            </ul>
+            <div class="tab-content">
+                <!-- Содержимое таба Настройки -->
+                <div class="tab-pane fade in active" id="tab_user_properties">
+                    <form method="post" action="/users/save">
+                        <?php $csrfField = csrf_field(); echo $csrfField;?>
+                        @if (isset($crmuser))
+                        <input type="hidden" name="user_id" id="sc_user_id" value="{{$crmuser->user_id}}">
+                        @endif
 
-                <div class="tab-content">
+                        <div class="col-md-6">
+                            <label for="usr_name">@lang('main.user:name_label')</label>
+                        </div>
+                        <div class="col-md-6">
+                            <?php
+                            $old = old('name');
+                            if (!is_null($old)) {
+                                $value = $old;
+                            } elseif (isset($crmuser)) {
+                                $value = $crmuser->name;
+                            } else {
+                                $value = '';
+                            }?>
+                            {{ Form::text('name', $value, ['id' => 'usr_name', 'class' => 'form-control']) }}
+                            @foreach ($errors->get('name') as $message)
+                            <br/>{{$message}}
+                            @endforeach
+                        </div>
 
-                    <!-- Содержимое таба Настройки -->
-                    <div class="tab-pane fade in active" id="tab_user_properties">
-                        <form method="post" action="/users/save">
-                            <?php $csrfField = csrf_field(); echo $csrfField;?>
-                            @if (isset($crmuser))
-                            <input type="hidden" name="user_id" id="sc_user_id" value="{{$crmuser->user_id}}">
-                            @endif
+                        <div class="col-md-6">
+                            <label for="usr_info">@lang('main.user:info_label')</label>
+                        </div>
+                        <div class="col-md-6">
+                            <?php
+                            $old = old('info');
+                            if (!is_null($old)) {
+                                $value = $old;
+                            } elseif (isset($crmuser)) {
+                                $value = $crmuser->info;
+                            } else {
+                                $value = '';
+                            }?>
+                            {{ Form::text('info', $value, ['id' => 'usr_info', 'class' => 'form-control']) }}
+                            @foreach ($errors->get('info') as $message)
+                            <br/>{{$message}}
+                            @endforeach
+                        </div>
 
-                            <div class="col-md-6">
-                                <label for="usr_name">@lang('main.user:name_label')</label>
-                            </div>
-                            <div class="col-md-6">
-                                <?php
-                                $old = old('name');
-                                if (!is_null($old)) {
-                                    $value = $old;
-                                } elseif (isset($crmuser)) {
-                                    $value = $crmuser->name;
-                                } else {
-                                    $value = '';
-                                }?>
-                                {{ Form::text('name', $value, ['id' => 'usr_name', 'class' => 'form-control']) }}
-                                @foreach ($errors->get('name') as $message)
-                                <br/>{{$message}}
-                                @endforeach
-                            </div>
+                        <div class="col-md-6">
+                            <label for="usr_email">@lang('main.user:email_label')</label>
+                        </div>
+                        <div class="col-md-6">
+                            <?php
+                            $old = old('email');
+                            if (!is_null($old)) {
+                                $value = $old;
+                            } elseif (isset($crmuser)) {
+                                $value = $crmuser->email;
+                            } else {
+                                $value = '';
+                            }?>
+                            {{ Form::text('email', $value, ['id' => 'usr_email', 'class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.example').'info@mail.com']) }}
+                            @foreach ($errors->get('email') as $message)
+                            <br/>{{$message}}
+                            @endforeach
+                        </div>
 
-                            <div class="col-md-6">
-                                <label for="usr_info">@lang('main.user:info_label')</label>
-                            </div>
-                            <div class="col-md-6">
-                                <?php
-                                $old = old('info');
-                                if (!is_null($old)) {
-                                    $value = $old;
-                                } elseif (isset($crmuser)) {
-                                    $value = $crmuser->info;
-                                } else {
-                                    $value = '';
-                                }?>
-                                {{ Form::text('info', $value, ['id' => 'usr_info', 'class' => 'form-control']) }}
-                                @foreach ($errors->get('info') as $message)
-                                <br/>{{$message}}
-                                @endforeach
-                            </div>
+                        <div class="col-md-6">
+                            <label for="usr_phone">@lang('main.user:phone_label')</label>
+                        </div>
+                        <div class="col-md-6">
+                            <?php
+                            $old = old('phone');
+                            if (!is_null($old)) {
+                                $value = $old;
+                            } elseif (isset($crmuser)) {
+                                $value = $crmuser->phone;
+                            } else {
+                                $value = '';
+                            }?>
+                            {{ Form::text('phone', $value, ['id' => 'usr_phone', 'class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.example').'7 495 232 20 00']) }}
+                            @foreach ($errors->get('phone') as $message)
+                            <br/>{{$message}}
+                            @endforeach
+                        </div>
 
-                            <div class="col-md-6">
-                                <label for="usr_email">@lang('main.user:email_label')</label>
-                            </div>
-                            <div class="col-md-6">
-                                <?php
-                                $old = old('email');
-                                if (!is_null($old)) {
-                                    $value = $old;
-                                } elseif (isset($crmuser)) {
-                                    $value = $crmuser->email;
-                                } else {
-                                    $value = '';
-                                }?>
-                                {{ Form::text('email', $value, ['id' => 'usr_email', 'class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.example').'info@mail.com']) }}
-                                @foreach ($errors->get('email') as $message)
-                                <br/>{{$message}}
-                                @endforeach
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="usr_phone">@lang('main.user:phone_label')</label>
-                            </div>
-                            <div class="col-md-6">
-                                <?php
-                                $old = old('phone');
-                                if (!is_null($old)) {
-                                    $value = $old;
-                                } elseif (isset($crmuser)) {
-                                    $value = $crmuser->phone;
-                                } else {
-                                    $value = '';
-                                }?>
-                                {{ Form::text('phone', $value, ['id' => 'usr_phone', 'class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.example').'7 495 232 20 00']) }}
-                                @foreach ($errors->get('phone') as $message)
-                                <br/>{{$message}}
-                                @endforeach
-                            </div>
-
-                            @if(!isset($crmuser))
-                            <div class="col-md-6">
-                                <label for="usr_password">@lang('main.user:password_label')</label>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" name="password" class="form-control" id="usr_password">
-                                @foreach ($errors->get('password') as $message)
-                                <br/>{{$message}}
-                                @endforeach
-                            </div>
-                            @endif
-                            <div class="col-md-12 text-right m-t">
-                                <button type="submit" class="btn btn-primary">@lang('main.btn_submit_label')</button>
-                            </div>
-                            <div class="col-md-4 col-md-offset-4" id="app_client_info_container"></div>
-                        </form>
-                    </div>
-
-
-
-                    <!-- Содержимое вкладки Права доступа -->
-                    @if(isset($crmuser))
+                        @if(!isset($crmuser))
+                        <div class="col-md-6">
+                            <label for="usr_password">@lang('main.user:password_label')</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="password" class="form-control" id="usr_password">
+                            @foreach ($errors->get('password') as $message)
+                            <br/>{{$message}}
+                            @endforeach
+                        </div>
+                        @endif
+                        <div class="col-md-12 text-right m-t">
+                            <button type="submit" class="btn btn-primary">@lang('main.btn_submit_label')</button>
+                        </div>
+                        <div class="col-md-4 col-md-offset-4" id="app_client_info_container"></div>
+                    </form>
+                </div>
+                <!-- Содержимое вкладки Права доступа -->
+                @if(isset($crmuser))
                     <div class="tab-pane fade" id="tab_user_permissions">
                         <form method="post" action="/users/{{$crmuser->user_id}}/savePermissions">
                             {{$csrfField}}
@@ -499,14 +494,9 @@
                             </div>
                         </form>
                     </div>
-                    @endif
-
-
-                </div>
-
+                @endif
             </div>
         </div>
     </div>
-    </div>
-    </div>
+</div>
 @endsection

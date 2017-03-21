@@ -23,7 +23,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12 text-right">
-            <a href="{{ route('employee.create') }}" class="btn btn-primaray ">{{ trans('adminlte_lang::message.employee_create_new') }}</a>
+            <a href="{{ route('employee.create') }}" class="btn btn-primary">{{ trans('adminlte_lang::message.employee_create_new') }}</a>
         </div>
         <div class="col-sm-12">
             <hr>

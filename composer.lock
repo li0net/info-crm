@@ -651,16 +651,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "0d6c7ca039329247e4f0f8f8f6506810e8248855"
+                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/0d6c7ca039329247e4f0f8f8f6506810e8248855",
-                "reference": "0d6c7ca039329247e4f0f8f8f6506810e8248855",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
+                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
                 "shasum": ""
             },
             "require": {
@@ -712,7 +712,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-02-27T10:51:17+00:00"
+            "time": "2017-03-20T17:10:46+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -1441,16 +1441,16 @@
         },
         {
             "name": "mgallegos/laravel-jqgrid",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mgallegos/laravel-jqgrid.git",
-                "reference": "04926cb6f416151f83b424fde4065bba41e0edbd"
+                "reference": "ca17ad4829dd0dc67807b871c3e69b0b2721e6e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mgallegos/laravel-jqgrid/zipball/04926cb6f416151f83b424fde4065bba41e0edbd",
-                "reference": "04926cb6f416151f83b424fde4065bba41e0edbd",
+                "url": "https://api.github.com/repos/mgallegos/laravel-jqgrid/zipball/ca17ad4829dd0dc67807b871c3e69b0b2721e6e0",
+                "reference": "ca17ad4829dd0dc67807b871c3e69b0b2721e6e0",
                 "shasum": ""
             },
             "require": {
@@ -1484,7 +1484,7 @@
                 "jquery",
                 "laravel"
             ],
-            "time": "2017-03-13T21:18:05+00:00"
+            "time": "2017-03-20T23:41:19+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2008,16 +2008,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.2",
+            "version": "v0.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "97113db4107a4126bef933b60fea6dbc9f615d41"
+                "reference": "1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/97113db4107a4126bef933b60fea6dbc9f615d41",
-                "reference": "97113db4107a4126bef933b60fea6dbc9f615d41",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e",
+                "reference": "1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e",
                 "shasum": ""
             },
             "require": {
@@ -2077,7 +2077,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-03-01T00:13:29+00:00"
+            "time": "2017-03-19T21:40:44+00:00"
         },
         {
             "name": "ramsey/uuid",
@@ -4524,16 +4524,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.16",
+            "version": "5.7.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "dafc78e2a7d12139b0e97078d1082326bd09363d"
+                "reference": "68752b665d3875f9a38a357e3ecb35c79f8673bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/dafc78e2a7d12139b0e97078d1082326bd09363d",
-                "reference": "dafc78e2a7d12139b0e97078d1082326bd09363d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/68752b665d3875f9a38a357e3ecb35c79f8673bf",
+                "reference": "68752b665d3875f9a38a357e3ecb35c79f8673bf",
                 "shasum": ""
             },
             "require": {
@@ -4602,7 +4602,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-03-15T13:02:34+00:00"
+            "time": "2017-03-19T16:52:12+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
