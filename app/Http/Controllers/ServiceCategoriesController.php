@@ -101,7 +101,7 @@ class ServiceCategoriesController extends Controller
         $usr->organization_id;
 
         $dbRes = DB::table('service_categories')
-                ->select('service_category_id', 'name', 'online_reservation_name', 'gender')
+                ->select('name', 'online_reservation_name', 'gender','service_category_id')
                 ->where('organization_id', $usr->organization_id)
                 ->orderBy($orderBy, $sortOrder)
                 ->offset(($page-1)*$numRows)
