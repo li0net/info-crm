@@ -9,11 +9,18 @@
 @endsection --}}
 
 @section('main-content')
-
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.product_ctgs_create_new') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.stock') }}</li>
+        <li><a href="{{ url('/productCategories')}}">{{ trans('adminlte_lang::message.product_categories') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.product_ctgs_create_new') }}</li>
+    </ol>
+</section>
+<div class="container">
 	<div class="row">
-		<div class="col-md-6 col-md-offset-3">
-			<h4>{{ trans('adminlte_lang::message.product_ctgs_create_new') }}</h4>	
-			<hr>	
+		<div class="col-md-12">
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
 					<ul>
@@ -23,35 +30,38 @@
 					</ul>
 				</div>
 			@endif
-			<div class="well">
-				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-				{!! Form::open(['route' => 'productCategories.store']) !!}
-					<div class="form-group">
-						{{ Form::label('title', trans('adminlte_lang::message.category_title'), ['class' => 'form-spacing-top']) }}
-						{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-					</div>
-
-					<div class="form-group">
-						{{ Form::label('description', trans('adminlte_lang::message.description'), ['class' => 'form-spacing-top']) }}
-						{{ Form::text('description', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-					</div>
-
-					<div class="form-group">
-						{{ Form::label('parent_category_id', trans('adminlte_lang::message.parent_category'), ['class' => 'form-spacing-top', 'disabled' => '']) }}
-						{{ Form::text('parent_category_id', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'disabled'=> '']) }}
-					</div>
-					
-					<hr>
-					
-					<div class="row">
-						<div class="col-sm-6 col-sm-offset-3">
-							{{	Form::submit(trans('adminlte_lang::message.product_ctgs_create_new'), ['class' => 'btn btn-success btn-block']) }}
-						</div>
-					</div>
-				{!! Form::close() !!}	
-			</div>
-		</div>
+        </div>
 	</div>
+    <div class="row">
+        {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '', 'class' => 'form-horizontal']) !!} --}}
+        {!! Form::open(['route' => 'productCategories.store']) !!}
+            <div class="form-group">
+                {{ Form::label('title', trans('adminlte_lang::message.category_title'), ['class' => 'col-sm-4 control-label text-right']) }}
+                <div class="col-sm-8">
+                    {{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ Form::label('description', trans('adminlte_lang::message.description'), ['class' => 'col-sm-4 control-label text-right']) }}
+                <div class="col-sm-8">
+                    {{ Form::text('description', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ Form::label('parent_category_id', trans('adminlte_lang::message.parent_category'), ['class' => 'col-sm-4 control-label text-right', 'disabled' => '']) }}
+                <div class="col-sm-8">
+                    {{ Form::text('parent_category_id', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'disabled'=> '']) }}
+                </div>
+            </div>
+            jh</div>
+            <div class="text-right m-t">
+                {{	Form::submit(trans('adminlte_lang::message.product_ctgs_create_new'), ['class' => 'btn btn-primary']) }}
+            </div>
+        {!! Form::close() !!}
+    </div>
+</div>
 @endsection
 {{-- @section('scripts')
 	{!! Html::script('js/parsley.min.js') !!}

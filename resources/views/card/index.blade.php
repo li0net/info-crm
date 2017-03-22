@@ -5,36 +5,38 @@
 @endsection
 
 @section('main-content')
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.routines') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.stock') }}</li>
+        <li class="active">{{ trans('adminlte_lang::message.routines') }}</li>
+    </ol>
+</section>
+<div class="container-fluid">
 	<div class="row">
 		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-		</div>
-
+            <div class="alert alert-success" role="alert">
+                <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
+            </div>
 		@endif
 	</div>
-
 	<div class="row">
-		<div class="col-sm-7">
-			<h4>{{ trans('adminlte_lang::message.routines') }}</h4>
-		</div>	
-
-		<div class="col-sm-5">
-			<a href="{{ route('card.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.routine_create_new') }}</a>
-		</div>
-
-		<div class="col-sm-12">
-			<div class="input-group">
+		<div class="col-sm-6">
+			<div class="input-group input-group-addon-right ">
 				<input name="search_term" type="text" placeholder="{{ trans('adminlte_lang::message.search_by_name_descr') }}" class="input form-control" value="" autocomplete="off">
 				<span class="input-group-btn">
-					 <button type="submit" class="btn btn btn-success">
+					 <button type="submit" class="btn btn-primary">
 						<i class="fa fa-search"></i> {{ trans('adminlte_lang::message.search') }}
 					</button>
 				</span>
 			</div>
 		</div>
-
+        <div class="col-sm-6 text-right">
+            <span class="input-group pull-right">
+                <a href="{{ route('card.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.routine_create_new') }}</a>
+            </span>
+        </div>
 		<div class="col-sm-12">
 			<hr>	
 		</div>
