@@ -5,6 +5,15 @@
 @endsection
 
 @section('main-content')
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.accounts') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.finance') }}</li>
+        <li class="active">{{ trans('adminlte_lang::message.accounts') }}</li>
+    </ol>
+</section>
+<div class="container-fluid">
 	<div class="row">
 		@if (Session::has('success'))
 		
@@ -14,10 +23,9 @@
 
 		@endif
 	</div>
-
 	<div class="row">
 		<div class="col-sm-10">
-			<h4>{{ trans('adminlte_lang::message.accounts') }}</h4>
+			<h4></h4>
 		</div>	
 
 		<div class="col-sm-2">
@@ -37,7 +45,7 @@
 					<th>{{ trans('adminlte_lang::message.account_balance') }}</th>
 					<th>{{ trans('adminlte_lang::message.account_income') }}</th>
 					<th>{{ trans('adminlte_lang::message.account_expenses') }}</th>
-					<th>{{ trans('adminlte_lang::message.actions') }}</th>
+					<th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
 				</thead>
 				<tbody>
 					@foreach($accounts as $account)
@@ -79,7 +87,8 @@
 					{!! $accounts->render(); !!} 
 			</div>
 		</div>
-	</div>		
+	</div>
+</div>
 @endsection
 
 <script>

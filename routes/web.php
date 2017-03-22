@@ -128,6 +128,7 @@ Route::post('/organization/save', ['as' => 'organization.save', 'uses' => 'Organ
 
 Route::get('/organization/info/edit', ['as' => 'info.edit', 'uses' => 'OrganizationsController@editInfo']);
 Route::put('/organization/info/save', ['as' => 'info.save', 'uses' => 'OrganizationsController@saveInfo']);
+Route::post('/organization/info/save', ['as' => 'info.save', 'uses' => 'OrganizationsController@saveInfo']);
 
 Route::get('/appointments/create', ['as' => 'appointments.create', 'uses' => 'AppointmentsController@create']);
 Route::get('/appointments/edit/{appt}', ['as' => 'appointments.edit', 'uses' => 'AppointmentsController@edit']);
@@ -136,7 +137,7 @@ Route::get('/appointments/destroy/{appt}', ['as' => 'appointments.destroy', 'use
 Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::get('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::post('/appointments/getClientInfo', 'AppointmentsController@getClientInfo');
-Route::get('/appointments/employeeOptions', ['as' => 'appointments.employeeOptions', 'uses' => 'appointmentsController@populateEmployeeOptions']);
+Route::get('/appointments/employeeOptions', ['as' => 'appointments.employeeOptions', 'uses' => 'AppointmentsController@populateEmployeeOptions']);
 
 Route::get('/users/create', 'UsersController@create');
 Route::get('/users/edit/{user}', 'UsersController@edit');

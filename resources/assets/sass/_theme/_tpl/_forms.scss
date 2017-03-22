@@ -487,6 +487,7 @@ body.skin-orange {
       padding-left: 1px;
       padding-right: 1px;
     }
+    .btn.btn-add,
     .btn.btn-danger{
       margin-left: 10px;
       color: $red-color;
@@ -496,6 +497,16 @@ body.skin-orange {
       font-size: $font-size-input;
       i{
         font-size: $font-size-input;
+      }
+      &:hover{
+        background: transparent;
+        color: $brand-secondary;
+      }
+    }
+    .btn.btn-add{
+      color: $brand-main;
+      &:hover{
+        color: $brand-main-hover;
       }
     }
     .form-control,

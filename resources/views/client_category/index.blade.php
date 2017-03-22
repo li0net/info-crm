@@ -30,6 +30,9 @@
         <div class="col-md-12 text-right m-b">
             <a href="{{$newCCUrl}}" class="btn btn-primary">@lang('main.client_category:create_new_btn_label')</a>
         </div>
+        <div class="col-sm-12">
+            <hr>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-12">

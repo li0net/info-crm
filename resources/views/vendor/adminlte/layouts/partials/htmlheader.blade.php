@@ -1,5 +1,6 @@
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
     <title> BarcelonaInfo - @yield('htmlheader_title', 'Your title here') </title>

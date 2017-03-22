@@ -5,6 +5,16 @@
 @endsection
 
 @section('main-content')
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.item_information') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.finance') }}</li>
+        <li><a href="{{ url('/item')}}">{{ trans('adminlte_lang::message.costs') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.item_information') }}</li>
+    </ol>
+</section>
+<div class="container">
 	<div class="row">
 		@if (Session::has('success'))
 		
@@ -74,4 +84,5 @@
 			</div>
 		</div>
 	</div>
+</div>
 @endsection

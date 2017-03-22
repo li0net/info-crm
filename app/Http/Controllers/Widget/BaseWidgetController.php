@@ -424,7 +424,7 @@ class BaseWidgetController extends Controller
         $endTs = strtotime($appStart.' + '.$sDurationHours.' hours '.$sDurationMinutes.' minutes');
         $appEnd = date('Y-m-d H:i:s', $endTs);
 
-        // если выбран вариант 'Мастер не нужен', нужно по service_id и выбранному времени случайно отобрать работника (employee)
+        // если выбран вариант 'Мастер не важен', нужно по service_id и выбранному времени случайно отобрать работника (employee)
         if ($request->input('employee_id') == 'any_employee') {
             $timeIntervals = $service->getFreeTimeIntervals($appStart, $appEnd);
             if (count($timeIntervals) == 0) {
@@ -487,7 +487,6 @@ class BaseWidgetController extends Controller
             //}
         }
 
-        // TODO: проверять что данный диапазон времени (start - end) не занят у работника
         $appointment = new Appointment();
         $appointment->organization_id = $request->input('organization_id');
         $appointment->client_id = $client->client_id;

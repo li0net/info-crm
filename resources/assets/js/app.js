@@ -168,12 +168,12 @@ $(document).ready(function () {
 		mtype: "GET",
 		styleUI : 'Bootstrap',
 		datatype: "json",
-		colNames:['Управление', 'Название', 'Название для онлайн регистрации', 'Пол'],
+		colNames:['Название', 'Название для онлайн регистрации', 'Пол','Управление'],
 		colModel: [
-			{ index: 'service_category_id', name: 'service_category_id', key: true, width: 50, formatter:ServiceCategoryFormatEditColumn },
 			{ index: 'name', name: 'name', width: 130 },
 			{ index: 'online_reservation_name', name: 'online_reservation_name', width: 150 },
-			{ index: 'gender', name: 'gender', width: 80, edittype:'select', formatter:'select', editoptions:{value:"1:Мужчины;0:Женщины;null:Все"} },
+			{ index: 'gender', name: 'gender', width: 80, edittype:'select', formatter:'select', editoptions:{value:"1:Мужчины;0:Женщины;null:Все"},},
+            { index: 'service_category_id', name: 'service_category_id', key: true, width: 50, formatter:ServiceCategoryFormatEditColumn },
 		],
 		sortname: 'name',
 		sortorder: 'asc',
@@ -216,12 +216,12 @@ $(document).ready(function () {
 		mtype: "GET",
 		styleUI : 'Bootstrap',
 		datatype: "json",
-		colNames:['Управление', 'Имя', 'Телефон', 'Email'],
+		colNames:['Имя', 'Телефон', 'Email','Управление'],
 		colModel: [
-			{ index: 'user_id', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn },
 			{ index: 'name', name: 'name', width: 100 },
 			{ index: 'phone', name: 'phone', width: 100 },
-			{ index: 'email', name: 'email', width: 100 }
+			{ index: 'email', name: 'email', width: 100 },
+            { index: 'user_id', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn }
 		],
 		sortname: 'name',
 		sortorder: 'asc',
@@ -245,8 +245,8 @@ $(document).ready(function () {
 				{index: 'client_id', name: 'client_id', key: true, width: 60, hidden: true, search: false},
 				{index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
 				{index: 'phone', name: 'phone', width: 100, search: true, stype: 'text'},
-				{index: 'total_bought', align:'center', name: 'total_bought', width: 70, search: false},
-				{index: 'discount', align:'center', name: 'discount', width: 60, search: false}
+				{index: 'total_bought', align:'left', name: 'total_bought', width: 70, search: false},
+				{index: 'discount', align:'left', name: 'discount', width: 60, search: false}
 			],
 			sortname: 'name',
 			sortorder: 'asc',
@@ -719,7 +719,7 @@ $(document).ready(function () {
 			$('#detailed-services').prepend(
 				'<div class="wrap-it">' +
 				'<div class="col-sm-10" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="services_cats_detailed[]" class="form-control"></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="services_detailed[]" class="form-control"><option value="">Выберите услугу</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="services_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="services_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
-				'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info btn-sm"></div></div>');
+				'<div class="col-sm-2"><button type="button" id="add-detailed-section" class="btn btn-add"><i class="fa fa-plus-circle" aria-hidden="true"></i></button></div></div>');
 			
 			$('select.form-control[name="services_cats_detailed[]"]').first().find('option').remove();
 			$('select.form-control[name="services_cats_detailed[]"]').first().append($('#service_ctgs_options').val());
@@ -759,7 +759,7 @@ $(document).ready(function () {
 			$('#detailed-products').prepend(
 				'<div class="wrap-it">' +						
 				'<div class="col-sm-10" style="padding: 0px;"><div class="col-sm-4"><select required="required" maxlength="110" name="products_cats_detailed[]" class="form-control"></select></div> <div class="col-sm-4"><select required="required" maxlength="110" name="products_detailed[]" class="form-control"><option value="0" selected="selected">Выберите товар</option></select></div> <div class="col-sm-2"><input required="required" maxlength="110" name="products_percent_detailed[]" type="text" class="form-control"></div> <div class="col-sm-2"><select required="required" maxlength="110" name="products_unit_detailed[]" class="form-control"><option value="rub" selected="selected">₽</option><option value="pct">%</option></select></div></div>' +
-				'<div class="col-sm-2" style="margin-bottom: 15px"><input type="button" id="add-detailed-section" value="Добавить" class="btn btn-info btn-sm"></div></div>');
+				'<div class="col-sm-2"><button type="button" id="add-detailed-section" class="btn btn-add"><i class="fa fa-plus-circle"></i></button></div></div>');
 			
 			$('select.form-control[name="products_cats_detailed[]"]').first().find('option').remove();
 			$('select.form-control[name="products_cats_detailed[]"]').first().append($('#product_ctgs_options').val());
@@ -905,7 +905,7 @@ function ServiceFormatEditColumn(cellvalue, options, rowObject)
 function UserFormatEditColumn(cellvalue, options, rowObject)
 {
 	var url = window.location.protocol + '//' + window.location.host + '/users/edit/' + cellvalue;
-	return '<a href="' + url + '" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+	return '<a href="' + url + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
 }
 
 function ClientCategoryFormatEditColumn(cellvalue, options, rowObject)

@@ -261,6 +261,12 @@ class AppointmentsController extends Controller
             }
         }
 
+        // преобразовываем duration_hours, duration_minutes в timestamp end
+        $endDateTime = strtotime(
+            $request->input('date_from') . ' ' . $request->input('time_from') . ' + ' . $request->input('duration_hours') . ' hours ' . $request->input('duration_minutes') . ' minutes'
+        );
+        $endDateTime = date('Y-m-d H:i:s', $endDateTime);
+
         $appId = $request->input('appointment_id');
         // определить создание это или редактирование (по наличию поля service_category_id)
         // если редактирвоание - проверить что объект принадлежит текущему пользователю
@@ -301,25 +307,50 @@ class AppointmentsController extends Controller
                 throw new AccessDeniedHttpException('You don\'t have permission to access this page');
             }
 
+            // Проверка что данное время все еще свободно у мастера
+            $service = Service::where('service_id', $request->input('service_id'))
+                ->join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id')
+                ->where('service_categories.organization_id', $request->user()->organization_id)
+                ->first();
+            if (!$service) return json_encode(array('success' => false, 'error' => 'Service data error'));
+
+            $employee = Employee::find($request->input('employee_id'))->where('organization_id', $request->user()->organization_id)->first();
+            if (!$employee) return json_encode(array('success' => false, 'error' => 'Employee data error'));
+
+            $freeTimeIntervals = $employee->getFreeTimeIntervals($request->input('date_from') . ' ' . $request->input('time_from').':00', $endDateTime);
+            if (count($freeTimeIntervals) != 1) {   // время свободно если возвращается один свободный интервал
+                return json_encode(array('success' => false, 'error' => trans('main.widget:error_time_already_taken')));
+            }
+            if ($freeTimeIntervals[0]->work_start != $request->input('date_from') . ' ' . $request->input('time_from') . ':00' OR $freeTimeIntervals[0]->work_end != $endDateTime) {
+                // если границы интервала не равны (тут могут быть только уже) тем которые передавались в качестве параметров, значит не весь диапазон времени свободен
+                return json_encode(array('success' => false, 'error' => trans('main.widget:error_time_already_taken')));
+            }
+
             $appointment = new Appointment();
             $appointment->organization_id = $request->user()->organization_id;
+            if ($request->input('employee_id')) {
+                $appointment->is_employee_important = 1;
+            }
         }
-        // TODO: проверять что данный диапазон времени (start - end) не занят у работника (если работник не важен - искать хотябы одного свободного с этой услугой?)
 
         $appointment->client_id = $client->client_id;
         $appointment->service_id = $request->input('service_id');
         // преобразовываем date_from, time_from в timestamp start
         $appointment->start = $request->input('date_from') . ' ' . $request->input('time_from');
-        // преобразовываем duration_hours, duration_minutes в timestamp end
-        $endTs = strtotime($appointment->start . ' + ' . $request->input('duration_hours') . ' hours ' . $request->input('duration_minutes') . ' minutes');
-        $appointment->end = date('Y-m-d H:i:s', $endTs);
+        $appointment->end = $endDateTime;
         $appointment->employee_id = $request->input('employee_id');
         if (!empty($request->input('note'))) {
             $appointment->note = $request->input('note');
         }
-        $appointment->service_price = $request->input('service_price');
-        $appointment->service_discount = $request->input('service_discount');
-        $appointment->service_sum = $request->input('service_sum');
+        if ($request->input('service_price')) {
+            $appointment->service_price = $request->input('service_price');
+        }
+        if ($request->input('service_discount')) {
+            $appointment->service_discount = $request->input('service_discount');
+        }
+        if ($request->input('service_sum')) {
+            $appointment->service_sum = $request->input('service_sum');
+        }
 
         if ( $request->input('remind_by_sms_in')) {
             $appointment->remind_by_sms_in = $request->input('remind_by_sms_in_value');

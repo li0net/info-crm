@@ -5,27 +5,28 @@
 @endsection
 
 @section('main-content')
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.schemes') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.finance') }}</li>
+        <li class="active">{{ trans('adminlte_lang::message.schemes') }}</li>
+    </ol>
+</section>
+<div class="container-fluid">
 	<div class="row">
 		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-		</div>
-
+            <div class="alert alert-success" role="alert">
+                <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
+            </div>
 		@endif
 	</div>
-
 	<div class="row">
-		<div class="col-sm-10">
-			<h4>{{ trans('adminlte_lang::message.schemes') }}</h4>
-		</div>	
-
-		<div class="col-sm-2">
+		<div class="col-sm-12 text-right">
 			@if ($user->hasAccessTo('wage_schemes', 'edit', '0'))
-				<a href="{{ route('wage_scheme.create') }}" class="btn btn-primary btn-block">{{ trans('adminlte_lang::message.new_scheme') }}</a>
+				<a href="{{ route('wage_scheme.create') }}" class="btn btn-primary">{{ trans('adminlte_lang::message.new_scheme') }}</a>
 			@endif
 		</div>
-
 		<div class="col-sm-12">
 			<hr>	
 		</div>
@@ -39,7 +40,7 @@
 					<th>{{ trans('adminlte_lang::message.for_services') }}</th>
 					<th>{{ trans('adminlte_lang::message.for_products') }}</th>
 					<th>{{ trans('adminlte_lang::message.wage') }}</th>
-					<th></th>
+					<th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
 				</thead>
 				<tbody>
 					@foreach($schemes as $scheme)
@@ -75,12 +76,12 @@
 									<small>{{ trans('adminlte_lang::message.a_month') }}</small>
 								@endif
 							</td>
-							<td class="text-right">
+							<td class="text-center">
 								@if ($user->hasAccessTo('wage_schemes', 'edit', 0))
-									<a href="{{ route('wage_scheme.edit', $scheme->scheme_id) }}" id="scheme_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+									<a href="{{ route('wage_scheme.edit', $scheme->scheme_id) }}" id="scheme_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
 
 									{!! Form::open(['route' => ['wage_scheme.destroy', $scheme->scheme_id], 'id' => 'form'.$scheme->scheme_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$scheme->scheme_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$scheme->scheme_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	
@@ -92,7 +93,8 @@
 					{!! $schemes->render(); !!} 
 			</div>
 		</div>
-	</div>		
+	</div>
+</div>
 @endsection
 
 <script>

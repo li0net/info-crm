@@ -6,36 +6,28 @@
 
 
 @section('main-content')
-    <div class="container-fluid spark-screen">
-        <div class="row">
-            <div class="col-md-10">
-                <div class="panel panel-default">
-                    <div class="panel-heading">@lang('main.user:list_page_header')</div>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <p class="text-right"><a href="{{$newUserUrl}}" class="btn btn-default">@lang('main.user:create_new_btn_label')</a></p>
-            </div>
-
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.users') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.settings') }}</li>
+        <li class="active">{{ trans('adminlte_lang::message.users') }}</li>
+    </ol>
+</section>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <a href="{{$newUserUrl}}" class="btn btn-primary">@lang('main.user:create_new_btn_label')</a>
         </div>
-
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-
-                        <div style="margin-left:20px">
-
-                            <table id="users_grid"></table>
-                            <div id="users_grid_pager"></div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-12">
+            <hr>
         </div>
-
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="users_grid"></table>
+            <div id="users_grid_pager"></div>
+        </div>
+    </div>
+</div>
 @endsection

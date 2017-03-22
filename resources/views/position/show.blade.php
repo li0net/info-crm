@@ -5,6 +5,16 @@
 @endsection
 
 @section('main-content')
+<section class="content-header">
+    <h1>{{ $position->title }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.settings') }}</li>
+        <li><a href="{{ url('/position')}}">{{ trans('adminlte_lang::message.positions') }}</a></li>
+        <li class="active">{{ $position->title }}</li>
+    </ol>
+</section>
+<div class="container">
 	<div class="row">
 		@if (Session::has('success'))
 			<div class="alert alert-success" role="alert">
@@ -13,42 +23,30 @@
 		@endif
 	</div>
 	<div class="row">
-		<div class="col-sm-6 col-sm-offset-3">
-			<div class="well">
-				{{ Form::label('title', trans('adminlte_lang::message.position_name')) }}
-				<p class="lead">{{ $position->title }}</p>
-			
-				<dl class="dl-horizontal">
-					<label>{{ trans('adminlte_lang::message.description') }}</label>
-					<p class="lead">{{ $position->description }}</p>
-				</dl>
-				
-				<hr>
+		<div class="col-sm-12">
+            <dl class="dl-horizontal">
+                <dt>{{  trans('adminlte_lang::message.position_name') }}</dt>
+                <dd>{{ $position->title }}</dd>
 
-				<div class="row">
-					@if ($user->hasAccessTo('employee', 'edit', 0))
-						<div class="col-sm-6">
-							{!! Html::linkRoute('position.edit', trans('adminlte_lang::message.edit'), [$position->position_id], 
-																									   ['class'=>'btn btn-primary btn-block']) !!}
-						</div>
-					@endif
-					@if ($user->hasAccessTo('position', 'delete', 0))
-						<div class="col-sm-6">
-							{!! Form::open(['route' => ['position.destroy', $position->position_id], "method" => 'DELETE']) !!}
-								{{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger btn-block']) }}
-							{!! Form::close() !!}
-						</div>
-					@endif
-				</div>
-
-				<div class="row">
-					<div class="col-sm-12">
-							{{ Html::linkRoute('position.index', trans('adminlte_lang::message.positions').' »', [], ['class' => 'btn btn-default btn-block', 
-																													  'style' => 'margin-top:15px']) }}
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</div>
+                <dt>{{ trans('adminlte_lang::message.description') }}</dt>
+                <dd>{{ $position->description }}</dd>
+            </dl>
+        </div>
+        <div class="m-t text-right">
+            @if ($user->hasAccessTo('employee', 'edit', 0))
+                {!! Html::linkRoute('position.edit', trans('adminlte_lang::message.edit'),
+                                [$position->position_id],
+                                ['class'=>'btn btn-primary pull-right'])
+                !!}
+            @endif
+            @if ($user->hasAccessTo('position', 'delete', 0))
+                {!! Form::open(['route' => ['position.destroy', $position->position_id],
+                                "method" => 'DELETE']) !!}
+                    {{ Form::submit(trans('adminlte_lang::message.delete'),
+                                ['class'=>'btn btn-danger pull-right m-r']) }}
+                {!! Form::close() !!}
+            @endif
+        </div>
+    </div>
+</div>
 @endsection

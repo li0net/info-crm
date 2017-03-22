@@ -6,7 +6,7 @@ body.skin-orange {
   background-color: $body-bg;
   font-size: $font-size;
   .wrapper{
-    overflow: hidden;
+    //overflow: hidden;
   }
   /** headers **/
   .content-header {
@@ -99,55 +99,69 @@ body.skin-orange {
 
   /** boxes **/
   .box{
-    border: none;
-    box-shadow: none;
-    color: $text-color;
-    @include border-radius(0);
-    .box-header,
-    .box-header.with-border{
-      border: none;
-      @include border-radius(0);
-      padding-left: 0;
-      padding-bottom: 5px;
-      color: $text-color;
-      font-size: $font-size;
-      font-weight: normal;
-      h3{
-        color: $text-color;
-        font-size: $font-size-input;
-        font-weight: bold;
+    &.box-solid{
+      margin: 20px 0 7px;
+      border: 1px solid $brand-main;
+      .box-header {
+        color: $brand-main-text;
+        background: $brand-main;
+        .badge.label-danger{
+          background-color: $brand-main-text !important;
+          color: $brand-secondary !important;
+          margin-top: 8px;
+          width: 24px;
+        }
+        h3{
+          margin: 0;
+          font-size: $font-size-input;
+          color: $brand-main-text;
+          i {
+            font-size: $font-size-input;
+          }
+          a{
+            background: transparent;
+            font-size: $font-size-input;
+            color: $brand-main-text;
+            text-decoration: none;
+            &:hover{
+              background: transparent;
+              color: $brand-secondary;
+            }
+          }
+        }
       }
     }
-    .box-body{
-      padding: 10px 10px 30px 10px;
-      border: 1px solid $brand-main;
-      @include border-radius(15px);
-      min-height: 185px;
-      .boxfoot{
-        margin-top: 10px;
-      }
-      .btn-boxfoot{
-        @include border-radius(15px);
-        margin: 0;
-        position: absolute;
-        bottom: 0;
-        right: -1px;
-        -webkit-border-top-right-radius: 0;
-        border-top-right-radius: 0;
-        -webkit-border-bottom-left-radius: 0;
-        border-bottom-left-radius: 0;
-        &.pull-left{
-          @include border-radius(15px);
-          position: absolute;
-          bottom: 0;
-          left: -1px;
-          -webkit-border-top-left-radius: 0;
-          border-top-left-radius: 0;
-          -webkit-border-bottom-right-radius: 0;
-          border-bottom-right-radius: 0;
+    &.box-primary{
+      border: none;
+      box-shadow: none;
+      color: $text-color;
+      @include border-radius(0);
+      .box-header,
+      .box-header.with-border{
+        border: none;
+        @include border-radius(0);
+        padding-left: 0;
+        padding-bottom: 5px;
+        color: $text-color;
+        font-size: $font-size;
+        font-weight: normal;
+        h3{
+          color: $text-color;
+          font-size: $font-size-input;
+          font-weight: bold;
         }
-        &.pull-right{
+      }
+      .box-body{
+        padding: 10px 10px 30px 10px;
+        border: 1px solid $brand-main;
+        @include border-radius(15px);
+        min-height: 185px;
+        .boxfoot{
+          margin-top: 10px;
+        }
+        .btn-boxfoot{
           @include border-radius(15px);
+          margin: 0;
           position: absolute;
           bottom: 0;
           right: -1px;
@@ -155,10 +169,31 @@ body.skin-orange {
           border-top-right-radius: 0;
           -webkit-border-bottom-left-radius: 0;
           border-bottom-left-radius: 0;
-        }
+          &.pull-left{
+            @include border-radius(15px);
+            position: absolute;
+            bottom: 0;
+            left: -1px;
+            -webkit-border-top-left-radius: 0;
+            border-top-left-radius: 0;
+            -webkit-border-bottom-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+          &.pull-right{
+            @include border-radius(15px);
+            position: absolute;
+            bottom: 0;
+            right: -1px;
+            -webkit-border-top-right-radius: 0;
+            border-top-right-radius: 0;
+            -webkit-border-bottom-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
 
+        }
       }
     }
+
   }
 
   /** content **/
