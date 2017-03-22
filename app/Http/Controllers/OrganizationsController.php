@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Organization;
-use Session;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Illuminate\Support\MessageBag;
 
 class OrganizationsController extends Controller
@@ -48,6 +48,10 @@ class OrganizationsController extends Controller
     }
 
     // форма редактирования организации
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit(Request $request)
     {
         $org = Organization::find($request->user()->organization_id);
@@ -140,7 +144,7 @@ class OrganizationsController extends Controller
 
         $organization->save();
 
-        return redirect()->to('/organization/edit')->with('status', 'Profile updated!');;
+        return redirect()->to('/organization/edit')->with('status', 'Profile updated!');
     }
 
     public function editInfo(Request $request)
