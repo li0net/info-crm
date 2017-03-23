@@ -55,7 +55,7 @@
                     {{ Form::text('parent_category_id', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'disabled'=> '']) }}
                 </div>
             </div>
-            jh</div>
+            </div>
             <div class="text-right m-t">
                 {{	Form::submit(trans('adminlte_lang::message.product_ctgs_create_new'), ['class' => 'btn btn-primary']) }}
             </div>
