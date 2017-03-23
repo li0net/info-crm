@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Partner;
-use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class PartnerController extends Controller
@@ -34,8 +34,8 @@ class PartnerController extends Controller
 	/**
 	 * Show the form for creating a new resource.
 	 *
-	 * @return \Illuminate\Http\Response
-	 */
+	 * @return View
+     */
 	public function create()
 	{
 		return view('partner.create');
@@ -79,8 +79,8 @@ class PartnerController extends Controller
 	 * Display the specified resource.
 	 *
 	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
+	 * @return View
+     */
 	public function show($id)
 	{
 		$partner = Partner::find($id);

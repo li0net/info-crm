@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Organization;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Illuminate\Support\MessageBag;
 
@@ -147,6 +148,10 @@ class OrganizationsController extends Controller
         return redirect()->to('/organization/edit')->with('status', 'Profile updated!');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function editInfo(Request $request)
     {
         $org = Organization::find($request->user()->organization_id);
