@@ -18,6 +18,9 @@
 <input type="hidden" name="client_id" id="c_client_id" value="{{$client->client_id}}">
 @endif
 <div class="container">
+
+    @include('partials.alerts')
+
     <div class="row">
         <dl class="dl-horizontal">
             <dt><span>@lang('main.client:name_label')</span></dt>

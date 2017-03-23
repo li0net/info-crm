@@ -6,10 +6,9 @@
 
 @section('main-content')
 
-@include('partials.alerts')
+    @include('partials.alerts')
 
-
-<div class="row">
+    <div class="row">
 		<div class="col-sm-4 col-sm-offset-4">
 			<div class="well">
 				{{ Form::label('title', "Дата и время проведения операции: ") }}

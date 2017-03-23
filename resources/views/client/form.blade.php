@@ -27,6 +27,9 @@
     </ol>
 </section>
 <div class="container">
+
+    @include('partials.alerts')
+
     <div class="row">
 
         <div class="col-md-12 m-t">

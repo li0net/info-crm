@@ -18,6 +18,9 @@
         </ol>
     </section>
     <div class="container">
+
+        @include('partials.alerts')
+
         <div class="row">
             <div class="col-sm-12">
                 {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}

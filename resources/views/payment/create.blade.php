@@ -10,19 +10,14 @@
 
 @section('main-content')
 
-	<div class="row">
+
+@include('partials.alerts')
+
+<div class="row">
 		<div class="col-sm-8 col-sm-offset-2">
-			<h4>{{ trans('adminlte_lang::message.payment_create_new') }}</h4>	
-			<hr>	
-			@if (count($errors) > 0)
-				<div class="alert alert-danger">
-					<ul>
-						@foreach ($errors->all() as $error)
-							<li>{{ $error }}</li>
-						@endforeach
-					</ul>
-				</div>
-			@endif
+			<h4>{{ trans('adminlte_lang::message.payment_create_new') }}</h4>
+
+
 			<div class="well">
 				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
 				{!! Form::open(['route' => 'payment.store', 'class' => 'form-horizontal']) !!}

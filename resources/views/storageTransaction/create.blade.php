@@ -10,7 +10,9 @@
 
 @section('main-content')
 
-	<div class="row">
+@include('partials.alerts')
+
+<div class="row">
 		<div class="col-sm-8 col-sm-offset-2">
 			<h4>Новая складская операция</h4>	
 			<hr>	

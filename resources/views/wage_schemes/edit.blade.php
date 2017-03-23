@@ -19,20 +19,15 @@
     </ol>
 </section>
 <div class="container">
-	<div class="row">
+
+    @include('partials.alerts')
+
+    <div class="row">
 		<div class="col-sm-8 col-sm-offset-2">
 			<h4>{{ trans('adminlte_lang::message.information_about_payroll_scheme') }}</h4>	
 			{{-- <ex1></ex1> --}}
-			<hr>	
-			@if (count($errors) > 0)
-				<div class="alert alert-danger">
-					<ul>
-						@foreach ($errors->all() as $error)
-							<li>{{ $error }}</li>
-						@endforeach
-					</ul>
-				</div>
-			@endif
+			<hr>
+
 			<div class="well">
 				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
 				{!! Form::model($scheme, ['route' => ['wage_scheme.update', $scheme->scheme_id], 'method' => 'PUT']) !!}

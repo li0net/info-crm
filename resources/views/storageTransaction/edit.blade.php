@@ -10,19 +10,12 @@
 
 @section('main-content')
 
-    <div class="row">
+@include('partials.alerts')
+
+<div class="row">
         <div class="col-sm-8 col-sm-offset-2">
             <h4>Новая складская операция</h4>
             <hr>
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
             <div class="well">
                 {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
                 {!! Form::model($transaction, ['route' => ['storagetransaction.update', $transaction->id], 'class' => 'form-horizontal', 'method' => 'PUT']) !!}

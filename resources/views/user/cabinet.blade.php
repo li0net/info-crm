@@ -13,6 +13,9 @@
         </ol>
     </section>
     <div class="container">
+
+        @include('partials.alerts')
+
         <section class="content">
             <div class="row">
                 <div class="col-lg-6">
