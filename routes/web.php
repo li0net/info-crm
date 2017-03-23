@@ -104,6 +104,9 @@ Route::get('/serviceCategories/edit/{serviceCategory}', 'ServiceCategoriesContro
 Route::post('/serviceCategories/save', 'ServiceCategoriesController@save');
 Route::get('/serviceCategories/destroy/{scId}', 'ServiceCategoriesController@destroy');
 
+Route::get('/productCategories/store', 'ProductCategoriesController@store');
+
+
 //Route::get('/test', function (){
 //            $service = Service::find(20);
 //
