@@ -14,13 +14,9 @@
     </ol>
 </section>
 <div class="container-fluid">
-    <div class="row">
-        @if (Session::has('success'))
-        <div class="alert alert-success" role="alert">
-            <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-        </div>
-        @endif
-    </div>
+
+    @include('partials.alerts')
+
     <div class="row">
         <div class="col-sm-12">
             <a href="#" class="btn btn-info pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>

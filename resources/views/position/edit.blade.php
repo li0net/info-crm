@@ -15,13 +15,9 @@
     </ol>
 </section>
 <div class="container">
-	<div class="row">
-		@if (Session::has('success'))
-			<div class="alert alert-success" role="alert">
-				<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-			</div>
-		@endif
-	</div>
+
+    @include('partials.alerts')
+
 	<div class="row">
 		{!! Form::model($position, ['route' => ['position.update', $position->position_id],
                                     "method" => 'PUT', "class" => 'form-horizontal']) !!}

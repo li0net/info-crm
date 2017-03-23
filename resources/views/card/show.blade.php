@@ -5,17 +5,10 @@
 @endsection
 
 @section('main-content')
-	<div class="row">
-		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-		</div>
 
-		@endif
-	</div>
+    @include('partials.alerts')
 
-	<div class="row">
+    <div class="row">
 		<div class="col-sm-6 col-sm-offset-3">
 			<div class="well">
 				{{ Form::label('title', trans('adminlte_lang::message.title')) }}

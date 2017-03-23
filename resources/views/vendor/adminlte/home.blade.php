@@ -5,14 +5,10 @@
 @endsection
 
 @section('main-content')
-	<div class="row">
-		@if (Session::has('success'))
-            <div class="alert alert-success" role="alert">
-                <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-            </div>
-		@endif
-	</div>
-	<div class="container-fluid spark-screen">
+
+@include('partials.alerts')
+
+<div class="container-fluid spark-screen">
         <section class="content-header">
             <h1>{{ trans('adminlte_lang::message.schedule') }}</h1>
             <!--<ol class="breadcrumb">

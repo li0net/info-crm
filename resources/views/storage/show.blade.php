@@ -14,14 +14,10 @@
     </ol>
 </section>
 <div class="container">
-	<div class="row">
-		@if (Session::has('success'))
-            <div class="alert alert-success" role="alert">
-                <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-            </div>
-		@endif
-	</div>
-	<div class="row">
+
+    @include('partials.alerts')
+
+    <div class="row">
 		<div class="col-sm-12">
             <dl class="dl-horizontal">
                 <dt>{{ trans('adminlte_lang::message.storage_title') }}</dt>

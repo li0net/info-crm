@@ -14,13 +14,9 @@
     </ol>
 </section>
 <div class="container-fluid">
-    <div class="row">
-        @if (Session::has('success'))
-        <div class="alert alert-success" role="alert">
-            <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-        </div>
-        @endif
-    </div>
+
+    @include('partials.alerts')
+
     <div class="row">
         <div class="col-sm-12 text-right">
             <a href="{{ route('employee.create') }}" class="btn btn-primary">{{ trans('adminlte_lang::message.employee_create_new') }}</a>

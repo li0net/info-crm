@@ -14,15 +14,9 @@
     </ol>
 </section>
 <div class="container-fluid">
-	<div class="row">
-		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
-		</div>
 
-		@endif
-	</div>
+    @include('partials.alerts')
+
 	<div class="row">
 		<div class="col-sm-10">
 			<h4></h4>

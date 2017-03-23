@@ -5,17 +5,11 @@
 @endsection
 
 @section('main-content')
-	<div class="row">
-		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
-		</div>
 
-		@endif
-	</div>
+@include('partials.alerts')
 
-	<div class="row">
+
+<div class="row">
 		<div class="col-sm-4 col-sm-offset-4">
 			<div class="well">
 				{{ Form::label('title', "Дата и время проведения операции: ") }}

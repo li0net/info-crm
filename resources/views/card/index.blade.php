@@ -14,14 +14,10 @@
     </ol>
 </section>
 <div class="container-fluid">
-	<div class="row">
-		@if (Session::has('success'))
-            <div class="alert alert-success" role="alert">
-                <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-            </div>
-		@endif
-	</div>
-	<div class="row">
+
+    @include('partials.alerts')
+
+    <div class="row">
 		<div class="col-sm-6">
 			<div class="input-group input-group-addon-right ">
 				<input name="search_term" type="text" placeholder="{{ trans('adminlte_lang::message.search_by_name_descr') }}" class="input form-control" value="" autocomplete="off">
