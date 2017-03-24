@@ -210,9 +210,13 @@ class ServicesController extends Controller
 					0
 				);
 
+                $serviceRouting = null;
+				if (isset($input['service-routing'][$i])) {
+                    $serviceRouting = $input['service-routing'][$i];
+                }
 				$service->employees()->attach(
 					$input['service-employee'][$i],
-					['duration' => $time, 'routing_id' => $input['service-routing'][$i]]
+					['duration' => $time, 'routing_id' => $serviceRouting]
 				);
 			}
 		}

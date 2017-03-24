@@ -336,7 +336,7 @@
 
             $(".employee-content .js-select-basic-single").select2({
                 theme: "alt-control",
-                placeholder: "choose the one",
+                placeholder: "choose one",
                 minimumResultsForSearch: Infinity
             });
         });
@@ -352,7 +352,7 @@
 
             $(".resource-content .js-select-basic-single").select2({
                 theme: "alt-control",
-                placeholder: "choose the one",
+                placeholder: "choose one",
                 minimumResultsForSearch: Infinity
             });
         });
