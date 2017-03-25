@@ -331,4 +331,9 @@ class ClientsController extends Controller
 
         return json_encode(array('success' => TRUE, 'error' => ''));
     }
+
+    public function getClientCategories() {
+        $cc = $this->prepareClientCategoriesOptions();
+        return json_encode($cc);
+    }
 }
