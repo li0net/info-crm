@@ -5,18 +5,23 @@
 @endsection
 
 @section('main-content')
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.payments') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.finance') }}</li>
+        <li class="active">{{ trans('adminlte_lang::message.payments') }}</li>
+    </ol>
+</section>
+<div class="container-fluid">
 
     @include('partials.alerts')
 
 	<div class="row">
-		<div class="col-sm-4">
-			<h4>{{ trans('adminlte_lang::message.payments') }}</h4>
-		</div>	
-
-		<div class="col-sm-8">
+		<div class="col-sm-12 text-right">
 			<a href="{{ route('payment.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.new_payment') }}</a>
-			<a href="#" class="btn btn-default m-r pull-right">{{ trans('adminlte_lang::message.load_from_excel') }}</a>
-			<a href="#" class="btn btn-default m-r pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
+			<a href="#" class="btn btn-info m-r pull-right">{{ trans('adminlte_lang::message.load_from_excel') }}</a>
+			<a href="#" class="btn btn-info m-r pull-right">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
 		</div>
 
 		<div class="col-sm-12">
@@ -30,18 +35,18 @@
 			<div class="row m-b">
 				<div class="col-sm-3">
 					<div class="input-group">
-						<span class="input-group-addon">c&nbsp;&nbsp;</span>
+						<span class="input-group-addon">{{ trans('adminlte_lang::message.date_from') }}</span>
 						<input class="form-control hasDatepicker" name="start_date" data-days-offset="-1" type="text" id="date-from">
 					</div>
 				</div>
 				<div class="col-sm-3">
 					<div class="input-group">
-						<span class="input-group-addon">по</span>
+						<span class="input-group-addon">{{ trans('adminlte_lang::message.date_to') }}</span>
 						<input class="form-control hasDatepicker" name="end_date" type="text" id="date-to">
 					</div>
 				</div>
 				<div class="col-sm-3">
-					<select class="form-control" data-placeholder={{ trans('adminlte_lang::message.select_payment_status') }} name="balance_is">
+					<select class="js-select-basic-single" data-placeholder={{ trans('adminlte_lang::message.select_payment_status') }} name="balance_is">
 						<option selected="" value="0">{{ trans('adminlte_lang::message.payment_all_types') }}</option>
 						<option value="1">{{ trans('adminlte_lang::message.income') }}</option>
 						<option value="2">{{ trans('adminlte_lang::message.expenses') }}</option>
@@ -49,7 +54,7 @@
 					</select>
 				</div>	    	
 				<div class="col-sm-3">
-				{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 
+				{{ Form::select('partner_id', $partners, null, ['class' => 'js-select-basic-single',
 																'required' => '', 
 																'id' => 'partner_id', 
 																'placeholder' => trans('adminlte_lang::message.partner_not_chosen')]) }}
@@ -57,25 +62,25 @@
 			</div>
 			<div class="row m-b">
 				<div class="col-sm-3">
-					{{ Form::select('account_id', $accounts, null, ['class' => 'form-control', 
+					{{ Form::select('account_id', $accounts, null, ['class' => 'js-select-basic-single',
 																	'required' => '', 
 																	'id' => 'account_id', 
 																	'placeholder' => trans('adminlte_lang::message.account_not_chosen')]) }}
 				</div>
 				<div class="col-sm-3">
-					{{ Form::select('item_id', $items, null, ['class' => 'form-control', 
+					{{ Form::select('item_id', $items, null, ['class' => 'js-select-basic-single',
 															  'required' => '', 
 															  'id' => 'item_id', 
 															  'placeholder' => trans('adminlte_lang::message.payment_item_not_chosen')]) }}			
 				</div>
 				<div class="col-sm-3">
-					{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 
+					{{ Form::select('employee_id', $employees, null, ['class' => 'js-select-basic-single',
 																	  'required' => '', 
 																	  'id' => 'employee_id', 
 																	  'placeholder' => trans('adminlte_lang::message.employee_not_chosen')]) }}
 				</div>
 				<div class="col-sm-3">
-					{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 
+					{{ Form::select('client_id', $clients, null, ['class' => 'js-select-basic-single',
 																  'required' => '', 
 																  'id' => 'client_id', 
 																  'placeholder' => trans('adminlte_lang::message.client_not_chosen')]) }}
@@ -106,7 +111,7 @@
 					</div> --}}
 				</div>
 				<div class="col-sm-3 transactions-multi-filters">
-					{{-- <select name="service_ids[]" class="form-control chosen-filter-services" data-placeholder="Выберите услуги..." multiple="multiple" style="display: none;">
+					{{-- <select name="service_ids[]" class="form-control chosen-filter-services" data-placeholder="{{ trans('adminlte_lang::message.service_name') }}" multiple="multiple" style="display: none;">
 						<option value="508710">Стрижки и укладки</option>
 						<option value="508711">Полубокс</option>
 						<option value="529076">Маникюр</option>
@@ -124,7 +129,7 @@
 					<div class="chosen-container chosen-container-multi" style="width: 376px;" title="">
 						<ul class="chosen-choices">
 							<li class="search-field">
-								<input type="text" value="Выберите услуги..." class="default" autocomplete="off" style="width: 151px;">
+								<input type="text" value="{{ trans('adminlte_lang::message.service_name') }}" class="default" autocomplete="off" style="width: 151px;">
 							</li>
 						</ul>
 						<div class="chosen-drop">
@@ -135,25 +140,32 @@
 					</div> --}}
 				</div>
 				<div class="col-sm-3">
-					<select class="form-control" data-placeholder={{ trans('adminlte_lang::message.select_payment_status') }} name="deleted">
+					<select class="js-select-basic-single" data-placeholder={{ trans('adminlte_lang::message.select_payment_status') }} name="deleted">
 						<option selected="" value="0">{{ trans('adminlte_lang::message.not_cancelled') }}</option>
 						<option value="1">{{ trans('adminlte_lang::message.cancelled') }}</option>
 					</select>
 				</div>
 				<div class="form-inline">
-					<div class="col-sm-3">
-						<select name="editable_length" aria-controls="editable" class="form-control input-sm">
+					<div class="col-sm-1">
+						<select name="editable_length" aria-controls="editable" class="js-select-basic-single">
 							<option selected="" value="25">25</option>
 							<option value="50">50</option>
 							<option value="100">100</option>
-						</select> {{ trans('adminlte_lang::message.payments_per_page') }}
+						</select>
 					</div>
+                    <div class="col-sm-2">
+                        <p class="m-t">
+						{{ trans('adminlte_lang::message.payments_per_page') }}
+                        </p>
+					</div>
+
 				</div>
 			</div>
 			<div class="row m-b ">
-				<div class="col-sm-2 col-sm-offset-10">
-					<input type="button" class="btn btn-success btn-sm pull-right" value={{ trans('adminlte_lang::message.show') }} id='form_submit'>
+				<div class="col-sm-12 text-right">
+					<input type="button" class="btn btn-primary" value={{ trans('adminlte_lang::message.show') }} id='form_submit'>
 				</div>
+
 			</div>
 		</fieldset>
 	</form>
@@ -172,6 +184,7 @@
 					<th>{{ trans('adminlte_lang::message.balance_in_cash') }}</th>
 					{{-- <th>{{ trans('adminlte_lang::message.service_good') }}</th>
 					<th>{{ trans('adminlte_lang::message.visit') }}</th> --}}
+                    <th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
 				</thead>
 				<tbody>
 					@foreach($payments as $payment)
@@ -196,13 +209,13 @@
 							{{-- <td></td>
 							<td></td> --}}
 
-							<td class="text-right" style="min-width: 100px;">
+							<td class="text-center" style="min-width: 100px;">
 								@if ($user->hasAccessTo('payment', 'edit', 0))
-									<a href="{{ route('payment.edit', $payment->payment_id) }}" id="payment_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+									<a href="{{ route('payment.edit', $payment->payment_id) }}" id="payment_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
 								@endif
 								@if ($user->hasAccessTo('payment', 'delete', 0))
 									{!! Form::open(['route' => ['payment.destroy', $payment->payment_id], 'id' => 'form'.$payment->payment_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$payment->payment_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$payment->payment_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	
@@ -215,6 +228,7 @@
 			</div>
 		</div>
 	</div>		
+</div>
 @endsection
 
 @section('page-specific-scripts')

@@ -135,8 +135,8 @@
         </dl>
     </div>
     <div class="row m-t">
-        <div class="col-md-12">
-            <button class="btn btn-primary pull-right" onclick="window.location='{{action('ClientsController@edit', [$client->client_id])}}'">@lang('main.clients:btn_edit_label')</button>
+        <div class="col-md-12 text-left">
+            <button class="btn btn-primary" onclick="window.location='{{action('ClientsController@edit', [$client->client_id])}}'">@lang('main.clients:btn_edit_label')</button>
         </div>
     </div>
 </div>

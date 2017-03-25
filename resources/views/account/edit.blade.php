@@ -23,17 +23,6 @@
     @include('partials.alerts')
 
     <div class="row">
-        @if (count($errors) > 0)
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
-    </div>
-    <div class="row">
         {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
         {!! Form::model($account, ['route' => ['account.update', $account->account_id], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
         <div class="col-sm-12">

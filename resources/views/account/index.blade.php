@@ -19,7 +19,7 @@
 
 	<div class="row">
 		<div class="col-sm-12 text-right">
-			<a href="{{ route('account.create') }}" class="btn btn-primary">Новый счет</a>
+			<a href="{{ route('account.create') }}" class="btn btn-primary">{{ trans('adminlte_lang::message.account_create_new') }}</a>
 		</div>
 		<div class="col-sm-12">
 			<hr>	

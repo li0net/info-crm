@@ -10,12 +10,12 @@
 
 @section('main-content')
 <section class="content-header">
-    <h1>{{ trans('adminlte_lang::message.information_about_product') }}</h1>
+    <h1>{{ trans('adminlte_lang::message.product_create_new') }}</h1>
     <ol class="breadcrumb">
         <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
         <li class="active">{{ trans('adminlte_lang::message.stock') }}</li>
         <li><a href="{{ url('/product')}}">{{ trans('adminlte_lang::message.products') }}</a></li>
-        <li class="active">{{ trans('adminlte_lang::message.information_about_product') }}</li>
+        <li class="active">{{ trans('adminlte_lang::message.product_create_new') }}</li>
     </ol>
 </section>
 <div class="container">
@@ -104,8 +104,10 @@
                 </div>
                 <div class="col-sm-3">
                     <p>{{ trans('adminlte_lang::message.for_sale') }}</p>
-                    {{ Form::select('unit_for_sale', ['pcs' => trans('adminlte_lang::message.pieces'),
-                    'ml' => trans('adminlte_lang::message.milliliters')],
+                    {{ Form::select('unit_for_sale', [
+                        'pcs' => trans('adminlte_lang::message.pieces'),
+                        'ml' => trans('adminlte_lang::message.milliliters')
+                    ],
                     'pcs',
                     ['class' => ' js-select-basic-single', 'required' => '', 'maxlength' => '110']) }}
                 </div>
@@ -118,8 +120,9 @@
                 </div>
                 <div class="col-sm-3">
                     <p>{{ trans('adminlte_lang::message.for_disposal') }}</p>
-                    {{ Form::select('unit_for_disposal', ['pcs' => trans('adminlte_lang::message.pieces'),
-                    'ml' => trans('adminlte_lang::message.milliliters')],
+                    {{ Form::select('unit_for_disposal', [
+                        'pcs' => trans('adminlte_lang::message.pieces'),
+                        'ml' => trans('adminlte_lang::message.milliliters')],
                     'pcs',
                     ['class' => ' js-select-basic-single', 'required' => '', 'maxlength' => '110']) }}
                 </div>

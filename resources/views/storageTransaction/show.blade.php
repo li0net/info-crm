@@ -6,54 +6,53 @@
 
 @section('main-content')
 
-    @include('partials.alerts')
+    <section class="content-header">
+        <h1>{{ trans('adminlte_lang::message.operation')}}</h1>
+        <ol class="breadcrumb">
+            <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+            <li class="active">{{ trans('adminlte_lang::message.stock') }}</li>
+            <li><a href="{{ url('/storagetransaction')}}">{{ trans('adminlte_lang::message.operations') }}</a></li>
+            <li class="active">{{ trans('adminlte_lang::message.operation')}}</li>
+        </ol>
+    </section>
+
+    <div class="container">
+
+        @include('partials.alerts')
 
     <div class="row">
-		<div class="col-sm-4 col-sm-offset-4">
-			<div class="well">
-				{{ Form::label('title', "Дата и время проведения операции: ") }}
-				<p class="lead">{{ $transaction->date }}</p>
+		<div class="col-sm-12">
+            <dl class="dl-horizontal">
+                <dd>{{ "Дата и время проведения операции: " }}</dd>
+                <dt class="lead">{{ $transaction->date }}</dt>
 
-				{{ Form::label('type', "Тип операции: ") }}
-				<p class="lead">
-					@if ($transaction->type == "income")
-						Приход
-					@elseif ($transaction->type == "expenses")
-						Расход
-					@elseif ($transaction->type == "discharge")
-						Списание
-					@else
-						Перемещение
-					@endif
-				</p>
+                <dd>{{ "Тип операции: " }}</dd>
+                <dt class="lead">
+                    @if ($transaction->type == "income")
+                    Приход
+                    @elseif ($transaction->type == "expenses")
+                    Расход
+                    @elseif ($transaction->type == "discharge")
+                    Списание
+                    @else
+                    Перемещение
+                    @endif
+                </dt>
 
-				{{ Form::label('description', "Описание: ") }}
-				<p class="lead">{{ $transaction->description }}</p>
-				
-				<hr>
+                <dd>{{ "Описание: " }}</dd>
+                <dt class="lead">{{ $transaction->description }}</dt>
+            </dl>
 
-				<div class="row">
-					@if ($user->hasAccessTo('storageTransaction', 'edit', 0))
-						<div class="col-sm-6">
-							{!! Html::linkRoute('storagetransaction.edit', 'Редактировать', [$transaction->id], ['class'=>'btn btn-primary btn-block']) !!}
-						</div>
-					@endif
-					@if ($user->hasAccessTo('storageTransaction', 'delete', 0))
-						<div class="col-sm-6">
-							{!! Form::open(['route' => ['storagetransaction.destroy', $transaction->id], "method" => 'DELETE']) !!}
 
-							{{ Form::submit('Удалить', ['class'=>'btn btn-danger btn-block']) }}
-
-							{!! Form::close() !!}
-						</div>
-					@endif
-				</div>
-
-				<div class="row">
-					<div class="col-sm-12">
-							{{ Html::linkRoute('storagetransaction.index', 'Все складские операции »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 'style' => 'margin-top:15px']) }}
-					</div>
-				</div>
+            <div class="m-t pull-left">
+                @if ($user->hasAccessTo('storageTransaction', 'delete', 0))
+                    {!! Form::open(['route' => ['storagetransaction.destroy', $transaction->id], "class" => 'pull-left m-r', "method" => 'DELETE']) !!}
+                        {{ Form::submit('Удалить', ['class'=>'btn btn-danger']) }}
+                    {!! Form::close() !!}
+                @endif
+                @if ($user->hasAccessTo('storageTransaction', 'edit', 0))
+                    {!! Html::linkRoute('storagetransaction.edit', 'Редактировать', [$transaction->id], ['class'=>'btn btn-primary pull-left']) !!}
+                @endif
 			</div>
 		</div>
 	</div>

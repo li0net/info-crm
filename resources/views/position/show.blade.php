@@ -28,20 +28,21 @@
                 <dd>{{ $position->description }}</dd>
             </dl>
         </div>
-        <div class="m-t text-right">
+        <div class="m-t text-left">
+            @if ($user->hasAccessTo('position', 'delete', 0))
+            {!! Form::open(['route' => ['position.destroy', $position->position_id],
+            "method" => 'DELETE']) !!}
+            {{ Form::submit(trans('adminlte_lang::message.delete'),
+            ['class'=>'btn btn-danger pull-left m-r']) }}
+            {!! Form::close() !!}
+            @endif
             @if ($user->hasAccessTo('employee', 'edit', 0))
                 {!! Html::linkRoute('position.edit', trans('adminlte_lang::message.edit'),
                                 [$position->position_id],
-                                ['class'=>'btn btn-primary pull-right'])
+                                ['class'=>'btn btn-primary pull-left'])
                 !!}
             @endif
-            @if ($user->hasAccessTo('position', 'delete', 0))
-                {!! Form::open(['route' => ['position.destroy', $position->position_id],
-                                "method" => 'DELETE']) !!}
-                    {{ Form::submit(trans('adminlte_lang::message.delete'),
-                                ['class'=>'btn btn-danger pull-right m-r']) }}
-                {!! Form::close() !!}
-            @endif
+
         </div>
     </div>
 </div>

@@ -9,9 +9,9 @@
 <section class="content-header">
     <h1>
         @if (isset($client))
-        @lang('main.client:edit_form_header')
+            @lang('main.client:edit_form_header')
         @else
-        @lang('main.client:create_form_header')
+            @lang('main.client:create_form_header')
         @endif
     </h1>
     <ol class="breadcrumb">
@@ -31,8 +31,7 @@
     @include('partials.alerts')
 
     <div class="row">
-
-        <div class="col-md-12 m-t">
+        <div class="col-md-12">
             <form method="post" action="/clients/save" class="form-horizontal">
                 {{csrf_field()}}
                 @if (isset($client))

@@ -25,19 +25,7 @@
             <div class="col-sm-12">
                 {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
                 {!! Form::open(['route' => ['employee.store'], 'method' => 'PUT', 'files' => 'true', 'class'=>'form-horizontal']) !!}
-                <div class="col-sm-8 col-sm-offset-3">
-                    @if (count($errors) > 0)
-                    <div class="alert alert-error">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
-                </div>
                 <div class="col-sm-8">
-
                     <div class="form-group">
                         {{ Form::label('name', trans('adminlte_lang::message.employee_name'), ['class' => 'col-sm-4 control-label text-right']) }}
                         <div class="col-sm-8">

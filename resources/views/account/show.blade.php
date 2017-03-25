@@ -52,14 +52,15 @@
                 </dd>
             </dl>
         </div>
-        <div class="col-sm-12 text-right">
-            @if ($user->hasAccessTo('account', 'edit', 0))
-                {!! Html::linkRoute('account.edit', trans('adminlte_lang::message.edit'), [$account->account_id], ['class'=>'btn btn-primary pull-right']) !!}
-            @endif
+        <div class="col-sm-12 text-left">
             @if ($user->hasAccessTo('account', 'delete', 0))
-            {!! Form::open(['route' => ['account.destroy', $account->account_id], 'class'=>'pull-right m-r', "method" => 'DELETE']) !!}
-            {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger']) }}
-            {!! Form::close() !!}
+                {!! Form::open(['route' => ['account.destroy', $account->account_id], 'class'=>'pull-left m-r', "method" => 'DELETE']) !!}
+                {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger']) }}
+                {!! Form::close() !!}
+            @endif
+
+            @if ($user->hasAccessTo('account', 'edit', 0))
+                {!! Html::linkRoute('account.edit', trans('adminlte_lang::message.edit'), [$account->account_id], ['class'=>'btn btn-primary pull-left']) !!}
             @endif
         </div>
     </div>
