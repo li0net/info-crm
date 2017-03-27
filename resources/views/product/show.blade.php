@@ -5,84 +5,79 @@
 @endsection
 
 @section('main-content')
-	<div class="row">
-		@if (Session::has('success'))
-			<div class="alert alert-success" role="alert">
-				<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-			</div>
-		@endif
-	</div>
-	<div class="row">
-		<div class="col-sm-8 col-sm-offset-2">
-			<div class="well">
-				{{ Form::label('title', trans('adminlte_lang::message.product_title')) }}
-				<p class="lead">{{ $product->title }}</p>
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.information_about_product') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.stock') }}</li>
+        <li><a href="{{ url('/product')}}">{{ trans('adminlte_lang::message.products') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.information_about_product') }}</li>
+    </ol>
+</section>
+<div class="container">
 
-				{{ Form::label('article', trans('adminlte_lang::message.article')) }}
-				<p class="lead">{{ $product->article }}</p>
+    @include('partials.alerts')
 
-				{{ Form::label('barcode', trans('adminlte_lang::message.bar_code')) }}
-				<p class="lead">{{ $product->barcode }}</p>
+    <div class="row">
+		<div class="col-sm-12">
+            <dl class="dl-horizontal">
+                <dt>{{ trans('adminlte_lang::message.product_title') }}</dt>
+                <dd>{{ $product->title }}</dd>
 
-				{{ Form::label('category', trans('adminlte_lang::message.category')) }}
-				<p class="lead">{{ $category->title }}</p>
+                <dt>{{ trans('adminlte_lang::message.article') }}</dt>
+                <dd>{{ $product->article }}</dd>
 
-				{{ Form::label('storage_id', trans('adminlte_lang::message.storage')) }}
-				<p class="lead">{{ $storage->title }}</p>
+                <dt>{{ trans('adminlte_lang::message.bar_code') }}</dt>
+                <dd>{{ $product->barcode }}</dd>
 
-				{{ Form::label('price', trans('adminlte_lang::message.sell_price')) }}
-				<p class="lead">{{ $product->price }}</p>
+                <dt>{{ trans('adminlte_lang::message.category') }}</dt>
+                <dd>{{ $category->title }}</dd>
 
-				{{ Form::label('', trans('adminlte_lang::message.unit')) }}
-				<p class="lead">
-					@if($product->unit_for_sale = 'pcs') 
-						{{ trans('adminlte_lang::message.pieces') }}&nbsp;
-					@else
-						{{ trans('adminlte_lang::message.milliliters') }}
-					@endif
-					=&nbsp;{{ $product->is_equal }}&nbsp;
-					@if($product->unit_for_disposal = 'pcs')
-						{{ trans('adminlte_lang::message.pieces') }}&nbsp;
-					@else
-						{{ trans('adminlte_lang::message.milliliters') }}
-					@endif
-				</p>
+                <dt>{{ trans('adminlte_lang::message.storage') }}</dt>
+                <dd>{{ $storage->title }}</dd>
 
-				{{ Form::label('critical_balance', trans('adminlte_lang::message.critical_balance')) }}
-				<p class="lead">{{ $product->critical_balance }}</p>
+                <dt>{{ trans('adminlte_lang::message.sell_price') }}</dt>
+                <dd>{{ $product->price }}</dd>
 
-				{{ Form::label('net_weight', trans('adminlte_lang::message.net_weight')) }}
-				<p class="lead">{{ $product->net_weight }}</p>
-				{{ Form::label('gross_weight', trans('adminlte_lang::message.gross_weight')) }}
-				<p class="lead">{{ $product->gross_weight }}</p>
-				
-				{{ Form::label('description', trans('adminlte_lang::message.description')) }}
-				<p class="lead">{{ $product->description }}</p>
-				
-				<hr>
+                <dt>{{ trans('adminlte_lang::message.unit') }}</dt>
+                <dd>
+                    @if($product->unit_for_sale = 'pcs')
+                    {{ trans('adminlte_lang::message.pieces') }}&nbsp;
+                    @else
+                    {{ trans('adminlte_lang::message.milliliters') }}
+                    @endif
+                    =&nbsp;{{ $product->is_equal }}&nbsp;
+                    @if($product->unit_for_disposal = 'pcs')
+                    {{ trans('adminlte_lang::message.pieces') }}&nbsp;
+                    @else
+                    {{ trans('adminlte_lang::message.milliliters') }}
+                    @endif
+                </dd>
 
-				<div class="row">
-					@if ($user->hasAccessTo('product', 'edit', 0))
-						<div class="col-sm-6">
-							{!! Html::linkRoute('product.edit', trans('adminlte_lang::message.edit'), [$product->product_id], ['class'=>'btn btn-primary btn-block']) !!}
-						</div>
-					@endif
-					@if ($user->hasAccessTo('product', 'delete', 0))
-						<div class="col-sm-6">
-							{!! Form::open(['route' => ['product.destroy', $product->product_id], "method" => 'DELETE']) !!}
-								{{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger btn-block']) }}
-							{!! Form::close() !!}
-						</div>
-					@endif
-				</div>
+                <dt>{{ trans('adminlte_lang::message.critical_balance') }}</dt>
+                <dd>{{ $product->critical_balance }}</dd>
 
-				<div class="row">
-					<div class="col-sm-12">
-							{{ Html::linkRoute('product.index', trans('adminlte_lang::message.products').' »', [], ['class' => 'btn btn-default btn-block btn-h1-spacing', 
-																															   'style' => 'margin-top:15px']) }}
-					</div>
-				</div>
-			</div>
+                <dt>{{ trans('adminlte_lang::message.net_weight') }}</dt>
+                <dd>{{ $product->net_weight }}</dd>
+                <dt>{{ trans('adminlte_lang::message.gross_weight') }}</dt>
+                <dd>{{ $product->gross_weight }}</dd>
+
+                <dt>{{ trans('adminlte_lang::message.description') }}</dt>
+                <dd>{{ $product->description }}</dd>
+            </dl>
+
+            <div class="text-left m-t">
+                @if ($user->hasAccessTo('product', 'delete', 0))
+                    {!! Form::open(['route' => ['product.destroy', $product->product_id], "class" => 'pull-left m-r', "method" => 'DELETE']) !!}
+                    {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger']) }}
+                    {!! Form::close() !!}
+                @endif
+
+                @if ($user->hasAccessTo('product', 'edit', 0))
+                    {!! Html::linkRoute('product.edit', trans('adminlte_lang::message.edit'), [$product->product_id], ['class'=>'btn btn-primary pull-left']) !!}
+                @endif
+
+            </div>
 		</div>
 	</div>
 @endsection

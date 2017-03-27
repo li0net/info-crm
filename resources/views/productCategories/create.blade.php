@@ -19,22 +19,12 @@
     </ol>
 </section>
 <div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			@if (count($errors) > 0)
-				<div class="alert alert-danger">
-					<ul>
-						@foreach ($errors->all() as $error)
-							<li>{{ $error }}</li>
-						@endforeach
-					</ul>
-				</div>
-			@endif
-        </div>
-	</div>
+
+    @include('partials.alerts')
+
     <div class="row">
         {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '', 'class' => 'form-horizontal']) !!} --}}
-        {!! Form::open(['route' => 'productCategories.store']) !!}
+        {!! Form::open(['route' => 'productCategories.store', 'class' => 'form-horizontal']) !!}
             <div class="form-group">
                 {{ Form::label('title', trans('adminlte_lang::message.category_title'), ['class' => 'col-sm-4 control-label text-right']) }}
                 <div class="col-sm-8">
@@ -55,7 +45,6 @@
                     {{ Form::text('parent_category_id', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'disabled'=> '']) }}
                 </div>
             </div>
-            jh</div>
             <div class="text-right m-t">
                 {{	Form::submit(trans('adminlte_lang::message.product_ctgs_create_new'), ['class' => 'btn btn-primary']) }}
             </div>

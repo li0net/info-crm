@@ -19,17 +19,11 @@
     </ol>
 </section>
 <div class="container">
+
+    @include('partials.alerts')
+
     <div class="row">
         <div class="col-sm-12">
-            @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
             {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
             {!! Form::open(['route' => 'partner.store', 'class'=>'form-horizontal']) !!}
             <div class="form-group">

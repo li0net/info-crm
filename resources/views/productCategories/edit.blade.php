@@ -19,21 +19,13 @@
     </ol>
 </section>
 <div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			@if (count($errors) > 0)
-				<div class="alert alert-danger">
-					<ul>
-						@foreach ($errors->all() as $error)
-							<li>{{ $error }}</li>
-						@endforeach
-					</ul>
-				</div>
-			@endif
-        </div>
+
+    @include('partials.alerts')
+
+    <div class="row">
         <div class="col-md-12">
             {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-            {!! Form::model($productCategory, ['route' => ['productCategories.update', $productCategory->product_category_id], 'method' => 'PUT']) !!}
+            {!! Form::model($productCategory, ['route' => ['productCategories.update', $productCategory->product_category_id], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
                 <div class="form-group">
                     {{ Form::label('title', trans('adminlte_lang::message.category_title'), ['class' => 'col-sm-4 control-label text-right']) }}
                     <div class="col-md-8">

@@ -19,14 +19,10 @@
     </ol>
 </section>
 <div class="container">
-	<div class="row">
-		@if (Session::has('success'))
-			<div class="alert alert-success" role="alert">
-				<strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-			</div>
-		@endif
-	</div>
-	<div class="row">
+
+    @include('partials.alerts')
+
+    <div class="row">
 		<div class="col-sm-12">
 			{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
 			{!! Form::model($storage, ['route' => ['storage.update', $storage->storage_id], 'method' => 'PUT', "class"=>'form-horizontal']) !!}

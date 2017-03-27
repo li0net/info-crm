@@ -14,6 +14,9 @@
     </ol>
 </section>
 <div class="container">
+
+    @include('partials.alerts')
+
     <div class="row">
         <div class="col-sm-12">
             {{-- {!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "class" => "hidden", "id" => "form228"]) !!} --}}

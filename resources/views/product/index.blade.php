@@ -1,5 +1,5 @@
-@extends('adminlte::layouts.app')
 
+@extends('adminlte::layouts.app')
 @section('htmlheader_title')
 	{{ trans('adminlte_lang::message.products') }}
 @endsection
@@ -14,14 +14,10 @@
     </ol>
 </section>
 <div class="container-fluid">
-	<div class="row">
-		@if (Session::has('success'))
-            <div class="alert alert-success" role="alert">
-                <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-            </div>
-		@endif
-	</div>
-	<div class="row">
+
+    @include('partials.alerts')
+
+    <div class="row">
 		<div class="col-sm-12 text-right">
 			<a href="#" class="btn btn-info m-r">{{ trans('adminlte_lang::message.load_from_excel') }}</a>
             <a href="#" class="btn btn-info m-r">{{ trans('adminlte_lang::message.upload_into_excel') }}</a>
@@ -40,7 +36,7 @@
 					<th>{{ trans('adminlte_lang::message.sell_price') }}</th>
 					<th>{{ trans('adminlte_lang::message.unit') }}</th>
 					<th>{{ trans('adminlte_lang::message.comment') }}</th>
-					<th></th>
+                    <th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
 				</thead>
 				<tbody>
 					@foreach($products as $product)
@@ -74,13 +70,13 @@
 							<td>
 								{{ $product->description }}
 							</td>
-							<td class="text-right">
+							<td class="text-center">
 								@if ($user->hasAccessTo('product', 'edit', 0))
-									<a href="{{ route('product.edit', $product->product_id) }}" id="product_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+									<a href="{{ route('product.edit', $product->product_id) }}" id="product_edit" class=table-action-link"><i class='fa fa-pencil'></i></a>
 								@endif
 								@if ($user->hasAccessTo('product', 'delete', 0))
 									{!! Form::open(['route' => ['product.destroy', $product->product_id], 'id' => 'form'.$product->product_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$product->product_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$product->product_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	

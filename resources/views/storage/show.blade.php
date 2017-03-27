@@ -14,14 +14,10 @@
     </ol>
 </section>
 <div class="container">
-	<div class="row">
-		@if (Session::has('success'))
-            <div class="alert alert-success" role="alert">
-                <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-            </div>
-		@endif
-	</div>
-	<div class="row">
+
+    @include('partials.alerts')
+
+    <div class="row">
 		<div class="col-sm-12">
             <dl class="dl-horizontal">
                 <dt>{{ trans('adminlte_lang::message.storage_title') }}</dt>
@@ -41,13 +37,13 @@
             </dl>
         </div>
         <div class="col-sm-12">
-            @if ($user->hasAccessTo('storage', 'edit', 0))
-                {!! Html::linkRoute('storage.edit', trans('adminlte_lang::message.edit'), [$storage->storage_id], ['class'=>'btn btn-primary pull-right']) !!}
-            @endif
             @if ($user->hasAccessTo('storage', 'delete', 0))
-                {!! Form::open(['route' => ['storage.destroy', $storage->storage_id], "method" => 'DELETE', "class" => 'pull-right m-r']) !!}
+                {!! Form::open(['route' => ['storage.destroy', $storage->storage_id], "method" => 'DELETE', "class" => 'pull-left m-r']) !!}
                     {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger ']) }}
                 {!! Form::close() !!}
+            @endif
+            @if ($user->hasAccessTo('storage', 'edit', 0))
+            {!! Html::linkRoute('storage.edit', trans('adminlte_lang::message.edit'), [$storage->storage_id], ['class'=>'btn btn-primary pull-left']) !!}
             @endif
         </div>
 	</div>

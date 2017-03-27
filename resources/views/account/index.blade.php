@@ -14,24 +14,13 @@
     </ol>
 </section>
 <div class="container-fluid">
+
+    @include('partials.alerts')
+
 	<div class="row">
-		@if (Session::has('success'))
-		
-		<div class="alert alert-success" role="alert">
-			<strong>Успешно:</strong> {{ Session::get('success') }}
+		<div class="col-sm-12 text-right">
+			<a href="{{ route('account.create') }}" class="btn btn-primary">{{ trans('adminlte_lang::message.account_create_new') }}</a>
 		</div>
-
-		@endif
-	</div>
-	<div class="row">
-		<div class="col-sm-10">
-			<h4></h4>
-		</div>	
-
-		<div class="col-sm-2">
-			<a href="{{ route('account.create') }}" class="btn btn-primary btn-block">Новый счет</a>
-		</div>
-
 		<div class="col-sm-12">
 			<hr>	
 		</div>
@@ -84,7 +73,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-					{!! $accounts->render(); !!} 
+				{!! $accounts->render(); !!}
 			</div>
 		</div>
 	</div>

@@ -9,49 +9,49 @@
 @endsection --}}
 
 @section('main-content')
+<section class="content-header">
+    <h1>{{ trans('adminlte_lang::message.unit_create_new') }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.stock') }}</li>
+        <li><a href="{{ url('/unit')}}">{{ trans('adminlte_lang::message.units') }}</a></li>
+        <li class="active">{{ trans('adminlte_lang::message.unit_create_new') }}</li>
+    </ol>
+</section>
+<div class="container">
 
-	<div class="row">
-		<div class="col-sm-6 col-sm-offset-3">
-			<h4>{{ trans('adminlte_lang::message.unit_create_new') }}</h4>	
-			{{-- <ex1></ex1> --}}
-			<hr>	
-			@if (count($errors) > 0)
-				<div class="alert alert-danger">
-					<ul>
-						@foreach ($errors->all() as $error)
-							<li>{{ $error }}</li>
-						@endforeach
-					</ul>
-				</div>
-			@endif
-			<div class="well">
-				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-				{!! Form::open(['route' => 'unit.store']) !!}
-					<div class="form-group">
-						{{ Form::label('title', trans('adminlte_lang::message.unit_title')) }}
-						{{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-					</div>
+    @include('partials.alerts')
 
-					<div class="form-group">
-						{{ Form::label('short_title', trans('adminlte_lang::message.unit_short_title')) }}
-						{{ Form::text('short_title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-					</div>
+    <div class="row">
+        <div class="col-sm-12">
+            {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
+            {!! Form::open(['route' => 'unit.store', 'class' => 'form-horizontal']) !!}
+            <div class="form-group">
+                {{ Form::label('title', trans('adminlte_lang::message.unit_title'), ['class' => 'col-sm-3 control-label text-right']) }}
+                <div class="col-sm-9">
+                    {{ Form::text('title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+                </div>
+            </div>
 
-					<div class="form-group">
-						{{ Form::label('description', trans('adminlte_lang::message.description')) }}
-						{{ Form::textarea('description', null, ['class' => 'form-control']) }}
-					</div>
+            <div class="form-group">
+                {{ Form::label('short_title', trans('adminlte_lang::message.unit_short_title'), ['class' => 'col-sm-3 control-label text-right']) }}
+                <div class="col-sm-9">
+                    {{ Form::text('short_title', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+                </div>
+            </div>
 
-					<hr>
+            <div class="form-group">
+                {{ Form::label('description', trans('adminlte_lang::message.description'), ['class' => 'col-sm-3 control-label text-right']) }}
+                <div class="col-sm-9">
+                    {{ Form::textarea('description', null, ['class' => 'form-control']) }}
+                </div>
+            </div>
 
-					<div class="row">
-						<div class="col-sm-8 col-sm-offset-2">
-							{{	Form::submit(trans('adminlte_lang::message.unit_create_new'), ['class' => 'btn btn-success btn-block']) }}
-						</div>
-					</div>
-				{!! Form::close() !!}	
-			</div>
-		</div>
+            <div class="m-t text-right">
+                {{	Form::submit(trans('adminlte_lang::message.unit_create_new'), ['class' => 'btn btn-primary']) }}
+            </div>
+            {!! Form::close() !!}
+        </div>
 	</div>
 @endsection
 {{-- @section('scripts')

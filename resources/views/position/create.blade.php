@@ -19,7 +19,10 @@
     </ol>
 </section>
 <div class="container">
-	<div class="row">
+
+    @include('partials.alerts')
+
+    <div class="row">
 		<div class="col-sm-12">
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">

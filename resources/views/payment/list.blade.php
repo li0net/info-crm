@@ -14,7 +14,7 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-4 col-sm-offset-4 text-center">
-			<a href="/payment/create" class="btn btn-primary">{{ trans('adminlte_lang::message.new_payment') }}</a>
+            <a href="{{ route('payment.create') }}" class="btn btn-primary">{{ trans('adminlte_lang::message.new_payment') }}</a>
 		</div>
 	</div>
 @else
@@ -31,6 +31,7 @@
 			<th>{{ trans('adminlte_lang::message.balance_in_cash') }}</th>
 			{{-- <th>{{ trans('adminlte_lang::message.service_good') }}</th>
 			<th>{{ trans('adminlte_lang::message.visit') }}</th> --}}
+            <th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
 		</thead>
 		<tbody>
 			@foreach($payments as $payment)
@@ -57,11 +58,11 @@
 
 					<td class="text-right" style="min-width: 100px;">
 						@if ($user->hasAccessTo('payment', 'edit', 0))
-							<a href="{{ route('payment.edit', $payment->payment_id) }}" id="payment_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+							<a href="{{ route('payment.edit', $payment->payment_id) }}" id="payment_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
 						@endif
 						@if ($user->hasAccessTo('payment', 'delete', 0))
 							{!! Form::open(['route' => ['payment.destroy', $payment->payment_id], 'id' => 'form'.$payment->payment_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-								<a href="javascript: submitform('#form{{$payment->payment_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+								<a href="javascript: submitform('#form{{$payment->payment_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
 							{!! Form::close() !!}
 						@endif
 					</td>	

@@ -27,6 +27,9 @@
     </ol>
 </section>
 <div class="container">
+
+    @include('partials.alerts')
+
     <div class="row">
         <form id="labels-form" class="form-horizontal m-t" action="/clientCategories/save" method="POST">
             <div class="form-group">

@@ -14,12 +14,10 @@
     </ol>
 </section>
 <div class="container-fluid">
+
+    @include('partials.alerts')
+
     <div class="row">
-        @if (Session::has('success'))
-        <div class="alert alert-success" role="alert">
-            <strong>{{ trans('adminlte_lang::message.partner_create_new') }}</strong> {{ Session::get('success') }}
-        </div>
-        @endif
         <div class="col-sm-12 m-t">
             <a href="{{ route('partner.create') }}" class="btn btn-primary pull-right">{{ trans('adminlte_lang::message.partner_create_new') }}</a>
             <a href="#" class="btn btn-info m-r pull-right">{{ trans('adminlte_lang::message.load_from_excel') }}</a>

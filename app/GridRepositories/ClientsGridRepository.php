@@ -58,11 +58,18 @@ class ClientsGridRepository extends EloquentGridRepositoryCustom {
             }
 
             if (trim($row['email']) != '') {
-                $row['phone'] .= '<br/><span style="color: #595959; font-size: 80%">'.$row['email'];
+                if (!$exporting) {
+                    $row['phone'] .= '<br/><span style="color: #595959; font-size: 80%">' . $row['email'];
+                    unset($row['email']);
+                } else {
+                    $row['phone'] .= " - " . $row['email'];
+                }
             }
-            unset($row['email']);
+            //unset($row['email']);
 
-            $row['name'] = "<a href='/client/{$row['client_id']}'>{$row['name']}</a>";
+            if (!$exporting) {
+                $row['name'] = "<a href='/client/{$row['client_id']}'>{$row['name']}</a>";
+            }
 
             $row['total_bought'] = round($row['total_bought'], 2);
         }

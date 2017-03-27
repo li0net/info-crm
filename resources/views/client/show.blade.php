@@ -18,6 +18,9 @@
 <input type="hidden" name="client_id" id="c_client_id" value="{{$client->client_id}}">
 @endif
 <div class="container">
+
+    @include('partials.alerts')
+
     <div class="row">
         <dl class="dl-horizontal">
             <dt><span>@lang('main.client:name_label')</span></dt>
@@ -132,8 +135,8 @@
         </dl>
     </div>
     <div class="row m-t">
-        <div class="col-md-12">
-            <button class="btn btn-primary pull-right" onclick="window.location='{{action('ClientsController@edit', [$client->client_id])}}'">@lang('main.clients:btn_edit_label')</button>
+        <div class="col-md-12 text-left">
+            <button class="btn btn-primary" onclick="window.location='{{action('ClientsController@edit', [$client->client_id])}}'">@lang('main.clients:btn_edit_label')</button>
         </div>
     </div>
 </div>

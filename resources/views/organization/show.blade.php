@@ -16,13 +16,9 @@
 </section>
 
 <div class="container">
-    <div class="row">
-        @if (Session::has('success'))
-            <div class="alert alert-success" role="alert">
-                <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-            </div>
-        @endif
-    </div>
+
+    @include('partials.alerts')
+
     <div class="row">
         {{-- {!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "class" => "hidden", "id" => "form228"]) !!} --}}
             <div class="col-sm-12">

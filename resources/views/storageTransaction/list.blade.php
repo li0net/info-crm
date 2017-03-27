@@ -31,6 +31,7 @@
 			<th>Себестоимость</th>
 			<th>Остаток на складе</th>
 			<th>Визит</th>
+            <th class="text-center">{{ trans('adminlte_lang::message.actions')}}</th>
 		</thead>
 		<tbody>
 			@foreach($transactions as $transaction)
@@ -67,13 +68,13 @@
 					<td></td>
 					<td></td>
 
-					<td class="text-right">
+					<td class="text-center">
 						@if ($user->hasAccessTo('storateTransaction', 'edit', 0))
-							<a href="{{ route('storagetransaction.edit', $transaction->id) }}" id="transaction_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+							<a href="{{ route('storagetransaction.edit', $transaction->id) }}" id="transaction_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
 						@endif
 						@if ($user->hasAccessTo('storageTransaction', 'delete', 0))
 							{!! Form::open(['route' => ['storagetransaction.destroy', $transaction->id], 'id' => 'form'.$transaction->id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-								<a href="javascript: submitform('#form{{$transaction->id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+								<a href="javascript: submitform('#form{{$transaction->id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
 							{!! Form::close() !!}
 						@endif
 					</td>	

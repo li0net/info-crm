@@ -628,7 +628,6 @@ $(document).ready(function () {
         minimumResultsForSearch: Infinity
     });
     $(".js-select-basic-single").select2({
-        placeholder: "---",
         minimumResultsForSearch: Infinity
     });
 

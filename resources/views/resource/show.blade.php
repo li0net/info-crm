@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ $resource->name }}
+    {{ $resource->name }}
 @endsection
 
 @section('main-content')
@@ -15,15 +15,11 @@
     </ol>
 </section>
 <div class="container">
-	<div class="row">
-		@if (Session::has('success'))
-            <div class="alert alert-success" role="alert">
-                <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
-            </div>
-		@endif
-	</div>
-	<div class="row">
-		<div class="col-sm-12">
+
+    @include('partials.alerts')
+
+    <div class="row">
+        <div class="col-sm-12">
             <dl class="dl-horizontal">
                 <dt>{{ trans('adminlte_lang::message.resource_name') }}</dt>
                 <dd>{{ $resource->name }}</dd>
@@ -33,20 +29,20 @@
             </dl>
 
 
-				<div class="m-t text-right">
-					@if ($user->hasAccessTo('resource', 'edit', 0))
-    					{!! Html::linkRoute('resource.edit', trans('adminlte_lang::message.edit'),
-                            [$resource->resource_id], ['class'=>'btn btn-primary pull-right']) !!}
-					@endif
-					@if ($user->hasAccessTo('resource', 'delete', 0))
+                <div class="m-t text-left">
+                    @if ($user->hasAccessTo('resource', 'delete', 0))
                     {!! Form::open(['route' => ['resource.destroy', $resource->resource_id],
-                        "method" => 'DELETE', "class" => 'pull-right m-r']) !!}
+                        "method" => 'DELETE', "class" => 'pull-left m-r']) !!}
                         {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-info']) }}
                     {!! Form::close() !!}
-					@endif
-				</div>
-			</div>
-		</div>
-	</div>
+                    @endif
+                    @if ($user->hasAccessTo('resource', 'edit', 0))
+                        {!! Html::linkRoute('resource.edit', trans('adminlte_lang::message.edit'),
+                        [$resource->resource_id], ['class'=>'btn btn-primary pull-left']) !!}
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

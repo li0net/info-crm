@@ -418,7 +418,7 @@ class Employee extends Model
         }
 
         $maxNumReached = FALSE;
-        //Log::info(__METHOD__.' $intersections:'.print_r($intersections, TRUE));
+        Log::info(__METHOD__.' $intersections:'.print_r($intersections, TRUE));
         do {
             $intersectionsNew = [];
 
@@ -440,7 +440,7 @@ class Employee extends Model
                         'end'       => $intE,
                         'count'     => $intersections[$i]['count'] + $intersections[$j]['count'] + 1
                     ];
-                    //Log::info(__METHOD__.' $intersectionsNew:'.print_r($intersectionsNew, TRUE));
+                    Log::info(__METHOD__.' $intersectionsNew:'.print_r($intersectionsNew, TRUE));
 
                     // Если ВСЕ пересечения достигли предельного уровня записываем в $maxNumReached = TRUE;
                     if (($intersections[$i]['count'] + $intersections[$j]['count'] + 1) >= $maxNum) {
@@ -457,6 +457,7 @@ class Employee extends Model
 
         $res = [];
         foreach ($intersections AS $intersection) {
+			if ($intersection['count'] == 1) $intersection['count'] = 2;
             if ($intersection['count'] >= $maxNum) {
                 $res[] = [
                     'start' => $intersection['start']->format('Y-m-d H:i:s'),
