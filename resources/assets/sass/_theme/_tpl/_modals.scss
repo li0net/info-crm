@@ -1,0 +1,21 @@
+@import "variables";
+body.skin-orange {
+  .modal.fade{
+    .modal-content{
+      .modal-header{
+        background-color: $brand-main;
+        color: $brand-main-text;
+        .close{
+          margin-top: 1px;
+          span{
+            color: $brand-main-text;
+          }
+        }
+      }
+    }
+  }
+  .modal-backdrop.fade.in{
+    z-index: -1;
+    display: none !important;
+  }
+}
