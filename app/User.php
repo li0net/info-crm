@@ -7,6 +7,54 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Creativeorange\Gravatar\Facades\Gravatar;
 
+/**
+ * App\User
+ *
+ * @property int $user_id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property int $organization_id
+ * @property string $lang
+ * @property string $city
+ * @property bool $is_admin
+ * @property string $phone
+ * @property string $info
+ * @property string $remember_token
+ * @property bool $send_news_inf_emails
+ * @property bool $send_marketing_offer_emails
+ * @property bool $send_system_inf_emails
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $new_email
+ * @property string $new_phone
+ * @property string $confirmation_code
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\AccessPermission[] $accessPermissions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \App\Organization $organization
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereCity($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereConfirmationCode($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereInfo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereIsAdmin($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereLang($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereNewEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereNewPhone($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereOrganizationId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User wherePhone($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereSendMarketingOfferEmails($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereSendNewsInfEmails($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereSendSystemInfEmails($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereUserId($value)
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;

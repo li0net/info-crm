@@ -98,6 +98,8 @@ class OrganizationsController extends Controller
             }
         }
 
+
+
         $organization = Organization::find($request->user()->organization_id);
 
         // Проверяем, действительно ли загруженный файл - изображение

@@ -43,6 +43,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Appointment whereState($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Appointment whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property float $service_price
+ * @property float $service_discount
+ * @property float $service_sum
+ * @method static \Illuminate\Database\Query\Builder|\App\Appointment whereServiceDiscount($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Appointment whereServicePrice($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Appointment whereServiceSum($value)
  */
 class Appointment extends Model
 {

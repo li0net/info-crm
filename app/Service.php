@@ -5,6 +5,36 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * App\Service
+ *
+ * @property int $service_id
+ * @property int $service_category_id
+ * @property string $name
+ * @property string $description
+ * @property float $price_min
+ * @property float $price_max
+ * @property string $duration
+ * @property int $max_num_appointments
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Appointment[] $appointments
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Employee[] $employees
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Resource[] $resources
+ * @property-read \App\ServiceCategory $serviceCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Transaction[] $transactions
+ * @method static \Illuminate\Database\Query\Builder|\App\Service whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Service whereDescription($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Service whereDuration($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Service whereMaxNumAppointments($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Service whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Service wherePriceMax($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Service wherePriceMin($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Service whereServiceCategoryId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Service whereServiceId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Service whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Service extends Model
 {
 
