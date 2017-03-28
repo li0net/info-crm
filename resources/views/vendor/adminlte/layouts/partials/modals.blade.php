@@ -6,9 +6,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="biModalLabel">Modal title</h4>
             </div>
-            <div class="modal-body">
-                ...
-            </div>
+            <div class="modal-body"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
@@ -20,15 +18,15 @@
 <script>
     /**
      * Show modal window
-     * @param title
-     * @param text
-     * @param data - other data for modal.
-     *             - Now implemented buttonId and buttonId. Be free to add owns the same way
+     * @param title - window title
+     * @param text  - window body. can be text or object
+     * @param data  - other data for modal.
+     *              - Now implemented buttonId and buttonId. Be free to add owns the same way
      */
     function showBiModal(title, text, data)
     {
-        $('#biModal').find('.modal-title').text(title);
-        $('#biModal').find('.modal-body').text(text);
+        $('#biModal').find('.modal-title').html(title);
+        $('#biModal').find('.modal-body').html(text);
 
         //set primary button's id if need
         if (data['buttonId'] !== 'undefined'){
@@ -45,8 +43,8 @@
         // clear on hide
         $('#biModal').on('hide.bs.modal', function (event) {
             var modal = $(this);
-            modal.find('.modal-title').text('');
-            modal.find('.modal-body').text('');
+            modal.find('.modal-title').html('');
+            modal.find('.modal-body').html('');
         })
     }
 </script>

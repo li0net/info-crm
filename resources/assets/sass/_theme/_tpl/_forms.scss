@@ -312,6 +312,9 @@ body.skin-orange {
       }
     }
   }
+  .select2-container.select2-container--open ul.select2-results__options li .dd_text{
+    color: $brand-main-text;
+  }
   .select2-container--open .select2-dropdown {
     border: none;
   }

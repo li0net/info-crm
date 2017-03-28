@@ -2082,16 +2082,16 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "3.6.0",
+            "version": "3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "0b7bdfb180e72c8d76e75a649ced67e392201458"
+                "reference": "4ae32dd9ab8860a4bbd750ad269cba7f06f7934e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/0b7bdfb180e72c8d76e75a649ced67e392201458",
-                "reference": "0b7bdfb180e72c8d76e75a649ced67e392201458",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/4ae32dd9ab8860a4bbd750ad269cba7f06f7934e",
+                "reference": "4ae32dd9ab8860a4bbd750ad269cba7f06f7934e",
                 "shasum": ""
             },
             "require": {
@@ -2103,9 +2103,9 @@
             },
             "require-dev": {
                 "apigen/apigen": "^4.1",
-                "codeception/aspect-mock": "1.0.0",
+                "codeception/aspect-mock": "^1.0 | ^2.0",
                 "doctrine/annotations": "~1.2.0",
-                "goaop/framework": "1.0.0-alpha.2",
+                "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
                 "ircmaxell/random-lib": "^1.1",
                 "jakub-onderka/php-parallel-lint": "^0.9.0",
                 "mockery/mockery": "^0.9.4",
@@ -2160,7 +2160,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2017-03-18T15:38:09+00:00"
+            "time": "2017-03-26T20:37:53+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3356,16 +3356,16 @@
         },
         {
             "name": "znck/belongs-to-through",
-            "version": "v2.2.2",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/belongs-to-through.git",
-                "reference": "c4c9171fb1520f86223e44535199d90ebe06ec52"
+                "reference": "b888044a5a64d2359f6100d1346ea71768b2bab4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/belongs-to-through/zipball/c4c9171fb1520f86223e44535199d90ebe06ec52",
-                "reference": "c4c9171fb1520f86223e44535199d90ebe06ec52",
+                "url": "https://api.github.com/repos/znck/belongs-to-through/zipball/b888044a5a64d2359f6100d1346ea71768b2bab4",
+                "reference": "b888044a5a64d2359f6100d1346ea71768b2bab4",
                 "shasum": ""
             },
             "require": {
@@ -3404,7 +3404,7 @@
                 "models",
                 "znck"
             ],
-            "time": "2016-05-29T07:46:22+00:00"
+            "time": "2017-03-27T07:05:59+00:00"
         }
     ],
     "packages-dev": [
