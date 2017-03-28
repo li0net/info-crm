@@ -182,7 +182,7 @@
             // TODO: прописать правильный урл
             $.ajax({
                 type: "POST",
-                url: "/clientCategories/SAVE_SELECTED",
+                url: "/clients/addSelToCategory",
                 data: {'client_ids' : JSON.stringify(clients), "category_id":category },
                 success: function(data) {
                     if (data.success == true) {
@@ -266,7 +266,7 @@
             // TODO: прописать правильный урл
             $.ajax({
                 type: "POST",
-                url: "/clientCategories/SAVE_FOUND",
+                url: "/clients/addToCategory",
                 data: {'filters' : filters, "category_id":category },
                 success: function(data) {
                     if (data.success == true) {
