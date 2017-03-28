@@ -3,6 +3,7 @@
 namespace App\Libraries;
 
 use \Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Log;
 
 class MassActionsHandler {
 
@@ -39,6 +40,7 @@ class MassActionsHandler {
         if(isset($postedData['filters']) && !empty($postedData['filters']))
         {
             $filters = json_decode(str_replace('\'','"',$postedData['filters']), true);
+            //Log::info(__METHOD__.' Filters pr:'.print_r($filters, TRUE));
         }
 
         //filters: {"groupOp":"OR","rules":[{"field":"name","op":"cn","data":"Bryce"},{"field":"phone","op":"cn","data":"Bryce"}]}

@@ -329,11 +329,91 @@ class ClientsController extends Controller
         $db = $mah->buildFiltersFromRequest();
         $db->update(['is_active' => 0]);
 
-        return json_encode(array('success' => TRUE, 'error' => ''));
+        return json_encode(array('success' => true, 'error' => ''));
     }
 
+    /**
+     * Отдает данные для списка категорий клиентов
+     *
+     * @return string XHR data
+     */
     public function getClientCategories() {
         $cc = $this->prepareClientCategoriesOptions();
         return json_encode($cc);
+    }
+
+    /**
+     * Добавляет выбранных клиентов в категорию
+     *
+     * @param Request $request
+     * @return string XHR data
+     */
+    public function addSelectedToCategory(Request $request) {
+        // data: {'client_ids' : JSON.stringify(clients), "category_id":category }
+        $clientsId = $request->get('client_ids');
+        if (empty($clientsId)) {
+            return json_encode(array('success' => false, 'error' => 'No clients given'));
+        }
+        $clientsId = json_decode($clientsId);
+        //Log::info(__METHOD__.' clientsId:'.print_r($clientsId, TRUE));
+
+        $clients = Client::whereIn('client_id', $clientsId)->where('organization_id', request()->user()->organization_id)->get();
+
+        $this->processAddToCatRequest($request, $clients);
+    }
+
+    /**
+     * Добавляет отфильтрованных клиентов в категорию
+     *
+     * @param Request $request
+     * @return string XHR data
+     */
+    public function addFilteredToCategory(Request $request) {
+        // data: {'filters' : filters, "category_id":category },
+        $db = DB::table('clients');
+        $mah = new \App\Libraries\MassActionsHandler($db);
+        $db = $mah->buildFiltersFromRequest();
+        //Log::info(__METHOD__.' SQL:'.$db->toSql());
+        $clients = $db->get();
+
+        $this->processAddToCatRequest($request, $clients);
+    }
+
+    protected function processAddToCatRequest(Request $request, $clients) {
+        // data: {'client_ids' : JSON.stringify(clients), "category_id":category },
+        // ИЛИ
+        // data: {'filters' : filters, "category_id":category },
+
+        $catId = $request->get('category_id');
+        if (empty($catId)) {
+            return json_encode(array('success' => false, 'error' => 'Empty category'));
+        }
+        //Log::info(__METHOD__.' catId:'.print_r($catId, TRUE));
+
+        $category = ClientCategory::where('cc_id', $catId)->where('organization_id', request()->user()->organization_id)->first();
+        if (!$category) {
+            return json_encode(array('success' => false, 'error' => 'Invalid category'));
+        }
+
+        $cnt = 0;
+        foreach ($clients AS $client) {
+            if (!$client->is_active) continue;
+            $clientIds[] = $client->client_id;
+        }
+
+        if ( ! $category->clients()->sync($clientIds)) {
+            return json_encode(array('success' => false, 'error' => 'Internal server error when adding category'));
+        }
+        //Log::info(__METHOD__.' Sync happened ------------');
+        //$clCat = $category->clients()->get();
+        //foreach ($clCat AS $clC) {
+        //Log::info(__METHOD__.' Client:'.$clC->client_id.' attached to category:'.$category->cc_id);
+        //}
+
+        if ($cnt == 0) {
+            return json_encode(array('success' => false, 'error' => 'No correct clients given'));
+        }
+
+        return json_encode(array('success' => true, 'error' => ''));
     }
 }
