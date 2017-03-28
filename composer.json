@@ -13,15 +13,16 @@
         "znck/belongs-to-through": "^2.2",
         "laravel/passport": "~1.0",
         "williamson/laragram": "^1.0",
-        "barryvdh/laravel-ide-helper": "v2.3.2"
+        "barryvdh/laravel-ide-helper": "v2.3.2",
+        "doctrine/common": "v2.7.2",
+        "doctrine/dbal": "v2.5.12"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~5.0",
         "symfony/css-selector": "3.1.*",
-        "symfony/dom-crawler": "3.1.*",
-        "doctrine/dbal": "~2.5.5"
+        "symfony/dom-crawler": "3.1.*"
     },
     "autoload": {
         "classmap": [

@@ -139,11 +139,11 @@ class PaymentController extends Controller
 		$payment_minutes = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('00:59:00'), 1, '', ' мин', 'i');
 
 		return view('payment.create', [	
-										'items' => $items, 
-										'accounts' => $accounts, 
-										'payment_hours' => $payment_hours, 
-										'payment_minutes' => $payment_minutes
-									]);
+            'items' => $items,
+            'accounts' => $accounts,
+            'payment_hours' => $payment_hours,
+            'payment_minutes' => $payment_minutes
+        ]);
 	}
 
 	/**

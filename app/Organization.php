@@ -56,6 +56,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Organization whereWebsite($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Organization whereWorkHours($value)
  * @mixin \Eloquent
+ * @property string $currency
+ * @method static \Illuminate\Database\Query\Builder|\App\Organization whereCurrency($value)
  */
 class Organization extends Model
 {
