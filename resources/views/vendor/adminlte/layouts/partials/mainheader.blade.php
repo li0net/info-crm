@@ -24,10 +24,10 @@
              </div>
              <a href="/home" class="logo"><img src="/img/landing/logo.svg"></a>
              <a href="/organization/edit" class="org-logo white">
-                 @if ($organization->logo_image != '')
-                    <img src="{{$organization->getLogoUri()}}">
+                 @if ($user->organization->logo_image != '')
+                    <img src="{{$user->organization->getLogoUri()}}">
                  @else
-                    {{ $organization->name }}
+                    {{ $user->organization->name }}
                  @endif
              </a>
             <ul class="nav navbar-nav" style="display: none">
