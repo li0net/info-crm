@@ -59,6 +59,7 @@ return [
     'organization:city_label'               => 'City',
     'organization:currency_label'           => 'Currency',
     'organization:logo_label'               => 'Logo',
+    'organization:logo_recommend'           => 'We recommend use transparent PNG image 200*50 px',
     'organization:logo_btn'                 => 'Upload photo',
     'organization:info_label'               => 'Description',
 

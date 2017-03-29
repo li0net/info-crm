@@ -23,7 +23,13 @@
                  </div>
              </div>
              <a href="/home" class="logo"><img src="/img/landing/logo.svg"></a>
-
+             <a href="/organization/edit" class="org-logo white">
+                 @if ($organization->logo_image != '')
+                    <img src="{{$organization->getLogoUri()}}">
+                 @else
+                    {{ $organization->name }}
+                 @endif
+             </a>
             <ul class="nav navbar-nav" style="display: none">
                 @if (Auth::guest())
                     <li><a href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>

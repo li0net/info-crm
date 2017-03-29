@@ -173,6 +173,9 @@
                                     <img :src="image"/>
                                 </div>
                             </div>
+                            <div class="note m-b">
+                                @lang('main.organization:logo_recommend')
+                            </div>
                             <span class="btn btn-info btn-file">
                                 @lang('main.user:logo_btn')<input type="file" @change="onFileChange" name="logo_image" id="o_logo_image" accept=".jpg,.jpeg,.png,.bmp,.gif" class="">
                             </span>

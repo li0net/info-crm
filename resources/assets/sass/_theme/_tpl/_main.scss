@@ -82,6 +82,9 @@ body.skin-orange {
     color: $brand-main;
     text-decoration: underline;
     @include transition-all (0.3s);
+    &.white {
+      color: $brand-main-text;
+    }
     &:hover {
       color: $brand-secondary;
       text-decoration: underline;

@@ -59,6 +59,7 @@ return [
     'organization:currency_label'           => 'Moneda',
     'organization:logo_label'               => 'Logo',
     'organization:logo_btn'                 => 'Subir una foto',
+    'organization:logo_recommend'           => 'Recomendamos usar la imagen PNG transparente 200 * 50 px',
     'organization:info_label'               => 'Descripción',
 
     'appointment:client_wait_tab_label'     => 'Espera de cliente',

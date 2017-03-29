@@ -59,6 +59,7 @@ return [
     'organization:currency_label'           => 'Валюта',
     'organization:city_label'               => 'Город',
     'organization:logo_label'               => 'Логотип',
+    'organization:logo_recommend'           => 'Рекоммендуем использовать прозрачный PNG размером 200*50 px',
     'organization:logo_btn'                 => 'Загрузить фото',
     'organization:info_label'               => 'Описание',
 
