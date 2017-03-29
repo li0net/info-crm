@@ -385,14 +385,16 @@ class ClientsController extends Controller
         // data: {'filters' : filters, "category_id":category },
 
         $catId = $request->get('category_id');
+        $result = json_encode(array('success' => true, 'error' => '')); // default answer
+
         if (empty($catId)) {
-            return json_encode(array('success' => false, 'error' => 'Empty category'));
+            $result = json_encode(array('success' => false, 'error' => 'Empty category'));
         }
         //Log::info(__METHOD__.' catId:'.print_r($catId, TRUE));
 
         $category = ClientCategory::where('cc_id', $catId)->where('organization_id', request()->user()->organization_id)->first();
         if (!$category) {
-            return json_encode(array('success' => false, 'error' => 'Invalid category'));
+            $result = json_encode(array('success' => false, 'error' => 'Invalid category'));
         }
 
         $cnt = 0;
@@ -402,7 +404,7 @@ class ClientsController extends Controller
         }
 
         if ( ! $category->clients()->sync($clientIds)) {
-            return json_encode(array('success' => false, 'error' => 'Internal server error when adding category'));
+            $result = json_encode(array('success' => false, 'error' => 'Internal server error when adding category'));
         }
         //Log::info(__METHOD__.' Sync happened ------------');
         //$clCat = $category->clients()->get();
@@ -411,9 +413,9 @@ class ClientsController extends Controller
         //}
 
         if ($cnt == 0) {
-            return json_encode(array('success' => false, 'error' => 'No correct clients given'));
+            $result = json_encode(array('success' => false, 'error' => 'No correct clients given'));
         }
 
-        return json_encode(array('success' => true, 'error' => ''));
+        echo $result;
     }
 }

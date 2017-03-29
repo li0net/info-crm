@@ -45,6 +45,25 @@
             var modal = $(this);
             modal.find('.modal-title').html('');
             modal.find('.modal-body').html('');
-        })
+        });
     }
+
+    /**
+     * отображение сообщения об ошибке
+     * @param text
+     */
+    function showBiModalError(text)
+    {
+        $('#biModal .modal-body').prepend("<div class='alert alert-error visible'><i class='fa fa-info-circle'' aria-hidden='true'></i>"+ text + "</div>");
+    }
+
+    /**
+     * отображение успешного сообщения
+     * @param text
+     */
+    function showBiModalMessage(text)
+    {
+        $('#biModal .modal-body').prepend("<div class='alert alert-success visible'><i class='fa fa-info-circle'' aria-hidden='true'></i>"+ text + "</div>");
+    }
+
 </script>

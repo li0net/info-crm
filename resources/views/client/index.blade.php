@@ -167,6 +167,9 @@
          * обработчик кнопки сохранения диалога "Добавить выбранных в категорию"
          */
         $('#biModal').on('click', '#sendCCSel', function() {
+            // подчищаем сообщения об ошибках
+            $('#biModal').find('.alert').remove();
+
             // получаем список клиентов из грида и выбранную категорию
             var clients = $('#clients_grid').getGridParam('selarrrow');
             var category = $( "select#cc_select option:checked" ).val();
@@ -179,9 +182,9 @@
 //            return;
 
             // отправляем для сохранения
-            // TODO: прописать правильный урл
             $.ajax({
                 type: "POST",
+                dataType: "json",
                 url: "/clients/addSelToCategory",
                 data: {'client_ids' : JSON.stringify(clients), "category_id":category },
                 success: function(data) {
@@ -190,11 +193,11 @@
                         $('#biModal').modal('hide');
                         $("#clients_grid").trigger("reloadGrid");
                     } else {
-                        alert('Server error:' + data.error);
+                        showBiModalError(data.error);
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert('Server error:'+textStatus);
+                    showBiModalError(textStatus);
                 }
             });
         });
@@ -239,6 +242,9 @@
          * обработчик кнопки сохранения диалога "Добавить найденных в категорию"
          */
         $('#biModal').on('click', '#sendCCFnd', function() {
+            // подчищаем сообщения об ошибках
+            $('#biModal').find('.alert').remove();
+
             // получаем выбранную категорию
             var category = $( "select#cc_select option:checked" ).val();
             // получаем фильтр грида
@@ -266,6 +272,7 @@
             // TODO: прописать правильный урл
             $.ajax({
                 type: "POST",
+                dataType: "json",
                 url: "/clients/addToCategory",
                 data: {'filters' : filters, "category_id":category },
                 success: function(data) {
@@ -274,11 +281,11 @@
                         $('#biModal').modal('hide');
                         $("#clients_grid").trigger("reloadGrid");
                     } else {
-                        alert('Server error:' + data.error);
+                        showBiModalError(data.error);
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert('Server error:'+textStatus);
+                    showBiModalError(textStatus);
                 }
             });
         });

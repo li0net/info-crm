@@ -281,6 +281,14 @@ body.skin-orange {
     background: transparent;
     font-size: $font-size;
     line-height: 17pt;
+    i.fa-info-circle{
+      font-size: 15pt;
+      margin-right: 5px;
+    }
+
+    &.visible{
+      display: block;
+    }
     .close {
       float: left;
       margin-right: 10px;
