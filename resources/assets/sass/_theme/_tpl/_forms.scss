@@ -680,3 +680,14 @@ body.skin-orange {
     margin-top: 7px;
   }
 }
+
+/** iCheck **/
+.radio label, .checkbox label {
+  padding-left: 0;
+}
+.icheckbox_flat-purple{
+  vertical-align: sub;
+  //border: 1px solid $brand-main;
+  //border-radius: 5px;
+  //background: $brand-main-text;
+}

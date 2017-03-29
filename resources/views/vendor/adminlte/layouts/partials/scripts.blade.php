@@ -19,6 +19,7 @@
 <script src="https://cdn.jsdelivr.net/vue/1.0.28/vue.js"></script>
 <script src="{{ asset('/plugins/colorpicker/bootstrap-colorpicker.min.js') }}"></script>
 <script src="{{ asset('/plugins/select2/select2.full.min.js') }}"></script>
+<script src="{{ asset('/plugins/iCheck/icheck.js') }}"></script>
 
 <!-- Dump all dynamic scripts into template -->
 @stack('scripts')

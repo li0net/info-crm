@@ -20,6 +20,7 @@
     <link href="{{ asset('/css/ui.jqgrid-bootstrap.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/plugins/colorpicker/bootstrap-colorpicker.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/plugins/iCheck/flat/purple.css') }}" rel="stylesheet" type="text/css" />
     <!--link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/css/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" type="text/css"/-->
     <link href="https://almsaeedstudio.com/themes/AdminLTE/plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.min.css" rel="stylesheet" type="text/css" />

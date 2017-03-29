@@ -631,6 +631,19 @@ $(document).ready(function () {
         minimumResultsForSearch: Infinity
     });
 
+    // iCheck init
+    $('input[type="checkbox"]').iCheck({
+        checkboxClass: 'icheckbox_flat-purple',
+        labelHover: false,
+        cursor: true
+    });
+    $('input[type="radio"]').iCheck({
+        radioClass: 'iradio_flat-purple',
+        labelHover: false,
+        cursor: true
+    });
+
+
     function formatClientCatColor(cat) {
 		if (!cat.id) { return cat.text; }
 		var $category = $(
