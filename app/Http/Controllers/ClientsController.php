@@ -352,7 +352,8 @@ class ClientsController extends Controller
         // data: {'client_ids' : JSON.stringify(clients), "category_id":category }
         $clientsId = $request->get('client_ids');
         if (empty($clientsId)) {
-            return json_encode(array('success' => false, 'error' => 'No clients given'));
+            echo json_encode(['success' => false, 'error' => 'No clients given']);
+            exit;
         }
         $clientsId = json_decode($clientsId);
         //Log::info(__METHOD__.' clientsId:'.print_r($clientsId, TRUE));
@@ -385,26 +386,26 @@ class ClientsController extends Controller
         // data: {'filters' : filters, "category_id":category },
 
         $catId = $request->get('category_id');
-        $result = json_encode(array('success' => true, 'error' => '')); // default answer
-
         if (empty($catId)) {
-            $result = json_encode(array('success' => false, 'error' => 'Empty category'));
+            echo json_encode(['success' => false, 'error' => 'Empty category']);
+            exit;
         }
         //Log::info(__METHOD__.' catId:'.print_r($catId, TRUE));
 
         $category = ClientCategory::where('cc_id', $catId)->where('organization_id', request()->user()->organization_id)->first();
         if (!$category) {
-            $result = json_encode(array('success' => false, 'error' => 'Invalid category'));
+            echo json_encode(['success' => false, 'error' => 'Invalid category']);
+            exit;
         }
 
-        $cnt = 0;
         foreach ($clients AS $client) {
             if (!$client->is_active) continue;
             $clientIds[] = $client->client_id;
         }
 
         if ( ! $category->clients()->sync($clientIds)) {
-            $result = json_encode(array('success' => false, 'error' => 'Internal server error when adding category'));
+            echo json_encode(['success' => false, 'error' => 'Internal server error when adding category']);
+            exit;
         }
         //Log::info(__METHOD__.' Sync happened ------------');
         //$clCat = $category->clients()->get();
@@ -412,10 +413,6 @@ class ClientsController extends Controller
         //Log::info(__METHOD__.' Client:'.$clC->client_id.' attached to category:'.$category->cc_id);
         //}
 
-        if ($cnt == 0) {
-            $result = json_encode(array('success' => false, 'error' => 'No correct clients given'));
-        }
-
-        echo $result;
+        echo json_encode(['success' => true, 'error' => '']);
     }
 }
