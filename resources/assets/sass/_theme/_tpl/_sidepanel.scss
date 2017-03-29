@@ -98,6 +98,19 @@ body.skin-orange {
               text-decoration: none;
             }
           }
+          &.active{
+            > a{
+              background-color: transparent;
+              border-right: 4px solid $body-bg;
+              border-left: 0;
+              text-decoration: none;
+            }
+            &.treeview{
+              > a{
+                background-color:$brand-secondary;
+              }
+            }
+          }
         }
       }
     }
