@@ -217,9 +217,9 @@
                                 $service_employees,
                                 $service_attached_employee->pivot->employee_id,
                                 [
-                                'class' => 'js-select-basic-single',
-                                'required' => '',
-                                'data-initial-value' => $service_attached_employee->pivot->employee_id
+                                    'class' => 'js-select-basic-single',
+                                    'required' => '',
+                                    'data-initial-value' => $service_attached_employee->pivot->employee_id
                                 ])
                                 }}
                             </div>

@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Session;
+use \Illuminate\Support\Facades\Log;
 
 class ServicesController extends Controller
 {
@@ -132,8 +133,8 @@ class ServicesController extends Controller
 		$service_duration_hours = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('09:00:00'), 60, '', ' ч', 'G');
 		$service_duration_minutes = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('01:00:00'), 15, '', ' мин', 'i');
 
-		$service_attached_employees = $service->employees;
-		$resources_attached_service = $service->resources;
+		$service_attached_employees = $service->employees()->get();
+		$resources_attached_service = $service->resources()->get();
 
 		return view(
 			'adminlte::serviceform', 
@@ -153,6 +154,9 @@ class ServicesController extends Controller
 
 	public function save(Request $request)
 	{
+		//$formData = $request->all();
+        //Log::info(__METHOD__.' service form data:'.var_export($formData, TRUE));
+
 		$this->validate($request, [
 			'service_category_id' => 'required|max:10',
 			'name' => 'required|max:255',
@@ -203,6 +207,7 @@ class ServicesController extends Controller
        	$service->resources()->detach();
 
         if (isset($input['service-employee'])) {
+            $dataToSync = [];
 			for ($i = 0; $i < count($input['service-employee']); $i++) {
 				$time = Carbon::createFromTime(
 					$input['service-duration-hour'][$i],
@@ -214,11 +219,16 @@ class ServicesController extends Controller
 				if (isset($input['service-routing'][$i])) {
                     $serviceRouting = $input['service-routing'][$i];
                 }
-				$service->employees()->attach(
-					$input['service-employee'][$i],
-					['duration' => $time, 'routing_id' => $serviceRouting]
-				);
+
+                $dataToSync[$input['service-employee'][$i]] = ['duration' => $time, 'routing_id' => $serviceRouting];
 			}
+
+            Log::info(__METHOD__.' preparing to sync:'.var_export($dataToSync, TRUE));
+            if (count($dataToSync) > 0) {
+                $service->employees()->sync(
+                    $dataToSync
+                );
+            }
 		}
 
 		if (isset($input['service-resource'])) {
