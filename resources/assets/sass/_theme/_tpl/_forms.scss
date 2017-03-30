@@ -687,7 +687,6 @@ body.skin-orange {
 }
 .icheckbox_flat-purple,
 .iradio_flat-purple {
-  @include transition-all (0.3s);
   background: url(/img/crm/plugins/iCheck/purple.png) no-repeat;
   &.white{
     background: url(/img/crm/plugins/iCheck/purple_w.png) no-repeat;
