@@ -143,6 +143,49 @@ body.skin-orange {
       }
     }
   }
+
+  /** input-pills */
+  .input-group.input-pills{
+    display: table;
+    width:100%;
+    input[type=radio],
+    .iradio_flat-purple{
+      display: none;
+    }
+    label{
+      color: $brand-main-text;
+      display: table-cell;
+      background-color: $brand-main;
+      border-radius: 0;
+      background-clip: padding-box;
+      @include transition-all (0.3s);
+      padding: 3px 10px;
+      font-size: 14pt;
+      margin-right: 1px;
+      border: 1px solid $brand-main;
+      cursor: pointer;
+      font-weight: normal;
+      text-align: center;
+      .hidden-xs {
+        color: $brand-main-text;
+      }
+      &:first-of-type {
+       @include border-left-radius(15px);
+      }
+      &:last-of-type {
+       @include border-right-radius(15px);
+      }
+    }
+    .iradio_flat-purple.checked + label,
+    input[type=radio]:checked + label{
+      background-color: $brand-main-text;
+      border: 1px solid $brand-secondary;
+      color: $brand-secondary;
+      .hidden-xs {
+        color: $brand-secondary;
+      }
+    }
+  }
   /** nav nav-pills */
   .nav.nav-pills {
     color: $brand-main-text;

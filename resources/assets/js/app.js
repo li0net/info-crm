@@ -637,7 +637,7 @@ $(document).ready(function () {
         labelHover: false,
         cursor: true
     });
-    $('input[type="radio"]').iCheck({
+    $('input[type="radio"]:not(".raw")').iCheck({
         radioClass: 'iradio_flat-purple',
         labelHover: false,
         cursor: true
