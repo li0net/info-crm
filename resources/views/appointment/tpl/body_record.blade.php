@@ -103,9 +103,9 @@
             @foreach($employeesOptions as $employee)
                 <option
                     @if (old('employee_id') AND old('employee_id') == $employee['value'])
-                    selected="selected"
+                        selected="selected"
                     @elseif (!old('employee_id') AND isset($appointment) AND $appointment->employee_id == $employee['value'])
-                    selected="selected"
+                        selected="selected"
                     @endif
                     value="{{$employee['value']}}">{{$employee['label']}}
                 </option>

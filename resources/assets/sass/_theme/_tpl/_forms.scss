@@ -117,6 +117,10 @@ body.skin-orange {
   }
 
   /** nav modal-menu */
+  .nav-stacked-block{
+    border-right: 1px solid $brand-main;
+    padding-right: 0;
+  }
   .nav.modal-menu.nav-tabs.nav-stacked {
     background-color: $body-bg;
     padding: 0;
@@ -126,8 +130,10 @@ body.skin-orange {
       background-color: $brand-main;
       color: $brand-main-text;
       text-decoration: none;
-      padding-left: 15px;
+      margin: 0;
+      padding: 10px 0 10px 15px;
       &.nav-header {
+        padding: 10px 0 10px 15px;
         background-color: transparent;
         color: $text-color;
         &:hover {
@@ -141,6 +147,16 @@ body.skin-orange {
         color: $brand-main;
         background-color: $brand-main-text;
       }
+
+      &.first-item,
+      &.first-item.active{
+        border-top: 4px solid $brand-main !important;
+      }
+      &.last-item,
+      &.last-item.active{
+        border-bottom: 4px solid $brand-main !important;
+      }
+
     }
   }
 
@@ -269,6 +285,11 @@ body.skin-orange {
       padding-top: 7px;
     }
   }
+  .form-horizontal{
+    .btn{
+      margin-top: 7px;
+    }
+  }
   .form-control {
     border: 1px solid $brand-main;
     @include border-radius(15px);
@@ -276,7 +297,7 @@ body.skin-orange {
     font-size: $font-size-input;
     padding: 5px 15px;
     line-height: 19px;
-    //height: 30px;
+    min-height: 34px;
     margin-top: 7px;
 
   }
@@ -340,6 +361,7 @@ body.skin-orange {
       padding: 0;
       height: auto;
       color: $text-color;
+      min-height: 34px;
       .select2-selection__rendered {
         padding: 2px 15px;
         margin: 0;
@@ -384,6 +406,7 @@ body.skin-orange {
         margin-right: 5px;
         margin-top: 0;
         padding: 0 10px;
+
         .select2-selection__choice__remove {
           color: $brand-main-text;
         }
@@ -403,6 +426,7 @@ body.skin-orange {
         @include border-radius(15px);
         border: 2px solid $brand-main-text;
         color: $brand-main-text;
+        min-height: 34px;
       }
     }
     .select2-selection__arrow {
@@ -533,6 +557,15 @@ body.skin-orange {
       padding-left: 1px;
       padding-right: 1px;
     }
+    table{
+      thead,tbody{
+        tr{
+          td,th{
+            padding: 5px;
+          }
+        }
+      }
+    }
     .btn.btn-add,
     .btn.btn-danger{
       margin-left: 10px;
@@ -657,6 +690,10 @@ body.skin-orange {
         }
       }
     }
+  }
+  .goods_sale{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 15px;
   }
 }
 /** placeholders **/
@@ -783,5 +820,59 @@ only screen and (min-device-pixel-ratio: 1.5) {
       background: url(/img/crm/plugins/iCheck/purple@2x_w.png) no-repeat;
     }
   }
+}
 
+#payments_content{
+  display: block;
+  table{
+    thead{
+      td{
+        white-space: nowrap;
+      }
+    }
+    td{
+      border-top: none;
+      border-bottom: none;
+      .btn-link{
+        color: $brand-main;
+        i{
+          color: $brand-main;
+          font-size: 18px;
+        }
+      }
+    }
+    .info-section{
+      display: none;
+    }
+    .toggle-info-section{
+      .fa-caret-up{
+        display: none;
+      }
+    }
+  }
+  .total-row {
+    border-bottom: 2px solid #FFF !important;
+    font-weight: bold;
+    .section-subtotal-title{
+      font-weight: bold;
+    }
+  }
+  .delete-transaction-btn, .cancel-loyalty-btn {
+    line-height: 1;
+  }
+  tbody.info-section,
+  .section-header, .section-header tr,
+  .section-subtotal {
+    border: none !important;
+  }
+}
+#reminds_content{
+  .control-label{
+    padding: 14px;
+  }
+}
+.control-label{
+  &.text-left{
+    text-align: left;
+  }
 }

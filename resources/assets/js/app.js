@@ -624,7 +624,6 @@ $(document).ready(function () {
 
 	$(".alt-control-bar .js-select-basic-single").select2({
         theme: "alt-control",
-	    placeholder: "---",
         minimumResultsForSearch: Infinity
     });
     $(".js-select-basic-single").select2({

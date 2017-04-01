@@ -119,40 +119,42 @@
         </div>
         <div class="row">
             <div class="col-sm-12" id="result_container">
-                <table class="table table-hover table-condensed">
-                    <thead>
-                    <th>#</th>
-                    <th>{{ trans('adminlte_lang::message.manager') }}</th>
-                    <th>{{ trans('adminlte_lang::message.client') }}</th>
-                    <th>{{ trans('adminlte_lang::message.service_name') }}</th>
-                    <th>{{ trans('adminlte_lang::message.start_time') }}</th>
-                    <th>{{ trans('adminlte_lang::message.end_time') }}</th>
-                    <th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
-                    </thead>
+                @if (isset($appointments))
+                    <table class="table table-hover table-condensed">
+                        <thead>
+                        <th>#</th>
+                        <th>{{ trans('adminlte_lang::message.manager') }}</th>
+                        <th>{{ trans('adminlte_lang::message.client') }}</th>
+                        <th>{{ trans('adminlte_lang::message.service_name') }}</th>
+                        <th>{{ trans('adminlte_lang::message.start_time') }}</th>
+                        <th>{{ trans('adminlte_lang::message.end_time') }}</th>
+                        <th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
+                        </thead>
 
-                    <tbody>
-                    @foreach($appointments as $appointment)
-                    <tr>
-                        <th>{{ $appointment->appointment_id }}</th>
-                        <td>{{ $appointment->employee->name }}</td>
-                        <td>{{ $appointment->client->name }}</td>
-                        <td>{{ $appointment->service->name }}</td>
-                        <td>{{ $appointment->start }}</td>
-                        <td>{{ $appointment->end }}</td>
-                        <td class="text-center">
-                            @if ($user->hasAccessTo('appointments', 'edit', 0))
-                            <a href="{{ route('appointments.edit', $appointment->appointment_id) }}" id="scheme_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
-                            @endif
-                            @if ($user->hasAccessTo('appointments', 'delete', 0))
-                            {!! Form::open(['route' => ['appointments.destroy', $appointment->appointment_id], 'id' => 'form'.$appointment->appointment_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'GET']) !!}
-                            <a href="javascript: submitform('#form{{$appointment->appointment_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
-                            {!! Form::close() !!}
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        <tbody>
+                        @foreach($appointments as $appointment)
+                        <tr>
+                            <th>{{ $appointment->appointment_id }}</th>
+                            <td>{{ $appointment->employee->name }}</td>
+                            <td>{{ $appointment->client->name or '' }}</td>
+                            <td>{{ $appointment->service->name }}</td>
+                            <td>{{ $appointment->start }}</td>
+                            <td>{{ $appointment->end }}</td>
+                            <td class="text-center">
+                                @if ($user->hasAccessTo('appointments', 'edit', 0))
+                                <a href="{{ route('appointments.edit', $appointment->appointment_id) }}" id="scheme_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
+                                @endif
+                                @if ($user->hasAccessTo('appointments', 'delete', 0))
+                                {!! Form::open(['route' => ['appointments.destroy', $appointment->appointment_id], 'id' => 'form'.$appointment->appointment_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'GET']) !!}
+                                <a href="javascript: submitform('#form{{$appointment->appointment_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
+                                {!! Form::close() !!}
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                @endif
                 <div class="text-center">
                     {!! $appointments->render(); !!}
                 </div>
