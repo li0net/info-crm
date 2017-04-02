@@ -98,15 +98,32 @@ class WageSchemesController extends Controller
 		$scheme = new WageScheme;
 
 		$input = $request->input();
-		
-		array_shift($input['services_cats_detailed']);
-		array_shift($input['services_detailed']);
-		array_shift($input['services_percent_detailed']);
-		array_shift($input['services_unit_detailed']);
-		array_shift($input['products_cats_detailed']);
-		array_shift($input['products_detailed']);
-		array_shift($input['products_percent_detailed']);
-		array_shift($input['products_unit_detailed']);
+
+        $servicesCatsDetails = $servicesDetailed = $servicesPercentDetailed = $servicesUnitDetailed = $productsCatsDetailed = $productsDetailed = $productsPercentDetailed = $productsUnitDetailed = null;
+		if (!empty($input['services_cats_detailed'])) {
+            $servicesCatsDetails = array_shift($input['services_cats_detailed']);
+        }
+        if (!empty($input['services_detailed'])) {
+            $servicesDetailed = array_shift($input['services_detailed']);
+        }
+        if (!empty($input['services_percent_detailed'])) {
+            $servicesPercentDetailed = array_shift($input['services_percent_detailed']);
+        }
+        if (!empty($input['services_unit_detailed'])) {
+            $servicesUnitDetailed = array_shift($input['services_unit_detailed']);
+        }
+        if (!empty($input['products_cats_detailed'])) {
+            $productsCatsDetailed = array_shift($input['products_cats_detailed']);
+        }
+        if (!empty($input['products_detailed'])) {
+            $productsDetailed = array_shift($input['products_detailed']);
+        }
+        if (!empty($input['products_percent_detailed'])) {
+            $productsPercentDetailed = array_shift($input['products_percent_detailed']);
+        }
+        if (!empty($input['products_unit_detailed'])) {
+            $productsUnitDetailed = array_shift($input['products_unit_detailed']);
+        }
 
 		$scheme->scheme_name = $request->scheme_name;
 		$scheme->services_percent = $request->services_percent;
@@ -118,14 +135,14 @@ class WageSchemesController extends Controller
 		$scheme->is_client_discount_counted = ($request->is_client_discount_counted !== null );
 		$scheme->is_material_cost_counted = ($request->is_material_cost_counted !== null );
 		$scheme->organization_id = $request->user()->organization_id;
-		$scheme->services_custom_settings = json_encode(array($input['services_cats_detailed'],
-																$input['services_detailed'],
-																$input['services_percent_detailed'],
-																$input['services_unit_detailed']));
-		$scheme->products_custom_settings = json_encode(array($input['products_cats_detailed'],
-																$input['products_detailed'],
-																$input['products_percent_detailed'],
-																$input['products_unit_detailed']));
+		$scheme->services_custom_settings = json_encode(array($servicesCatsDetails,
+                                                                $servicesDetailed,
+                                                                $servicesPercentDetailed,
+                                                                $servicesUnitDetailed));
+		$scheme->products_custom_settings = json_encode(array($productsCatsDetailed,
+                                                                $productsDetailed,
+                                                                $productsPercentDetailed,
+                                                                $productsUnitDetailed));
 
 		$scheme->save();
 
