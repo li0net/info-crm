@@ -389,7 +389,6 @@ return [
 	'information_about_storage'	=> 'Информация о складе',
 	'move_goods'				=> 'Переместить товары',
 	'number_of_units'			=> 'Количество единиц',
-	'number_of_units'			=> 'Количество единиц',
 	'storage_title'				=> 'Наименование склада',
 	'information_about_product'	=> 'Информация о товаре',
 	'product_title'				=> 'Наименование',

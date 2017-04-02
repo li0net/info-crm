@@ -23,263 +23,274 @@
     @include('partials.alerts')
 
     <div class="row">
-		<div class="col-sm-8 col-sm-offset-2">
-			<h4>{{ trans('adminlte_lang::message.information_about_payroll_scheme') }}</h4>	
-			{{-- <ex1></ex1> --}}
-			<hr>
+        <div class="col-sm-12">
+            {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
+            {!! Form::model($scheme, ['route' => ['wage_scheme.update', $scheme->scheme_id], 'method' => 'PUT']) !!}
+            {{ Form::hidden('service_ctgs_options', null, ['id' => 'service_ctgs_options']) }}
+            {{ Form::hidden('product_ctgs_options', null, ['id' => 'product_ctgs_options']) }}
+            {{-- <div class="row"> --}}
+                <div class="form-group">
+                    <div class="col-sm-11">
+                        {{ Form::label('scheme_name', trans('adminlte_lang::message.scheme_name')) }}
+                        {{ Form::text('scheme_name', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-8">
 
-			<div class="well">
-				{{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
-				{!! Form::model($scheme, ['route' => ['wage_scheme.update', $scheme->scheme_id], 'method' => 'PUT']) !!}
-					{{ Form::hidden('service_ctgs_options', null, ['id' => 'service_ctgs_options']) }}
-					{{ Form::hidden('product_ctgs_options', null, ['id' => 'product_ctgs_options']) }}
-					{{-- <div class="row"> --}}
-						<div class="form-group">
-							<div class="col-sm-10">
-								{{ Form::label('scheme_name', trans('adminlte_lang::message.scheme_name')) }}
-								{{ Form::text('scheme_name', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-							</div>
-							<div class="col-sm-2"></div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-8">
-								{{ Form::label('services_percent', trans('adminlte_lang::message.services')) }}
-							</div>
-							<div class="col-sm-8">
-								{{ Form::text('services_percent', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-							</div>
-							<div class="col-sm-2">
-								{{ Form::select('service_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 
-																									  'required' => '', 
-																									  'maxlength' => '110']) }}
-							</div>
-							<label class="col-sm-2 text-left">
-								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
-							</label>
-						</div>
-						
-						<div class="form-group">
-							{{-- <label class="col-sm-2 control-label"></label> --}}
-							<div class="col-sm-6">
-								<a href="#detailed-services" data-toggle="collapse" class="btn btn-link btn-xs">
-								<span class="badge label-danger hidden">@{{ detailed_services_count }}</span>
-								{{-- <input v-model="detailed_services_count"> --}}
-								&nbsp;&nbsp;{{ trans('adminlte_lang::message.specify_val_4_services') }}&nbsp;&nbsp;
-								<i class="fa fa-caret-down"></i></a>
-							</div>
-						</div>
+                        {{ Form::label('services_percent', trans('adminlte_lang::message.services')) }}
+                    </div>
+                    <div class="col-sm-8">
+                        {{ Form::text('services_percent', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{ Form::select('service_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control',
+                        'required' => '',
+                        'maxlength' => '110']) }}
+                    </div>
+                    <label class="col-sm-1 text-center">
+                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-11">
+                        <div class="box box-details box-solid collapsed-box">
+                            <div class="box-header with-border">
+                                <h3>
+                                    <a href="#detailed-services" data-toggle="collapse" class="btn btn-link btn-xs" data-widget="collapse">
+                                        <i class="fa fa-caret-down"></i>
+                                        {{ trans('adminlte_lang::message.specify_val_4_services') }}
+                                    </a>
+                                </h3>
+                                <div class="box-tools pull-right">
+                                    <span class="badge label-danger" v-model="detailed_services_count">
+                                        @{{detailed_services_count}}
+                                    </span>
+                                </div>
+                                <!-- /.box-tools -->
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body" >
+                                <div id="detailed-services" class="form-group ">
+                                    @foreach( $services_custom_settings as $service_setting )
+                                        <div class="wrap-it alt-control-bar">
+                                            <div class="col-sm-11" style="padding:0">
+                                                <div class="col-sm-4">
+                                                    {{ Form::select('services_cats_detailed[]',  [], $service_setting[0], ['class' => 'form-control',
+                                                    'required' => '',
+                                                    'maxlength' => '110',
+                                                    'data-initial-value' => $service_setting[0]]) }}
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    {{ Form::select('services_detailed[]', $service_ctgs[$service_setting[0]]->pluck('name', 'service_id')->all(),
+                                                    $service_setting[1], ['class' => 'form-control',
+                                                    'required' => '',
+                                                    'maxlength' => '110']) }}
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    {{ Form::text('services_percent_detailed[]', $service_setting[2], ['class' => 'form-control',
+                                                    'maxlength' => '110']) }}
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    {{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], $service_setting[3], ['class' => 'form-control',
+                                                    'required' => '',
+                                                    'maxlength' => '110']) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 text-center" style="">
+                                                <button type="button" id="add-detailed-section" class="btn btn-remove">
+                                                    <i class="fa fa-plus-circle"></i>
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div class="wrap-it alt-control-bar">
+                                        <div class="col-sm-11">
+                                            <div class="col-sm-4">
+                                                {{ Form::select('services_cats_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110']) }}
+                                            </div>
+                                            <div class="col-sm-4">
+                                                {{ Form::select('services_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110']) }}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{ Form::text('services_percent_detailed[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'maxlength' => '110']) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1 text-center" style="">
+                                            <button type="button" id="add-detailed-section" class="btn btn-add">
+                                                <i class="fa fa-plus-circle"></i>
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </div>
+                                    </div>
 
-						<div id="detailed-services" class="form-group collapse">
-							<div class="wrap-it">
-								{{-- <div class="col-sm-2"></div> --}}
-								<div class="col-sm-10" style="padding:0">
-									<div class="col-sm-4">
-										{{ Form::select('services_cats_detailed[]', [], null, ['class' => 'form-control', 
-																							   'maxlength' => '110', 
-																							   'data-initial-value' => 0]) }}
-									</div>
-									<div class="col-sm-4">
-										{{ Form::select('services_detailed[]', [], null, ['class' => 'form-control', 
-																						  'maxlength' => '110', 
-																						  'placeholder' => trans('adminlte_lang::message.select_service')]) }}
-									</div>
-									<div class="col-sm-2">
-										{{ Form::text('services_percent_detailed[]', 0, ['class' => 'form-control', 'maxlength' => '110']) }}
-									</div>
-									<div class="col-sm-2">
-										{{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 
-																														  'maxlength' => '110']) }}
-									</div>
-								</div>
-								<div class="col-sm-2" style="margin-bottom: 15px;">
-									<input type="button" id="add-detailed-section" class="btn btn-info btn-sm" value={{ trans('adminlte_lang::message.add') }}>
-								</div>
-							</div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-8">
+                        {{ Form::label('products_percent', trans('adminlte_lang::message.products')) }}
+                    </div>
+                    <div class="col-sm-8">
+                        {{ Form::text('products_percent', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{ Form::select('products_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control',
+                        'required' => '',
+                        'maxlength' => '110']) }}
+                    </div>
+                    <label class="col-sm-1 text-center">
+                        <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-11">
+                        <div class="box box-details box-solid collapsed-box">
+                            <div class="box-header with-border">
+                                <h3>
+                                    <a href="#detailed-products" data-toggle="collapse" class="btn btn-link btn-xs" data-widget="collapse">
+                                        <i class="fa fa-caret-down"></i>
+                                        {{ trans('adminlte_lang::message.specify_val_4_products') }}
+                                    </a>
+                                </h3>
+                                <div class="box-tools pull-right">
+                                    <span class="badge label-danger" v-model="detailed_products_count">@{{detailed_products_count}}</span>
+                                </div>
+                                <!-- /.box-tools -->
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body" >
+                                <div id="detailed-products" class="form-group ">
+                                    @foreach( $products_custom_settings as $product_setting )
+                                        <div class="wrap-it alt-control-bar">
+                                            {{-- <div class="col-sm-2"></div>							 --}}
+                                            <div class="col-sm-11" style="padding:0">
+                                                <div class="col-sm-4">
+                                                    {{ Form::select('products_cats_detailed[]', [], $product_setting[0], ['class' => 'form-control',
+                                                    'required' => '',
+                                                    'maxlength' => '110',
+                                                    'data-initial-value' => $product_setting[0]]) }}
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    {{ Form::select('products_detailed[]', $product_ctgs[$product_setting[0]]->pluck('title', 'product_id')->all(),
+                                                    $product_setting[1], ['class' => 'form-control',
+                                                    'required' => '',
+                                                    'maxlength' => '110']) }}
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    {{ Form::text('products_percent_detailed[]', $product_setting[2], ['class' => 'form-control',
+                                                    'maxlength' => '110']) }}
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    {{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'],
+                                                    $product_setting[3], ['class' => 'form-control',
+                                                    'required' => '',
+                                                    'maxlength' => '110']) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 text-center" style="">
+                                                <button type="button" id="add-detailed-section" class="btn btn-add">
+                                                    <i class="fa fa-plus-circle"></i>
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div class="wrap-it alt-control-bar">
+                                        <div class="col-sm-11">
+                                            <div class="col-sm-4">
+                                                {{ Form::select('products_cats_detailed[]', [], null, ['class' => 'form-control', 'placeholder' => 'Category']) }}
+                                            </div>
+                                            <div class="col-sm-4">
+                                                {{ Form::select('products_detailed[]', [], null, ['class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.select_good')]) }}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{ Form::text('products_percent_detailed[]', null, ['class' => 'form-control', 'maxlength' => '110', 'placeholder' => 'Percent']) }}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.unit')]) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1 text-center" style="">
+                                            <button type="button" id="add-detailed-section" class="btn btn-add">
+                                                <i class="fa fa-plus-circle"></i>
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        {{ Form::label('wage_rate', trans('adminlte_lang::message.wage')) }}
+                    </div>
+                    <div class="col-sm-8">
+                        {{ Form::text('wage_rate', null, ['class' => 'form-control',
+                        'required' => '',
+                        'maxlength' => '110']) }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{ Form::select('wage_rate_period', ['hour' => trans('adminlte_lang::message.hour'),
+                        'day' => trans('adminlte_lang::message.day'),
+                        'month' => trans('adminlte_lang::message.month')],
+                        'day',
+                        ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
+                    </div>
+                    <label class="col-sm-1 text-center">
+                        <a class="fa fa-info-circle" id="wage_rate" original-title="">&nbsp;</a>
+                    </label>
+                </div>
 
-							@foreach( $services_custom_settings as $service_setting )
-								<div class="wrap-it">
-									<div class="col-sm-10" style="padding:0">
-										<div class="col-sm-4">
-											{{ Form::select('services_cats_detailed[]',  [], $service_setting[0], ['class' => 'form-control', 
-																												   'required' => '', 
-																												   'maxlength' => '110', 
-																												   'data-initial-value' => $service_setting[0]]) }}
-										</div>
-										<div class="col-sm-4">
-											{{ Form::select('services_detailed[]', $service_ctgs[$service_setting[0]]->pluck('name', 'service_id')->all(), 
-																				   $service_setting[1], ['class' => 'form-control', 
-																				   						 'required' => '', 
-																				   						 'maxlength' => '110']) }}
-										</div>
-										<div class="col-sm-2">
-											{{ Form::text('services_percent_detailed[]', $service_setting[2], ['class' => 'form-control', 
-																											   'maxlength' => '110']) }}
-										</div>
-										<div class="col-sm-2">
-											{{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], $service_setting[3], ['class' => 'form-control', 
-																																			'required' => '', 
-																																			'maxlength' => '110']) }}
-										</div>
-									</div>
-									<div class="col-sm-2" style="margin-bottom: 15px;">
-										<input type="button" id="add-detailed-section" class="btn btn-danger btn-sm" value="Удалить">
-									</div>
-								</div>
-							@endforeach
-						</div>
+                <div class="form-group">
+                    {{-- {{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }} --}}
+                    <label class="col-sm-11 text-left">
+                        {{ Form::checkbox('is_client_discount_counted', true, $scheme->is_client_discount_counted, ['style' => 'margin-right: 10px']) }}
+                        {{ trans('adminlte_lang::message.consider_discount') }}
+                    </label>
+                    <label class="col-sm-1 text-center">
+                        <a class="fa fa-info-circle" id="is_client_discount_counted" original-title="">&nbsp;</a>
+                    </label>
+                </div>
 
-						<div class="form-group">
-							<div class="col-sm-8">
-								{{ Form::label('products_percent', trans('adminlte_lang::message.products')) }}
-							</div>
-							<div class="col-sm-8">
-								{{ Form::text('products_percent', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-							</div>
-							<div class="col-sm-2">
-								{{ Form::select('products_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 
-																									   'required' => '', 
-																									   'maxlength' => '110']) }}
-							</div>
-							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
-							</label>
-						</div>
+                <div class="form-group">
+                    {{-- {{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }} --}}
+                    <label class="col-sm-11 text-left">
+                        {{ Form::checkbox('is_material_cost_counted', true, $scheme->is_client_discount_counted, ['style' => 'margin-right: 10px']) }}
+                        {{ trans('adminlte_lang::message.consider_cost_of_materials') }}
+                    </label>
+                    <label class="col-sm-1 text-center">
+                        <a class="fa fa-info-circle" id="is_material_cost_counted" original-title="">&nbsp;</a>
+                    </label>
+                </div>
+                {{-- </div>						 --}}
 
-						<div class="form-group">
-							{{-- <label class="col-sm-2 control-label"></label> --}}
-							<div class="col-sm-6">
-								<a href="#detailed-products" data-toggle="collapse" class="btn btn-link btn-xs">
-								<span class="badge label-danger hidden">@{{ detailed_products_count }}</span>
-								&nbsp;&nbsp;{{ trans('adminlte_lang::message.specify_val_4_products') }}&nbsp;&nbsp;
-								<i class="fa fa-caret-down"></i></a>
-							</div>
-						</div>
+            {{-- <div class="row"><hr></div> --}}
 
-						<div id="detailed-products" class="form-group collapse">
-							<div class="wrap-it">
-								{{-- <div class="col-sm-2"></div>							 --}}
-								<div class="col-sm-10" style="padding:0">
-									<div class="col-sm-4">
-										{{ Form::select('products_cats_detailed[]', [], null, ['class' => 'form-control', 
-																							   'maxlength' => '110', 
-																							   'data-initial-value' => 0]) }}
-									</div>
-									<div class="col-sm-4">
-										{{ Form::select('products_detailed[]', [], null, ['class' => 'form-control', 
-																						  'maxlength' => '110', 
-																						  'placeholder' => trans('adminlte_lang::message.select_product')]) }}
-									</div>
-									<div class="col-sm-2">
-										{{ Form::text('products_percent_detailed[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
-									</div>
-									<div class="col-sm-2">
-										{{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 
-																														  'maxlength' => '110']) }}
-									</div>
-								</div>
-								<div class="col-sm-2" style="margin-bottom: 15px;">
-									<input type="button" id="add-detailed-section" class="btn btn-info btn-sm" value={{ trans('adminlte_lang::message.add') }}>
-								</div>
-							</div>
-
-							@foreach( $products_custom_settings as $product_setting )
-								<div class="wrap-it">
-									{{-- <div class="col-sm-2"></div>							 --}}
-									<div class="col-sm-10" style="padding:0">
-										<div class="col-sm-4">
-											{{ Form::select('products_cats_detailed[]', [], $product_setting[0], ['class' => 'form-control', 
-																												  'required' => '', 
-																												  'maxlength' => '110', 
-																												  'data-initial-value' => $product_setting[0]]) }}
-										</div>
-										<div class="col-sm-4">
-											{{ Form::select('products_detailed[]', $product_ctgs[$product_setting[0]]->pluck('title', 'product_id')->all(), 
-																				   $product_setting[1], ['class' => 'form-control', 
-																				   						 'required' => '', 
-																				   						 'maxlength' => '110']) }}
-										</div>
-										<div class="col-sm-2">
-											{{ Form::text('products_percent_detailed[]', $product_setting[2], ['class' => 'form-control', 
-																											   'maxlength' => '110']) }}
-										</div>
-										<div class="col-sm-2">
-											{{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 
-																						$product_setting[3], ['class' => 'form-control', 
-																											  'required' => '', 
-																											  'maxlength' => '110']) }}
-										</div>
-									</div>
-									<div class="col-sm-2" style="margin-bottom: 15px;">
-										<input type="button" id="add-detailed-section" class="btn btn-danger btn-sm" value="Удалить">
-									</div>
-								</div>
-							@endforeach
-						</div>
-
-						<div class="form-group">
-							<div class="col-sm-12">
-								{{ Form::label('wage_rate', trans('adminlte_lang::message.wage')) }}
-							</div>
-							<div class="col-sm-8">
-								{{ Form::text('wage_rate', null, ['class' => 'form-control', 
-																  'required' => '', 
-																  'maxlength' => '110']) }}
-							</div>
-							<div class="col-sm-2">
-								{{ Form::select('wage_rate_period', ['hour' => trans('adminlte_lang::message.hour'), 
-																	 'day' => trans('adminlte_lang::message.day'), 
-																	 'month' => trans('adminlte_lang::message.month')], 
-																	 'day', 
-																	 ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
-							</div>
-							<label class="col-sm-2 text-left">
-								<a class="fa fa-info-circle" id="wage_rate" original-title="">&nbsp;</a>
-							</label>
-						</div>
-
-						<div class="form-group">
-							{{-- {{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }} --}}
-							<label class="col-sm-10 text-left">
-								{{ Form::checkbox('is_client_discount_counted', true, $scheme->is_client_discount_counted, ['style' => 'margin-right: 10px']) }}
-									{{ trans('adminlte_lang::message.consider_discount') }}
-							</label>
-							<label class="col-sm-2 text-left">
-								<a class="fa fa-info-circle" id="is_client_discount_counted" original-title="">&nbsp;</a>
-							</label>
-						</div>
-						
-						<div class="form-group">
-							{{-- {{ Form::label(null, null, ['class' => 'col-sm-2 text-right ctrl-label']) }} --}}
-							<label class="col-sm-10 text-left">
-								{{ Form::checkbox('is_material_cost_counted', true, $scheme->is_client_discount_counted, ['style' => 'margin-right: 10px']) }}
-									{{ trans('adminlte_lang::message.consider_cost_of_materials') }} 
-							</label>
-							<label class="col-sm-2 text-left">
-								<a class="fa fa-info-circle" id="is_material_cost_counted" original-title="">&nbsp;</a>
-							</label>
-						</div>
-					{{-- </div>						 --}}
-					
-					{{-- <div class="row"><hr></div> --}}
-
-					<div class="row">
-						<div class="col-sm-12"><hr></div>
-						<div class="col-sm-8 col-sm-offset-2">
-							<div class="row">
-								<div class="col-sm-6">
-									{!! Html::linkRoute('wage_scheme.show', trans('adminlte_lang::message.cancel'), [$scheme->scheme_id], ['class'=>'btn btn-danger btn-block']) !!}
-								</div>
-								<div class="col-sm-6">
-									{{ Form::submit(trans('adminlte_lang::message.save'), ['class'=>'btn btn-success btn-block']) }}
-								</div>
-							</div>
-						</div>
-					</div>
-				{!! Form::close() !!}	
-			</div>
-		</div>
+            <div class=" col-sm-10 m-t text-right">
+                {!! Html::linkRoute('wage_scheme.show', trans('adminlte_lang::message.cancel'), [$scheme->scheme_id], ['class'=>'btn btn-info m-r']) !!}
+                {{ Form::submit(trans('adminlte_lang::message.save'), ['class'=>'btn btn-primary']) }}
+            </div>
+            {!! Form::close() !!}
+        </div>
 	</div>
-@endsection
+
+    <!--templates-->
+    @include('wage_schemes.templates')
+    <!--templates-->
+
+    @endsection
 
 @section('page-specific-scripts')
 	<script type="text/javascript">

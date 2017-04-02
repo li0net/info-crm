@@ -567,6 +567,7 @@ body.skin-orange {
       }
     }
     .btn.btn-add,
+    .btn.btn-remove,
     .btn.btn-danger{
       margin-left: 10px;
       color: $red-color;
@@ -580,10 +581,41 @@ body.skin-orange {
       &:hover{
         background: transparent;
         color: $brand-secondary;
+        i{
+          color: $brand-secondary;
+        }
+      }
+    }
+    .btn.btn-remove{
+      background-color: transparent;
+      &:hover {
+        background-color: transparent;
+        text-decoration: none;
+        color: $brand-secondary;
+        i{
+          color: $brand-secondary;
+        }
+      }
+      .fa-plus-circle{
+        display: none;
+      }
+      .fa-trash-o{
+        display: inline-block;
+      }
+
+      &:hover{
+        color: $brand-main-hover;
       }
     }
     .btn.btn-add{
       color: $brand-main;
+      .fa-plus-circle{
+        display: inline-block;
+      }
+      .fa-trash-o{
+        display: none;
+      }
+
       &:hover{
         color: $brand-main-hover;
       }
@@ -602,11 +634,31 @@ body.skin-orange {
       &:hover,
       &:hover,
       &:focus {
+        background-color: rgba(0,0,0,0.1);
         border-color: $brand-main-text;
         outline: 0;
         box-shadow: none;
       }
     }
+    select.form-control {
+      > option {
+        &:checked,
+        &:hover {
+          color: $text-grey-color !important;
+          background-color: rgba(0,0,0,0.2) !important;
+          box-shadow: 0 0 10px 100px rgba(0,0,0,0.2) inset !important;
+          background: #6D51AA repeat url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2PIDVz1HwAE/wJoMeu6HgAAAABJRU5ErkJggg==");
+        }
+      }
+      &:focus > option:checked,
+      &:focus > option:hover {
+        color: $text-grey-color !important;
+        background-color: rgba(0,0,0,0.2) !important;
+        box-shadow: 0 0 10px 100px rgba(0,0,0,0.2) inset !important;
+        background: #6D51AA repeat url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2PIDVz1HwAE/wJoMeu6HgAAAABJRU5ErkJggg==");
+      }
+    }
+
     .select2-container--alt-control,
     .select2{
       margin-top: 0;

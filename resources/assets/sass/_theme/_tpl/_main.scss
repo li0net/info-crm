@@ -105,6 +105,9 @@ body.skin-orange {
     &.box-solid{
       margin: 20px 0 7px;
       border: 1px solid $brand-main;
+      .badge{
+        display: none;
+      }
       .box-header {
         color: $brand-main-text;
         background: $brand-main;
