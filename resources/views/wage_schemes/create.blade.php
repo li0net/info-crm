@@ -95,6 +95,10 @@
                     <!-- /.box-body -->
                 </div>
             </div>
+            <label class="col-sm-1 text-left">
+                <br>
+                <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
+            </label>
         </div>
 
         <div class="form-group">
@@ -156,6 +160,10 @@
                     <!-- /.box-body -->
                 </div>
             </div>
+            <label class="col-sm-1 text-left">
+                <br>
+                <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
+            </label>
         </div>
 
 <!--        <div class="form-group">-->

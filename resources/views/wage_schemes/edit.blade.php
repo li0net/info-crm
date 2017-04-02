@@ -134,6 +134,10 @@
                             <!-- /.box-body -->
                         </div>
                     </div>
+                    <label class="col-sm-1 text-center">
+                        <br>
+                        <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
+                    </label>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-8">
@@ -231,6 +235,10 @@
                             <!-- /.box-body -->
                         </div>
                     </div>
+                    <label class="col-sm-1 text-center">
+                        <br>
+                        <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
+                    </label>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
@@ -278,7 +286,7 @@
 
             {{-- <div class="row"><hr></div> --}}
 
-            <div class=" col-sm-10 m-t text-right">
+            <div class=" col-sm-11 m-t text-right">
                 {!! Html::linkRoute('wage_scheme.show', trans('adminlte_lang::message.cancel'), [$scheme->scheme_id], ['class'=>'btn btn-info m-r']) !!}
                 {{ Form::submit(trans('adminlte_lang::message.save'), ['class'=>'btn btn-primary']) }}
             </div>
