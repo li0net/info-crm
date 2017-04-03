@@ -129,11 +129,18 @@ body.skin-orange {
             font-size: $font-size-input;
             color: $brand-main-text;
             text-decoration: none;
+            margin-top: 0;
             &:hover{
               background: transparent;
               color: $brand-secondary;
             }
           }
+        }
+      }
+      .box-body{
+        .btn.btn-add,
+        .btn.btn-remove{
+          margin-top: 2px;
         }
       }
     }
