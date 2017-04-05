@@ -36,6 +36,7 @@ Route::get('/clientCategories', 'ClientCategoriesController@index');
 
 Route::resource('/employee', 'EmployeeController');
 Route::put('/employee', 'EmployeeController@store');
+Route::post('/employee/saveWageScheme', 'EmployeeController@updateWageScheme');
 Route::resource('/position', 'PositionController');
 Route::resource('/account', 'AccountController');
 

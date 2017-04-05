@@ -801,6 +801,7 @@ $(document).ready(function () {
 		$('a[href="#detailed-products"] .fa.fa-caret-up').toggleClass('fa-caret-up fa-caret-down');
 	});
 
+	// EMPLOYEE FROM
 	$('#form_submit').on('click', function() {
 		var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
 
@@ -823,6 +824,18 @@ $(document).ready(function () {
 		if(activeTab == '#menu5') {
 			$('#employee_form__wage').submit();
 		}
+	});
+
+	// select2 select init
+	$(".js-select-basic").select2({
+		placeholder: "Select wage scheme",
+		allowClear: true
+	});
+
+	$('#ws_scheme_start').datepicker({
+		autoclose: true,
+		format: 'yyyy-mm-dd',
+		firstDay: 1
 	});
 
 	$(function () {

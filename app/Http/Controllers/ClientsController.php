@@ -277,7 +277,7 @@ class ClientsController extends Controller
     private function prepareClientCategoriesOptions() {
         $clientCategoriesOptions = array();
 
-        $clientCategories = ClientCategory::where('organization_id', request()->user()->organization_id)->get(); // ->get()
+        $clientCategories = ClientCategory::where('organization_id', request()->user()->organization_id)->get();
         foreach ($clientCategories AS $cc) {
             $clientCategoriesOptions[] = [
                 'value'     => $cc->cc_id,

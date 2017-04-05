@@ -256,5 +256,10 @@ return [
     'widget:form_head'                 => 'Оформление',
     'widget:category_head'             => 'Выбор категории услуги',
     'widget:day_head'                  => 'Выбор даты',
-    'widget:employee_doesnot_matter_text' => 'Мастер не важен'
+    'widget:employee_doesnot_matter_text' => 'Мастер не важен',
+
+    'employee:sync_wage_schemes_error_message' => 'Ошибка привязки схемы расчета заработной платы. Пожалуйста сообщите об этой ошибке вашему администратору.',
+    'employee:sync_wage_schemes_success_message' => 'Схема расчета заработной платы успешно сохранена.',
+    'employee:wage_scheme_label'       => 'Схема рассчета зарплаты',
+    'employee:wage_scheme_start_from_label' => 'Действует с'
 ];

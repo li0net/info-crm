@@ -60,6 +60,6 @@ class WageScheme extends Model
 	}
 
 	public function employees() {
-		return $this->belongsToMany(WageScheme::class, 'wages', 'scheme_id', 'employee_id');
+		return $this->belongsToMany(Employee::class, 'wages', 'scheme_id', 'employee_id')->withPivot('scheme_start');
 	}
 }
