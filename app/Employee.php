@@ -85,6 +85,10 @@ class Employee extends Model
 		return $this->hasOne('App\EmployeeSetting', 'employee_id', 'employee_id');
 	}
 
+    public function wageSchemes() {
+        return $this->belongsToMany(WageScheme::class, 'wages', 'employee_id', 'scheme_id');
+    }
+
 	/**
 	 * Возвращает свободные для записи интервалы времени у текущего работника
 	 *
@@ -467,6 +471,174 @@ class Employee extends Model
         }
 
         return $res;
+    }
+
+	public function calculateWage($startDate, $endDate) {
+        $wageSchemes = $this->wageSchemes()->where('scheme_start', '<=', $startDate)->get();
+        if (count($wageSchemes)>0) {
+            Log::error(__METHOD__.' '.count($wageSchemes).' wage schemes found for employee '.$this->employee_id.' and start_date '.$startDate);
+            return FALSE;
+        }
+
+        /*
+        $scheme = $wageSchemes[0];
+        $scheme->services_percent;
+        $scheme->service_unit;
+        $scheme->products_percent;
+        $scheme->products_unit;
+        $scheme->wage_rate;
+        $scheme->wage_rate_period;
+        $scheme->is_client_discount_counted;
+        $scheme->is_material_cost_counted;
+        //$scheme->organization_id = $request->user()->organization_id;
+        */
+
+        $wageSum = (float)0;
+
+        /*
+        0) получить wage_scheme для текущего работника
+
+        1) нужно получить кол-во часов которые работник отработал за [$startDate, $endDate]
+            если есть оклад "за месяц", то просто сразу добавляем его к сумме зарплаты
+
+        2) делаем выборку всех завершенных (state='finished') аппойнтментов за период $startDate, $endDate
+            нужно получить  a.service_price, a.service_discount, a.service_sum, a.start, a.end,
+            s.name (LEFT JOIN, чтобы если service будет удален все равно можно было бы учесть работу и сгенерить ведомость)
+
+        3) нужно получить записи о продаже товаров, которые произошли в рассматриваемый период (transactions.product_id)
+            здесь надо учитывать, что процент вознаграждения работника может браться от разничей м/у ценой продажи и себестоимостью товара (? как считать)
+            products.title (LEFT JOIN), p.article (LEFT JOIN), p.price (LEFT JOIN), transactions.amount
+        */
+
+        // TODO: получение wage_scheme
+        // TODO: bynthatqc привязкb wage_scheme к работнику
+        // пока что будет только одна wage_scheme на работника, чтобы не усложнять
+        // !! хардкод
+        $wageScheme = WageScheme::find(2);
+
+        // Оклад
+        $salary = (float)0;
+        // Отбираем интервалы расписаний в пределах нужного срока
+        $workTimes = DB::select(
+            "SELECT ".
+            "TIMESTAMPDIFF(MINUTE, ".
+                "(CASE WHEN work_start < '$startDate' THEN '$startDate' ELSE work_start END), ".
+                "(CASE WHEN work_end > '$endDate' THEN '$endDate' ELSE work_end END) ".
+            ") AS diff_minutes, ".
+            "DATE((CASE WHEN work_start < '$startDate' THEN '$startDate' ELSE work_start END)) AS day ".
+            "FROM schedules ".
+            "WHERE employee_id=? AND ".
+            "(".
+            "(work_start >= '$startDate' AND work_end <= '$endDate')  OR ".
+            "(work_start < '$startDate' AND work_end > '$startDate' AND work_end <= '$endDate') OR ".
+            "(work_start >= '$startDate' AND work_start<'$endDate' AND work_end > '$endDate') OR ".
+            "(work_start < '$startDate' AND work_end > '$endDate')".
+            ")",
+            [$this->employee_id]
+        );
+
+        $wageRate = (float)$wageScheme->wage_rate;
+        $minutes = 0;
+        $daysWorked = [];
+        if (count($workTimes) != 0 AND $wageRate>0) {
+            foreach($workTimes AS $workTime) {
+                $minutes += (int)$workTime->diff_minutes;
+                $daysWorked[$workTime->day] = true;
+            }
+
+            // wage_rate	decimal(12,2)
+            // wage_rate_period	enum('hour','day','month')
+            if ($wageScheme->wage_rate_period == 'hour') {
+                $salary = ceil($minutes/60) * $wageRate;
+            } elseif ($wageScheme->wage_rate_period == 'day') {
+                $salary = count($daysWorked) * $wageRate;
+            } elseif ($wageScheme->wage_rate_period == 'month') {
+                // TODO: как считать? Если расчет за период 2017-01-01  -  2017-02-16 и сотрудник работал через день, сколько $wageRate ему добавлять?
+                //  а если только раз в неделю?
+                //  Если работник отработал только один-два-три дня, начисляем ли ему wageRate?
+                //  Пока просто берем 1 wageRate за весь период расчета, если был отработан хоть один день
+                $salary = $wageRate;
+            }
+        }
+
+
+        // Отбираем записи в пределах того же срока и тоже Сортируем по возрастанию (по дате начала)
+        $servicesPercentSum = (float)0;
+        $servicesPerformedInfo = [];
+        if ((int)$wageScheme->services_percent > 0) {
+            $appts = DB::select(
+                "SELECT a.id, a.service_price, a.service_discount, a.service_sum, a.start, a.end, " .
+                "s.name " .
+                "FROM appointments a " .
+                "LEFT JOIN services s ON s.service_id=a.service_id " .
+                "WHERE a.employee_id=? AND (a.start BETWEEN '$startDate' AND '$endDate') OR (a.end BETWEEN '$startDate' AND '$endDate') AND " .
+                "a.state='finished' ".
+                "ORDER BY a.start ASC",
+                [$this->employee_id]
+            );
+
+            if (count($appts) != 0) {
+                foreach ($appts AS $apt) {
+                    if (trim($apt->name) == '') {
+                        $appName = 'Unknown';   // TODO: translate
+                    } else {
+                        $appName = $apt->name;
+                    }
+
+                    $servicesPercentSum += (float)$apt->service_sum * (int)$wageScheme->services_percent;
+                    $servicesPerformedInfo[$apt->start][$apt->id] = [
+                        'start'         => $apt->start,
+                        'end'           => $apt->end,
+                        'title'         => $appName,
+                        'price'         => $apt->service_price,
+                        'discount'      => $apt->service_discount,
+                        'total'         => $apt->service_sum,
+                        'percent_earned' => (float)$apt->service_sum * (int)$wageScheme->services_percent
+                    ];
+                }
+            }
+
+        }
+
+        // 3
+        $productsSoldInfo = [];
+        $productsPercentSum = (float)0;
+        if ((int)$wageScheme->products_percent > 0) {
+            $productTransactions = DB::select(
+                "SELECT t.transaction_id, t.amount, t.created_at, t.product_id, p.title, p.article, p.price " .
+                "FROM transactions t " .
+                "LEFT JOIN products p ON p.product_id=t.product_id " .
+                "WHERE t.employee_id=? AND " .
+                "(t.created_at >= '$startDate' AND t.created_at <= '$endDate')",
+                [$this->employee_id]
+            );
+
+            if (count($productTransactions) != 0) {
+                foreach ($productTransactions AS $pt) {
+                    if (trim($pt->title) == '') {
+                        $productName = 'Unknown '.$pt->product_id;   // TODO: translate
+                    } else {
+                        $productName = $pt->title;
+                    }
+
+                    $productsPercentSum += (float)$pt->amount * (int)$wageScheme->products_percent;
+                    // TODO: в transations надо добавить кол-во проданного товара, скидку покупателю, итоговую цену с учетом скидки и добавить это в массив $productsSoldInfo
+                    $productsSoldInfo[$pt->created_at][$pt->transaction_id] = [
+                        'date'          => $pt->created_at,
+                        'product_title' => $productName,
+                        'amount'        => $pt->amount,
+                        'percent_earned' => (float)$pt->amount * (int)$wageScheme->products_percent
+                    ];
+                }
+            }
+        }
+
+        // TODO: генерить pdf ведомость из $servicesPerformedInfo и $productsSoldInfo
+        // TODO: делать запись о расчитанной зарплате в новой таблице calculated_wages, в ней должен быть флаг is_payed и поля calculation_start, calculation_end, employee_id, calculated_by, payed_by, wage_scheme_id
+        //  если запись в calculated_wages есть, не даем заново расчитывать зп за пересекающийся период
+        //  при нажатии кнопки Выплатить зп - устанавливаем is_payed=1 и в транзакции помечаем записи из transactions и appointments(?) как оплаченные (ни в какаом случае не учитываем их в последующих расчетах зп)
+
+        return $salary + $servicesPercentSum + $productsPercentSum;
     }
 
 }

@@ -58,4 +58,8 @@ class WageScheme extends Model
 	{
 		return $this->belongsTo(Organization::class);
 	}
+
+	public function employees() {
+		return $this->belongsToMany(WageScheme::class, 'wages', 'scheme_id', 'employee_id');
+	}
 }
