@@ -249,6 +249,10 @@ return [
     'widget:form_head'                 => 'Input your data',
     'widget:category_head'             => 'Choose service category',
     'widget:day_head'                  => 'Choose date',
-    'widget:employee_doesnot_matter_text' => 'Employee doesn\'t matter'
+    'widget:employee_doesnot_matter_text' => 'Employee doesn\'t matter',
 
+    'employee:sync_wage_schemes_error_message' => 'Error syncing wage calculation scheme. Please report about this error to your administrator.',
+    'employee:sync_wage_schemes_success_message' => 'Wage calculation scheme successfully saved.',
+    'employee:wage_scheme_label'       => 'Wage scheme',
+    'employee:wage_scheme_start_from_label' => 'Valid from'
 ];

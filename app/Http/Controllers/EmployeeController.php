@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\WageScheme;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -152,7 +153,9 @@ class EmployeeController extends Controller
 			'items' => $items, 
 			'sessionStart' => $sessionStart, 
 			'sessionEnd' => $sessionEnd,
-			'addInterval' => $addInterval
+			'addInterval' => $addInterval,
+			'wageSchemeOptions' => $this->getWageSchemeOptions(),
+            'crmuser' => $request->user()
 		]);
 	}
 
@@ -264,6 +267,66 @@ class EmployeeController extends Controller
 		return redirect()->route('employee.index');
 	}
 
+    /**
+     * Сохраняет связь работника со схемой начисления зарплаты
+     *
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function updateWageScheme(Request $request) {
+        // employee_id
+        // wage_scheme_id
+        // scheme_start
+
+        //Проверяем есть ли у юзера права на редактирование Персонала
+        $accessLevel = $request->user()->hasAccessTo('employee', 'edit', 0);
+        if ($accessLevel < 1) {
+            throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+        }
+        $accessLevel = $request->user()->hasAccessTo('wage_schemes', 'edit', 0);
+        if ($accessLevel < 1) {
+            throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+        }
+
+        $validator = Validator::make($request->all(),
+            [
+                'employee_id' => 'required|numeric|max:10',
+                'scheme_start' => 'date',
+                'wage_scheme_id' => 'numeric|max:10'
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                //->with('clientCategoriesOptions', $this->prepareClientCategoriesOptions())
+                ->withInput();
+        }
+
+        $employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $request->input('employee_id'))->first();
+        if (!$employee) {
+            abort(403, 'Unauthorized action or employee has been deleted.');
+        }
+
+        $ws = WageScheme::where('organization_id', $request->user()->organization_id)->where('scheme_id', $request->input('wage_scheme_id'))->first();
+        if (!$ws) {
+            abort(403, 'Unauthorized action or wage scheme has been deleted.');
+        }
+
+        $scheme_start = $request->input('scheme_start').' 00:00:00';
+
+        if ( ! $employee->wageSchemes()->sync([$ws->scheme_id => ['scheme_start' => $scheme_start]])) {
+            echo json_encode(['success' => false, 'error' => 'Internal server error when adding category']);
+            Session::flash('error', trans('main.employee:sync_wage_schemes_error_message'));
+            return redirect()
+                ->back()
+                ->withInput();
+        }
+
+        Session::flash('success', trans('main.employee:sync_wage_schemes_success_message'));
+        return redirect()->route('employee.show', $employee->employee_id);
+    }
+
 	protected function populateTimeIntervals($startTime, $endTime, $interval, $modifier) {
 		$timeIntervals = [];
 		
@@ -276,4 +339,18 @@ class EmployeeController extends Controller
 		
 		return $timeIntervals;
 	}
+
+    protected function getWageSchemeOptions() {
+        $wageSchemeOptions = [];
+        $ws = WageScheme::where('organization_id', request()->user()->organization_id)->get();
+
+        foreach ($ws AS $scheme) {
+            $wageSchemeOptions[] = [
+                'value'     => $scheme->scheme_id,
+                'label'     => $scheme->scheme_name     // возможно стоит добавить параметры в кратком виде, например "50%/30%/500p(er)d(ay)"
+            ];
+        }
+
+        return $wageSchemeOptions;
+    }
 }
