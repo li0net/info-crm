@@ -98,16 +98,12 @@
                             <div class="jumbotron">
                                 <p class="lead">{{ trans('adminlte_lang::message.section_under_construction') }}</p>
                             </div>
-                            {!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "id" => "employee_form__services"]) !!}
+                            {!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "id" => "employee_form__schedule"]) !!}
                             {!! Form::close() !!}
                         </div>
 
                         <div id="menu3" class="tab-pane fade">
-                            <div class="jumbotron">
-                                <p class="lead">{{ trans('adminlte_lang::message.section_under_construction') }}</p>
-                            </div>
-                            {!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "id" => "employee_form__schedule"]) !!}
-                            {!! Form::close() !!}
+                            @include('employee.shedule')
                         </div>
 
                         <div id="menu4" class="tab-pane fade form-horizontal">
@@ -313,3 +309,34 @@
         </div>
     </div>
 @stop
+@section('page-specific-scripts')
+<script type="text/javascript">
+    $(document).ready(function(){
+        moment.locale('en', {
+            week: { dow: 1 } // Monday is the first day of the week
+        });
+
+        //Initialize the datePicker(I have taken format as mm-dd-yyyy, you can     //have your owh)
+        $("#shedule_week").datepicker({
+            format: 'MM-DD-YYYY',
+            weekStart: 1,
+            todayBtn: "linked",
+            calendarWeeks: true
+        });
+
+        //Get the value of Start and End of Week
+        $('#shedule_week').datepicker()
+            .on('changeDate', function(e) {
+                console.log(e);
+                // `e` here contains the extra attributes
+                var value = e.date;
+                var firstDate = moment(value, "MM-DD-YYYY").day(0).format("MM-DD-YYYY");
+                var lastDate =  moment(value, "MM-DD-YYYY").day(6).format("MM-DD-YYYY");
+                $('#shedule_week .datepicker tr').removeClass('active');
+                $('#shedule_week .datepicker').find('td.active').parent('tr').addClass('active');
+
+                $("#sheduleWeek").val(firstDate + " - " + lastDate);
+            });
+    });
+</script>
+@endsection

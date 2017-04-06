@@ -49,6 +49,7 @@ body.skin-orange {
       }
     }
     &.btn-link {
+
       border: none;
       &.no-padding {
         padding: 3px 0;
@@ -747,6 +748,48 @@ body.skin-orange {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding-bottom: 15px;
   }
+  .datepicker-white{
+    .datepicker {
+      table tr td,
+      table tr th {
+        font-size: 12px;
+        color: #444444;
+      }
+    }
+  }
+  .datepicker-week {
+    .datepicker{
+      .datepicker-days table tbody {
+        tr{
+          td{
+            border-radius: 0;
+          }
+          &.active{
+            background-color: $brand-main;
+            th,td{
+              color: $brand-main-text;
+              &:hover,
+              &.active{
+                background-color: $brand-main;
+                color: $brand-main-text;
+              }
+            }
+          }
+          &:hover {
+            background-color: $brand-main;
+            th,td{
+              color: $brand-main-text;
+              &:hover,
+              &.active{
+                background-color: $brand-main;
+                color: $brand-main-text;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 /** placeholders **/
 &::-webkit-input-placeholder,
@@ -928,3 +971,5 @@ only screen and (min-device-pixel-ratio: 1.5) {
     text-align: left;
   }
 }
+
+
