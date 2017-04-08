@@ -453,7 +453,6 @@ return [
 	'scheme_create_new'			=> 'Create new scheme',
 	'select_service'			=> 'Select service',
 	'select_product'			=> 'Select product',
-	'products'					=> 'Products',
 	'payroll_schemes'			=> 'Payroll schemes',
 	'new_scheme' 				=> 'New scheme',
 	'scheme_name'				=> 'Scheme name',
@@ -484,7 +483,6 @@ return [
 	'section_under_construction'=> 'This section is under construction.',
 	'new_appointment'			=> 'New appointment',
 	'resources_all'				=> 'Resources',
-	'resources'					=> 'Resources',
 	'new_resource'				=> 'New resource',
 	'resource_name'				=> 'Resource name',
 	'resource_create_new'		=> 'Create new resource',
@@ -494,5 +492,7 @@ return [
 	'service_categories'		=> 'Service categories',
 	'permission_denied' 		=> 'Yot don\'t have permission to access this page!',
 	'permission_denied_explanation' => 'If you feel that this is a mistake please contact your administrator to get required permissions.',
-	'permission_denied_goback'	=> 'Go back'
+	'permission_denied_goback'	=> 'Go back',
+	'service'					=> 'Service',
+	'service_add'				=> 'Add service'
 ];

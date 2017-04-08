@@ -36,7 +36,9 @@ Route::get('/clientCategories', 'ClientCategoriesController@index');
 
 Route::resource('/employee', 'EmployeeController');
 Route::put('/employee', 'EmployeeController@store');
-Route::post('/employee/saveWageScheme', 'EmployeeController@updateWageScheme');
+Route::post('/employees/saveWageScheme', 'EmployeeController@updateWageScheme');
+Route::post('/employees/updateServices', ['as' => 'employee.update_services', 'uses' => 'EmployeeController@updateServices']);
+Route::get('/employees/serviceOptions', 'EmployeeController@getServiceOptions');
 Route::resource('/position', 'PositionController');
 Route::resource('/account', 'AccountController');
 
