@@ -175,11 +175,14 @@ class EmployeeController extends Controller
             Log::info(__METHOD__.' $employee_attached_services elem:'.$es->pivot->service_id);
         }
 
+        // по умолчанию получаем расписание для текущей ненедели
+        $sheduleStartDate = Carbon::parse('this monday')->toDateString();
+
 		return view('employee.edit', [
-			'employee' => $employee, 
-			'settings' => $settings, 
-			'items' => $items, 
-			'sessionStart' => $sessionStart, 
+			'employee' => $employee,
+			'settings' => $settings,
+			'items' => $items,
+			'sessionStart' => $sessionStart,
 			'sessionEnd' => $sessionEnd,
 			'addInterval' => $addInterval,
 			'wageSchemeOptions' => $this->getWageSchemeOptions(),
@@ -189,7 +192,8 @@ class EmployeeController extends Controller
             'service_duration_hours' => $service_duration_hours,
             'service_duration_minutes' => $service_duration_minutes,
             'service_routings' => $service_routings,
-            'crmuser' => $request->user()
+            'crmuser' => $request->user(),
+            'shedule_data' => json_encode($this->getScheduleData($employee->employee_id, $sheduleStartDate))
 		]);
 	}
 
@@ -471,6 +475,66 @@ class EmployeeController extends Controller
                 where('service_categories.organization_id', $request->user()->organization_id)->pluck('services.name', 'services.service_id');
             $data = view('services.options', compact('options'))->render();
             return response()->json(['options' => $data]);
+        }
+    }
+
+    /**
+     * получение массива данных для построения расписания сотрудника
+     * @param $employeeId
+     * @param $scheduleStartDate
+     * @return array
+     */
+    private function getScheduleData($employeeId, $scheduleStartDate) {
+        //TODO cделать реальное получение данных
+        //метод должен возпрашщать амссив, даже если расписания нет  -
+        //в таком случае подмассивы в $shData.shedule протсо должны быть пусты
+
+        $shData = [
+            'employee_id' => $employeeId,
+            'start_date'  => $scheduleStartDate,
+            'last_date'   => Carbon::parse('next sunday')->toDateString(),
+            'schedule'    => [
+                0 => [1,8,10,16],
+                1 => [9,12,19],
+                2 => [],
+                3 => [7,14],
+                4 => [2,14],
+                5 => [10,14],
+                6 => [9]
+            ],
+            'fill_weeks' => 0
+        ];
+        return $shData;
+    }
+
+    /**
+     * Получение расписания по ajax
+     * @param Request $request
+     * @return mixed
+     */
+    public function getSchedule(Request $request) {
+        //TODO: проверить что текущего функционала достаточно
+        if($request->ajax()){
+            $result = [
+                'res' => true,
+                'shedule_data' => $this->getScheduleData($request->employee_id, $request->start_date)
+            ];
+            return response()->json($result);
+        }
+    }
+
+    /**
+     * обработчки сабмита настройки расписания сотрудника
+     * @param Request $request
+     * @return mixed
+     */
+    public function updateSchedule(Request $request) {
+        //TODO: добавить реальное сохранение
+        if($request->ajax()){
+            $result = [
+                'res' => true
+            ];
+            return response()->json($result);
         }
     }
 }

@@ -799,31 +799,6 @@ $(document).ready(function () {
 		$('a[href="#detailed-products"] .fa.fa-caret-up').toggleClass('fa-caret-up fa-caret-down');
 	});
 
-	// EMPLOYEE FORM
-	$('#form_submit').on('click', function() {
-		var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
-
-		if(activeTab == '#menu1') {
-			$('#employee_form__info').submit();
-		}
-
-		if(activeTab == '#menu2') {
-			$('#employee_form__services').submit();
-		}
-		
-		if(activeTab == '#menu3') {
-			$('#employee_form__schedule').submit();
-		}
-
-		if(activeTab == '#menu4') {
-			$('#employee_form__settings').submit();
-		}
-
-		if(activeTab == '#menu5') {
-			$('#employee_form__wage').submit();
-		}
-	});
-
 	// select2 select init
 	$(".js-select-basic").select2({
 		placeholder: "Select wage scheme",
