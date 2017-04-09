@@ -95,10 +95,78 @@
                         </div>
 
                         <div id="menu2" class="tab-pane fade">
-                            <div class="jumbotron">
-                                <p class="lead">{{ trans('adminlte_lang::message.section_under_construction') }}</p>
+
+                            {{ Form::hidden('employee-options', null, ['id' => 'employee-options']) }}
+                            {{ Form::hidden('routing-options', null, ['id' => 'routing-options']) }}
+
+                            {!! Form::model($employee, ['route' => ['employee.update_services'], 'method' => 'POST', "id" => "employee_form__services"]) !!}
+
+                            {{ Form::hidden('employee_id', $employee->employee_id) }}
+
+                            <div class="row m-t">
+                                {{ Form::label('service', trans('adminlte_lang::message.service'), ['class' => 'col-sm-3 text-left small']) }}
+                                {{ Form::label('duration', trans('adminlte_lang::message.duration'), ['class' => 'col-sm-4 text-left small']) }}
+                                {{ Form::label('routing', trans('adminlte_lang::message.routing'), ['class' => 'col-sm-3 text-center small']) }}
                             </div>
-                            {!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "id" => "employee_form__schedule"]) !!}
+                            <div class="row">
+                                <div class="col-sm-12"><hr></div>
+                            </div>
+                            <div class="service-content m-b">
+                                @if (isset($employee))
+                                    @foreach($employee_attached_services as $employee_attached_service)
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                {{ Form::select(
+                                                'employee-service[]',
+                                                $employee_services,
+                                                $employee_attached_service->pivot->service_id,
+                                                [
+                                                    'class' => 'js-select-basic-single',
+                                                    'required' => '',
+                                                    'data-initial-value' => $employee_attached_service->pivot->service_id
+                                                ])
+                                                }}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{ Form::select(
+                                                'service-duration-hour[]',
+                                                $service_duration_hours,
+                                                date_parse($employee_attached_service->pivot->duration)['hour'],
+                                                ['class' => 'js-select-basic-single', 'required' => ''])
+                                                }}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{ Form::select(
+                                                'service-duration-minute[]',
+                                                $service_duration_minutes,
+                                                date_parse($employee_attached_service->pivot->duration)['minute'],
+                                                ['class' => 'js-select-basic-single', 'required' => ''])
+                                                }}
+                                            </div>
+                                            <div class="col-sm-3">
+                                                {{ Form::select(
+                                                'service-routing[]',
+                                                $service_routings,
+                                                $employee_attached_service->pivot->routing_id,
+                                                [
+                                                'class' => 'js-select-basic-single',
+                                                'required' => '',
+                                                'data-initial-value' => $employee_attached_service->pivot->routing_id
+                                                ])
+                                                }}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="button" id="delete-employee" class="btn btn-default center-block">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                            <input type="button" id="add-service" class="btn btn-info" value="{{ trans('adminlte_lang::message.service_add') }}">
+
+
                             {!! Form::close() !!}
                         </div>
 
@@ -295,7 +363,7 @@
                             <?php $accessLevel = $crmuser->hasAccessTo('wage_schemes', 'edit', 0); ?>
                             @if($accessLevel > 0)
 
-                            <form id="employee_form__wage" method="post" action="/employee/saveWageScheme">
+                            <form id="employee_form__wage" method="post" action="/employees/saveWageScheme">
                                 {{csrf_field()}}
                                 <input type="hidden" name="employee_id" id="ws_employee_id" value="{{$employee->employee_id}}">
                                 <!-- // выбор схемы расчета зп -->
@@ -509,13 +577,13 @@
                 console.log(day);
 
                 if ( $(this).hasClass('ui-datepicker-fullday') ){
-                    //обновляем данные 
+                    //обновляем данные
                     shData.schedule[day] = [];
-                    
+
                     // снимаем отметки с ячеек
                     $( "#operating_schedule tbody").find("td[data-day='"+day+"']").removeClass('ui-datepicker-current-day');
                 } else {
-                    //обновляем данные 
+                    //обновляем данные
                     shData.schedule[day] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
 
                     // отмечаем ячейки
@@ -569,6 +637,81 @@
         //TODO убрать
         $( "#shedule-show").on('click', function() {
             console.log(shData);
+        });
+
+        /** end of shedule scripts***/
+
+        $('#add-service').on('click', function(e){
+            $('.service-content').prepend('<div class="row"><div class="col-sm-3"><select required="required" name="employee-service[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><select required="required" name="service-duration-hour[]" class="js-select-basic-single"><option value="0">0 ч</option><option value="1">1 ч</option><option value="2">2 ч</option><option value="3">3 ч</option><option value="4">4 ч</option><option value="5">5 ч</option><option value="6">6 ч</option><option value="7">7 ч</option><option value="8">8 ч</option><option value="9">9 ч</option></select></div> <div class="col-sm-2"><select required="required" name="service-duration-minute[]" class="js-select-basic-single"><option value="00">00 мин</option><option value="15">15 мин</option><option value="30">30 мин</option><option value="45">45 мин</option></select></div> <div class="col-sm-3"><select required="required" name="service-routing[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><button type="button" id="delete-employee" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>');
+            sel = $('.service-content').children('.row').first().children('.col-sm-3').children('select[name="employee-service[]"]').first();
+            sel.html($('#employee-options').val());
+
+            sel = $('.service-content').children('.row').first().children('.col-sm-3').children('select[name="service-routing[]"]').first();
+            sel.html($('#routing-options').val());
+
+            $(".service-content .js-select-basic-single").select2({
+                theme: "alt-control",
+                placeholder: "choose one",
+                minimumResultsForSearch: Infinity
+            });
+        });
+
+        $('.service-content').on('click', '#delete-employee', function(e){
+            $(this).parent().parent().remove();
+        });
+
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: '/employees/serviceOptions',
+            data: {},
+            success: function(data) {
+                $('select[name="employee-service[]"]').html('');
+                $('select[name="employee-service[]"]').html(data.options);
+
+                $('#employee-options').val(data.options);
+                // $('select.form-control[name="products_cats_detailed[]"]').find('option').remove();
+                // $('select.form-control[name="products_cats_detailed[]"]').append(options);
+
+                $('select.form-control[name="employee-service[]"]').each(function() {
+                    var initialValue = $(this).attr('data-initial-value');
+
+                    if ( 0 != initialValue ) {
+                        $(this).val(initialValue);
+                    } else {
+                        $(this).val($(this).find('option').first().val());
+                    }
+                });
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log('Error while processing service data range!');
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: '/service/routingOptions',
+            data: {},
+            success: function(data) {
+                $('select[name="service-routing[]"]').html('');
+                $('select[name="service-routing[]"]').html(data.options);
+
+                $('#routing-options').val(data.options);
+
+                $('select.form-control[name="service-routing[]"]').each(function() {
+                    var initialValue = $(this).attr('data-initial-value');
+
+                    if ( 0 != initialValue ) {
+                        $(this).val(initialValue);
+                    } else {
+                        $(this).val($(this).find('option').first().val());
+                    }
+                });
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log('Error while processing routing data range!');
+            }
         });
     });
 </script>

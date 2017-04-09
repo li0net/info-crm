@@ -77,7 +77,7 @@ class Employee extends Model
 
 	public function services()
 	{
-		return $this->belongsToMany(Service::class, 'employee_provides_service', 'employee_id', 'service_id');
+		return $this->belongsToMany(Service::class, 'employee_provides_service', 'employee_id', 'service_id')->withPivot('duration', 'routing_id');
 	}
 
 	public function settings()

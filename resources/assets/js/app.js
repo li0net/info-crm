@@ -799,7 +799,7 @@ $(document).ready(function () {
 		$('a[href="#detailed-products"] .fa.fa-caret-up').toggleClass('fa-caret-up fa-caret-down');
 	});
 
-	// EMPLOYEE FROM
+	// EMPLOYEE FORM
 	$('#form_submit').on('click', function() {
 		var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
 
