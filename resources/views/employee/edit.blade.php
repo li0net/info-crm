@@ -364,32 +364,212 @@
 @stop
 @section('page-specific-scripts')
 <script type="text/javascript">
+    // формируем структуру данных
+    <?php
+    //TODO получать по ajax. Структура должна отдаваться по любому, елси нет расписания то пустые значения полей
+
+    $shData = [
+        'employee_id' => '',
+        'start_date'  => '2017-04-10',
+        'last_date'   => '2017-04-16',
+        'schedule'    => [
+            0 => [8,10,16],
+            1 => [12,19],
+            2 => [],
+            3 => [7,14],
+            4 => [2,14],
+            5 => [10,14],
+            6 => [9]
+        ],
+        'fill_weeks' => 0
+    ];
+    $shData =  json_encode($shData);
+    ?>
+
+    // TODO получать по AJAX
+    // получаем стартовое значение и обновляем вид таблиц
+    var shData = JSON.parse('<?=$shData?>');
+    shData.employee_id = $('#employee_id').val();
+
+    /**
+     * обновляет отображение таблицы прасписания на основании массива shData
+     */
+    function updateSheduleTable() {
+        // зачищаем старые значения
+        $("#operating_schedule tbody").find("td").removeClass('ui-datepicker-current-day');
+
+        for (i = 0; i <= 6; i++) {
+            var day = i;
+            var hours = shData.schedule[i];
+            for (j = 0; j <= hours.length; j++) {
+                var hour = shData.schedule[i][j];
+                $("#operating_schedule tbody").find("td[data-day='" + day + "'][data-hour='" + hour + "']").addClass('ui-datepicker-current-day');
+            }
+        }
+    }
+
     $(document).ready(function(){
-        moment.locale('en', {
-            week: { dow: 1 } // Monday is the first day of the week
+        // инициируем датапикер
+        $("#shedule_week").datepicker({
+            format: 'YYYY-MM-DD',
+            weekStart: 1,
+            calendarWeeks: true,
+            todayHighlight: true
         });
 
-        //Initialize the datePicker(I have taken format as mm-dd-yyyy, you can     //have your owh)
-        $("#shedule_week").datepicker({
-            format: 'MM-DD-YYYY',
-            weekStart: 1,
-            todayBtn: "linked",
-            calendarWeeks: true
+        // инициируем moment.js
+        moment.locale('en', {
+            week: { dow: 1 } // Monday is the first day of the week
         });
 
         //Get the value of Start and End of Week
         $('#shedule_week').datepicker()
             .on('changeDate', function(e) {
-                console.log(e);
-                // `e` here contains the extra attributes
+                //console.log(e);
                 var value = e.date;
-                var firstDate = moment(value, "MM-DD-YYYY").day(0).format("MM-DD-YYYY");
-                var lastDate =  moment(value, "MM-DD-YYYY").day(6).format("MM-DD-YYYY");
+
+                //TODO получить данные по AJAX
+                //обновляем массив данных
+                shData = shData;
+
+                // обновляем отображение
+                updateSheduleTable();
+
+                shData.start_date = moment(value, "YYYY-MM-DD").day(1).format("YYYY-MM-DD");
+                shData.last_date =  moment(value, "YYYY-MM-DD").day(7).format("YYYY-MM-DD");
+
                 $('#shedule_week .datepicker tr').removeClass('active');
                 $('#shedule_week .datepicker').find('td.active').parent('tr').addClass('active');
 
-                $("#sheduleWeek").val(firstDate + " - " + lastDate);
+                $("#sheduleWeek").val(shData.start_date + " - " + shData.last_date);
             });
+        $('#shedule_week').find('td.today.day').click();
+
+        // обновляем отображение
+        updateSheduleTable();
+
+        // обработчки заголовков - часов
+        $( "#operating_schedule thead th")
+            .mouseover(function() {
+                var hour = $(this).data('head-hour');
+                $( "#operating_schedule tbody").find("td[data-hour='"+hour+"']").addClass('ui-datepicker-hover-day');
+            })
+            .mouseout(function() {
+                var hour = $(this).data('head-hour');
+                $( "#operating_schedule tbody").find("td[data-hour='"+hour+"']").removeClass('ui-datepicker-hover-day');
+            })
+            .click(function() {
+                var hour = $(this).data('head-hour');
+
+                if ( $(this).hasClass('ui-datepicker-fullhour') ){
+                    // снимаем с ячейки отметку
+                    $( "#operating_schedule tbody").find("td[data-hour='"+hour+"']").removeClass('ui-datepicker-current-day');
+
+                    // обновляем массив данных
+                    for (i = 0; i <= 6; i++) {
+                        var day = i;
+                        var index = shData.schedule[day].indexOf(hour);
+                        if(index != -1){
+                            shData.schedule[day].splice( index, 1 );
+                        }
+                    }
+                } else {
+                    // отмечаем ячейку
+                    $( "#operating_schedule tbody").find("td[data-hour='"+hour+"']").addClass('ui-datepicker-current-day');
+
+                    // добавляем час во все дни
+                    for (i = 0; i <= 6; i++) {
+                        var day = i;
+                        // проверяем что такого значения уже нет в массиве
+                        if ( shData.schedule[day].indexOf(hour) == -1 ){
+                            shData.schedule[day].push(hour);
+                            // выстраиваем часы по порядку
+                            shData.schedule[day] =  shData.schedule[day].sort(function(a, b) {
+                                return a - b;
+                            });
+                        }
+                    }
+                }
+
+                $(this).toggleClass('ui-datepicker-fullhour');
+            });
+
+        // обработчки заголовков - дней
+        $( "#operating_schedule td.legend")
+            .mouseover(function() {
+                var day = $(this).data('head-day');
+                $( "#operating_schedule tbody").find("td[data-day='"+day+"']").addClass('ui-datepicker-hover-day');
+            })
+            .mouseout(function() {
+                var day = $(this).data('head-day');
+                $( "#operating_schedule tbody").find("td[data-day='"+day+"']").removeClass('ui-datepicker-hover-day');
+            })
+            .click(function() {
+                var day = $(this).data('head-day');
+                console.log(day);
+
+                if ( $(this).hasClass('ui-datepicker-fullday') ){
+                    //обновляем данные 
+                    shData.schedule[day] = [];
+                    
+                    // снимаем отметки с ячеек
+                    $( "#operating_schedule tbody").find("td[data-day='"+day+"']").removeClass('ui-datepicker-current-day');
+                } else {
+                    //обновляем данные 
+                    shData.schedule[day] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+
+                    // отмечаем ячейки
+                    $( "#operating_schedule tbody").find("td[data-day='"+day+"']").addClass('ui-datepicker-current-day');
+                }
+
+                $(this).toggleClass('ui-datepicker-fullday');
+            });
+
+        // обработчки кликов по  ячейкам
+        $( "#operating_schedule td:not(.legend)").click(function() {
+
+            // определяем день и час выбранной ячейки
+            var day =  $(this).data('day');
+            var hour =  $(this).data('hour');
+
+            if ( $(this).hasClass('ui-datepicker-current-day') ){
+                // если снимаем отмеченную ячейку - удаляем из массива часов данного дня
+                var index = shData.schedule[day].indexOf(hour);
+                shData.schedule[day].splice(index, 1);
+            } else {
+                // если отмечаем пустую ячейку - добавляем в массив часов данного дня
+                shData.schedule[day].push(hour);
+            }
+
+            // ставим/убиреаем отметку в ячейке
+            $(this).toggleClass('ui-datepicker-current-day');
+
+            // выстраиваем часы по порядку
+            shData.schedule[day] =  shData.schedule[day].sort(function(a, b) {
+                return a - b;
+            });
+        });
+
+        // очистка расписания
+        $( "#shedule-clear").click(function() {
+            // добавляем час во все дни
+            for (i = 0; i <= 6; i++) {
+                shData.schedule[i] = [];
+            }
+
+            // обновляем отображение
+            updateSheduleTable();
+        });
+
+        // смена дропдауна выбора недель
+        $( "#fill_weeks").on('change', function() {
+            shData.fill_weeks = $( "select#fill_weeks option:checked" ).val();
+        });
+
+        //TODO убрать
+        $( "#shedule-show").on('click', function() {
+            console.log(shData);
+        });
     });
 </script>
 @endsection
