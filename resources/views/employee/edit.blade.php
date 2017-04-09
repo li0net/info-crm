@@ -478,7 +478,9 @@
          * запрашивает по ajax расписание на данную неделю
          * */
         $('#shedule_week').datepicker().on('changeDate', function(e) {
-            //console.log(e);
+            //анимация
+            $('#operating_schedule').addClass('loadingbox');
+
             var value = e.date;
             start_date = moment(value, "YYYY-MM-DD").day(1).format("YYYY-MM-DD");
             last_date =  moment(value, "YYYY-MM-DD").day(7).format("YYYY-MM-DD");
@@ -507,6 +509,9 @@
             $('#shedule_week .datepicker').find('td.active').parent('tr').addClass('active');
 
             $("#sheduleWeek").val(scheduleData.start_date + " - " + scheduleData.last_date);
+
+            //анимация
+            $('#operating_schedule').removeClass('loadingbox');
         });
 
         // выбор текущей недели
@@ -634,7 +639,9 @@
          * сабмит формы смены рапсписания
          * */
         function submitSheduleForm() {
-            //console.log(scheduleData);
+            //анимация
+            $('#menu3').addClass('loadingbox');
+
             //обновляем массив данных
             $.ajax({
                 type: "GET",
@@ -652,6 +659,8 @@
                     console.log('Error while processing shedule changing!');
                 }
             });
+            //анимация
+            $('#menu3').removeClass('loadingbox');
         }
 
         /** end of shedule scripts***/

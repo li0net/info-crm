@@ -813,6 +813,29 @@ body.skin-orange {
       }
     }
   }
+  .form-inline,
+  .form-inline.alt-control-bar{
+    .label-sm{
+      font-size: $font-size-small;
+    }
+    .form-control.form-control-sm{
+      font-size: $font-size-small;
+      min-height: 10px;
+      padding: 2px 10px;
+      line-height: 10px;
+      height: 25px;
+      margin-top: 7px;
+    }
+  }
+  .btn-link-sm{
+    font-size: $font-size-small;
+    line-height: 10px;
+    margin-top: 12px;
+  }
+  i{
+    font-size: $font-size-small;
+    margin-right: 3px;
+  }
 }
 /** placeholders **/
 &::-webkit-input-placeholder,
