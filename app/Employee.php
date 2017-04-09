@@ -474,9 +474,12 @@ class Employee extends Model
     }
 
 	public function calculateWage($startDate, $endDate) {
-        $wageSchemes = $this->wageSchemes()->where('scheme_start', '<=', $startDate)->get();
-        if (count($wageSchemes)>0) {
-            Log::error(__METHOD__.' '.count($wageSchemes).' wage schemes found for employee '.$this->employee_id.' and start_date '.$startDate);
+        //4)Период расчета - месяц. Если есть фикса - выплачиваем ее, вне зависимости от кол-ва отработанных дней.
+
+        // пока что будет только одна wage_scheme на работника, чтобы не усложнять
+        $wageScheme = $this->wageSchemes()->where('scheme_start', '<=', $startDate)->first();
+        if (!$wageScheme) {
+            Log::error(__METHOD__.' No wage scheme found for employee '.$this->employee_id.' and start_date '.$startDate);
             return FALSE;
         }
 
@@ -510,57 +513,55 @@ class Employee extends Model
             products.title (LEFT JOIN), p.article (LEFT JOIN), p.price (LEFT JOIN), transactions.amount
         */
 
-        // TODO: получение wage_scheme
-        // TODO: bynthatqc привязкb wage_scheme к работнику
-        // пока что будет только одна wage_scheme на работника, чтобы не усложнять
-        // !! хардкод
-        $wageScheme = WageScheme::find(2);
-
         // Оклад
         $salary = (float)0;
-        // Отбираем интервалы расписаний в пределах нужного срока
-        $workTimes = DB::select(
-            "SELECT ".
-            "TIMESTAMPDIFF(MINUTE, ".
-                "(CASE WHEN work_start < '$startDate' THEN '$startDate' ELSE work_start END), ".
-                "(CASE WHEN work_end > '$endDate' THEN '$endDate' ELSE work_end END) ".
-            ") AS diff_minutes, ".
-            "DATE((CASE WHEN work_start < '$startDate' THEN '$startDate' ELSE work_start END)) AS day ".
-            "FROM schedules ".
-            "WHERE employee_id=? AND ".
-            "(".
-            "(work_start >= '$startDate' AND work_end <= '$endDate')  OR ".
-            "(work_start < '$startDate' AND work_end > '$startDate' AND work_end <= '$endDate') OR ".
-            "(work_start >= '$startDate' AND work_start<'$endDate' AND work_end > '$endDate') OR ".
-            "(work_start < '$startDate' AND work_end > '$endDate')".
-            ")",
-            [$this->employee_id]
-        );
-
         $wageRate = (float)$wageScheme->wage_rate;
-        $minutes = 0;
-        $daysWorked = [];
-        if (count($workTimes) != 0 AND $wageRate>0) {
-            foreach($workTimes AS $workTime) {
-                $minutes += (int)$workTime->diff_minutes;
-                $daysWorked[$workTime->day] = true;
-            }
 
-            // wage_rate	decimal(12,2)
-            // wage_rate_period	enum('hour','day','month')
-            if ($wageScheme->wage_rate_period == 'hour') {
-                $salary = ceil($minutes/60) * $wageRate;
-            } elseif ($wageScheme->wage_rate_period == 'day') {
-                $salary = count($daysWorked) * $wageRate;
-            } elseif ($wageScheme->wage_rate_period == 'month') {
-                // TODO: как считать? Если расчет за период 2017-01-01  -  2017-02-16 и сотрудник работал через день, сколько $wageRate ему добавлять?
-                //  а если только раз в неделю?
-                //  Если работник отработал только один-два-три дня, начисляем ли ему wageRate?
-                //  Пока просто берем 1 wageRate за весь период расчета, если был отработан хоть один день
-                $salary = $wageRate;
+        // wage_rate_period	enum('hour','day','month')
+        // Если ставка не ненулевая и одного из двух типов - hour/day
+        if ($wageRate > 0 AND ($wageScheme->wage_rate_period == 'hour' OR $wageScheme->wage_rate_period == 'day')) {
+            // Отбираем интервалы расписаний в пределах нужного срока
+            $workTimes = DB::select(
+                "SELECT " .
+                "TIMESTAMPDIFF(MINUTE, " .
+                "(CASE WHEN work_start < '$startDate' THEN '$startDate' ELSE work_start END), " .
+                "(CASE WHEN work_end > '$endDate' THEN '$endDate' ELSE work_end END) " .
+                ") AS diff_minutes, " .
+                "DATE((CASE WHEN work_start < '$startDate' THEN '$startDate' ELSE work_start END)) AS day " .
+                "FROM schedules " .
+                "WHERE employee_id=? AND " .
+                "(" .
+                "(work_start >= '$startDate' AND work_end <= '$endDate')  OR " .
+                "(work_start < '$startDate' AND work_end > '$startDate' AND work_end <= '$endDate') OR " .
+                "(work_start >= '$startDate' AND work_start<'$endDate' AND work_end > '$endDate') OR " .
+                "(work_start < '$startDate' AND work_end > '$endDate')" .
+                ")",
+                [$this->employee_id]
+            );
+
+            $minutes = 0;
+            $daysWorked = [];
+            if (count($workTimes) != 0) {
+                foreach ($workTimes AS $workTime) {
+                    $minutes += (int)$workTime->diff_minutes;
+                    $daysWorked[$workTime->day] = true;
+                }
+
+                // wage_rate	decimal(12,2)
+                // wage_rate_period	enum('hour','day','month')
+                if ($wageScheme->wage_rate_period == 'hour') {
+                    // 3)Значение отработанного времени не округляем - часы и минуты переводим в десятичный формат и умножая на почасовку, получаем дробное, в общем случае, значение заработной платы.
+                    $salary = ($minutes / 60) * $wageRate;
+                } elseif ($wageScheme->wage_rate_period == 'day') {
+                    $salary = count($daysWorked) * $wageRate;
+                }
             }
         }
-
+		if ($wageScheme->wage_rate_period == 'month') {
+			// 1) Фикса должна рассчитываться вне зависимости от кол-ва отработанного времени, однако должна быть возможность ее отключить(обнулить).
+			// 2)Соответственно, понятия минимально отработанного времени не будет
+			$salary = $wageRate;
+		}
 
         // Отбираем записи в пределах того же срока и тоже Сортируем по возрастанию (по дате начала)
         $servicesPercentSum = (float)0;
@@ -638,7 +639,7 @@ class Employee extends Model
         //  если запись в calculated_wages есть, не даем заново расчитывать зп за пересекающийся период
         //  при нажатии кнопки Выплатить зп - устанавливаем is_payed=1 и в транзакции помечаем записи из transactions и appointments(?) как оплаченные (ни в какаом случае не учитываем их в последующих расчетах зп)
 
-        return $salary + $servicesPercentSum + $productsPercentSum;
+        return round($salary + $servicesPercentSum + $productsPercentSum, 2, PHP_ROUND_HALF_UP);
     }
 
 }
