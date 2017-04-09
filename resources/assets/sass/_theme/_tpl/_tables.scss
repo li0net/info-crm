@@ -132,16 +132,6 @@ body.skin-orange {
     border-collapse: collapse;
     display: table;
     font-size: 11px;
-    thead{
-      display: table-header-group;
-      vertical-align: middle;
-      border-color: inherit;
-    }
-    tbody {
-      display: table-row-group;
-      vertical-align: middle;
-      border-color: inherit;
-    }
     td,
     th{
       span{
@@ -152,44 +142,89 @@ body.skin-orange {
       text-align: center;
       vertical-align: middle;
     }
-    td{
-      font-size: 11px;
-      color:$text-color;
-      border: 1px solid #ccc;
-      padding: 1px 1px 1px 5px;
-      cursor: pointer;
-      display: table-cell;
-      text-align: center;
-      width:30px;
-      &.legend {
-        border: 1px solid #fff !important;
-        border-right: 1px solid #ccc !important;
-      }
-      a{
-        text-decoration: none;
-        float: left;
-        font-weight: normal !important;
-        font-size: 13px;
-        height: 17px;
-        padding: 0 !important;
-        width: 16px;
-       // display: none;
-        display: inline-block;
-        visibility: hidden;
-        border-radius: 50%;
-        color: #fff;
-        border: 0;
-        margin: 0;
-        background: $brand-main !important;
-      }
-      &:hover,
-      &.ui-datepicker-current-day{
-        width:30px;
-        a{
-          //display: inline-block;
-          visibility: visible;
+    thead{
+      display: table-header-group;
+      vertical-align: middle;
+      border-color: inherit;
+      th{
+        cursor: pointer;
+        &:hover{
+          span{
+            color: $brand-secondary;
+          }
         }
       }
     }
+    tbody {
+      display: table-row-group;
+      vertical-align: middle;
+      border-color: inherit;
+      td{
+        font-size: 11px;
+        color:$text-color;
+        border: 1px solid #ccc;
+        padding: 1px 1px 1px 5px;
+        cursor: pointer;
+        display: table-cell;
+        text-align: center;
+        width:30px;
+        &.legend {
+          border: 1px solid #fff !important;
+          border-right: 1px solid #ccc !important;
+          cursor: pointer;
+          &:hover{
+            span{
+              color: $brand-secondary;
+            }
+          }
+        }
+        a{
+          text-decoration: none;
+          float: left;
+          font-weight: normal !important;
+          font-size: 13px;
+          height: 17px;
+          padding: 0 !important;
+          width: 16px;
+          // display: none;
+          display: inline-block;
+          visibility: hidden;
+          border-radius: 50%;
+          color: #fff;
+          border: 0;
+          margin: 0;
+          background: $brand-main;
+          @include transition-all (0s);
+        }
+        &:hover,
+        &.ui-datepicker-hover-day,
+        &.ui-datepicker-current-day{
+          width:30px;
+          a{
+            visibility: visible;
+          }
+        }
+        &.ui-datepicker-hover-day,
+        &.ui-datepicker-current-day{
+          a{
+            background: $brand-main;
+          }
+        }
+        &:hover{
+          a{
+            background: $brand-secondary;
+          }
+        }
+        &.ui-datepicker-hover-day{
+          a{
+            //display: inline-block;
+            visibility: visible;
+            background: $brand-secondary;
+          }
+        }
+
+      }
+    }
+
   }
 }

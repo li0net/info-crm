@@ -763,6 +763,13 @@ body.skin-orange {
         tr{
           td{
             border-radius: 0;
+            &.today.day{
+              border: 1px solid $brand-secondary;
+            }
+            &.cw{
+              color: $brand-main;
+              font-weight: bold;
+            }
           }
           &.active{
             background-color: $brand-main;
@@ -772,6 +779,14 @@ body.skin-orange {
               &.active{
                 background-color: $brand-main;
                 color: $brand-main-text;
+                &.cw{
+                  color: $brand-secondary;
+                  background-color: #FFFFFF !important;
+                }
+              }
+              &.cw{
+                color: $brand-secondary;
+                background-color: #FFFFFF !important;
               }
             }
           }
@@ -783,6 +798,14 @@ body.skin-orange {
               &.active{
                 background-color: $brand-main;
                 color: $brand-main-text;
+                &.cw{
+                  color: $brand-secondary;
+                  background-color: #FFFFFF !important;
+                }
+              }
+              &.cw{
+                color: $brand-secondary;
+                background-color: #FFFFFF !important;
               }
             }
           }
