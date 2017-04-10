@@ -41,7 +41,7 @@ Route::post('/employees/updateServices', ['as' => 'employee.update_services', 'u
 Route::get('/employees/serviceOptions', 'EmployeeController@getServiceOptions');
 
 Route::get('/employees/getSchedule', 'EmployeeController@getSchedule');
-Route::get('/employees/updateSchedule', 'EmployeeController@updateSchedule');
+Route::post('/employees/updateSchedule', 'EmployeeController@updateSchedule');
 
 Route::resource('/position', 'PositionController');
 Route::resource('/account', 'AccountController');

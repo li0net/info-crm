@@ -485,8 +485,8 @@ class EmployeeController extends Controller
      * @return array
      */
     private function getScheduleData($employeeId, $scheduleStartDate) {
-        //TODO cделать реальное получение данных
-        //метод должен возпрашщать амссив, даже если расписания нет  -
+        //TODO сделать реальное получение данных
+        //метод должен возпрашщать массив, даже если расписания нет  -
         //в таком случае подмассивы в $shData.shedule протсо должны быть пусты
 
         $shData = [
@@ -529,12 +529,211 @@ class EmployeeController extends Controller
      * @return mixed
      */
     public function updateSchedule(Request $request) {
-        //TODO: добавить реальное сохранение
-        if($request->ajax()){
-            $result = [
-                'res' => true
-            ];
-            return response()->json($result);
+        $formData = $request->input('scheduleData');
+        if (!$formData) {
+            return response()->json([
+                'res' => false,
+                'error' => 'No schedule data'
+            ]);
         }
+        Log::info(__METHOD__." form data:".print_r($formData, TRUE));
+        dd($formData);
+
+        /*
+        array:1 [
+          "scheduleData" => array:5 [
+            "employee_id" => "3"
+            "start_date" => "2017-04-24"
+            "last_date" => "2017-04-16"
+            "schedule" => array:7 [
+              0 => array:5 [
+                0 => "1"
+                1 => "4"
+                2 => "8"
+                3 => "10"
+                4 => "16"
+              ]
+              1 => array:3 [
+                0 => "9"
+                1 => "12"
+                2 => "19"
+              ]
+              2 => array:1 [
+                0 => "23"
+              ]
+              3 => array:2 [
+                0 => "0"
+                1 => "7"
+              ]
+              4 => array:2 [
+                0 => "2"
+                1 => "23"
+              ]
+              5 => array:2 [
+                0 => "5"
+                1 => "10"
+              ]
+              6 => array:5 [
+                0 => "0"
+                1 => "6"
+                2 => "9"
+                3 => "15"
+                4 => "23"
+              ]
+            ]
+            "fill_weeks" => "3"
+          ]
+        ]
+        */
+
+
+        /*
+        'employee_id' => 2323,
+        'start_date' => '2017-03-20'
+        'schedule' => [
+            0 => [8,9,10,14,15,16],
+            1 => [12,13,14,15,16,17,18,19],
+            2 => [],
+            ...
+        ],
+        'fill_weeks' => 3
+        */
+
+        $validator = Validator::make($formData, [
+            'employee_id'   => 'required|max:10',
+            'start_date'    => 'required|date_format:"Y-m-d"',    // date
+            'fill_weeks'    => 'required|numeric|max:2',
+            'schedule'      => 'required'
+        ]);
+        if ($validator->fails()) {
+            $errs = $validator->messages();
+            //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
+
+            //return json_encode([
+            return response()->json([
+                'res' => false,
+                'validation_errors' => $errs
+            ]);
+        }
+
+        $employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $request->get('employee_id'))->first();
+        if (is_null($employee)) {
+            //return json_encode([
+            return response()->json([
+                'res' => false,
+                'error' => [
+                    'Incorrect employee'
+                ]
+            ]);
+        }
+
+        $startDate = $request->get('start_date');
+        if (1 != date('w', strtotime($startDate))) {       // проверяем, что переданная дата является понедельником
+            //return json_encode([
+            return response()->json([
+                'res' => false,
+                'error' => [
+                    'Start date should be monday'
+                ]
+            ]);
+        }
+
+        $scheduleArr = $request->get('schedule');
+        $scheduleIntervals = [];
+
+        foreach($scheduleArr AS $dCount=>$hours) {
+            if ((int)$dCount < 0 OR (int)$dCount > 6) {
+                //return json_encode([
+                return response()->json([
+                    'res' => false,
+                    'error' => [
+                        'Incorrect schedule data (day)'
+                    ]
+                ]);
+            }
+
+            $prevHour = null;
+            foreach ($hours AS $hour) {
+                if ((int)$hour < 0 OR (int)$hour > 23) {
+                    //return json_encode([
+                    return response()->json([
+                        'res' => false,
+                        'error' => [
+                            'Incorrect schedule data (hour)'
+                        ]
+                    ]);
+                }
+
+                $intervalTs = strtotime("$startDate + $hour hours");
+                $intervalDate = date('Y-m-d H:i:s', $intervalTs);   // "2017-03-26 08:00:00"
+
+                /*
+                $scheduleIntervals = [
+                    0 => [
+                        'start' => "2017-03-26 08:00:00",
+                        'end'   => "2017-03-26 12:00:00"
+                    ]
+                ]
+                */
+
+                if (count($scheduleIntervals) == 0 OR isset($scheduleIntervals[count($scheduleIntervals)-1]['end'])) {  // если нет ни одного элемента или интервал уже закрыт
+                    $key = (count($scheduleIntervals) == 0) ? 0 : count($scheduleIntervals);
+                    $scheduleIntervals[$key]['start'] = $intervalDate;
+                } else {    // если еще не нашли конец интервала
+                    $key = count($scheduleIntervals) - 1;
+                    if ((int)$hour - (int)$prevHour > 1) {      // если есть разрыв в часах, закрываем интервал
+                        $prevIntervalTs = strtotime("$startDate + $prevHour hours");
+                        $intervalEndDate = date('Y-m-d H:i:s', $prevIntervalTs);   // "2017-03-26 08:00:00"
+                        $scheduleIntervals[$key]['end'] = $intervalEndDate;
+
+                        $scheduleIntervals[$key+1]['start'] = $intervalDate;
+                    }
+                }
+
+                if (substr($scheduleIntervals[count($scheduleIntervals)-1]['start'], 8) == '23:00:00') {
+                    $scheduleIntervals[count($scheduleIntervals)-1]['end'] = date('Y-m-d H:i:s', strtotime($startDate." + 1 day"));
+                }
+
+                $prevHour = $hour;
+            }
+        }
+
+        $fillWeeks = (int)$request->get('fill_weeks');
+        if ($fillWeeks > 1) {
+            if ($fillWeeks > 12) {      // позволяем заполнять максимум 12 недель за раз
+                //return json_encode([
+                return response()->json([
+                    'res' => false,
+                    'error' => [
+                        'Incorrect weeks num'
+                    ]
+                ]);
+            }
+
+            $firstWeekIntervals = $scheduleIntervals;
+            for($i=2; $i<=$fillWeeks; $i++) {      // перебираем все недели, начиная от 2ой с start_date (первую мы уже заполнили выше)
+                foreach ($firstWeekIntervals AS $singleInterval) {
+                    $scheduleIntervals[] = array(
+                        'start'     => date('Y-m-d H:i:s', strtotime($singleInterval['start']." +".($i-1)." week")),
+                        'end'       => date('Y-m-d H:i:s', strtotime($singleInterval['end']." +".($i-1)." week"))
+                    );
+                }
+            }
+        }
+
+        foreach($scheduleIntervals AS $singleInterval) {
+            $schedule = new Schedule([
+                'work_start'    => $singleInterval['start'],
+                'work_end'    => $singleInterval['end']
+            ]);
+
+            $employee->schedules()->save($schedule);
+        }
+
+        //return json_encode([
+        return response()->json([
+            'res' => true,
+            'error' => ''
+        ]);
     }
 }

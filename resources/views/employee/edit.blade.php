@@ -644,7 +644,7 @@
 
             //обновляем массив данных
             $.ajax({
-                type: "GET",
+                type: "POST",
                 dataType: 'json',
                 url: '/employees/updateSchedule',
                 data: {scheduleData: scheduleData},
