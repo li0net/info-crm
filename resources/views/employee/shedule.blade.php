@@ -618,7 +618,7 @@
                     </select>
                     {{ Form::label('name',trans('adminlte_lang::message.employee_copy_on'), ['class' => 'control-label label-sm text-left']) }}
                 </div>
-                <a class="btn btn-link link-blue btn-link-sm pull-right" id='shedule-clear' href="#" onclick="return false;"><i class="fa fa-eraser" aria-hidden="true"></i>Очистить график на неделю</a>
+                <a class="btn btn-link link-blue btn-link-sm pull-right" id='shedule-clear' href="#" onclick="return false;"><i class="fa fa-eraser" aria-hidden="true"></i>{{ trans('adminlte_lang::message.employee_clear_schedule') }}</a>
             </div>
         </div>
     </div>
