@@ -431,11 +431,11 @@
 <script type="text/javascript">
 
     // получаем стартовое значение и обновляем вид таблиц
-    var scheduleData = JSON.parse('<?=$shedule_data?>');
+    var $scheduleData = JSON.parse('<?=$shedule_data?>');
 
 
     /**
-     * обновляет отображение таблицы прасписания на основании массива scheduleData
+     * обновляет отображение таблицы прасписания на основании массива $scheduleData
      */
     function updateSheduleTable() {
         // зачищаем старые значения
@@ -443,9 +443,9 @@
 
         for (i = 0; i <= 6; i++) {
             var day = i;
-            var hours = scheduleData.schedule[i];
+            var hours = $scheduleData.schedule[i];
             for (j = 0; j <= hours.length; j++) {
-                var hour = scheduleData.schedule[i][j];
+                var hour = $scheduleData.schedule[i][j];
                 $("#operating_schedule tbody").find("td[data-day='" + day + "'][data-hour='" + hour + "']").addClass('ui-datepicker-current-day');
             }
         }
@@ -480,22 +480,27 @@
         $('#shedule_week').datepicker().on('changeDate', function(e) {
             //анимация
             $('#operating_schedule').addClass('loadingbox');
+            $('#shedule_week .datepicker tr').removeClass('active');
 
             var value = e.date;
             start_date = moment(value, "YYYY-MM-DD").day(1).format("YYYY-MM-DD");
-            last_date =  moment(value, "YYYY-MM-DD").day(7).format("YYYY-MM-DD");
 
             //обновляем массив данных
             $.ajax({
                 type: "GET",
                 dataType: 'json',
                 url: '/employees/getSchedule',
-                data: {start_date: start_date, employee_id: scheduleData.employee_id},
+                data: {start_date: start_date, employee_id: $scheduleData.employee_id},
                 success: function(data) {
                     if (data.res) {
-                        scheduleData = data.shedule_data;
+                        $scheduleData = data.shedule_data;
+
                         // обновляем отображение
                         updateSheduleTable();
+
+                        $('#shedule_week .datepicker').find('td.active').parent('tr').addClass('active');
+                        $("#sheduleWeek").val($scheduleData.start_date);
+
                     } else {
                         console.log('Error while processing shedule changing!');
                     }
@@ -504,11 +509,6 @@
                     console.log('Error while processing shedule changing!');
                 }
             });
-
-            $('#shedule_week .datepicker tr').removeClass('active');
-            $('#shedule_week .datepicker').find('td.active').parent('tr').addClass('active');
-
-            $("#sheduleWeek").val(scheduleData.start_date + " - " + scheduleData.last_date);
 
             //анимация
             $('#operating_schedule').removeClass('loadingbox');
@@ -537,9 +537,9 @@
                     // обновляем массив данных
                     for (i = 0; i <= 6; i++) {
                         var day = i;
-                        var index = scheduleData.schedule[day].indexOf(hour);
+                        var index = $scheduleData.schedule[day].indexOf(hour);
                         if(index != -1){
-                            scheduleData.schedule[day].splice( index, 1 );
+                            $scheduleData.schedule[day].splice( index, 1 );
                         }
                     }
                 } else {
@@ -550,10 +550,10 @@
                     for (i = 0; i <= 6; i++) {
                         var day = i;
                         // проверяем что такого значения уже нет в массиве
-                        if ( scheduleData.schedule[day].indexOf(hour) == -1 ){
-                            scheduleData.schedule[day].push(hour);
+                        if ( $scheduleData.schedule[day].indexOf(hour) == -1 ){
+                            $scheduleData.schedule[day].push(hour);
                             // выстраиваем часы по порядку
-                            scheduleData.schedule[day] =  scheduleData.schedule[day].sort(function(a, b) {
+                            $scheduleData.schedule[day] =  $scheduleData.schedule[day].sort(function(a, b) {
                                 return a - b;
                             });
                         }
@@ -579,13 +579,13 @@
 
                 if ( $(this).hasClass('ui-datepicker-fullday') ){
                     //обновляем данные
-                    scheduleData.schedule[day] = [];
+                    $scheduleData.schedule[day] = [];
 
                     // снимаем отметки с ячеек
                     $( "#operating_schedule tbody").find("td[data-day='"+day+"']").removeClass('ui-datepicker-current-day');
                 } else {
                     //обновляем данные
-                    scheduleData.schedule[day] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+                    $scheduleData.schedule[day] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
 
                     // отмечаем ячейки
                     $( "#operating_schedule tbody").find("td[data-day='"+day+"']").addClass('ui-datepicker-current-day');
@@ -603,18 +603,18 @@
 
             if ( $(this).hasClass('ui-datepicker-current-day') ){
                 // если снимаем отмеченную ячейку - удаляем из массива часов данного дня
-                var index = scheduleData.schedule[day].indexOf(hour);
-                scheduleData.schedule[day].splice(index, 1);
+                var index = $scheduleData.schedule[day].indexOf(hour);
+                $scheduleData.schedule[day].splice(index, 1);
             } else {
                 // если отмечаем пустую ячейку - добавляем в массив часов данного дня
-                scheduleData.schedule[day].push(hour);
+                $scheduleData.schedule[day].push(hour);
             }
 
             // ставим/убиреаем отметку в ячейке
             $(this).toggleClass('ui-datepicker-current-day');
 
             // выстраиваем часы по порядку
-            scheduleData.schedule[day] =  scheduleData.schedule[day].sort(function(a, b) {
+            $scheduleData.schedule[day] =  $scheduleData.schedule[day].sort(function(a, b) {
                 return a - b;
             });
         });
@@ -623,7 +623,7 @@
         $( "#shedule-clear").click(function() {
             // добавляем час во все дни
             for (i = 0; i <= 6; i++) {
-                scheduleData.schedule[i] = [];
+                $scheduleData.schedule[i] = [];
             }
 
             // обновляем отображение
@@ -632,7 +632,7 @@
 
         // смена дропдауна выбора недель
         $( "#fill_weeks").on('change', function() {
-            scheduleData.fill_weeks = $( "select#fill_weeks option:checked" ).val();
+            $scheduleData.fill_weeks = $( "select#fill_weeks option:checked" ).val();
         });
 
         /**
@@ -647,7 +647,7 @@
                 type: "POST",
                 dataType: 'json',
                 url: '/employees/updateSchedule',
-                data: {scheduleData: scheduleData},
+                data: {scheduleData: $scheduleData},
                 success: function(data) {
                     if (data.res) {
                         console.log('Schedule saved!');

@@ -492,7 +492,6 @@ class EmployeeController extends Controller
         $shData = [
             'employee_id' => $employeeId,
             'start_date'  => $scheduleStartDate,
-            'last_date'   => Carbon::parse('next sunday')->toDateString(),
             'schedule'    => [
                 0 => [1,8,10,16],
                 1 => [9,12,19],
@@ -544,7 +543,6 @@ class EmployeeController extends Controller
           "scheduleData" => array:5 [
             "employee_id" => "3"
             "start_date" => "2017-04-24"
-            "last_date" => "2017-04-16"
             "schedule" => array:7 [
               0 => array:5 [
                 0 => "1"
