@@ -10,10 +10,10 @@
         <div class="col-md-8">
             <div class="help-block">
                 <ul class="schedule-help">
-                    <li>В таблице снизу отображается расписание на неделю, выбранную в календарике слева</li>
-                    <li>Каждый квадратик означает один рабочий час;</li>
-                    <li>По горизонтали располагается шкала времени, а по вертикали дни недели. Кликайте по часам или дням для быстрого заполнения;</li>
-                    <li>Вы можете абсолютно гибко изменять рабочий график. Главное не забывайте нажимать кнопку «Сохранить».</li>
+                    <li>{{ trans('adminlte_lang::message.employee_help_1') }}</li>
+                    <li>{{ trans('adminlte_lang::message.employee_help_2') }}</li>
+                    <li>{{ trans('adminlte_lang::message.employee_help_3') }}</li>
+                    <li>{{ trans('adminlte_lang::message.employee_help_4') }}</li>
                 </ul>
             </div>
         </div>
@@ -55,7 +55,7 @@
                     <tbody>
                     <tr>
                         <td class="legend" data-head-day="0">
-                            <span title="Весь день">Пн</span>
+                            <span title="{{ trans('adminlte_lang::message.all_day') }}">{{ trans('adminlte_lang::message.mo') }}</span>
                         </td>
                         <td data-day="0" data-hour="0"  class="ui-datepicker-current-day">
                             <a href="#" class="ui-state-default" onclick="return false"></a>
@@ -132,7 +132,7 @@
                     </tr>
                     <tr>
                         <td class="legend" data-head-day="1">
-                            <span title="Весь день">Вт</span>
+                            <span title="{{ trans('adminlte_lang::message.all_day') }}">{{ trans('adminlte_lang::message.tu') }}</span>
                         </td>
                         <td data-day="1" data-hour="0" >
                             <a href="#" class="ui-state-default" onclick="return false"></a>
@@ -209,7 +209,7 @@
                     </tr>
                     <tr>
                         <td class="legend" data-head-day="2">
-                            <span title="Весь день">Ср</span>
+                            <span title="{{ trans('adminlte_lang::message.all_day') }}">{{ trans('adminlte_lang::message.we') }}</span>
                         </td>
                         <td data-day="2" data-hour="0" >
                             <a href="#" class="ui-state-default" onclick="return false"></a>
@@ -286,7 +286,7 @@
                     </tr>
                     <tr>
                         <td class="legend" data-head-day="3">
-                            <span title="Весь день">Чт</span>
+                            <span title="{{ trans('adminlte_lang::message.all_day') }}">{{ trans('adminlte_lang::message.th') }}</span>
                         </td>
                         <td data-day="3" data-hour="0" >
                             <a href="#" class="ui-state-default" onclick="return false"></a>
@@ -363,7 +363,7 @@
                     </tr>
                     <tr>
                         <td class="legend" data-head-day="4">
-                            <span title="Весь день">Пт</span>
+                            <span title="{{ trans('adminlte_lang::message.all_day') }}">{{ trans('adminlte_lang::message.fr') }}</span>
                         </td>
                         <td data-day="4" data-hour="0" >
                             <a href="#" class="ui-state-default" onclick="return false"></a>
@@ -440,7 +440,7 @@
                     </tr>
                     <tr>
                         <td class="legend" data-head-day="5">
-                            <span title="Весь день">Сб</span>
+                            <span title="{{ trans('adminlte_lang::message.all_day') }}">{{ trans('adminlte_lang::message.sa') }}</span>
                         </td>
                         <td data-day="5" data-hour="0" >
                             <a href="#" class="ui-state-default" onclick="return false"></a>
@@ -517,7 +517,7 @@
                     </tr>
                     <tr>
                         <td class="legend" data-head-day="6">
-                            <span title="Весь день">Вс</span>
+                            <span title="{{ trans('adminlte_lang::message.all_day') }}">{{ trans('adminlte_lang::message.su') }}</span>
                         </td>
                         <td data-day="6" data-hour="0" >
                             <a href="#" class="ui-state-default" onclick="return false"></a>
@@ -598,7 +598,7 @@
             <div style="display:block;width:720px!important;" class="form-horizontal form-inline ">
                 <div class="form-group pull-left">
                     <label class='control-label label-sm text-left'>
-                        <i class="fa fa-clone" aria-hidden="true"></i>{{ trans('Скопировать график на') }}
+                        <i class="fa fa-clone" aria-hidden="true"></i>{{ trans('adminlte_lang::message.employee_copy_on') }}
                     </label>
                     <select name="fill_weeks" id="fill_weeks" class="form-control form-control-sm">
                         <option value="0">0</option>
@@ -616,7 +616,7 @@
                         <option value="20">20</option>
                         <option value="30">30</option>
                     </select>
-                    {{ Form::label('name',trans('недель вперед'), ['class' => 'control-label label-sm text-left']) }}
+                    {{ Form::label('name',trans('adminlte_lang::message.employee_copy_on'), ['class' => 'control-label label-sm text-left']) }}
                 </div>
                 <a class="btn btn-link link-blue btn-link-sm pull-right" id='shedule-clear' href="#" onclick="return false;"><i class="fa fa-eraser" aria-hidden="true"></i>Очистить график на неделю</a>
             </div>
