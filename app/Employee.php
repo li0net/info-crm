@@ -89,6 +89,11 @@ class Employee extends Model
         return $this->belongsToMany(WageScheme::class, 'wages', 'employee_id', 'scheme_id')->withPivot('scheme_start');
     }
 
+	public function scheduleScheme()
+	{
+		return $this->hasOne('App\ScheduleScheme');
+	}
+
 	/**
 	 * Возвращает свободные для записи интервалы времени у текущего работника
 	 *
