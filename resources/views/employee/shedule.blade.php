@@ -23,7 +23,7 @@
             <hr/>
         </div>
         <div class="col-md-12">
-            <div class="ui-datepicker operating_schedule" style="display:block;width:720px!important;">
+            <div class="ui-datepicker operating_schedule">
                 <table id="operating_schedule" class="table-shedule ">
                     <thead>
                     <tr><th>&nbsp;</th>
@@ -595,7 +595,7 @@
                     </tbody>
                 </table>
             </div>
-            <div style="display:block;width:720px!important;" class="form-horizontal form-inline ">
+            <div id="shedule-buttons" class="form-horizontal form-inline ">
                 <div class="form-group pull-left">
                     <label class='control-label label-sm text-left'>
                         <i class="fa fa-clone" aria-hidden="true"></i>{{ trans('adminlte_lang::message.employee_copy_on') }}
@@ -619,6 +619,16 @@
                     {{ Form::label('name',trans('adminlte_lang::message.employee_copy_on'), ['class' => 'control-label label-sm text-left']) }}
                 </div>
                 <a class="btn btn-link link-blue btn-link-sm pull-right" id='shedule-clear' href="#" onclick="return false;"><i class="fa fa-eraser" aria-hidden="true"></i>{{ trans('adminlte_lang::message.employee_clear_schedule') }}</a>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="alert alert-success" id="employee_form_success_alert">
+                <button type="button" class="close" data-dismiss="alert"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
+                <span>@lang('main.user:mailings_settings_saved_message')</span>
+            </div>
+            <div class="alert alert-error" id="employeegs_form_error_alert">
+                <button type="button" class="close" data-dismiss="alert"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
+                <span>@lang('main.user:mailings_settings_save_error_message')</span>
             </div>
         </div>
     </div>

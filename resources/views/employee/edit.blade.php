@@ -480,6 +480,7 @@
         $('#shedule_week').datepicker().on('changeDate', function(e) {
             //анимация
             $('#operating_schedule').addClass('loadingbox');
+            $('#employeegs_form_error_alert').hide();
             $('#shedule_week .datepicker tr').removeClass('active');
 
             var value = e.date;
@@ -502,11 +503,13 @@
                         $("#sheduleWeek").val($scheduleData.start_date);
 
                     } else {
-                        console.log('Error while processing shedule changing!');
+                        $('#employeegs_form_error_alert span').append(' '+data.error);
+                        $('#employeegs_form_error_alert').show();
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    console.log('Error while processing shedule changing!');
+                    $('#employeegs_form_error_alert span').append(' Error while processing shedule changing!');
+                    $('#employeegs_form_error_alert').show();
                 }
             });
 
@@ -640,6 +643,8 @@
          * */
         function submitSheduleForm() {
             //анимация
+            $('#employeegs_form_error_alert').hide();
+            $('#employee_form_success_alert').hide();
             $('#menu3').addClass('loadingbox');
 
             //обновляем массив данных
@@ -650,13 +655,15 @@
                 data: {scheduleData: $scheduleData},
                 success: function(data) {
                     if (data.res) {
-                        console.log('Schedule saved!');
+                        $('#employee_form_success_alert').show();
                     } else {
-                        console.log('Error while processing shedule changing!');
+                        $('#employeegs_form_error_alert span').append(' '+data.error);
+                        $('#employeegs_form_error_alert').show();
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    console.log('Error while processing shedule changing!');
+                    $('#employeegs_form_error_alert span').append(' '+data.error);
+                    $('#employeegs_form_error_alert').show();
                 }
             });
             //анимация
