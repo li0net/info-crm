@@ -24,7 +24,7 @@
                     @if( $employee->avatar_image_name != null)
                     <img src="/images/{{ $employee->avatar_image_name }}" />
                     @else
-                    <img src="/images/no-master.png" alt="">
+                    <img src="/img/crm/avatar/avatar100.jpg" alt="">
                     @endif
                 </div>
                 <div v-else>

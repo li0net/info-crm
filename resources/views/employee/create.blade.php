@@ -59,7 +59,7 @@
                     <label class="ctrl-label">{{ trans('adminlte_lang::message.photo') }}</label>
                     <div class="logo-block">
                         <div v-if="!image">
-                            <img src="/images/no-master.png" alt="">
+                            <img src="/img/crm/avatar/avatar100.jpg" alt="">
                         </div>
                         <div v-else>
                             <img :src="image" />
