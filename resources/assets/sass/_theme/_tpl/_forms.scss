@@ -407,7 +407,6 @@ body.skin-orange {
         margin-right: 5px;
         margin-top: 0;
         padding: 0 10px;
-
         .select2-selection__choice__remove {
           color: $brand-main-text;
         }
@@ -456,6 +455,20 @@ body.skin-orange {
         }
       }
     }
+
+    .select2-dropdown--below{
+      ul.select2-results__options {
+        @include border-bottom-radius(15px);
+      }
+    }
+    .select2-dropdown--above{
+      ul.select2-results__options {
+        @include border-top-radius(15px);
+        @include border-bottom-radius(0);
+      }
+    }
+
+
   }
 
   /** bootstrap select **/
