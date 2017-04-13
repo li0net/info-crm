@@ -488,11 +488,9 @@ class EmployeeController extends Controller
     private function getScheduleData(Employee $employee, $scheduleStartDate) {
         //метод должен возпрашщать массив, даже если расписания нет  -
         //в таком случае подмассивы в $shData.schedule протсо должны быть пусты
-
         $schedule = [
             0 => [], 1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => []
         ];
-        $lastDate = strtotime("$scheduleStartDate + 6 days");
 
         $scheduleScheme = $employee->scheduleScheme()->first();
 
@@ -502,9 +500,9 @@ class EmployeeController extends Controller
                 $schedule[$day] = $hours;
             }
 
-            $lastDate = $scheduleScheme->start_date;
-            $lastDate = strtotime("$lastDate + 6 days");
+            $scheduleStartDate = $scheduleScheme->start_date;
         }
+        $lastDate = strtotime("$scheduleStartDate + 6 days");
 
         $shData = [
             'employee_id' => $employee->employee_id,
@@ -561,8 +559,6 @@ class EmployeeController extends Controller
                 'error' => 'No schedule data'
             ]);
         }
-        //Log::info(__METHOD__." form data:".print_r($formData, TRUE));
-        //dd($formData);
 
         /*
         array:5 [
@@ -603,7 +599,6 @@ class EmployeeController extends Controller
             $errs = $validator->messages();
             //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
 
-            //return json_encode([
             return response()->json([
                 'res' => false,
                 'validation_errors' => $errs
@@ -614,7 +609,6 @@ class EmployeeController extends Controller
 
         $employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $formData['employee_id'])->first();
         if (is_null($employee)) {
-            //return json_encode([
             return response()->json([
                 'res' => false,
                 'error' => [
@@ -625,7 +619,6 @@ class EmployeeController extends Controller
 
         $startDate = $formData['start_date'];
         if (1 != date('w', strtotime($startDate))) {       // проверяем, что переданная дата является понедельником
-            //return json_encode([
             return response()->json([
                 'res' => false,
                 'error' => [
@@ -654,15 +647,14 @@ class EmployeeController extends Controller
             // если мы перескочили на новый день, а интервал не закрыт, нужно записать последний час предыдущей итерации цикла (дня) как конец открытого интервала
             if (count($scheduleIntervals) > 0 AND !isset($scheduleIntervals[count($scheduleIntervals)-1]['end'])) {
                 // предполагаем, что как минимум одна итерация уже была, иначе $lastDayNum и $prevHour будут неопределены
-                $prevIntervalTs = strtotime("$startDate + $lastDayNum days $prevHour hours");
-                $intervalEndDate = date('Y-m-d H:i:s', $prevIntervalTs);   // "2017-03-26 08:00:00"
-                $scheduleIntervals[count($scheduleIntervals)-1]['end'] = $intervalEndDate;
+                $prevHourEnd = $prevHour + 1;       // если выбран, к примеру 9й час, то это значит что расписание будет действовать до начала 10го часа, т.е. до 10:00
+                $prevIntervalTs = strtotime("$startDate + $lastDayNum days $prevHourEnd hours");
+                $scheduleIntervals[count($scheduleIntervals)-1]['end'] = date('Y-m-d H:i:s', $prevIntervalTs);
             }
 
             $prevHour = null;
             foreach ($hours AS $hour) {
                 if ((int)$hour < 0 OR (int)$hour > 23) {
-                    //return json_encode([
                     return response()->json([
                         'res' => false,
                         'error' => [
@@ -692,9 +684,9 @@ class EmployeeController extends Controller
                 } else {    // если еще не нашли конец интервала
                     $key = count($scheduleIntervals) - 1;
                     if ((int)$hour - (int)$prevHour > 1) {      // если есть разрыв в часах, закрываем интервал
-                        $prevIntervalTs = strtotime("$startDate + $dCount days $prevHour hours");
-                        $intervalEndDate = date('Y-m-d H:i:s', $prevIntervalTs);   // "2017-03-26 08:00:00"
-                        $scheduleIntervals[$key]['end'] = $intervalEndDate;
+                        $prevHourEnd = $prevHour + 1;       // если выбран, к примеру 9й час, то это значит что расписание будет действовать до начала 10го часа, т.е. до 10:00
+                        $prevIntervalTs = strtotime("$startDate + $dCount days $prevHourEnd hours");
+                        $scheduleIntervals[$key]['end'] = date('Y-m-d H:i:s', $prevIntervalTs);   // "2017-03-26 08:00:00"
 
                         $scheduleIntervals[$key+1]['start'] = $intervalDate;
                     }
@@ -711,109 +703,16 @@ class EmployeeController extends Controller
 
         // если мы закончили цикл по дням, а интервал не закрыт, нужно записать последний час последней итерации цикла как конец открытого интервала
         if (count($scheduleIntervals) > 0 AND !isset($scheduleIntervals[count($scheduleIntervals)-1]['end'])) {
-            $prevIntervalTs = strtotime("$startDate + $lastDayNum days $prevHour hours");
-            $intervalEndDate = date('Y-m-d H:i:s', $prevIntervalTs);   // "2017-03-26 08:00:00"
-            $scheduleIntervals[count($scheduleIntervals)-1]['end'] = $intervalEndDate;
+            $prevHourEnd = $prevHour + 1;       // если выбран, к примеру 9й час, то это значит что расписание будет действовать до начала 10го часа, т.е. до 10:00
+            $prevIntervalTs = strtotime("$startDate + $lastDayNum days $prevHourEnd hours");
+            $scheduleIntervals[count($scheduleIntervals)-1]['end'] = date('Y-m-d H:i:s', $prevIntervalTs);
         }
         Log::info(__METHOD__." scheduleIntervals:".var_export($scheduleIntervals, TRUE));
 
-        // TODO: FIX time boundaries
-        /*
-        formData:array (
-  'employee_id' => '3',
-  'start_date' => '2017-04-10',
-  'schedule' =>
-  array (
-    1 =>
-    array (
-      0 => '13',
-      1 => '14',
-      2 => '15',
-    ),
-    2 =>
-    array (
-      0 => '3',
-      1 => '4',
-      2 => '5',
-      3 => '7',
-      4 => '8',
-    ),
-    3 =>
-    array (
-      0 => '4',
-      1 => '5',
-      2 => '6',
-      3 => '7',
-      4 => '8',
-      5 => '15',
-    ),
-    4 =>
-    array (
-      0 => '15',
-      1 => '16',
-    ),
-    5 =>
-    array (
-      0 => '3',
-      1 => '4',
-      2 => '6',
-      3 => '7',
-      4 => '8',
-    ),
-  ),
-  'fill_weeks' => '3',
-  'lastDate' => '2017-04-16',
-)
-[2017-04-12 21:44:53] local.INFO: App\Http\Controllers\EmployeeController::updateSchedule scheduleIntervals:array (
-  0 =>
-  array (
-    'start' => '2017-04-11 13:00:00',
-    'end' => '2017-04-11 15:00:00',
-  ),
-  1 =>
-  array (
-    'start' => '2017-04-12 03:00:00',
-    'end' => '2017-04-12 05:00:00',
-  ),
-  2 =>
-  array (
-    'start' => '2017-04-12 07:00:00',
-    'end' => '2017-04-12 08:00:00',
-  ),
-  3 =>
-  array (
-    'start' => '2017-04-13 04:00:00',
-    'end' => '2017-04-13 08:00:00',
-  ),
-  4 =>
-  array (
->>>    'start' => '2017-04-13 15:00:00',
->>>    'end' => '2017-04-13 15:00:00',
-  ),
-  5 =>
-  array (
-    'start' => '2017-04-14 15:00:00',
-    'end' => '2017-04-14 16:00:00',
-  ),
-  6 =>
-  array (
-    'start' => '2017-04-15 03:00:00',
-    'end' => '2017-04-15 04:00:00',
-  ),
-  7 =>
-  array (
-    'start' => '2017-04-15 06:00:00',
-    'end' => '2017-04-15 08:00:00',
-  ),
-)
-        */
-
-
         // заполняем на N недель
-        $fillWeeks = (int)$formData['fill_weeks'];
+        $fillWeeks = (int)$formData['fill_weeks'];  // TODO: $fillWeeks = $fillWeeks + 1  ?? (у нас на форме есть вариант 0 недель, либо он бессмысленный, либо надо прибавлять 1)
         if ($fillWeeks > 1) {
             if ($fillWeeks > 12) {      // позволяем заполнять максимум 12 недель за раз
-                //return json_encode([
                 return response()->json([
                     'res' => false,
                     'error' => [
@@ -832,7 +731,7 @@ class EmployeeController extends Controller
                 }
             }
         }
-        Log::info(__METHOD__." scheduleIntervals after expanding:".var_export($scheduleIntervals, TRUE));
+        //Log::info(__METHOD__." scheduleIntervals after expanding:".var_export($scheduleIntervals, TRUE));
 
         // TODO: очистить расписание на заполняемые недели ?
         foreach($scheduleIntervals AS $singleInterval) {
@@ -843,7 +742,11 @@ class EmployeeController extends Controller
             ]);
             //$schedule->save();
 
-            $employee->schedules()->save($schedule);
+            try {
+                $res = $employee->schedules()->save($schedule);
+            } catch(Exception $e) {
+                Log::info(__METHOD__." error caught:".$e->getMessage());
+            }
         }
         ScheduleScheme::updateOrCreate(
             ['employee_id' => $employee->employee_id],
@@ -854,7 +757,6 @@ class EmployeeController extends Controller
             ]
         );
 
-        //return json_encode([
         return response()->json([
             'res' => true,
             'error' => ''
