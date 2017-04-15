@@ -16,7 +16,7 @@ use App\ServiceCategory;
 use App\Service;
 use Session;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Validator;
 use Carbon\Carbon;
@@ -601,6 +601,7 @@ class EmployeeController extends Controller
 
             return response()->json([
                 'res' => false,
+                'error' => 'Validation error',
                 'validation_errors' => $errs
             ]);
         }
@@ -611,9 +612,7 @@ class EmployeeController extends Controller
         if (is_null($employee)) {
             return response()->json([
                 'res' => false,
-                'error' => [
-                    'Incorrect employee'
-                ]
+                'error' => 'Incorrect employee'
             ]);
         }
 
@@ -621,9 +620,7 @@ class EmployeeController extends Controller
         if (1 != date('w', strtotime($startDate))) {       // проверяем, что переданная дата является понедельником
             return response()->json([
                 'res' => false,
-                'error' => [
-                    'Start date should be monday'
-                ]
+                'error' => 'Start date should be monday'
             ]);
             // можно просто автоматически брать понедельник на неделе в которую попадает переданная дата
             // $diff = (int)date('w', strtotime($startDate)) - 1;
@@ -638,9 +635,7 @@ class EmployeeController extends Controller
                 //return json_encode([
                 return response()->json([
                     'res' => false,
-                    'error' => [
-                        'Incorrect schedule data (day)'
-                    ]
+                    'error' => 'Incorrect schedule data (day)'
                 ]);
             }
 
@@ -657,9 +652,7 @@ class EmployeeController extends Controller
                 if ((int)$hour < 0 OR (int)$hour > 23) {
                     return response()->json([
                         'res' => false,
-                        'error' => [
-                            'Incorrect schedule data (hour)'
-                        ]
+                        'error' => 'Incorrect schedule data (hour)'
                     ]);
                 }
 
@@ -710,14 +703,13 @@ class EmployeeController extends Controller
         Log::info(__METHOD__." scheduleIntervals:".var_export($scheduleIntervals, TRUE));
 
         // заполняем на N недель
-        $fillWeeks = (int)$formData['fill_weeks'];  // TODO: $fillWeeks = $fillWeeks + 1  ?? (у нас на форме есть вариант 0 недель, либо он бессмысленный, либо надо прибавлять 1)
+        // у нас на форме есть вариант 0 недель, либо он бессмысленный, либо надо прибавлять 1
+        $fillWeeks = (int)$formData['fill_weeks'] + 1;
         if ($fillWeeks > 1) {
-            if ($fillWeeks > 12) {      // позволяем заполнять максимум 12 недель за раз
+            if ($fillWeeks > 31) {      // позволяем заполнять максимум 30 недель за раз
                 return response()->json([
                     'res' => false,
-                    'error' => [
-                        'Incorrect weeks num'
-                    ]
+                    'error' => 'Incorrect weeks num'
                 ]);
             }
 
@@ -733,7 +725,18 @@ class EmployeeController extends Controller
         }
         //Log::info(__METHOD__." scheduleIntervals after expanding:".var_export($scheduleIntervals, TRUE));
 
-        // TODO: очистить расписание на заполняемые недели ?
+        // Очищаем расписание на заполняемые недели
+        // DELETE FROM schedule WHERE employee_id=? AND work_end>FIRST_NEW_WORK_START AND work_start<LAST_NEW_WORK_END
+        $newScheduleFirstWorkStart = $scheduleIntervals[0]['start'];
+        $newScheduleLastWorkEnd = $scheduleIntervals[count($scheduleIntervals)-1]['end'];
+
+        DB::beginTransaction();
+        $deletedRows = Schedule::where('employee_id', $employee->employee_id)
+            ->where([
+                ['work_end', '>', $newScheduleFirstWorkStart],
+                ['work_start', '<', $newScheduleLastWorkEnd],
+            ])->delete();
+        Log::info(__METHOD__." Schedule deleted rows:".$deletedRows);
         foreach($scheduleIntervals AS $singleInterval) {
             $schedule = new Schedule([
                 'work_start'    => $singleInterval['start'],
@@ -756,6 +759,7 @@ class EmployeeController extends Controller
                 'fill_weeks' => $formData['fill_weeks']
             ]
         );
+        DB::commit();
 
         return response()->json([
             'res' => true,
