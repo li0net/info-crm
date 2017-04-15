@@ -94,6 +94,11 @@ class Employee extends Model
 		return $this->hasOne('App\ScheduleScheme');
 	}
 
+	public function calculatedWage()
+	{
+		return $this->hasMany('App\CalculatedWage');
+	}
+
 	/**
 	 * Возвращает свободные для записи интервалы времени у текущего работника
 	 *
@@ -478,7 +483,7 @@ class Employee extends Model
         return $res;
     }
 
-	public function calculateWage($startDate, $endDate) {
+	public function calculateWage($startDate, $endDate, $payAfterCalculation=false) {
         //4)Период расчета - месяц. Если есть фикса - выплачиваем ее, вне зависимости от кол-ва отработанных дней.
 
         // пока что будет только одна wage_scheme на работника, чтобы не усложнять
@@ -639,12 +644,39 @@ class Employee extends Model
             }
         }
 
+        $totalAmount = round($salary + $servicesPercentSum + $productsPercentSum, 2, PHP_ROUND_HALF_UP);
+
+        // TODO: добавить обработку параметра $payAfterCalculation - сразу же помечать записи из transactions и appointments(?) как оплаченные (ни в какаом случае не учитываем их в последующих расчетах зп) И пишем в calculated_wages дату оплаты и id юзера который "оплатил"
+
         // TODO: генерить pdf ведомость из $servicesPerformedInfo и $productsSoldInfo
         // TODO: делать запись о расчитанной зарплате в новой таблице calculated_wages, в ней должен быть флаг is_payed и поля calculation_start, calculation_end, employee_id, calculated_by, payed_by, wage_scheme_id
+        /*
+        $table->integer('employee_id')->unsigned();
+        $table->integer('wage_scheme_id')->unsigned();
+        $table->dateTime('date_calculated');
+        $table->dateTime('wage_period_start');
+        $table->dateTime('wage_period_end');
+        $table->text('appointments_data')->nullable();
+        $table->text('products_data')->nullable();
+        $table->decimal('total_amount', 10, 2);
+        $table->dateTime('date_payed')->nullable();
+        $table->integer('payed_by')->unsigned()->nullable();
+        */
+        $calculatedWage = CalculatedWage::create([
+            'employee_id'       => $this->employee_id,
+            'wage_scheme_id'    => $wageScheme->scheme_id,
+            'date_calculated'   => date('Y-m-d H:i:s'),
+            'wage_period_start' => $startDate,
+            'wage_period_end'   => $endDate,
+            'appointments_data' => json_encode($servicesPerformedInfo),
+            'products_data'     => json_encode($productsSoldInfo),          // сюда попадут переведенные фразы - доработать
+            'total_amount'      => $totalAmount
+        ]);
+
         //  если запись в calculated_wages есть, не даем заново расчитывать зп за пересекающийся период
         //  при нажатии кнопки Выплатить зп - устанавливаем is_payed=1 и в транзакции помечаем записи из transactions и appointments(?) как оплаченные (ни в какаом случае не учитываем их в последующих расчетах зп)
 
-        return round($salary + $servicesPercentSum + $productsPercentSum, 2, PHP_ROUND_HALF_UP);
+        return $totalAmount;
     }
 
 }
