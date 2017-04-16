@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.home') }}
+    {{ trans('adminlte_lang::message.home') }}
 @endsection
 
 @section('main-content')
@@ -165,109 +165,113 @@
 
 @section('page-specific-scripts')
 <script>
-	$(document).ready(function(){
+    $(document).ready(function(){
+        // show welcome modal window list of required categories to fill before start
+        var needShowWelcomeWindow = '{{ $user->organization->show_welcome }}';
+        if (needShowWelcomeWindow == 1) {
+            showBiModal('',{
+                title: 'Welcome to Barcelona info!',
+                type: 'welcome'
+            });
+        }
 
-        showBiModal('waka','','',{
-            'hideButtons': true
+        $('#filter-date-from').datepicker({
+            autoclose: true,
+            orientation: 'auto',
+            format: 'dd-mm-yyyy',
+            weekStart: 1
         });
 
-		$('#filter-date-from').datepicker({
-			autoclose: true,
-			orientation: 'auto',
-			format: 'dd-mm-yyyy',
-			weekStart: 1
-		});
+        var today = new Date();
 
-		var today = new Date();
+        $('#filter-date-from').datepicker('update', today);
 
-		$('#filter-date-from').datepicker('update', today);
+        $('#filter-date-to').datepicker({
+            autoclose: true,
+            orientation: 'auto',
+            format: 'dd-mm-yyyy',
+            weekStart: 1
+        });
 
-		$('#filter-date-to').datepicker({
-			autoclose: true,
-			orientation: 'auto',
-			format: 'dd-mm-yyyy',
-			weekStart: 1
-		});
+        $('#filter-date-to').datepicker('update', today);
 
-		$('#filter-date-to').datepicker('update', today);
+        $('#filter-date-from').datepicker()
+            .on('show', function(e) {
+                $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
+                $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
+            });
 
-		$('#filter-date-from').datepicker()
-			.on('show', function(e) {
-				$('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
-				$('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
-			});
+        $('#filter-date-to').datepicker()
+            .on('show', function(e) {
+                $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
+                $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
+            });
 
-		$('#filter-date-to').datepicker()
-		    .on('show', function(e) {
-		        $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
-		        $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
-		    });
+        $('#form_submit').on('click', function(e){
+            var me = this;
+            $.ajax({
+                type: "POST",
+                dataType: 'html',
+                data: {	'filter_date_from'			: $('#filter-date-from').val(),
+                        'filter_date_to'			: $('#filter-date-to').val(),
+                        'filter_employee_id'		: $('#filter-employee-id').val(),
+                        'filter_service_id'			: $('#filter-service-id').val(),
+                        'filter_client_id'			: $('#filter-client-id').val(),
+                        'filter_appointment_status'	: $('#filter-appointment-status').val(),
+                        'records_on_page'			: $('#records-on-page').val(),
+                        'organization_id'			: $('#organization-id').val(),
+                        },
+                url: "/home",
+                success: function(data) {
+                    $('#result_container').html(data);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('Error while processing payments data range!');
+                }
+            });
+        });
 
-		$('#form_submit').on('click', function(e){
-			var me = this;
-			$.ajax({
-				type: "POST",
-				dataType: 'html',
-				data: {	'filter_date_from'			: $('#filter-date-from').val(),
-						'filter_date_to'			: $('#filter-date-to').val(),
-						'filter_employee_id'		: $('#filter-employee-id').val(),
-						'filter_service_id'			: $('#filter-service-id').val(),
-						'filter_client_id'			: $('#filter-client-id').val(),
-						'filter_appointment_status'	: $('#filter-appointment-status').val(),
-						'records_on_page'			: $('#records-on-page').val(),
-						'organization_id'			: $('#organization-id').val(),
-						},
-				url: "/home",
-				success: function(data) {
-					$('#result_container').html(data);
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log('Error while processing payments data range!');
-				}
-			});
-		});
+        $('#result_container').on('click', '.filtered > .pagination', function(e) {
+            var me = this, page = 0;
+            if ($(e.target).html() == '»') {
+                page = parseInt($('.pagination li.active span').html()) + 1;
+            } else if ($(e.target).html() == '«'){
+                page = parseInt($('.pagination li.active span').html()) - 1;
+            } else {
+                page = parseInt($(e.target).html());
+            }
 
-		$('#result_container').on('click', '.filtered > .pagination', function(e) {
-			var me = this, page = 0;
-			if ($(e.target).html() == '»') {
-				page = parseInt($('.pagination li.active span').html()) + 1;
-			} else if ($(e.target).html() == '«'){
-				page = parseInt($('.pagination li.active span').html()) - 1;
-			} else {
-				page = parseInt($(e.target).html());
-			}
+            var me = this;
+            $.ajax({
+                type: "POST",
+                dataType: 'html',
+                data: {	'filter_date_from'			: $('#filter-date-from').val(),
+                        'filter_date_to'			: $('#filter-date-to').val(),
+                        'filter_employee_id'		: $('#filter-employee-id').val(),
+                        'filter_service_id'			: $('#filter-service-id').val(),
+                        'filter_client_id'			: $('#filter-client-id').val(),
+                        'filter_appointment_status'	: $('#filter-appointment-status').val(),
+                        'records_on_page'			: $('#records-on-page').val(),
+                        'organization_id'			: $('#organization-id').val(),
+                        'page'						: page
+                        },
+                url: "/home",
+                success: function(data) {
+                    $('#result_container').html(data);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('Error while processing payments data range!');
+                }
+            });
 
-			var me = this;
-			$.ajax({
-				type: "POST",
-				dataType: 'html',
-				data: {	'filter_date_from'			: $('#filter-date-from').val(),
-						'filter_date_to'			: $('#filter-date-to').val(),
-						'filter_employee_id'		: $('#filter-employee-id').val(),
-						'filter_service_id'			: $('#filter-service-id').val(),
-						'filter_client_id'			: $('#filter-client-id').val(),
-						'filter_appointment_status'	: $('#filter-appointment-status').val(),
-						'records_on_page'			: $('#records-on-page').val(),
-						'organization_id'			: $('#organization-id').val(),
-						'page'						: page
-						},
-				url: "/home",
-				success: function(data) {
-					$('#result_container').html(data);
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log('Error while processing payments data range!');
-				}
-			});
-
-			return false;
-		});
-	});
+            return false;
+        });
+    });
 </script>
 @endsection
 
 <script>
-	function submitform(form_id){
-		$(form_id).submit();
-	}
+    function submitform(form_id){
+        $(form_id).submit();
+    }
 </script>

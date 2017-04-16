@@ -5,10 +5,12 @@ body.skin-orange {
       .modal-header{
         background-color: $brand-main;
         color: $brand-main-text;
+        border-radius: 5px 5px 0 0;
         .close{
           margin-top: 1px;
           span{
             color: $brand-main-text;
+            font-size: 15pt;
           }
         }
         &.modal-header-empty{
@@ -21,6 +23,16 @@ body.skin-orange {
             span{
               color: $brand-main;
             }
+          }
+        }
+      }
+    }
+    .modal-footer{
+      .checkbox{
+        label{
+          font-size: 15px;
+          .icheckbox_flat-purple{
+            margin-right: 5px;
           }
         }
       }

@@ -161,6 +161,20 @@ class OrganizationsController extends Controller
         return view('organization.edit', ['organization' => $org]);
     }
 
+    /**
+     * Save show_welcome param for organization
+     * marks show or not welcome window at home page
+     * @param Request $request
+     * @return bool
+     */
+    public function updateShowWelcome(Request $request)
+    {
+        $org = Organization::find($request->organization_id);
+        $org->show_welcome = ($request->show_welcome == 'false') ? 0 : 1;
+        $org->save();
+        return response()->json(['res' => true]);
+    }
+
     public function saveInfo(Request $request)
     {
         $org = Organization::find($request->user()->organization_id);
