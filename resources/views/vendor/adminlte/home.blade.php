@@ -166,6 +166,11 @@
 @section('page-specific-scripts')
 <script>
 	$(document).ready(function(){
+
+        showBiModal('waka','','',{
+            'hideButtons': true
+        });
+
 		$('#filter-date-from').datepicker({
 			autoclose: true,
 			orientation: 'auto',

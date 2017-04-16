@@ -145,7 +145,7 @@
 
                         // открываем модальное окно
                         // задаём buttonId чтобы потом привязать хендлер
-                        showBiModal('@lang('main.client:list_add_selected_to_category')', ccSel ,{'buttonId':'sendCCSel'});
+                        showBiModal(ccSel ,'@lang('main.client:list_add_selected_to_category')', {'buttonId':'sendCCSel'});
 
                         // генерим "красивый селект", #biModal - id модального окна
                         $("#biModal .js-select-basic-single").select2({
@@ -220,7 +220,7 @@
 
                         // открываем модальное окно
                         // задаём buttonId чтобы потом привязать хендлер
-                        showBiModal('@lang('main.client:list_add_all_found_to_category')', ccSel ,{'buttonId':'sendCCFnd'});
+                        showBiModal(ccSel ,'@lang('main.client:list_add_all_found_to_category')',{'buttonId':'sendCCFnd'});
 
                         // генерим "красивый селект", #biModal - id модального окна
                         $("#biModal .js-select-basic-single").select2({

@@ -11,6 +11,18 @@ body.skin-orange {
             color: $brand-main-text;
           }
         }
+        &.modal-header-empty{
+          background-color: $brand-main-text;
+          border-bottom: none;
+          border-radius: 5px 5px 0 0;
+          .close{
+            color: $brand-main;
+            margin-top: 1px;
+            span{
+              color: $brand-main;
+            }
+          }
+        }
       }
     }
   }
