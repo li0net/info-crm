@@ -101,8 +101,8 @@ class Employee extends Model
      */
     public function getScheduleSchemeByDate($startDateTime)	{
         $schedule = DB::select(
-            "SELECT * FROM `schedule_schemes` WHERE `employee_id` = ? AND `start_date` = '$startDateTime'",
-            [$this->employee_id]
+            "SELECT * FROM `schedule_schemes` WHERE `employee_id` = ? AND `start_date` <= ? AND  `end_date` >= ?",
+            [$this->employee_id, $startDateTime, $startDateTime]
         );
 
         if (count($schedule) ==0) {

@@ -731,6 +731,19 @@ class EmployeeController extends Controller
         // DELETE FROM schedule WHERE employee_id=? AND work_end>FIRST_NEW_WORK_START AND work_start<LAST_NEW_WORK_END
         $newScheduleFirstWorkStart = $scheduleIntervals[0]['start'];
         $newScheduleLastWorkEnd = $scheduleIntervals[count($scheduleIntervals)-1]['end'];
+        // получаем последний день на который есть расписание
+        /*
+        // получаем исходя из последнего фактически рабочего дня (на который есть рабочие интервалы)
+        if (substr('2017-04-12 00:00:00', -8) == '00:00:00') {
+            $lastDay = strtotime($newScheduleLastWorkEnd." - 1 day");
+        } else {
+            $lastDay = strtotime($newScheduleLastWorkEnd);
+        }
+        $lastDay = date('Y-m-d', $lastDay);
+        */
+        // "округляем" до конца недели
+        $lastDay = date('Y-m-d', strtotime("{$startDate} + ".(($fillWeeks * 7) - 1)." days"));
+        Log::info(__METHOD__." startDate:{$startDate} - fillWeeks:$fillWeeks - lastDay:$lastDay\n"."{$startDate} + ".(($fillWeeks * 7) - 1)." days");
 
         DB::beginTransaction();
         $deletedRows = Schedule::where('employee_id', $employee->employee_id)
@@ -757,6 +770,7 @@ class EmployeeController extends Controller
             ['employee_id' => $employee->employee_id],
             [
                 'start_date' => $startDate,
+                'end_date' => $lastDay,
                 'schedule' => json_encode($formData['schedule']),
                 'fill_weeks' => $formData['fill_weeks']
             ]
