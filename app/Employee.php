@@ -94,6 +94,24 @@ class Employee extends Model
 		return $this->hasOne('App\ScheduleScheme');
 	}
 
+    /**
+     * получает расписание сотрудника на заданную дату
+     * @param $startDateTime
+     * @return bool
+     */
+    public function getScheduleSchemeByDate($startDateTime)	{
+        $schedule = DB::select(
+            "SELECT * FROM `schedule_schemes` WHERE `employee_id` = ? AND `start_date` = '$startDateTime'",
+            [$this->employee_id]
+        );
+
+        if (count($schedule) ==0) {
+            return FALSE;
+        }
+
+        return $schedule[0];
+	}
+
 	public function calculatedWage()
 	{
 		return $this->hasMany('App\CalculatedWage');
