@@ -492,8 +492,10 @@ class EmployeeController extends Controller
             0 => [], 1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => []
         ];
 
-        $scheduleScheme = $employee->scheduleScheme()->first();
+        //$scheduleScheme = $employee->scheduleScheme()->first();
 
+        // если есть расписание на заданную дату, заполяем массив
+        $scheduleScheme = $employee->getScheduleSchemeByDate($scheduleStartDate);
         if ($scheduleScheme) {
             $tmpSchedule = json_decode($scheduleScheme->schedule);
             foreach ($tmpSchedule AS $day => $hours) {
