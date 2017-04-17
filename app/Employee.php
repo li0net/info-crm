@@ -679,4 +679,24 @@ class Employee extends Model
         return $totalAmount;
     }
 
+    public function generatePayroll($appointmentsData = null, $productsData = null) {
+        if (is_null($appointmentsData) AND is_null($productsData)) {
+            return FALSE;
+            // TODO: throw exception or return error text in other way
+        }
+
+        //use PDF;
+        view()->share([
+            'apps' =>  $appointmentsData,
+            'products' => $productsData
+        ]);
+
+        if(request()->has('download')){
+            $pdf = PDF::loadView('employee.pdf.payroll');
+            return $pdf->download('payroll.pdf');       // TODO: add employee name and date
+        }
+
+        return view('employee.pdf.payroll');
+    }
+
 }
