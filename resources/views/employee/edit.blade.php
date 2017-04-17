@@ -367,7 +367,7 @@
                                 <div class="form-group">
                                     <label for="ws_wage_scheme_id" class="col-sm-4 text-right ctrl-label">@lang('main.employee:wage_scheme_label')</label>
                                     <div class="col-sm-7">
-                                        <select name="wage_scheme_id" id="ws_wage_scheme_id" class="js-select-basic" >
+                                        <select name="wage_scheme_id" id="ws_wage_scheme_id" class="js-select-basic-single" >
                                             @foreach($wageSchemeOptions AS $wageScheme)
                                                 <option
                                                     @if(old('wage_scheme_id') AND old('wage_scheme_id') == $wageScheme['value'])
@@ -772,6 +772,8 @@
             }
         });
 
+        // check if important lists are empty and show info-window
+        checkZeroLists(['position_id', 'wage_scheme_id']);
     });
 </script>
 @endsection

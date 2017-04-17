@@ -866,6 +866,24 @@ $(document).ready(function () {
 
     $('.select2-selection__rendered').removeAttr('title');
 
+
+    /**
+     * click on info-icon shows side-modal with information
+     */
+    $('.fa.fa-info-circle').on('click', function(){
+        var id = $(this).attr('id');
+        var text = '';
+
+        if ( $('#sim_'+id).length ){
+            text = $('#sim_'+id).html();
+        } else {
+            // temporary
+            text = $('#sim_info_example').html();
+        }
+        // open side-modal
+        showSideModal(text);
+    });
+
     return false;
 });
 

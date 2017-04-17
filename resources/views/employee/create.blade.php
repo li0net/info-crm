@@ -79,6 +79,15 @@
     </div>
 @endsection
 
+@section('page-specific-scripts')
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // check if important lists are empty and show info-window
+            checkZeroLists(['position_id']);
+        });
+    </script>
+@endsection
+
 {{-- @section('scripts')
 	{!! Html::script('js/parsley.min.js') !!}
 @endsection --}}
