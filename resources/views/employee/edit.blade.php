@@ -418,6 +418,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-sm-12 text-center">
+                    <hr>
+                </div>
                 <div class="col-sm-12 text-right">
                     {!! Html::linkRoute('employee.show', trans('adminlte_lang::message.cancel'), [$employee->employee_id], ['class'=>'btn btn-info m-r']) !!}
                     {{ Form::button(trans('adminlte_lang::message.save'), ['class'=>'btn btn-primary  ', 'id' => 'form_submit']) }}
@@ -684,6 +687,8 @@
                 theme: "alt-control",
                 placeholder: "choose one",
                 minimumResultsForSearch: Infinity
+            }).on("select2:open", function () {
+                $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #6d51aa", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
             });
         });
 

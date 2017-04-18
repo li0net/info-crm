@@ -618,20 +618,27 @@ $(document).ready(function () {
         format: 'yyyy-mm-dd',
         firstDay: 1
     });
+
     // select2 multiple select init
     $(".js-select-basic-multiple").select2({
         placeholder: "Выберите категории",
         templateResult: formatClientCatColor,
         allowClear: true
+    }).on("select2:open", function () {
+        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #6d51aa", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
 
     $(".js-select-basic-single").select2({
         minimumResultsForSearch: Infinity
+    }).on("select2:open", function () {
+        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #6d51aa", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
 
     $(".alt-control-bar .js-select-basic-single").select2({
         theme: "alt-control",
         minimumResultsForSearch: Infinity
+    }).on("select2:open", function () {
+        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #6d51aa", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
 
 
@@ -804,6 +811,8 @@ $(document).ready(function () {
     $(".js-select-basic").select2({
         placeholder: "Select wage scheme",
         allowClear: true
+    }).on("select2:open", function () {
+        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #6d51aa", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
 
     $('#ws_scheme_start').datepicker({
@@ -883,6 +892,19 @@ $(document).ready(function () {
         // open side-modal
         showSideModal(text);
     });
+
+    // открываем активные выпадающие меню, увеличиваем высоту контена, елси она минимальная
+    $('.main-sidebar .activated').each(function( index ) {
+        $(this).addClass('active');
+        $(this).find('.treeview-menu').addClass('menu-open').stop(true, true).slideDown(400);
+        var conHeight = $('.content-wrapper').height();
+        if (conHeight < 800){
+            $('.content-wrapper').height(conHeight + $(this).children('.treeview-menu').height() + 100);
+        }
+        $(this).removeClass('activated');
+    });
+
+
 
     return false;
 });

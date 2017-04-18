@@ -40,7 +40,8 @@ elixir(function(mix) {
         .webpack('usercabinet.js')
         .webpack('landing.js')
         .webpack('bootstrap.min.js')
-        .copy('resources/assets/img', 'public/img');
+        .copy('resources/assets/img', 'public/img')
+        .copy('resources/assets/js/jquery.nicescroll.min.js', 'public/js');
 
     /* Не удалять, позже будем использовать для оптимизации. Работает под Linux
      mix.imageOptimize("./resources/assets/img", "public/img/");*/

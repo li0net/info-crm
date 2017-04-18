@@ -64,7 +64,7 @@
             <li class="@if ($page == 'employee') active @endif">
                 <a href="{{ url('/employee') }}"><i class='fa fa-black-tie'></i> <span>{{ trans('adminlte_lang::message.employees') }}</span></a>
             </li>
-            <li class="treeview @if(in_array($page, array('clients', 'clientCategories'))) active @endif">
+            <li class="treeview @if(in_array($page, array('clients', 'clientCategories'))) activated @endif">
                 <a href="#" ><i class='fa fa-users'></i> <span>{{ trans('adminlte_lang::message.clients') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     @if ($crmuser->hasAccessTo('clients_view', 'view', null))
@@ -78,7 +78,7 @@
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.electronic_cards') }}</a></li>--}}
                 </ul>
             </li>
-            <li class="treeview @if(in_array($page, array('home'))) active @endif">
+            <li class="treeview @if(in_array($page, array('home'))) activated @endif">
                 <a href="#"><i class='fa fa-newspaper-o'></i> <span>{{ trans('adminlte_lang::message.dashboard') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li  class="@if ($page == 'home') active @endif">
@@ -91,7 +91,7 @@
                 </ul>
             </li>
 
-            <li class="treeview @if(in_array($page, array('employee','services','clients','salesanalysis','storagebalance'),'salesanalysis'))) active @endif">
+            <li class="treeview @if(in_array($page, array('employee','services','clients','salesanalysis','storagebalance'),'salesanalysis'))) activated @endif">
                 <a href="#"><i class='fa fa-line-chart'></i> <span>{{ trans('adminlte_lang::message.stats') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.indicators') }}</a></li>--}}
@@ -118,7 +118,7 @@
             </li>
 
             @if ($crmuser->hasAccessTo('finances', 'view', null))
-            <li class="treeview  @if(in_array($page, array('account','partner','item','wage_scheme','payment'))) active @endif">
+            <li class="treeview  @if(in_array($page, array('account','partner','item','wage_scheme','payment'))) activated @endif">
                 <a href="#"><i class='fa fa-dollar'></i> <span>{{ trans('adminlte_lang::message.finance') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li  class="@if ($page == 'account') active @endif">
@@ -152,7 +152,7 @@
             </li>
             @endif
 
-            <li class="treeview @if(in_array($page, array('storage','product','productCategories','card','unit','storagetransaction','storagebalance','salesanalysis'))) active @endif">
+            <li class="treeview @if(in_array($page, array('storage','product','productCategories','card','unit','storagetransaction','storagebalance','salesanalysis'))) activated @endif">
                 <a href="#"><i class='fa fa-archive'></i> <span>{{ trans('adminlte_lang::message.stock') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li  class="@if ($page == 'storage') active @endif">
@@ -197,7 +197,7 @@
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.settings') }}</a></li>--}}
                 {{--</ul>--}}
             {{--</li>--}}
-            <li class="treeview @if(in_array($page, array('organization','serviceCategories','services','resource','employee','position','users'))) active @endif">
+            <li class="treeview @if(in_array($page, array('organization','serviceCategories','services','resource','employee','position','users'))) activated @endif">
                 <a href="#"><i class='fa fa-cogs'></i> <span>{{ trans('adminlte_lang::message.settings') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li  class="@if ($page == 'organization') active @endif">

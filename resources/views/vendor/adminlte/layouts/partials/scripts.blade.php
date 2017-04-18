@@ -17,9 +17,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 <!--<script src="{{ asset('/js/bootstrap-select.js') }}"></script>-->
 <script src="https://cdn.jsdelivr.net/vue/1.0.28/vue.js"></script>
+
 <script src="{{ asset('/plugins/colorpicker/bootstrap-colorpicker.min.js') }}"></script>
 <script src="{{ asset('/plugins/select2/select2.full.min.js') }}"></script>
 <script src="{{ asset('/plugins/iCheck/icheck.js') }}"></script>
+<script src="{{ asset('/js/jquery.nicescroll.min.js') }}"></script>
 
 <!-- Dump all dynamic scripts into template -->
 @stack('scripts')
@@ -34,6 +36,7 @@ window.Laravel = <?php echo json_encode([
         'csrfToken' => csrf_token(),
 ]); ?>
 </script>
+
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

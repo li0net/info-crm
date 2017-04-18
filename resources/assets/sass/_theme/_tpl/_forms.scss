@@ -467,8 +467,13 @@ body.skin-orange {
         @include border-bottom-radius(0);
       }
     }
-
-
+  }
+  .select2-container{
+    .select2-dropdown{
+      .nicescroll-rails {
+        background: rgba(255,174,26,0.1);
+      }
+    }
   }
 
   /** bootstrap select **/

@@ -66,11 +66,11 @@
                         </div>
                     </div>
                     <span class="btn btn-info btn-file">
-                {{ trans('adminlte_lang::message.load_photo') }}<input type="file" name="avatar" @change="onFileChange">
-            </span>
+                        {{ trans('adminlte_lang::message.load_photo') }}<input type="file" name="avatar" @change="onFileChange">
+                    </span>
                 </div>
-                <hr>
-                <div class="col-sm-12 text-right">
+                <div class="col-sm-4  col-sm-offset-8  text-center">
+                    <br>
                     {{	Form::submit(trans('adminlte_lang::message.save'), ['class' => 'btn btn-primary']) }}
                 </div>
                 {!! Form::close() !!}
