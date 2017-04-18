@@ -15,7 +15,8 @@
         "williamson/laragram": "^1.0",
         "barryvdh/laravel-ide-helper": "v2.3.2",
         "doctrine/common": "v2.7.2",
-        "doctrine/dbal": "v2.5.12"
+        "doctrine/dbal": "v2.5.12",
+		"barryvdh/laravel-dompdf": ">=0.7.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

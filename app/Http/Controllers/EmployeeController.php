@@ -782,4 +782,53 @@ class EmployeeController extends Controller
             'error' => ''
         ]);
     }
+
+    public function getPayroll() {
+        $servicesInfo = [
+            '2017-04-10 10:30:00' => [
+                '5' => [
+                    'start'         => '2017-04-10 10:30:00',
+                    'end'           => '2017-04-10 12:00:00',
+                    'title'         => 'Haircut',
+                    'price'         => '200',
+                    'discount'      => '',
+                    'total'         => '200',
+                    'percent_earned' => '40',
+                    'client_name'   => 'Joe Wilder',
+                ],
+                '7' => [
+                    'start'         => '2017-04-10 13:00:00',
+                    'end'           => '2017-04-10 13:30:00',
+                    'title'         => 'Haircut 2',
+                    'price'         => '500',
+                    'discount'      => '',
+                    'total'         => '500',
+                    'percent_earned' => '100',
+                    'client_name'   => 'Jinny Carrano',
+                ]
+            ],
+            '2017-04-11 09:00:00' => [
+                '9' => [
+                    'start'         => '2017-04-11 09:30:00',
+                    'end'           => '2017-04-11 11:00:00',
+                    'title'         => 'Haircut3',
+                    'price'         => '300',
+                    'discount'      => '',
+                    'total'         => '300',
+                    'percent_earned' => '50',
+                    'client_name'   => 'Joe Popper',
+                ]
+            ]
+        ];
+
+        $salaryData = [
+            'wage_rate' => 100,
+            'wage_period' => 'day',
+            'num_periods' => 5,
+            'total' => 500
+        ];
+
+        $emp = Employee::find(3);
+        $r = $emp->generatePayroll(690, $servicesInfo, null, $salaryData);
+    }
 }

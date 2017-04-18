@@ -218,3 +218,5 @@ Route::get('/oauth/managePersonalTokens', function() {
         'passportVueComponent'  => '<passport-personal-access-tokens></passport-personal-access-tokens>'
     ]);
 })->middleware('auth');
+
+Route::get('/employees/getPayroll', '\App\Http\Controllers\EmployeeController@getPayroll');

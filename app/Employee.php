@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade;
 
 /**
  * App\Employee
@@ -544,6 +545,10 @@ class Employee extends Model
         // Оклад
         $salary = (float)0;
         $wageRate = (float)$wageScheme->wage_rate;
+        $salaryData = [
+            'wage_rate' => $wageScheme->wage_rate,
+            'wage_period' => $wageScheme->wage_rate_period
+        ];
 
         // wage_rate_period	enum('hour','day','month')
         // Если ставка не ненулевая и одного из двух типов - hour/day
@@ -580,8 +585,10 @@ class Employee extends Model
                 if ($wageScheme->wage_rate_period == 'hour') {
                     // 3)Значение отработанного времени не округляем - часы и минуты переводим в десятичный формат и умножая на почасовку, получаем дробное, в общем случае, значение заработной платы.
                     $salary = ($minutes / 60) * $wageRate;
+                    $salaryData['num_periods'] = round(($minutes / 60), 1);
                 } elseif ($wageScheme->wage_rate_period == 'day') {
                     $salary = count($daysWorked) * $wageRate;
+                    $salaryData['num_periods'] = count($daysWorked);
                 }
             }
         }
@@ -589,7 +596,9 @@ class Employee extends Model
 			// 1) Фикса должна рассчитываться вне зависимости от кол-ва отработанного времени, однако должна быть возможность ее отключить(обнулить).
 			// 2)Соответственно, понятия минимально отработанного времени не будет
 			$salary = $wageRate;
+            $salaryData['num_periods'] = 1;
 		}
+        $salaryData['total'] = round($salary, 2);
 
         // Отбираем записи в пределах того же срока и тоже Сортируем по возрастанию (по дате начала)
         $servicesPercentSum = (float)0;
@@ -597,9 +606,10 @@ class Employee extends Model
         if ((int)$wageScheme->services_percent > 0) {
             $appts = DB::select(
                 "SELECT a.id, a.service_price, a.service_discount, a.service_sum, a.start, a.end, " .
-                "s.name " .
+                "s.name, s.price_min, c.name AS client_name " .
                 "FROM appointments a " .
                 "LEFT JOIN services s ON s.service_id=a.service_id " .
+                "LEFT JOIN clients c ON a.client_id=c.client_id ".
                 "WHERE a.employee_id=? AND (a.start BETWEEN '$startDate' AND '$endDate') OR (a.end BETWEEN '$startDate' AND '$endDate') AND " .
                 "a.state='finished' ".
                 "ORDER BY a.start ASC",
@@ -613,16 +623,22 @@ class Employee extends Model
                     } else {
                         $appName = $apt->name;
                     }
+                    if (trim($apt->service_price) == '') {
+                        $servicePrice = $apt->price_min;
+                    } else {
+                        $servicePrice = $apt->service_price;
+                    }
 
                     $servicesPercentSum += (float)$apt->service_sum * (int)$wageScheme->services_percent;
                     $servicesPerformedInfo[$apt->start][$apt->id] = [
                         'start'         => $apt->start,
                         'end'           => $apt->end,
                         'title'         => $appName,
-                        'price'         => $apt->service_price,
+                        'price'         => $servicePrice,
                         'discount'      => $apt->service_discount,
                         'total'         => $apt->service_sum,
-                        'percent_earned' => (float)$apt->service_sum * (int)$wageScheme->services_percent
+                        'percent_earned' => (float)$apt->service_sum * (int)$wageScheme->services_percent,
+                        'client_name'   => $apt->client_name,
                     ];
                 }
             }
@@ -688,6 +704,7 @@ class Employee extends Model
             'wage_period_end'   => $endDate,
             'appointments_data' => json_encode($servicesPerformedInfo),
             'products_data'     => json_encode($productsSoldInfo),          // сюда попадут переведенные фразы - доработать
+            'salary_data'       => json_encode($salaryData),
             'total_amount'      => $totalAmount
         ]);
 
@@ -697,22 +714,23 @@ class Employee extends Model
         return $totalAmount;
     }
 
-    public function generatePayroll($appointmentsData = null, $productsData = null) {
+    public function generatePayroll($totalWage, $appointmentsData = null, $productsData = null, $salaryData = null) {
         if (is_null($appointmentsData) AND is_null($productsData)) {
             return FALSE;
             // TODO: throw exception or return error text in other way
         }
 
-        //use PDF;
         view()->share([
             'apps' =>  $appointmentsData,
-            'products' => $productsData
+            'products' => $productsData,
+            'salary' => $salaryData,
+            'total_wage' => $totalWage
         ]);
 
-        if(request()->has('download')){
+        //if(request()->has('download')){
             $pdf = PDF::loadView('employee.pdf.payroll');
             return $pdf->download('payroll.pdf');       // TODO: add employee name and date
-        }
+        //}
 
         return view('employee.pdf.payroll');
     }
