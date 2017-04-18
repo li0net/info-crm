@@ -43,7 +43,13 @@
                 @foreach($employees as $employee)
                 <tr>
                     <th class="text-center">{{ $employee->employee_id }}</th>
-                    <td class="text-center"><img src="/images/{{ $employee->avatar_image_name }}" alt="image" style="width: 32px; height: 32px; border-radius: 50%;"></td>
+                    <td class="text-center">
+                        @if( $employee->avatar_image_name != null)
+                            <img src="/images/{{ $employee->avatar_image_name }}" class="img-circle img-circle-small ">
+                        @else
+                            <img src="/img/crm/avatar/avatar100.jpg" alt=""  class="img-circle img-circle-small ">
+                        @endif
+                    </td>
                     <td>{{ $employee->name }}</td>
                     <td>{{ $employee->email }}</td>
                     <td>{{ $employee->phone }}</td>

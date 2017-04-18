@@ -2,7 +2,7 @@
 <html>
 
 @include('adminlte::layouts.partials.htmlheader')
-<body>
+<body class="skin-orange error-body">
     <div id="app">
         <!-- Main content -->
         <section class="content">

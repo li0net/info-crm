@@ -7,13 +7,13 @@
             @if( $employee->avatar != null)
                <img src="/images/{{ $employee->avatar }}"  class="img-thumbnail">
             @else
-              <img src="/images/no-master.png" alt=""  class="img-thumbnail">
+              <img src="/img/crm/avatar/avatar100.jpg" alt=""  class="img-thumbnail">
             @endif
         </div>
         <div class="col-xs-4">
             <div class="name">{{$employee->name}}</div>
-            <div class="description">{{$employee->position_name}}</div>
-
+                <div class="description">{{$employee->position_name}}
+            </div>
         </div>
         <div class="col-xs-5 description">
             <div class="description">{{$employee->description}}</div>

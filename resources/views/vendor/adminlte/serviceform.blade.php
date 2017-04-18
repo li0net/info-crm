@@ -326,13 +326,16 @@
 @section('page-specific-scripts')
 <script>
     $(document).ready(function(){
+        window.employeeOptions = [];
+        window.routingOptions = [];
+
         $('#add-employee').on('click', function(e){
             $('.employee-content').prepend('<div class="row"><div class="col-sm-3"><select required="required" name="service-employee[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><select required="required" name="service-duration-hour[]" class="js-select-basic-single"><option value="0">0 ч</option><option value="1">1 ч</option><option value="2">2 ч</option><option value="3">3 ч</option><option value="4">4 ч</option><option value="5">5 ч</option><option value="6">6 ч</option><option value="7">7 ч</option><option value="8">8 ч</option><option value="9">9 ч</option></select></div> <div class="col-sm-2"><select required="required" name="service-duration-minute[]" class="js-select-basic-single"><option value="00">00 мин</option><option value="15">15 мин</option><option value="30">30 мин</option><option value="45">45 мин</option></select></div> <div class="col-sm-3"><select required="required" name="service-routing[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><button type="button" id="delete-employee" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>');
             sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-employee[]"]').first();
-            sel.html($('#employee-options').val());
+            sel.html(window.employeeOptions);
 
             sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-routing[]"]').first();
-            sel.html($('#routing-options').val());
+            sel.html(window.routingOptions);
 
             $(".employee-content .js-select-basic-single").select2({
                 theme: "alt-control",
@@ -388,18 +391,15 @@
                 $('select[name="service-employee[]"]').html('');
                 $('select[name="service-employee[]"]').html(data.options);
 
-                $('#employee-options').val(data.options);
+                //$('#employee-options').val(data.options);
+                window.employeeOptions = data.options;
                 // $('select.form-control[name="products_cats_detailed[]"]').find('option').remove();
                 // $('select.form-control[name="products_cats_detailed[]"]').append(options);
 
-                $('select.form-control[name="service-employee[]"]').each(function() {
+                $('select.js-select-basic-single[name="service-employee[]"]').each(function() {
                     var initialValue = $(this).attr('data-initial-value');
 
-                    if ( 0 != initialValue ) {
-                        $(this).val(initialValue);
-                    } else {
-                        $(this).val($(this).find('option').first().val());
-                    }
+                    $(this).val(initialValue).trigger("change");
                 });
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -416,16 +416,13 @@
                 $('select[name="service-routing[]"]').html('');
                 $('select[name="service-routing[]"]').html(data.options);
 
-                $('#routing-options').val(data.options);
+                //$('#routing-options').val(data.options);
+                window.routingOptions = data.options;
 
-                $('select.form-control[name="service-routing[]"]').each(function() {
+                $('select.js-select-basic-single[name="service-routing[]"]').each(function() {
                     var initialValue = $(this).attr('data-initial-value');
 
-                    if ( 0 != initialValue ) {
-                        $(this).val(initialValue);
-                    } else {
-                        $(this).val($(this).find('option').first().val());
-                    }
+                    $(this).val(initialValue).trigger("change");
                 });
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -444,7 +441,7 @@
 
                 $('#resource-options').val(data.options);
 
-                $('select.form-control[name="service-resource[]"]').each(function() {
+                $('select.js-select-basic-single[name="service-resource[]"]').each(function() {
                     var initialValue = $(this).attr('data-initial-value');
 
                     if ( 0 != initialValue ) {

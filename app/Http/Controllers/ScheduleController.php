@@ -44,7 +44,8 @@ class ScheduleController extends Controller
             $errs = $validator->messages();
             //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
 
-            return json_encode([
+            //return json_encode([
+            return response()->json([
                 'success' => false,
                 'validation_errors' => $errs
             ]);
@@ -52,7 +53,8 @@ class ScheduleController extends Controller
 
         $employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $request->get('employee_id'))->first();
         if (is_null($employee)) {
-            return json_encode([
+            //return json_encode([
+            return response()->json([
                 'success' => false,
                 'error' => [
                     'Incorrect employee'
@@ -62,7 +64,8 @@ class ScheduleController extends Controller
 
         $startDate = $request->get('start_date');
         if (1 != date('w', strtotime($startDate))) {       // проверяем, что переданная дата является понедельником
-            return json_encode([
+            //return json_encode([
+            return response()->json([
                 'success' => false,
                 'error' => [
                     'Start date should be monday'
@@ -75,7 +78,8 @@ class ScheduleController extends Controller
 
         foreach($scheduleArr AS $dCount=>$hours) {
             if ((int)$dCount < 0 OR (int)$dCount > 6) {
-                return json_encode([
+                //return json_encode([
+                return response()->json([
                     'success' => false,
                     'error' => [
                         'Incorrect schedule data (day)'
@@ -86,7 +90,8 @@ class ScheduleController extends Controller
             $prevHour = null;
             foreach ($hours AS $hour) {
                 if ((int)$hour < 0 OR (int)$hour > 23) {
-                    return json_encode([
+                    //return json_encode([
+                    return response()->json([
                         'success' => false,
                         'error' => [
                             'Incorrect schedule data (hour)'
@@ -131,7 +136,8 @@ class ScheduleController extends Controller
         $fillWeeks = (int)$request->get('fill_weeks');
         if ($fillWeeks > 1) {
             if ($fillWeeks > 12) {      // позволяем заполнять максимум 12 недель за раз
-                return json_encode([
+                //return json_encode([
+                return response()->json([
                     'success' => false,
                     'error' => [
                         'Incorrect weeks num'
@@ -159,7 +165,8 @@ class ScheduleController extends Controller
             $employee->schedules()->save($schedule);
         }
 
-        return json_encode([
+        //return json_encode([
+        return response()->json([
             'success' => true,
             'error' => ''
         ]);

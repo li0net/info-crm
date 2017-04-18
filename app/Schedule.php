@@ -29,7 +29,8 @@ class Schedule extends Model
 
     protected $fillable = [
         'work_start',
-        'work_end'
+        'work_end',
+        //'employee_id'
     ];
 
     public function employee()

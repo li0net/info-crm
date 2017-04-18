@@ -49,6 +49,7 @@ body.skin-orange {
       }
     }
     &.btn-link {
+
       border: none;
       &.no-padding {
         padding: 3px 0;
@@ -117,6 +118,10 @@ body.skin-orange {
   }
 
   /** nav modal-menu */
+  .nav-stacked-block{
+    border-right: 1px solid $brand-main;
+    padding-right: 0;
+  }
   .nav.modal-menu.nav-tabs.nav-stacked {
     background-color: $body-bg;
     padding: 0;
@@ -126,8 +131,10 @@ body.skin-orange {
       background-color: $brand-main;
       color: $brand-main-text;
       text-decoration: none;
-      padding-left: 15px;
+      margin: 0;
+      padding: 10px 0 10px 15px;
       &.nav-header {
+        padding: 10px 0 10px 15px;
         background-color: transparent;
         color: $text-color;
         &:hover {
@@ -140,6 +147,59 @@ body.skin-orange {
       &.active {
         color: $brand-main;
         background-color: $brand-main-text;
+      }
+
+      &.first-item,
+      &.first-item.active{
+        border-top: 4px solid $brand-main !important;
+      }
+      &.last-item,
+      &.last-item.active{
+        border-bottom: 4px solid $brand-main !important;
+      }
+
+    }
+  }
+
+  /** input-pills */
+  .input-group.input-pills{
+    display: table;
+    width:100%;
+    input[type=radio],
+    .iradio_flat-purple{
+      display: none;
+    }
+    label{
+      color: $brand-main-text;
+      display: table-cell;
+      background-color: $brand-main;
+      border-radius: 0;
+      background-clip: padding-box;
+      @include transition-all (0.3s);
+      padding: 3px 10px;
+      font-size: 14pt;
+      margin-right: 1px;
+      border: 1px solid $brand-main;
+      cursor: pointer;
+      font-weight: normal;
+      text-align: center;
+      .hidden-xs {
+        color: $brand-main-text;
+      }
+      &:first-of-type {
+       @include border-left-radius(15px);
+      }
+      &:last-of-type {
+       @include border-right-radius(15px);
+      }
+    }
+    .iradio_flat-purple.checked + label,
+    input[type=radio]:checked + label{
+      background-color: $brand-main-text;
+      border: 1px solid $brand-secondary;
+      color: $brand-secondary;
+      .hidden-xs {
+        color: $brand-secondary;
       }
     }
   }
@@ -226,6 +286,11 @@ body.skin-orange {
       padding-top: 7px;
     }
   }
+  .form-horizontal{
+    .btn{
+      margin-top: 7px;
+    }
+  }
   .form-control {
     border: 1px solid $brand-main;
     @include border-radius(15px);
@@ -233,7 +298,7 @@ body.skin-orange {
     font-size: $font-size-input;
     padding: 5px 15px;
     line-height: 19px;
-    //height: 30px;
+    min-height: 34px;
     margin-top: 7px;
 
   }
@@ -297,6 +362,7 @@ body.skin-orange {
       padding: 0;
       height: auto;
       color: $text-color;
+      min-height: 34px;
       .select2-selection__rendered {
         padding: 2px 15px;
         margin: 0;
@@ -360,6 +426,7 @@ body.skin-orange {
         @include border-radius(15px);
         border: 2px solid $brand-main-text;
         color: $brand-main-text;
+        min-height: 34px;
       }
     }
     .select2-selection__arrow {
@@ -388,6 +455,20 @@ body.skin-orange {
         }
       }
     }
+
+    .select2-dropdown--below{
+      ul.select2-results__options {
+        @include border-bottom-radius(15px);
+      }
+    }
+    .select2-dropdown--above{
+      ul.select2-results__options {
+        @include border-top-radius(15px);
+        @include border-bottom-radius(0);
+      }
+    }
+
+
   }
 
   /** bootstrap select **/
@@ -490,7 +571,17 @@ body.skin-orange {
       padding-left: 1px;
       padding-right: 1px;
     }
+    table{
+      thead,tbody{
+        tr{
+          td,th{
+            padding: 5px;
+          }
+        }
+      }
+    }
     .btn.btn-add,
+    .btn.btn-remove,
     .btn.btn-danger{
       margin-left: 10px;
       color: $red-color;
@@ -504,10 +595,41 @@ body.skin-orange {
       &:hover{
         background: transparent;
         color: $brand-secondary;
+        i{
+          color: $brand-secondary;
+        }
+      }
+    }
+    .btn.btn-remove{
+      background-color: transparent;
+      &:hover {
+        background-color: transparent;
+        text-decoration: none;
+        color: $brand-secondary;
+        i{
+          color: $brand-secondary;
+        }
+      }
+      .fa-plus-circle{
+        display: none;
+      }
+      .fa-trash-o{
+        display: inline-block;
+      }
+
+      &:hover{
+        color: $brand-main-hover;
       }
     }
     .btn.btn-add{
       color: $brand-main;
+      .fa-plus-circle{
+        display: inline-block;
+      }
+      .fa-trash-o{
+        display: none;
+      }
+
       &:hover{
         color: $brand-main-hover;
       }
@@ -526,11 +648,31 @@ body.skin-orange {
       &:hover,
       &:hover,
       &:focus {
+        background-color: rgba(0,0,0,0.1);
         border-color: $brand-main-text;
         outline: 0;
         box-shadow: none;
       }
     }
+    select.form-control {
+      > option {
+        &:checked,
+        &:hover {
+          color: $text-grey-color !important;
+          background-color: rgba(0,0,0,0.2) !important;
+          box-shadow: 0 0 10px 100px rgba(0,0,0,0.2) inset !important;
+          background: #6D51AA repeat url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2PIDVz1HwAE/wJoMeu6HgAAAABJRU5ErkJggg==");
+        }
+      }
+      &:focus > option:checked,
+      &:focus > option:hover {
+        color: $text-grey-color !important;
+        background-color: rgba(0,0,0,0.2) !important;
+        box-shadow: 0 0 10px 100px rgba(0,0,0,0.2) inset !important;
+        background: #6D51AA repeat url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2PIDVz1HwAE/wJoMeu6HgAAAABJRU5ErkJggg==");
+      }
+    }
+
     .select2-container--alt-control,
     .select2{
       margin-top: 0;
@@ -615,6 +757,123 @@ body.skin-orange {
       }
     }
   }
+  .goods_sale{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 15px;
+  }
+  .datepicker-white{
+    .datepicker {
+      table tr td,
+      table tr th {
+        font-size: 12px;
+        color: #444444;
+      }
+    }
+  }
+  .datepicker-week {
+    .datepicker{
+      .datepicker-days table tbody {
+        tr{
+          td{
+            border-radius: 0;
+            &.today.day{
+              border: 1px solid $brand-secondary;
+            }
+            &.cw{
+              color: $brand-main;
+              font-weight: bold;
+            }
+          }
+          &.active{
+            background-color: $brand-main;
+            th,td{
+              color: $brand-main-text;
+              &:hover,
+              &.active{
+                background-color: $brand-main;
+                color: $brand-main-text;
+                &.cw{
+                  color: $brand-secondary;
+                  background-color: #FFFFFF !important;
+                }
+              }
+              &.cw{
+                color: $brand-secondary;
+                background-color: #FFFFFF !important;
+              }
+            }
+          }
+          &:hover {
+            background-color: $brand-main;
+            th,td{
+              color: $brand-main-text;
+              &:hover,
+              &.active{
+                background-color: $brand-main;
+                color: $brand-main-text;
+                &.cw{
+                  color: $brand-secondary;
+                  background-color: #FFFFFF !important;
+                }
+              }
+              &.cw{
+                color: $brand-secondary;
+                background-color: #FFFFFF !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .form-inline,
+  .form-inline.alt-control-bar {
+    .label-sm {
+      font-size: $font-size-small;
+    }
+    .form-control.form-control-sm {
+      font-size: $font-size-small;
+      min-height: 10px;
+      padding: 2px 10px;
+      line-height: 10px;
+      height: 25px;
+      margin-top: 7px;
+      .btn-link-sm {
+        font-size: $font-size-small;
+        line-height: 10px;
+        margin-top: 12px;
+      }
+      i {
+        font-size: $font-size-small;
+        margin-right: 3px;
+      }
+    }
+  }
+
+
+
+  /************************/
+  #shedule-buttons,
+  .operating_schedule{
+    display:block;width:720px!important;
+  }
+
+  #shedule-buttons{
+    &.form-horizontal.form-inline{
+      .btn-link.btn-link-sm {
+        font-size: $font-size-small;
+        line-height: 10px;
+        margin-top: 12px;
+      }
+      i {
+        font-size: $font-size-small;
+        margin-right: 3px;
+      }
+      .form-group{
+        padding-left: 30px;
+      }
+    }
+  }
 }
 /** placeholders **/
 &::-webkit-input-placeholder,
@@ -685,9 +944,116 @@ body.skin-orange {
 .radio label, .checkbox label {
   padding-left: 0;
 }
+.icheckbox_flat-purple,
+.iradio_flat-purple {
+  background: url(/img/crm/plugins/iCheck/purple.png) no-repeat;
+  &.white{
+    background: url(/img/crm/plugins/iCheck/purple_w.png) no-repeat;
+  }
+}
+.icheckbox_flat-purple {
+  background-position: 0 0;
+}
+.icheckbox_flat-purple.checked {
+  background-position: -22px 0;
+}
+.icheckbox_flat-purple.disabled {
+  background-position: -44px 0;
+  cursor: default;
+}
+.icheckbox_flat-purple.checked.disabled {
+  background-position: -66px 0;
+}
+
+.iradio_flat-purple {
+  background-position: -88px 0;
+}
+.iradio_flat-purple.checked {
+  background-position: -110px 0;
+}
+.iradio_flat-purple.disabled {
+  background-position: -132px 0;
+  cursor: default;
+}
+.iradio_flat-purple.checked.disabled {
+  background-position: -154px 0;
+}
 .icheckbox_flat-purple{
   vertical-align: sub;
   //border: 1px solid $brand-main;
   //border-radius: 5px;
   //background: $brand-main-text;
 }
+
+/* Retina support */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (-moz-min-device-pixel-ratio: 1.5),
+only screen and (-o-min-device-pixel-ratio: 3/2),
+only screen and (min-device-pixel-ratio: 1.5) {
+  .icheckbox_flat-purple,
+  .iradio_flat-purple {
+    background-image: url(/img/crm/plugins/iCheck/purple@2x.png);
+    -webkit-background-size: 176px 22px;
+    background-size: 176px 22px;
+    &.white{
+      background: url(/img/crm/plugins/iCheck/purple@2x_w.png) no-repeat;
+    }
+  }
+}
+
+#payments_content{
+  display: block;
+  table{
+    thead{
+      td{
+        white-space: nowrap;
+      }
+    }
+    td{
+      border-top: none;
+      border-bottom: none;
+      .btn-link{
+        color: $brand-main;
+        i{
+          color: $brand-main;
+          font-size: 18px;
+        }
+      }
+    }
+    .info-section{
+      display: none;
+    }
+    .toggle-info-section{
+      .fa-caret-up{
+        display: none;
+      }
+    }
+  }
+  .total-row {
+    border-bottom: 2px solid #FFF !important;
+    font-weight: bold;
+    .section-subtotal-title{
+      font-weight: bold;
+    }
+  }
+  .delete-transaction-btn, .cancel-loyalty-btn {
+    line-height: 1;
+  }
+  tbody.info-section,
+  .section-header, .section-header tr,
+  .section-subtotal {
+    border: none !important;
+  }
+}
+#reminds_content{
+  .control-label{
+    padding: 14px;
+  }
+}
+.control-label{
+  &.text-left{
+    text-align: left;
+  }
+}
+
+

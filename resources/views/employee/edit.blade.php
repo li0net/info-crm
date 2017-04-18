@@ -80,7 +80,7 @@
                                         @if( $employee->avatar_image_name != null)
                                         <img src="/images/{{ $employee->avatar_image_name }}" />
                                         @else
-                                        <img src="/images/no-master.png" alt="">
+                                        <img src="/img/crm/avatar/avatar100.jpg" alt="">
                                         @endif
                                     </div>
                                     <div v-else>
@@ -95,19 +95,80 @@
                         </div>
 
                         <div id="menu2" class="tab-pane fade">
-                            <div class="jumbotron">
-                                <p class="lead">{{ trans('adminlte_lang::message.section_under_construction') }}</p>
+
+                            {!! Form::model($employee, ['route' => ['employee.update_services'], 'method' => 'POST', "id" => "employee_form__services"]) !!}
+
+                            {{ Form::hidden('employee_id', $employee->employee_id) }}
+
+                            <div class="row m-t">
+                                {{ Form::label('service', trans('adminlte_lang::message.service'), ['class' => 'col-sm-3 text-left small']) }}
+                                {{ Form::label('duration', trans('adminlte_lang::message.duration'), ['class' => 'col-sm-4 text-left small']) }}
+                                {{ Form::label('routing', trans('adminlte_lang::message.routing'), ['class' => 'col-sm-3 text-center small']) }}
                             </div>
-                            {!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "id" => "employee_form__services"]) !!}
+                            <div class="row">
+                                <div class="col-sm-12"><hr></div>
+                            </div>
+                            <div class="service-content m-b">
+                                @if (isset($employee))
+                                    @foreach($employee_attached_services as $employee_attached_service)
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                {{ Form::select(
+                                                'employee-service[]',
+                                                $employee_services,
+                                                $employee_attached_service->pivot->service_id,
+                                                [
+                                                    'class' => 'js-select-basic-single',
+                                                    'required' => '',
+                                                    'data-initial-value' => $employee_attached_service->pivot->service_id
+                                                ])
+                                                }}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{ Form::select(
+                                                'service-duration-hour[]',
+                                                $service_duration_hours,
+                                                date_parse($employee_attached_service->pivot->duration)['hour'],
+                                                ['class' => 'js-select-basic-single', 'required' => ''])
+                                                }}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{ Form::select(
+                                                'service-duration-minute[]',
+                                                $service_duration_minutes,
+                                                date_parse($employee_attached_service->pivot->duration)['minute'],
+                                                ['class' => 'js-select-basic-single', 'required' => ''])
+                                                }}
+                                            </div>
+                                            <div class="col-sm-3">
+                                                {{ Form::select(
+                                                'service-routing[]',
+                                                $service_routings,
+                                                $employee_attached_service->pivot->routing_id,
+                                                [
+                                                'class' => 'js-select-basic-single',
+                                                'required' => '',
+                                                'data-initial-value' => $employee_attached_service->pivot->routing_id
+                                                ])
+                                                }}
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="button" id="delete-employee" class="btn btn-default center-block">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                            <input type="button" id="add-service" class="btn btn-info" value="{{ trans('adminlte_lang::message.service_add') }}">
+
+
                             {!! Form::close() !!}
                         </div>
 
                         <div id="menu3" class="tab-pane fade">
-                            <div class="jumbotron">
-                                <p class="lead">{{ trans('adminlte_lang::message.section_under_construction') }}</p>
-                            </div>
-                            {!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "id" => "employee_form__schedule"]) !!}
-                            {!! Form::close() !!}
+                            @include('employee.shedule')
                         </div>
 
                         <div id="menu4" class="tab-pane fade form-horizontal">
@@ -296,11 +357,64 @@
                             {!! Form::close() !!}
                         </div>
                         <div id="menu5" class="tab-pane fade">
-                            <div class="jumbotron">
-                                <p class="lead">{{ trans('adminlte_lang::message.section_under_construction') }}</p>
-                            </div>
-                            {!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', "id" => "employee_form__wage"]) !!}
-                            {!! Form::close() !!}
+                            <?php $accessLevel = $crmuser->hasAccessTo('wage_schemes', 'edit', 0); ?>
+                            @if($accessLevel > 0)
+
+                            <form id="employee_form__wage" method="post" action="/employees/saveWageScheme">
+                                {{csrf_field()}}
+                                <input type="hidden" name="employee_id" id="ws_employee_id" value="{{$employee->employee_id}}">
+                                <!-- // выбор схемы расчета зп -->
+                                <div class="form-group">
+                                    <label for="ws_wage_scheme_id" class="col-sm-4 text-right ctrl-label">@lang('main.employee:wage_scheme_label')</label>
+                                    <div class="col-sm-7">
+                                        <select name="wage_scheme_id" id="ws_wage_scheme_id" class="js-select-basic-single" >
+                                            @foreach($wageSchemeOptions AS $wageScheme)
+                                                <option
+                                                    @if(old('wage_scheme_id') AND old('wage_scheme_id') == $wageScheme['value'])
+                                                        selected="selected"
+                                                    @elseif(!old('wage_scheme_id') AND isset($employee))
+                                                        <?php $ws = $employee->wageSchemes()->first();?>
+                                                        @if($ws AND $ws->scheme_id == $wageScheme['value'])
+                                                            selected="selected"
+                                                        @endif
+                                                    @endif
+
+                                                    value="{{$wageScheme['value']}}">{{$wageScheme['label']}}</option>
+                                            @endforeach
+                                        </select>
+                                        @foreach ($errors->get('wage_scheme_id') as $message)
+                                            <br/>{{$message}}
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <!-- выбор даты с которой схема начинает действовать -->
+                                <div class="form-group">
+                                    <label for="ws_scheme_start" class="col-sm-4 text-right ctrl-label">@lang('main.employee:wage_scheme_start_from_label')</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group">
+                                            <?php
+                                            $old = old('scheme_start');
+                                            $value = '';
+                                            if (!is_null($old)) {
+                                                $value = $old;
+                                            } elseif (isset($employee)) {
+                                                $currWs = $employee->wageSchemes()->first();
+                                                if ($currWs) {
+                                                    $value = date('Y-m-d', strtotime($currWs->pivot->scheme_start));
+                                                }
+                                            }?>
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                            <input type="text" class="form-control" name="scheme_start" id="ws_scheme_start" value="{{$value}}" placeholder="@lang('main.employee:wage_scheme_start_from_label')">
+                                            @foreach ($errors->get('scheme_start') as $message)
+                                                <br/>{{$message}}
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -313,3 +427,353 @@
         </div>
     </div>
 @stop
+@section('page-specific-scripts')
+<script type="text/javascript">
+
+    // получаем стартовое значение и обновляем вид таблиц
+    var $scheduleData = JSON.parse('<?=$shedule_data?>');
+
+
+    /**
+     * обновляет отображение таблицы прасписания на основании массива $scheduleData
+     */
+    function updateSheduleTable() {
+        // зачищаем старые значения
+        $("#operating_schedule tbody").find("td").removeClass('ui-datepicker-current-day');
+
+        for (i = 0; i <= 6; i++) {
+            var day = i;
+            var hours = $scheduleData.schedule[i];
+            for (j = 0; j <= hours.length; j++) {
+                var hour = $scheduleData.schedule[i][j];
+                $("#operating_schedule tbody").find("td[data-day='" + day + "'][data-hour='" + hour + "']").addClass('ui-datepicker-current-day');
+            }
+        }
+    }
+
+    $(document).ready(function(){
+        window.serviceOptions = [];
+        window.routingOptions = [];
+
+
+        // обновляем отображение
+        updateSheduleTable();
+
+        // инициируем датапикер
+        $("#shedule_week").datepicker({
+            format: 'YYYY-MM-DD',
+            weekStart: 1,
+            calendarWeeks: true,
+            todayHighlight: true
+        });
+
+        // инициируем moment.js
+        moment.locale('en', {
+            week: { dow: 1 } // Monday is the first day of the week
+        });
+
+        /**
+         * обработчик клика по датапикеру
+         * выделаяет неделю, получает дату начала недели
+         * запрашивает по ajax расписание на данную неделю
+         * */
+        $('#shedule_week').datepicker().on('changeDate', function(e) {
+            //анимация
+            $('#operating_schedule').addClass('loadingbox');
+            $('#employeegs_form_error_alert').hide();
+            $('#shedule_week .datepicker tr').removeClass('active');
+
+            var value = e.date;
+            start_date = moment(value, "YYYY-MM-DD").day(1).format("YYYY-MM-DD");
+
+            //обновляем массив данных
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: '/employees/getSchedule',
+                data: {start_date: start_date, employee_id: $scheduleData.employee_id},
+                success: function(data) {
+                    if (data.res) {
+                        $scheduleData = data.shedule_data;
+
+                        // обновляем отображение
+                        updateSheduleTable();
+
+                        $('#shedule_week .datepicker').find('td.active').parent('tr').addClass('active');
+                        $("#sheduleWeek").val($scheduleData.start_date);
+
+                    } else {
+                        $('#employeegs_form_error_alert span').append(' '+data.error);
+                        $('#employeegs_form_error_alert').show();
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $('#employeegs_form_error_alert span').append(' Error while processing shedule changing!');
+                    $('#employeegs_form_error_alert').show();
+                }
+            });
+
+            //анимация
+            $('#operating_schedule').removeClass('loadingbox');
+        });
+
+        // выбор текущей недели
+        $('#shedule_week').find('td.today.day').click();
+
+        // обработчки заголовков - часов
+        $( "#operating_schedule thead th")
+            .mouseover(function() {
+                var hour = $(this).data('head-hour');
+                $( "#operating_schedule tbody").find("td[data-hour='"+hour+"']").addClass('ui-datepicker-hover-day');
+            })
+            .mouseout(function() {
+                var hour = $(this).data('head-hour');
+                $( "#operating_schedule tbody").find("td[data-hour='"+hour+"']").removeClass('ui-datepicker-hover-day');
+            })
+            .click(function() {
+                var hour = $(this).data('head-hour');
+
+                if ( $(this).hasClass('ui-datepicker-fullhour') ){
+                    // снимаем с ячейки отметку
+                    $( "#operating_schedule tbody").find("td[data-hour='"+hour+"']").removeClass('ui-datepicker-current-day');
+
+                    // обновляем массив данных
+                    for (i = 0; i <= 6; i++) {
+                        var day = i;
+                        var index = $scheduleData.schedule[day].indexOf(hour);
+                        if(index != -1){
+                            $scheduleData.schedule[day].splice( index, 1 );
+                        }
+                    }
+                } else {
+                    // отмечаем ячейку
+                    $( "#operating_schedule tbody").find("td[data-hour='"+hour+"']").addClass('ui-datepicker-current-day');
+
+                    // добавляем час во все дни
+                    for (i = 0; i <= 6; i++) {
+                        var day = i;
+                        // проверяем что такого значения уже нет в массиве
+                        if ( $scheduleData.schedule[day].indexOf(hour) == -1 ){
+                            $scheduleData.schedule[day].push(hour);
+                            // выстраиваем часы по порядку
+                            $scheduleData.schedule[day] =  $scheduleData.schedule[day].sort(function(a, b) {
+                                return a - b;
+                            });
+                        }
+                    }
+                }
+
+                $(this).toggleClass('ui-datepicker-fullhour');
+            });
+
+        // обработчки заголовков - дней
+        $( "#operating_schedule td.legend")
+            .mouseover(function() {
+                var day = $(this).data('head-day');
+                $( "#operating_schedule tbody").find("td[data-day='"+day+"']").addClass('ui-datepicker-hover-day');
+            })
+            .mouseout(function() {
+                var day = $(this).data('head-day');
+                $( "#operating_schedule tbody").find("td[data-day='"+day+"']").removeClass('ui-datepicker-hover-day');
+            })
+            .click(function() {
+                var day = $(this).data('head-day');
+                console.log(day);
+
+                if ( $(this).hasClass('ui-datepicker-fullday') ){
+                    //обновляем данные
+                    $scheduleData.schedule[day] = [];
+
+                    // снимаем отметки с ячеек
+                    $( "#operating_schedule tbody").find("td[data-day='"+day+"']").removeClass('ui-datepicker-current-day');
+                } else {
+                    //обновляем данные
+                    $scheduleData.schedule[day] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+
+                    // отмечаем ячейки
+                    $( "#operating_schedule tbody").find("td[data-day='"+day+"']").addClass('ui-datepicker-current-day');
+                }
+
+                $(this).toggleClass('ui-datepicker-fullday');
+            });
+
+        // обработчки кликов по  ячейкам
+        $( "#operating_schedule td:not(.legend)").click(function() {
+
+            // определяем день и час выбранной ячейки
+            var day =  $(this).data('day');
+            var hour =  $(this).data('hour');
+
+            if ( $(this).hasClass('ui-datepicker-current-day') ){
+                // если снимаем отмеченную ячейку - удаляем из массива часов данного дня
+                var index = $scheduleData.schedule[day].indexOf(hour);
+                $scheduleData.schedule[day].splice(index, 1);
+            } else {
+                // если отмечаем пустую ячейку - добавляем в массив часов данного дня
+                $scheduleData.schedule[day].push(hour);
+            }
+
+            // ставим/убиреаем отметку в ячейке
+            $(this).toggleClass('ui-datepicker-current-day');
+
+            // выстраиваем часы по порядку
+            $scheduleData.schedule[day] =  $scheduleData.schedule[day].sort(function(a, b) {
+                return a - b;
+            });
+        });
+
+        // очистка расписания
+        $( "#shedule-clear").click(function() {
+            // добавляем час во все дни
+            for (i = 0; i <= 6; i++) {
+                $scheduleData.schedule[i] = [];
+            }
+
+            // обновляем отображение
+            updateSheduleTable();
+        });
+
+        // смена дропдауна выбора недель
+        $( "#fill_weeks").on('change', function() {
+            $scheduleData.fill_weeks = $( "select#fill_weeks option:checked" ).val();
+        });
+
+        /**
+         * сабмит формы смены рапсписания
+         * */
+        function submitSheduleForm() {
+            //анимация
+            $('#employeegs_form_error_alert').hide();
+            $('#employee_form_success_alert').hide();
+            $('#menu3').addClass('loadingbox');
+
+            //обновляем массив данных
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: '/employees/updateSchedule',
+                data: {scheduleData: $scheduleData},
+                success: function(data) {
+                    if (data.res) {
+                        $('#employee_form_success_alert').show();
+                    } else {
+                        $('#employeegs_form_error_alert span').append(' '+data.error);
+                        $('#employeegs_form_error_alert').show();
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $('#employeegs_form_error_alert span').append(' '+data.error);
+                    $('#employeegs_form_error_alert').show();
+                }
+            });
+            //анимация
+            $('#menu3').removeClass('loadingbox');
+        }
+
+        /** end of shedule scripts***/
+
+        $('#add-service').on('click', function(e){
+            $('.service-content').prepend('<div class="row"><div class="col-sm-3"><select required="required" name="employee-service[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><select required="required" name="service-duration-hour[]" class="js-select-basic-single"><option value="0">0 ч</option><option value="1">1 ч</option><option value="2">2 ч</option><option value="3">3 ч</option><option value="4">4 ч</option><option value="5">5 ч</option><option value="6">6 ч</option><option value="7">7 ч</option><option value="8">8 ч</option><option value="9">9 ч</option></select></div> <div class="col-sm-2"><select required="required" name="service-duration-minute[]" class="js-select-basic-single"><option value="00">00 мин</option><option value="15">15 мин</option><option value="30">30 мин</option><option value="45">45 мин</option></select></div> <div class="col-sm-3"><select required="required" name="service-routing[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><button type="button" id="delete-employee" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>');
+            sel = $('.service-content').children('.row').first().children('.col-sm-3').children('select[name="employee-service[]"]').first();
+            sel.html(window.serviceOptions);
+
+            sel = $('.service-content').children('.row').first().children('.col-sm-3').children('select[name="service-routing[]"]').first();
+            sel.html(window.routingOptions);
+
+            $(".service-content .js-select-basic-single").select2({
+                theme: "alt-control",
+                placeholder: "choose one",
+                minimumResultsForSearch: Infinity
+            });
+        });
+
+        $('.service-content').on('click', '#delete-employee', function(e){
+            $(this).parent().parent().remove();
+        });
+
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: '/employees/serviceOptions',
+            data: {},
+            success: function(data) {
+                $('select[name="employee-service[]"]').html('');
+                $('select[name="employee-service[]"]').html(data.options);
+
+                //$('#service-options').val(data.options);
+                window.serviceOptions = data.options;
+                //console.log('window.serviceOptions:', window.serviceOptions);
+                // $('select.form-control[name="products_cats_detailed[]"]').find('option').remove();
+                // $('select.form-control[name="products_cats_detailed[]"]').append(options);
+
+                $('select.js-select-basic-single[name="employee-service[]"]').each(function() {
+                    var initialValue = $(this).attr('data-initial-value');
+                    //console.log('initialValue:', initialValue);
+
+                    $(this).val(initialValue).trigger("change");
+                });
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log('Error while processing service data range!');
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: '/service/routingOptions',
+            data: {},
+            success: function(data) {
+                $('select[name="service-routing[]"]').html('');
+                $('select[name="service-routing[]"]').html(data.options);
+
+                //$('#routing-options').val(data.options);
+                window.routingOptions = data.options;
+
+                $('select.form-control[name="service-routing[]"]').each(function() {
+                    var initialValue = $(this).attr('data-initial-value');
+
+                    if ( 0 != initialValue ) {
+                        $(this).val(initialValue);
+                    } else {
+                        $(this).val($(this).find('option').first().val());
+                    }
+                });
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log('Error while processing routing data range!');
+            }
+        });
+
+        // EMPLOYEE FORM SUBMIT
+        $('#form_submit').on('click', function() {
+            var activeTab = $('ul.nav.nav-tabs li.active a').attr('href');
+
+            if(activeTab == '#menu1') {
+                $('#employee_form__info').submit();
+            }
+
+            if(activeTab == '#menu2') {
+                $('#employee_form__services').submit();
+            }
+
+            if(activeTab == '#menu3') {
+                //('#employee_form__schedule').submit();
+                submitSheduleForm();
+                return false;
+            }
+
+            if(activeTab == '#menu4') {
+                $('#employee_form__settings').submit();
+            }
+
+            if(activeTab == '#menu5') {
+                $('#employee_form__wage').submit();
+            }
+        });
+
+        // check if important lists are empty and show info-window
+        checkZeroLists(['position_id', 'wage_scheme_id']);
+    });
+</script>
+@endsection

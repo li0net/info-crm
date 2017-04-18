@@ -39,71 +39,85 @@
                         <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                     </label>
                 </div>
-
                 <div class="form-group">
-                    <label class="col-sm-2 control-label"></label>
-                    <div class="col-sm-6">
-                        <a href="#card-items" data-toggle="collapse" class="btn btn-link btn-xs">
-                            <span class="badge label-danger hidden">@{{ card_items_count }}</span>
-                            &nbsp;&nbsp;{{ trans('adminlte_lang::message.routine_structure') }}&nbsp;&nbsp;
-                            <i class="fa fa-caret-down"></i></a>
+                    <div class="col-sm-11">
+                        <div class="box box-details box-solid collapsed-box">
+                            <div class="box-header with-border">
+                                <h3>
+                                    <a href="#card-items" data-toggle="collapse" class="btn btn-link btn-xs" data-widget="collapse">
+                                        <i class="fa fa-caret-down"></i>
+                                        {{ trans('adminlte_lang::message.routine_structure') }}
+                                    </a>
+                                </h3>
+                                <div class="box-tools pull-right">
+                                    <span class="badge label-danger" v-model="detailed_products_count">@{{ card_items_count }}</span>
+                                </div>
+                                <!-- /.box-tools -->
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body" >
+                                <div id="card-items" class="form-group col-sm-12">
+                                    <div class="wrap-it">
+                                        <div class="col-sm-5">{{ trans('adminlte_lang::message.stock') }}</div>
+                                        <div class="col-sm-4">{{ trans('adminlte_lang::message.title') }}</div>
+                                        <div class="col-sm-2">{{ trans('adminlte_lang::message.amount') }}</div>
+                                        <div class="col-sm-1"></div>
+                                        <div class="col-sm-12">
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    @foreach( $card_items as $card_item )
+                                        <div class="wrap-it alt-control-bar">
+                                            <div class="col-sm-2"></div>
+                                            <div class="col-sm-8" style="padding:0">
+                                                <div class="col-sm-5">
+                                                    {{ Form::select('storage_id[]', [], $card_item[0], ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => $card_item[0]]) }}
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    {{ Form::select('product_id[]', $storages[$card_item[0]]->pluck('title', 'product_id')->all(), $card_item[1], ['class' => 'form-control', 'maxlength' => '110']) }}
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    {{ Form::text('amount[]', $card_item[2], ['class' => 'form-control', 'maxlength' => '110']) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 text-center">
+                                                <button type="button" id="add-card-item" class="btn btn-add">
+                                                    <i class="fa fa-plus-circle"></i>
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div class="wrap-it alt-control-bar">
+                                        <div class="col-sm-5">
+                                            {{ Form::select('storage_id[]', $storages, '0', ['class' => 'form-control', 'maxlength' => '110', 'id' => '']) }}
+                                        </div>
+                                        <div class="col-sm-4">
+                                            {{ Form::select('product_id[]', [], null, 	[
+                                            'class' => 'form-control',
+                                            'maxlength' => '110',
+                                            'placeholder' => trans('adminlte_lang::message.select_good')
+                                            ]) }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{ Form::text('amount[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
+                                        </div>
+                                        <div class="col-sm-1 text-center">
+                                            <button type="button" id="add-card-item" class="btn btn-add">
+                                                <i class="fa fa-plus-circle"></i>
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
                     </div>
-                </div>
-
-                <div id="card-items" class="form-group collapse">
-                    <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-8">
-                            <div class="col-sm-5">{{ trans('adminlte_lang::message.stock') }}</div>
-                            <div class="col-sm-5">{{ trans('adminlte_lang::message.title') }}</div>
-                            <div class="col-sm-2">{{ trans('adminlte_lang::message.amount') }}</div>
-                        </div>
-                        <div class="col-sm-2"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2">
-                            <hr>
-                        </div>
-                    </div>
-                    @foreach( $card_items as $card_item )
-                    <div class="wrap-it">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-8" style="padding:0">
-                            <div class="col-sm-5">
-                                {{ Form::select('storage_id[]', [], $card_item[0], ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => $card_item[0]]) }}
-                            </div>
-                            <div class="col-sm-5">
-                                {{ Form::select('product_id[]', $storages[$card_item[0]]->pluck('title', 'product_id')->all(), $card_item[1], ['class' => 'form-control', 'maxlength' => '110']) }}
-                            </div>
-                            <div class="col-sm-2">
-                                {{ Form::text('amount[]', $card_item[2], ['class' => 'form-control', 'maxlength' => '110']) }}
-                            </div>
-                        </div>
-                        <div class="col-sm-2" style="margin-bottom: 15px;">
-                            <input type="button" id="add-card-item" class="btn btn-danger" value="Удалить">
-                        </div>
-                    </div>
-                    @endforeach
-                    <div class="wrap-it">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-8" style="padding:0">
-                            <div class="col-sm-5">
-                                {{ Form::select('storage_id[]', [], null, ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => 0]) }}
-                            </div>
-                            <div class="col-sm-5">
-                                {{ Form::select('product_id[]', [], null, [
-                                'class' => 'form-control',
-                                'maxlength' => '110',
-                                'placeholder' => trans('adminlte_lang::message.select_good')]) }}
-                            </div>
-                            <div class="col-sm-2">
-                                {{ Form::text('amount[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
-                            </div>
-                        </div>
-                        <div class="col-sm-2" style="margin-bottom: 15px;">
-                            <input type="button" id="add-card-item" class="btn btn-info" value={{ trans('adminlte_lang::message.add') }}>
-                        </div>
-                    </div>
+                    <label class="col-sm-1 text-left">
+                        <br>
+                        <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
+                    </label>
                 </div>
 
                 <div class="form-group">

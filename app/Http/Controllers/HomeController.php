@@ -46,6 +46,7 @@ class HomeController extends Controller
 		$appointments = Appointment::select('appointment_id', 'employee_id', 'client_id', 'service_id', 'start', 'end')
 			->where('organization_id', $request->user()->organization_id)
 			->with('employee', 'client', 'service')
+            ->orderBy('start', 'desc')
 			->get()->all();
 
 		$employees = Employee::select('employee_id', 'name')->where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
@@ -95,8 +96,9 @@ class HomeController extends Controller
 
 		$appointments->whereBetween('start', [$filter_start_time, $filter_end_time]);
 		$appointments->whereBetween('end', [$filter_start_time, $filter_end_time]);
+        $appointments->orderBy('start', 'desc');
 
-		$appointments = $appointments->with('employee', 'client', 'service')->get();
+        $appointments = $appointments->with('employee', 'client', 'service')->get();
 
 		$page = (0 == $request->page) ? 1 : $request->page;
 		$paginate = 10;

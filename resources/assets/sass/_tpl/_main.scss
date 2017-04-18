@@ -140,3 +140,11 @@ label {
 .m-t {
   margin-top: 15px;
 }
+.img-circle,
+.img-thumbnail{
+  &.img-circle-small,
+  &.img-thumbnail-small{
+    width: 32px;
+    height: 32px;
+  }
+}

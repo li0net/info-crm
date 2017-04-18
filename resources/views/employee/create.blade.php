@@ -25,58 +25,67 @@
             <div class="col-sm-12">
                 {{-- {!! Form::open(['route' => 'employee.store', 'data-parsley-validate' => '']) !!} --}}
                 {!! Form::open(['route' => ['employee.store'], 'method' => 'PUT', 'files' => 'true', 'class'=>'form-horizontal']) !!}
-                    <div class="col-sm-8">
-                        <div class="form-group">
-                            {{ Form::label('name', trans('adminlte_lang::message.employee_name'), ['class' => 'col-sm-4 control-label text-right']) }}
-                            <div class="col-sm-8">
-                                {{ Form::text('name', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '70', 'placeholder' => trans('adminlte_lang::message.employee_name')]) }}
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            {{ Form::label('email', trans('adminlte_lang::message.employee_email'), ['class' => 'col-sm-4 control-label text-right']) }}
-                            <div class="col-sm-8">
-                                {{ Form::text('email', null, ['class' => 'form-control', 'email' => '', 'placeholder' => trans('adminlte_lang::message.example').'info@mail.com']) }}
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            {{ 	Form::label('phone', trans('adminlte_lang::message.employee_phone'), ['class' => 'col-sm-4 control-label text-right']) }}
-                            <div class="col-sm-8">
-                                {{ 	Form::text('phone', null, ['class' => 'form-control', 'required' => '', 'placeholder' => trans('adminlte_lang::message.phone_format')]) }}
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            {{ 	Form::label('position_id', trans('adminlte_lang::message.employee_position'), ['class' => 'col-sm-4 control-label text-right']) }}
-                            <div class="col-sm-8">
-                                {{	Form::select('position_id', $items, 1, ['class' => 'js-select-basic-single', 'required' => '', 'placeholder'=>trans('adminlte_lang::message.employee_position')]) }}
-                            </div>
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        {{ Form::label('name', trans('adminlte_lang::message.employee_name'), ['class' => 'col-sm-4 control-label text-right']) }}
+                        <div class="col-sm-8">
+                            {{ Form::text('name', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '70', 'placeholder' => trans('adminlte_lang::message.employee_name')]) }}
                         </div>
                     </div>
 
-                    <div class="col-sm-4 text-center">
-                        <label class="ctrl-label">{{ trans('adminlte_lang::message.photo') }}</label>
-                        <div class="logo-block">
-                            <div v-if="!image">
-                                <img src="/images/no-master.png" alt="">
-                            </div>
-                            <div v-else>
-                                <img :src="image" />
-                            </div>
+                    <div class="form-group">
+                        {{ Form::label('email', trans('adminlte_lang::message.employee_email'), ['class' => 'col-sm-4 control-label text-right']) }}
+                        <div class="col-sm-8">
+                            {{ Form::text('email', null, ['class' => 'form-control', 'email' => '', 'placeholder' => trans('adminlte_lang::message.example').'info@mail.com']) }}
                         </div>
-                        <span class="btn btn-info btn-file">
-                            {{ trans('adminlte_lang::message.load_photo') }}<input type="file" name="avatar" @change="onFileChange">
-                        </span>
                     </div>
-                    <hr>
-                    <div class="col-sm-12 text-right">
-                        {{	Form::submit(trans('adminlte_lang::message.save'), ['class' => 'btn btn-primary']) }}
+
+                    <div class="form-group">
+                        {{ 	Form::label('phone', trans('adminlte_lang::message.employee_phone'), ['class' => 'col-sm-4 control-label text-right']) }}
+                        <div class="col-sm-8">
+                            {{ 	Form::text('phone', null, ['class' => 'form-control', 'required' => '', 'placeholder' => trans('adminlte_lang::message.phone_format')]) }}
+                        </div>
                     </div>
+
+                    <div class="form-group">
+                        {{ 	Form::label('position_id', trans('adminlte_lang::message.employee_position'), ['class' => 'col-sm-4 control-label text-right']) }}
+                        <div class="col-sm-8">
+                            {{	Form::select('position_id', $items, 1, ['class' => 'js-select-basic-single', 'required' => '', 'placeholder'=>trans('adminlte_lang::message.employee_position')]) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 text-center">
+                    <label class="ctrl-label">{{ trans('adminlte_lang::message.photo') }}</label>
+                    <div class="logo-block">
+                        <div v-if="!image">
+                            <img src="/img/crm/avatar/avatar100.jpg" alt="">
+                        </div>
+                        <div v-else>
+                            <img :src="image" />
+                        </div>
+                    </div>
+                    <span class="btn btn-info btn-file">
+                {{ trans('adminlte_lang::message.load_photo') }}<input type="file" name="avatar" @change="onFileChange">
+            </span>
+                </div>
+                <hr>
+                <div class="col-sm-12 text-right">
+                    {{	Form::submit(trans('adminlte_lang::message.save'), ['class' => 'btn btn-primary']) }}
+                </div>
                 {!! Form::close() !!}
             </div>
         </div>
     </div>
+@endsection
+
+@section('page-specific-scripts')
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // check if important lists are empty and show info-window
+            checkZeroLists(['position_id']);
+        });
+    </script>
 @endsection
 
 {{-- @section('scripts')
