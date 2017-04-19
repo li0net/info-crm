@@ -252,7 +252,7 @@
                                 }}
                             </div>
                             <div class="col-sm-2">
-                                <button type="button" id="delete-employee" class="btn btn-default center-block">
+                                <button type="button" id="delete-employee" class="btn btn-danger">
                                     <i class="fa fa-trash-o"></i>
                                 </button>
                             </div>
@@ -342,7 +342,7 @@
                 placeholder: "choose one",
                 minimumResultsForSearch: Infinity
             }).on("select2:open", function () {
-                $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #6d51aa", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
+                $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
             });
         });
 
@@ -360,7 +360,7 @@
                 placeholder: "choose one",
                 minimumResultsForSearch: Infinity
             }).on("select2:open", function () {
-                $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #6d51aa", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
+                $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
             });
         });
 

@@ -618,29 +618,26 @@ $(document).ready(function () {
         format: 'yyyy-mm-dd',
         firstDay: 1
     });
-
     // select2 multiple select init
     $(".js-select-basic-multiple").select2({
-        placeholder: "Выберите категории",
         templateResult: formatClientCatColor,
         allowClear: true
     }).on("select2:open", function () {
-        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #6d51aa", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
+        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
 
     $(".js-select-basic-single").select2({
         minimumResultsForSearch: Infinity
     }).on("select2:open", function () {
-        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #6d51aa", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
+        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
 
     $(".alt-control-bar .js-select-basic-single").select2({
         theme: "alt-control",
         minimumResultsForSearch: Infinity
     }).on("select2:open", function () {
-        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #6d51aa", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
+        $('.select2-results__options').niceScroll({cursorcolor:"#969696", cursorborder: "1px solid #787878", cursorborderradius: "0", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.9, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
-
 
     // iCheck init
     $('input[type="checkbox"]').iCheck({
@@ -812,7 +809,7 @@ $(document).ready(function () {
         placeholder: "Select wage scheme",
         allowClear: true
     }).on("select2:open", function () {
-        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #6d51aa", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
+        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
 
     $('#ws_scheme_start').datepicker({

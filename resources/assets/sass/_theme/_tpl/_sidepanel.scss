@@ -61,6 +61,9 @@ body.skin-orange {
       i{
         font-size: 16px;
       }
+      .treeview-menu {
+        padding-left: 10px;
+      }
       >li {
         >a{
           font-size: $font-size-main;
@@ -75,39 +78,46 @@ body.skin-orange {
           }
         }
         &.active{
+          border-left: 4px solid $body-bg;
           &>a{
             background-color:$brand-secondary;
-            border-left: 4px solid $body-bg;
+            border-left: 0;
           }
         }
         &.header {
           padding: 0;
         }
+        &.treeview.active{
+          background-color: $brand-secondary;
+          border-left: 4px solid #FFF;
+        }
         &.treeview ul li{
           a{
-            border-right: 4px solid transparent;
+            border-right: 2px solid transparent;
             border-left: 0;
             text-decoration: none;
             font-weight: bold;
             color: $brand-main-text;
             @include transition-all (0.3s);
             &:hover{
-              background-color: $brand-secondary;
-              border-right: 4px solid $brand-secondary;;
+              //background-color: $brand-secondary;
+              border-right: 2px solid $brand-main;
               border-left: 0;
-              text-decoration: none;
+              text-decoration: underline;
             }
           }
           &.active{
             > a{
               background-color: $brand-secondary;
-              border-right: 4px solid $brand-secondary;;
+              border-right: 2px solid $brand-main;
               border-left: 0;
-              text-decoration: none;
+              text-decoration: underline;
             }
             &.treeview{
               > a{
                 background-color:$brand-secondary;
+                border-right: 2px solid $brand-main;
+                text-decoration: underline;
               }
             }
           }

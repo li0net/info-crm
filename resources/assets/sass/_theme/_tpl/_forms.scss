@@ -424,7 +424,7 @@ body.skin-orange {
       background-color: $brand-main;
       .select2-selection__rendered {
         @include border-radius(15px);
-        border: 2px solid $brand-main-text;
+        border: 1px solid $brand-main-text;
         color: $brand-main-text;
         min-height: 34px;
       }
@@ -475,6 +475,21 @@ body.skin-orange {
       }
     }
   }
+  .select2-container--alt-control{
+    .select2-dropdown{
+      .nicescroll-rails {
+        background: rgba(0,0,0,0.1) !important;
+        width:10px !important;
+      }
+      .nicescroll-cursors{
+        background-color: rgba(0,0,0,0.4) !important;
+        border: 1px solid rgba(0,0,0,0.6) !important;
+        border-radius: 0 !important;
+        width:8px !important;
+      }
+    }
+  }
+
 
   /** bootstrap select **/
   .bootstrap-select {
@@ -773,6 +788,12 @@ body.skin-orange {
         font-size: 12px;
         color: #444444;
       }
+    }
+  }
+  .datepicker-dropdown.datepicker-orient-left.datepicker-orient-top{
+    &:after,
+    &:before {
+      display: none;
     }
   }
   .datepicker-week {

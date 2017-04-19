@@ -52,7 +52,7 @@
                         </div>
 					</div>
 					<div class="m-t text-right">
-                        {!! Html::linkRoute('item.show', trans('adminlte_lang::message.cancel'), [$item->item_id], ['class'=>'btn btn-danger m-r']) !!}
+                        {!! Html::linkRoute('item.show', trans('adminlte_lang::message.cancel'), [$item->item_id], ['class'=>'btn btn-info m-r']) !!}
                         {{ Form::submit(trans('adminlte_lang::message.save'), ['class'=>'btn btn-primary']) }}
 					</div>
 				{!! Form::close() !!}	

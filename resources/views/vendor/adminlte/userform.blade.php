@@ -152,7 +152,7 @@
                             }?>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="is_admin" value="1" {{$selected}}><i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>@lang('main.user:permissions_is_admin')</strong>
+                                    <input type="checkbox" name="is_admin" value="1" {{$selected}}> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>@lang('main.user:permissions_is_admin')</strong>
                                 </label>
                             </div>
                             @endif
@@ -170,7 +170,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="appointment_form_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_appointment_form_label')</strong>
+                                        <input type="checkbox" name="appointment_form_view" value="1" {{$selected}}><strong> @lang('main.user:permissions_appointment_form_label')</strong>
                                     </label>
                                 </div>
 
@@ -185,7 +185,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="appointment_create" value="1" {{$selected}}>@lang('main.user:permissions_appointment_create_label')
+                                        <input type="checkbox" name="appointment_create" value="1" {{$selected}}> @lang('main.user:permissions_appointment_create_label')
                                     </label>
                                 </div>
 
@@ -200,7 +200,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="appointment_edit" value="1" {{$selected}}>@lang('main.user:permissions_appointment_edit_label')
+                                        <input type="checkbox" name="appointment_edit" value="1" {{$selected}}> @lang('main.user:permissions_appointment_edit_label')
                                     </label>
                                 </div>
 
@@ -215,7 +215,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="appointment_delete" value="1" {{$selected}}>@lang('main.user:permissions_appointment_delete_label')
+                                        <input type="checkbox" name="appointment_delete" value="1" {{$selected}}> @lang('main.user:permissions_appointment_delete_label')
                                     </label>
                                 </div>
 
@@ -230,7 +230,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="appointment_client_data_view" value="1" {{$selected}}>@lang('main.user:permissions_appointment_client_data_label')
+                                        <input type="checkbox" name="appointment_client_data_view" value="1" {{$selected}}> @lang('main.user:permissions_appointment_client_data_label')
                                     </label>
                                 </div>
                             </div>
@@ -248,7 +248,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="settings_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_settings_label')</strong>
+                                        <input type="checkbox" name="settings_view" value="1" {{$selected}}><strong> @lang('main.user:permissions_settings_label')</strong>
                                     </label>
                                 </div>
 
@@ -263,7 +263,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="settings_manage_users_edit" value="1" {{$selected}}>@lang('main.user:settings_manage_users_label')
+                                        <input type="checkbox" name="settings_manage_users_edit" value="1" {{$selected}}> @lang('main.user:settings_manage_users_label')
                                     </label>
                                 </div>
 
@@ -278,7 +278,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="service_edit" value="1" {{$selected}}>@lang('main.user:permissions_service_edit_label')
+                                        <input type="checkbox" name="service_edit" value="1" {{$selected}}> @lang('main.user:permissions_service_edit_label')
                                     </label>
                                 </div>
 
@@ -293,7 +293,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="service_delete" value="1" {{$selected}}>@lang('main.user:permissions_service_delete_label')
+                                        <input type="checkbox" name="service_delete" value="1" {{$selected}}> @lang('main.user:permissions_service_delete_label')
                                     </label>
                                 </div>
 
@@ -308,7 +308,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="employee_edit" value="1" {{$selected}}>@lang('main.user:permissions_employee_edit_label')
+                                        <input type="checkbox" name="employee_edit" value="1" {{$selected}}> @lang('main.user:permissions_employee_edit_label')
                                     </label>
                                 </div>
 
@@ -323,7 +323,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="employee_delete" value="1" {{$selected}}>@lang('main.user:permissions_employee_delete_label')
+                                        <input type="checkbox" name="employee_delete" value="1" {{$selected}}> @lang('main.user:permissions_employee_delete_label')
                                     </label>
                                 </div>
 
@@ -338,7 +338,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="schedule_edit" value="1" {{$selected}}>@lang('main.user:permissions_schedule_edit_label')
+                                        <input type="checkbox" name="schedule_edit" value="1" {{$selected}}> @lang('main.user:permissions_schedule_edit_label')
                                     </label>
                                 </div>
                             </div>
@@ -356,7 +356,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="clients_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_clients_label')</strong>
+                                        <input type="checkbox" name="clients_view" value="1" {{$selected}}><strong> @lang('main.user:permissions_clients_label')</strong>
                                     </label>
                                 </div>
 
@@ -371,7 +371,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="clients_phone_view" value="1" {{$selected}}>@lang('main.user:permissions_view_clients_phone_label')
+                                        <input type="checkbox" name="clients_phone_view" value="1" {{$selected}}> @lang('main.user:permissions_view_clients_phone_label')
                                     </label>
                                 </div>
 
@@ -386,7 +386,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="client_phone_view" value="1" {{$selected}}>@lang('main.user:permissions_view_client_phone_label')
+                                        <input type="checkbox" name="client_phone_view" value="1" {{$selected}}> @lang('main.user:permissions_view_client_phone_label')
                                     </label>
                                 </div>
 
@@ -401,7 +401,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="clients_export_xls_view" value="1" {{$selected}}>@lang('main.user:permissions_clients_export_xls_label')
+                                        <input type="checkbox" name="clients_export_xls_view" value="1" {{$selected}}> @lang('main.user:permissions_clients_export_xls_label')
                                     </label>
                                 </div>
                             </div>
@@ -419,7 +419,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="finances_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_finances_label')</strong>
+                                        <input type="checkbox" name="finances_view" value="1" {{$selected}}><strong> @lang('main.user:permissions_finances_label')</strong>
                                     </label>
                                 </div>
 
@@ -434,7 +434,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="wage_schemes_view" value="1" {{$selected}}>@lang('main.user:permissions_wage_schemes_view_label')
+                                        <input type="checkbox" name="wage_schemes_view" value="1" {{$selected}}> @lang('main.user:permissions_wage_schemes_view_label')
                                     </label>
                                 </div>
 
@@ -449,7 +449,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="wage_schemes_edit" value="1" {{$selected}}>@lang('main.user:permissions_wage_schemes_edit_label')
+                                        <input type="checkbox" name="wage_schemes_edit" value="1" {{$selected}}> @lang('main.user:permissions_wage_schemes_edit_label')
                                     </label>
                                 </div>
                             </div>
@@ -467,7 +467,7 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="statistics_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_statistics_label')</strong>
+                                        <input type="checkbox" name="statistics_view" value="1" {{$selected}}><strong> @lang('main.user:permissions_statistics_label')</strong>
                                     </label>
                                 </div>
                             </div>
@@ -485,12 +485,12 @@
                                 }?>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="storages_view" value="1" {{$selected}}><strong>@lang('main.user:permissions_storages_label')</strong>
+                                        <input type="checkbox" name="storages_view" value="1" {{$selected}}><strong> @lang('main.user:permissions_storages_label')</strong>
                                     </label>
                                 </div>
                             </div>
                             <div class="col-md-12 text-right m-t">
-                                <button type="submit" class="btn btn-primary">@lang('main.btn_submit_label')</button>
+                                <button type="submit" class="btn btn-primary"> @lang('main.btn_submit_label')</button>
                             </div>
                         </form>
                     </div>
