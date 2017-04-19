@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Barryvdh\DomPDF\Facade;
+//use Barryvdh\DomPDF\Facade;
 
 /**
  * App\Employee
@@ -711,11 +711,13 @@ class Employee extends Model
         //  если запись в calculated_wages есть, не даем заново расчитывать зп за пересекающийся период
         //  при нажатии кнопки Выплатить зп - устанавливаем is_payed=1 и в транзакции помечаем записи из transactions и appointments(?) как оплаченные (ни в какаом случае не учитываем их в последующих расчетах зп)
 
-        return $totalAmount;
+        //return $totalAmount;
+        return TRUE;
     }
 
-    public function generatePayroll($totalWage, $appointmentsData = null, $productsData = null, $salaryData = null) {
+    public function generatePayroll($periodStart, $periodEnd, $totalWage, $salaryData, $appointmentsData = null, $productsData = null) {
         if (is_null($appointmentsData) AND is_null($productsData)) {
+            //echo 'AAAAaooaoaoa';
             return FALSE;
             // TODO: throw exception or return error text in other way
         }
@@ -724,12 +726,15 @@ class Employee extends Model
             'apps' =>  $appointmentsData,
             'products' => $productsData,
             'salary' => $salaryData,
-            'total_wage' => $totalWage
+            'total_wage' => $totalWage,
+            'employee_name' => $this->name,
+            'period_start' => $periodStart,
+            'period_end'   => $periodEnd,
         ]);
 
         //if(request()->has('download')){
-            $pdf = PDF::loadView('employee.pdf.payroll');
-            return $pdf->download('payroll.pdf');       // TODO: add employee name and date
+            //$pdf = \PDF::loadView('employee.pdf.payroll');
+            //return $pdf->download('payroll.pdf');       // TODO: add employee name and date
         //}
 
         return view('employee.pdf.payroll');
