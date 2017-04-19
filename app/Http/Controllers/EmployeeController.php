@@ -789,7 +789,7 @@ class EmployeeController extends Controller
                 '5' => [
                     'start'         => '2017-04-10 10:30:00',
                     'end'           => '2017-04-10 12:00:00',
-                    'title'         => 'Haircut',
+                    'title'         => 'Haircut long title here and it\'s going on and on',
                     'price'         => '200',
                     'discount'      => '',
                     'total'         => '200',
@@ -829,6 +829,22 @@ class EmployeeController extends Controller
         ];
 
         $emp = Employee::find(3);
-        $r = $emp->generatePayroll(690, $servicesInfo, null, $salaryData);
+        //$emp->generatePayroll(690, $servicesInfo, null, $salaryData);
+
+        view()->share([
+            'apps' =>  $servicesInfo,
+            'products' => null,
+            'salary' => $salaryData,
+            'total_wage' => 690,
+            'employee_name' => $emp->name,
+            'period_start' => '2017-04-01 00:00:00',
+            'period_end'   => '2017-04-29 00:00:00',
+        ]);
+        //if(request()->has('download')){
+        //$pdf = \PDF::loadView('employee.pdf.payroll');
+        //return $pdf->download('payroll.pdf');       // TODO: add employee name and date
+        //}
+
+        return view('employee.pdf.payroll');
     }
 }
