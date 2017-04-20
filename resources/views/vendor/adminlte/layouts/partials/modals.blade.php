@@ -53,6 +53,7 @@
     <!-- текстовки необходимых справочников-->
     <div id="el_position_id">You should fill out "Positions" before work with this form</div>
     <div id="el_wage_scheme_id">You should fill out "Wage Schemes" before work with this form</div>
+    <div id="el_e_wage_month">Please select month to calculate wage</div>
 
     <!-- текстовки боковой инфопанели-->
     <div id="sim_wage_rate">Info about wage_rate</div>

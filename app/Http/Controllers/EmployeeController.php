@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CalculatedWage;
 use App\ScheduleScheme;
 use App\Schedule;
 use App\WageScheme;
@@ -782,6 +783,55 @@ class EmployeeController extends Controller
             'error' => ''
         ]);
     }
+
+
+    public function calculateWage(Request $request) {
+        $empId = $request->get('employee_id');
+        $month = $request->get('month');
+
+        if (empty($empId) OR empty($month)) {
+            return response()->json([
+                'res' => false,
+                'error' => 'Invalid data'
+            ]);
+        }
+
+        $employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $empId)->first();
+        if (is_null($employee)) {
+            return response()->json([
+                'res' => false,
+                'error' => 'Incorrect employee'
+            ]);
+        }
+
+        $tr = preg_match('/^2\d\d\d-(0|1)\d?$/', $month, $matches);
+        if ($tr !== 1) {
+            return response()->json([
+                'res' => false,
+                'error' => 'Invalid month'
+            ]);
+        }
+
+        $periodStart = $month . '-01 00:00:00';
+        $periodEnd = date("Y-m-t", strtotime($periodStart)) . ' 23:59:59';
+
+        $calculatedWage = CalculatedWage::where('employee_id', $empId)->where('wage_period_start', $periodStart)->get();
+        if (count($calculatedWage) > 0) {
+            return response()->json([
+                'res' => false,
+                'error' => 'Wage for this month already calculated'
+            ]);
+        }
+
+        $res = $employee->calculateWage($periodStart, $periodEnd);
+		Log::info(__METHOD__." calculate wage result:".print_r($res, TRUE));
+
+        return response()->json([
+            'res' => true,
+            'error' => ''
+        ]);
+    }
+
 
     public function getPayroll() {
         $servicesInfo = [
