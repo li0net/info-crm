@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Item;
 use App\ScheduleScheme;
 use App\Schedule;
 use App\WageScheme;
@@ -15,8 +16,9 @@ use App\Card;
 use App\ServiceCategory;
 use App\Service;
 use Session;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Input;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Validator;
 use Carbon\Carbon;
@@ -24,134 +26,181 @@ use \Illuminate\Support\Facades\Log;
 
 class EmployeeController extends Controller
 {
-	public function __construct()
-	{
-		$this->middleware('auth');
-		$this->middleware('permissions')->only(['update', 'destroy']);
-	}
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permissions')->only(['update', 'destroy']);
+    }
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function index(Request $request)
-	{
-		$employees = Employee::select('employee_id', 'name', 'email', 'phone', 'position_id', 'avatar_image_name')
-			->where('organization_id', $request->user()->organization_id)
-			->with(['position' => function($query) { $query->select('position_id', 'title'); }])->get()->all();
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $employees = Employee::select('employee_id', 'name', 'email', 'phone', 'position_id', 'avatar_image_name')
+            ->where('organization_id', $request->user()->organization_id)
+            ->with(['position' => function($query) { $query->select('position_id', 'title'); }])
+            ->with(['settings' => function($query) { $query->select('employee_id', 'is_rejected'); }])
+            ->get()
+            ->filter(function ($employee) {
+                return 1 !== $employee->settings->is_rejected;
+            });
 
-		$page = Input::get('page', 1);
-		$paginate = 10;
-		 
-		$offset = ($page * $paginate) - $paginate;
-		$itemsForCurrentPage = array_slice($employees, $offset, $paginate, true);
-		$employees = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($employees), $paginate, $page);
-		$employees->setPath('employee');
-		 
-		return view('employee.index', ['user' => $request->user()])->withEmployees($employees);
-	}
+//        dd($employees);
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function create(Request $request)
-	{
-		$items = Position::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'position_id');
+        $user = $request->user();
+        $positions = Position::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'position_id');
 
-		return view('employee.create', ['items' => $items]);
-	}
+        $page = Input::get('page', 1);
+        $paginate = 10;
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function store(Request $request)
-	{
-		$this->validate($request, [
-			'name' => 'required|max:150',
-			'email' => 'required|email|unique:employees,email',
-			'phone' => 'required|phone_crm'
-		]);
+        $offset = ($page * $paginate) - $paginate;
+        $itemsForCurrentPage = $employees->slice($offset, $paginate);
+        $employees = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($employees), $paginate, $page);
+        $employees->setPath('employee');
 
-		$employee = new Employee;
-		$settings = new EmployeeSetting;
+        return view('employee.index', compact('user', 'employees', 'positions'));
+    }
 
-		$employee->name = $request->name;
-		$employee->email = $request->email;
-		$employee->phone = $request->phone;
-		$employee->spec = $request->spec;
-		$employee->descr = $request->descr;
-		$employee->organization_id = $request->user()->organization_id;
-		$employee->position_id = $request->position_id;
-		if ($request->file('avatar') !== null) {
-			$imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
+    public function indexFiltered(Request $request)
+    {
+        $employees = Employee::select('employee_id', 'name', 'email', 'phone', 'position_id', 'avatar_image_name')
+            ->where('organization_id', $request->user()->organization_id)
+            ->with(['settings' => function($query) { $query->select('employee_id', 'is_rejected'); }])
+            ->get();
 
-			$request->file('avatar')->move(public_path('images'), $imageName);
+        if('' !== $request->position_id) {
+            $position_id =  $request->position_id;
+            $employees = $employees->filter(function ($employee) use ($position_id) {
+                return $employee->position_id == $position_id;
+            });
+        }
 
-			$employee->avatar_image_name = $imageName;
-		}
+        if('' !== $request->is_fired) {
+            $is_fired = $request->is_fired;
+            $employees = $employees->filter(function ($employee) use ($is_fired) {
+               return $employee->settings->is_rejected == $is_fired;
+            });
+        }
+//        TODO : Реализовать фильтр по признаку is_deleted
+//        if('' !== $request->employee_id) {
+//            $payments->where('beneficiary_type', 'employee')->where('beneficiary_id', $request->employee_id);
+//        }
 
-		$employee->save();
+        $page = (0 == $request->page) ? 1 : $request->page;
+        $paginate = 10;
 
-		$settings->employee_id = $employee->employee_id;
-		$settings->session_start = '0';
-		$settings->session_end = '0';
-		$settings->revenue_pctg = 50;
-		$settings->wage_scheme_id = 0;
-		$settings->schedule_id = 0;
-		$settings->reg_permitted = 1;	// по умолчанию разрешаем запись через виджет
-		$settings->reg_permitted_nomaster = 1;
+        $offset = ($page * $paginate) - $paginate;
+        $itemsForCurrentPage = $employees->slice($offset, $paginate);
+        $employees = new \Illuminate\Pagination\LengthAwarePaginator($itemsForCurrentPage, count($employees), $paginate, $page);
+        $employees->setPath('employee');
+        $employees->appends(['index' => 'filtered']);
 
-		$settings->save();
+        return View::make('employee.list', compact('employees'));
+    }
 
-		Session::flash('success', 'Новый сотрудник успешно сохранен!');
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+        $positions = Position::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'position_id');
 
-		return redirect()->route('employee.show', $employee->employee_id);
-	}
+        return view('employee.create', compact('positions'));
+    }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show($id)
-	{
-		$employee = Employee::where('organization_id', request()->user()->organization_id)->where('employee_id', $id)->first();
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:150',
+            'email' => 'required|email|unique:employees,email',
+            'phone' => 'required|phone_crm'
+        ]);
 
-		if (!$employee) {
-			return 'No such record!';
-		}
+        $employee = new Employee;
+        $settings = new EmployeeSetting;
 
-		return view('employee.show', ['user' => request()->user()])->withEmployee( $employee );
-	}
+        $employee->name = $request->name;
+        $employee->email = $request->email;
+        $employee->phone = $request->phone;
+        $employee->spec = $request->spec;
+        $employee->descr = $request->descr;
+        $employee->organization_id = $request->user()->organization_id;
+        $employee->position_id = $request->position_id;
+        if ($request->file('avatar') !== null) {
+            $imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit(Request $request, $id)
-	{
-		$dash = '---';
-		$employee = Employee::where('employee_id', $id)->where('organization_id', $request->user()->organization_id)->first();
-		if (!$employee) {
-			abort(404, 'No such employee found');
-		}
-		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
+            $request->file('avatar')->move(public_path('images'), $imageName);
 
-		$items = Position::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'position_id');
+            $employee->avatar_image_name = $imageName;
+        }
 
-		$sessionStart = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, 'c ', '', 'H:i');
-		$sessionEnd = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, 'по ', '', 'H:i');
-		$addInterval = $this->populateTimeIntervals(strtotime('00:45:00'), strtotime('04:00:00'), 15, '', '', 'H:i');
-		array_unshift($addInterval, $dash);
+        $employee->save();
+
+        $settings->employee_id = $employee->employee_id;
+        $settings->session_start = '0';
+        $settings->session_end = '0';
+        $settings->revenue_pctg = 50;
+        $settings->wage_scheme_id = 0;
+        $settings->schedule_id = 0;
+        $settings->reg_permitted = 1;	// по умолчанию разрешаем запись через виджет
+        $settings->reg_permitted_nomaster = 1;
+
+        $settings->save();
+
+        Session::flash('success', 'Новый сотрудник успешно сохранен!');
+
+        return redirect()->route('employee.show', $employee->employee_id);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $employee = Employee::where('organization_id', request()->user()->organization_id)->where('employee_id', $id)->first();
+
+        if (!$employee) {
+            return 'No such record!';
+        }
+
+        return view('employee.show', ['user' => request()->user()])->withEmployee( $employee );
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Request $request, $id)
+    {
+        $dash = '---';
+        $employee = Employee::where('employee_id', $id)->where('organization_id', $request->user()->organization_id)->first();
+        if (!$employee) {
+            abort(404, 'No such employee found');
+        }
+        $settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
+
+        $items = Position::where('organization_id', $request->user()->organization_id)->orderBy('title')->pluck('title', 'position_id');
+
+        $sessionStart = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, 'c ', '', 'H:i');
+        $sessionEnd = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 15, 'по ', '', 'H:i');
+        $addInterval = $this->populateTimeIntervals(strtotime('00:45:00'), strtotime('04:00:00'), 15, '', '', 'H:i');
+        array_unshift($addInterval, $dash);
         $service_duration_hours = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('09:00:00'), 60, '', ' ч', 'G');
         $service_duration_minutes = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('00:45:00'), 15, '', ' мин', 'i');
         //Log::info(__METHOD__.' $service_duration_hours:'.print_r($service_duration_hours, TRUE));
@@ -160,7 +209,7 @@ class EmployeeController extends Controller
         $serviceCategories = ServiceCategory::where('organization_id', $request->user()->organization_id)->with('services')->get();
         $employee_services = [];
         foreach($serviceCategories AS $sc) {
-			$services = $sc->services()->get();
+            $services = $sc->services()->get();
             foreach($services AS $service) {
                 $employee_services[$service->service_id] = $service->name;
             }
@@ -179,14 +228,14 @@ class EmployeeController extends Controller
         // по умолчанию получаем расписание для текущей ненедели
         $sheduleStartDate = Carbon::parse('this monday')->toDateString();
 
-		return view('employee.edit', [
-			'employee' => $employee,
-			'settings' => $settings,
-			'items' => $items,
-			'sessionStart' => $sessionStart,
-			'sessionEnd' => $sessionEnd,
-			'addInterval' => $addInterval,
-			'wageSchemeOptions' => $this->getWageSchemeOptions(),
+        return view('employee.edit', [
+            'employee' => $employee,
+            'settings' => $settings,
+            'items' => $items,
+            'sessionStart' => $sessionStart,
+            'sessionEnd' => $sessionEnd,
+            'addInterval' => $addInterval,
+            'wageSchemeOptions' => $this->getWageSchemeOptions(),
             'employee_attached_services' => $employee_attached_services,
             'resources_attached_service' => $resources_attached_service,
             'employee_services' => $employee_services,
@@ -195,116 +244,116 @@ class EmployeeController extends Controller
             'service_routings' => $service_routings,
             'crmuser' => $request->user(),
             'shedule_data' => json_encode($this->getScheduleData($employee, $sheduleStartDate))
-		]);
-	}
+        ]);
+    }
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function update(Request $request, $id)
-	{
-		//Проверяем есть ли у юзера права на редактирование Персонала
-		$accessLevel = $request->user()->hasAccessTo('employee', 'edit', 0);
-		if ($accessLevel < 1) {
-			throw new AccessDeniedHttpException('You don\'t have permission to access this page');
-		}
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //Проверяем есть ли у юзера права на редактирование Персонала
+        $accessLevel = $request->user()->hasAccessTo('employee', 'edit', 0);
+        if ($accessLevel < 1) {
+            throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+        }
 
-		$this->validate($request, [
-			// 'name' => 'required'
-			// 'email' => 'required',
-			// 'phone' => 'required'
-			// 'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-		]);
+        $this->validate($request, [
+            // 'name' => 'required'
+            // 'email' => 'required',
+            // 'phone' => 'required'
+            // 'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
 
-		$validator = Validator::make($request->all(), [
-			'online_reg_notify' => 'exists'
-		]);
+        $validator = Validator::make($request->all(), [
+            'online_reg_notify' => 'exists'
+        ]);
 
-		$employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $id)->first();
-		if (is_null($employee)) {
-			return 'No such employee';
-		}
+        $employee = Employee::where('organization_id', $request->user()->organization_id)->where('employee_id', $id)->first();
+        if (is_null($employee)) {
+            return 'No such employee';
+        }
 
-		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
-		if (is_null($settings)) {
-			return 'No such settings';
-		}
+        $settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
+        if (is_null($settings)) {
+            return 'No such settings';
+        }
 
-		if ($request->input('id') == 'employee_form__info') {
-			$employee->name = $request->input('name');
-			// $employee->email = $request->input('email');
-			// $employee->phone = $request->input('phone');
-			$employee->spec = $request->input('spec');
-			$employee->descr = $request->input('descr');
-			$employee->position_id = $request->position_id;
+        if ($request->input('id') == 'employee_form__info') {
+            $employee->name = $request->input('name');
+            // $employee->email = $request->input('email');
+            // $employee->phone = $request->input('phone');
+            $employee->spec = $request->input('spec');
+            $employee->descr = $request->input('descr');
+            $employee->position_id = $request->position_id;
 
-			if ($request->file('avatar') !== null) {
-				$imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
+            if ($request->file('avatar') !== null) {
+                $imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
 
-				$request->file('avatar')->move(public_path('images'), $imageName);
+                $request->file('avatar')->move(public_path('images'), $imageName);
 
-				$employee->avatar_image_name = $imageName;
-			}
+                $employee->avatar_image_name = $imageName;
+            }
 
-			$employee->save();
-		}
+            $employee->save();
+        }
 
-		if ($request->input('id') == 'employee_form__settings') {
-			$settings[0]->online_reg_notify = $request->input('online_reg_notify');
-			$settings[0]->phone_reg_notify = $request->input('phone_reg_notify');
-			$settings[0]->online_reg_notify_del = $request->input('online_reg_notify_del');
-			$settings[0]->phone_for_notify = $request->input('phone_for_notify');
-			$settings[0]->email_for_notify = $request->input('email_for_notify');
-			$settings[0]->online_reg_notify = $request->input('online_reg_notify');
-			$settings[0]->client_data_notify = $request->input('client_data_notify');
-			$settings[0]->reg_permitted = $request->input('reg_permitted');
-			$settings[0]->reg_permitted_nomaster = $request->input('reg_permitted_nomaster');
-			
-			//TODO: Обрабатывать значения этих полей
-			$settings[0]->session_start = $request->input('session_start');
-			$settings[0]->session_end = $request->input('session_end');
-			$settings[0]->add_interval = $request->input('add_interval');
+        if ($request->input('id') == 'employee_form__settings') {
+            $settings[0]->online_reg_notify = $request->input('online_reg_notify');
+            $settings[0]->phone_reg_notify = $request->input('phone_reg_notify');
+            $settings[0]->online_reg_notify_del = $request->input('online_reg_notify_del');
+            $settings[0]->phone_for_notify = $request->input('phone_for_notify');
+            $settings[0]->email_for_notify = $request->input('email_for_notify');
+            $settings[0]->online_reg_notify = $request->input('online_reg_notify');
+            $settings[0]->client_data_notify = $request->input('client_data_notify');
+            $settings[0]->reg_permitted = $request->input('reg_permitted');
+            $settings[0]->reg_permitted_nomaster = $request->input('reg_permitted_nomaster');
 
-			$settings[0]->show_rating = $request->input('show_rating');
-			$settings[0]->is_rejected = $request->input('is_rejected');
-			$settings[0]->is_in_occupancy = $request->input('is_in_occupancy');
-			$settings[0]->revenue_pctg = $request->input('revenue_pctg');
-			$settings[0]->sync_with_google = $request->input('sync_with_google');
-			$settings[0]->sync_with_1c = $request->input('sync_with_1c');
+            //TODO: Обрабатывать значения этих полей
+            $settings[0]->session_start = $request->input('session_start');
+            $settings[0]->session_end = $request->input('session_end');
+            $settings[0]->add_interval = $request->input('add_interval');
 
-			$settings[0]->save();
-		}
+            $settings[0]->show_rating = $request->input('show_rating');
+            $settings[0]->is_rejected = $request->input('is_rejected');
+            $settings[0]->is_in_occupancy = $request->input('is_in_occupancy');
+            $settings[0]->revenue_pctg = $request->input('revenue_pctg');
+            $settings[0]->sync_with_google = $request->input('sync_with_google');
+            $settings[0]->sync_with_1c = $request->input('sync_with_1c');
 
-		Session::flash('success', 'Данные сотрудника успешно сохранены!');
+            $settings[0]->save();
+        }
 
-		return redirect()->route('employee.show', $employee->employee_id);
-	}
+        Session::flash('success', 'Данные сотрудника успешно сохранены!');
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function destroy($id)
-	{
-		$employee = Employee::where('organization_id', request()->user()->organization_id)->where('employee_id', $id)->first();
-		$settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
+        return redirect()->route('employee.show', $employee->employee_id);
+    }
 
-		if ($employee) {
-			$employee->delete();
-			$settings[0]->delete();
-			Session::flash('success', 'Сотрудник был успешно удален!');
-		} else {
-			Session::flash('error', 'Сотрудник не найден');
-		}
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $employee = Employee::where('organization_id', request()->user()->organization_id)->where('employee_id', $id)->first();
+        $settings = EmployeeSetting::where('employee_id', $employee->employee_id)->get()->all();
 
-		return redirect()->route('employee.index');
-	}
+        if ($employee) {
+            $employee->delete();
+            $settings[0]->delete();
+            Session::flash('success', 'Сотрудник был успешно удален!');
+        } else {
+            Session::flash('error', 'Сотрудник не найден');
+        }
+
+        return redirect()->route('employee.index');
+    }
 
     /**
      * Сохраняет связь работника со схемой начисления зарплаты
@@ -366,7 +415,7 @@ class EmployeeController extends Controller
         return redirect()->route('employee.show', $employee->employee_id);
     }
 
-	public function updateServices(Request $request) {
+    public function updateServices(Request $request) {
         /*
         array:7 [▼
           "_method" => "PUT"
