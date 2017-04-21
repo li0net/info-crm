@@ -605,7 +605,7 @@ class Employee extends Model
         $servicesPerformedInfo = [];
         if ((int)$wageScheme->services_percent > 0) {
             $appts = DB::select(
-                "SELECT a.id, a.service_price, a.service_discount, a.service_sum, a.start, a.end, " .
+                "SELECT a.appointment_id, a.service_price, a.service_discount, a.service_sum, a.start, a.end, " .
                 "s.name, s.price_min, c.name AS client_name " .
                 "FROM appointments a " .
                 "LEFT JOIN services s ON s.service_id=a.service_id " .
@@ -629,15 +629,15 @@ class Employee extends Model
                         $servicePrice = $apt->service_price;
                     }
 
-                    $servicesPercentSum += (float)$apt->service_sum * (int)$wageScheme->services_percent;
-                    $servicesPerformedInfo[$apt->start][$apt->id] = [
+                    $servicesPercentSum += (float)$apt->service_sum * ((int)$wageScheme->services_percent/100);
+                    $servicesPerformedInfo[$apt->start][$apt->appointment_id] = [
                         'start'         => $apt->start,
                         'end'           => $apt->end,
                         'title'         => $appName,
                         'price'         => $servicePrice,
                         'discount'      => $apt->service_discount,
                         'total'         => $apt->service_sum,
-                        'percent_earned' => (float)$apt->service_sum * (int)$wageScheme->services_percent,
+                        'percent_earned' => (float)$apt->service_sum * ((int)$wageScheme->services_percent/100),
                         'client_name'   => $apt->client_name,
                     ];
                 }
@@ -666,13 +666,13 @@ class Employee extends Model
                         $productName = $pt->title;
                     }
 
-                    $productsPercentSum += (float)$pt->amount * (int)$wageScheme->products_percent;
+                    $productsPercentSum += (float)$pt->amount * ((int)$wageScheme->products_percent/100);
                     // TODO: в transations надо добавить кол-во проданного товара, скидку покупателю, итоговую цену с учетом скидки и добавить это в массив $productsSoldInfo
                     $productsSoldInfo[$pt->created_at][$pt->transaction_id] = [
                         'date'          => $pt->created_at,
                         'product_title' => $productName,
                         'amount'        => $pt->amount,
-                        'percent_earned' => (float)$pt->amount * (int)$wageScheme->products_percent
+                        'percent_earned' => (float)$pt->amount * ((int)$wageScheme->products_percent/100)
                     ];
                 }
             }
@@ -738,6 +738,16 @@ class Employee extends Model
         //}
 
         return view('employee.pdf.payroll');
+    }
+
+	public function payWage($calculatedWageId) {
+        // select appointments_data, products_data from calculated_wage table
+        // IN TRANSACTION
+        // mark approintments and transactions as payed to employee
+        // Fill calculated_wage table fields
+        //      $table->dateTime('date_payed')->nullable();
+        //      $table->integer('payed_by')->unsigned()->nullable();
+        // END TRANSACTION
     }
 
 }

@@ -221,3 +221,4 @@ Route::get('/oauth/managePersonalTokens', function() {
 })->middleware('auth');
 
 Route::get('/employees/getPayroll', '\App\Http\Controllers\EmployeeController@getPayroll');
+Route::post('/employees/calculateWage', '\App\Http\Controllers\EmployeeController@calculateWage');

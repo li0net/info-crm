@@ -50,6 +50,19 @@
                 <dd>{{ $employee->position->title }}</dd>
             </dl>
         </div>
+
+        <h2>Wages</h2>
+        <div class="form-group">
+            <label for="wage_month" class="col-sm-3 control-label text-right">Select month to calculate wage</label>
+            <div class="col-sm-9">
+                <!--<div class="input-group-addon"><i class="fa fa-calendar"></i></div>-->
+                <input type="text" class="form-control" name="wage_month" id="e_wage_month" value="{{date('Y-m')}}" placeholder="@lang('main.client:birthday_label')">
+            </div>
+        </div>
+        <div class="col-sm-12 text-right">
+            <a href="#" id="e_btn_calculate_wage" class="btn btn-primary">Calculate wage</a>
+        </div>
+
         <div class="col-sm-12">
             @if ($user->hasAccessTo('employee', 'delete', 0))
                 {!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "method" => 'DELETE', "class" => 'pull-left m-r']) !!}
@@ -62,4 +75,54 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('page-specific-scripts')
+<script type="text/javascript">
+var employeeId = '{{$employee->employee_id}}';
+$(document).ready(function() {
+    $('#e_wage_month').datepicker({
+        autoclose: true,
+        format: 'yyyy-mm',
+        minViewMode: 'months'
+    });
+
+    $('a#e_btn_calculate_wage').click(function () {
+        if ($('a#e_btn_calculate_wage').hasClass( "disabled" )) {
+            return false;
+        }
+        if ($('#e_wage_month').val() == '') {
+            alert('First select month');
+        }
+        //checkZeroLists(['e_wage_month']);
+
+        $('a#e_btn_calculate_wage').addClass('disabled');
+        $.ajax({
+            type: "POST",
+            url: "/employees/calculateWage",
+            data: {'employee_id' : employeeId, 'month': $('#e_wage_month').val()},
+            dataType: 'json',
+            success: function(data) {
+                //var data = $.parseJSON(data);
+                if ( console && console.log ) {
+                    console.log("Wage calculation data:", data);
+                }
+
+                if (data.res == true) {
+                    //$("#clients_grid").trigger("reloadGrid");
+                    alert('Wage for selected month calculated');
+                } else {
+                    alert('Error: '+data.error);
+                }
+                $('a#e_btn_calculate_wage').removeClass('disabled');
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('Server error:'+textStatus);
+                $('a#e_btn_calculate_wage').removeClass('disabled');
+            }
+        });
+
+    });
+});
+</script>
 @endsection
