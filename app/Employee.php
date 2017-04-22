@@ -502,14 +502,25 @@ class Employee extends Model
         return $res;
     }
 
+	/**
+	 * Расчет зарплаты сотрудника за переданый период
+     *
+     * @param $startDate string 'YYYY-MM-DD HH:MM:SS'
+     * @param $endDate string 'YYYY-MM-DD HH:MM:SS'
+     * @return array('res' => TRUE|FALSE, 'error' => 'text'|'', 'total_amount' => 10000.00|null)
+	 * */
 	public function calculateWage($startDate, $endDate, $payAfterCalculation=false) {
         //4)Период расчета - месяц. Если есть фикса - выплачиваем ее, вне зависимости от кол-ва отработанных дней.
 
         // пока что будет только одна wage_scheme на работника, чтобы не усложнять
         $wageScheme = $this->wageSchemes()->where('scheme_start', '<=', $startDate)->first();
         if (!$wageScheme) {
-            Log::error(__METHOD__.' No wage scheme found for employee '.$this->employee_id.' and start_date '.$startDate);
-            return FALSE;
+            Log::info(__METHOD__.' No wage scheme found for employee '.$this->employee_id.' and start_date '.$startDate);
+            return array(
+                'res' => FALSE,
+                'error' => 'No wage scheme found for given employee and start date'.$startDate,     // TODO: translate
+                'total_amount' => null
+            );
         }
 
         /*
@@ -522,7 +533,7 @@ class Employee extends Model
         $scheme->wage_rate_period;
         $scheme->is_client_discount_counted;
         $scheme->is_material_cost_counted;
-        //$scheme->organization_id = $request->user()->organization_id;
+        $scheme->organization_id = $request->user()->organization_id;
         */
 
         $wageSum = (float)0;
@@ -551,7 +562,7 @@ class Employee extends Model
         ];
 
         // wage_rate_period	enum('hour','day','month')
-        // Если ставка не ненулевая и одного из двух типов - hour/day
+        // Если ставка ненулевая и одного из двух типов - hour/day
         if ($wageRate > 0 AND ($wageScheme->wage_rate_period == 'hour' OR $wageScheme->wage_rate_period == 'day')) {
             // Отбираем интервалы расписаний в пределах нужного срока
             $workTimes = DB::select(
@@ -581,7 +592,6 @@ class Employee extends Model
                 }
 
                 // wage_rate	decimal(12,2)
-                // wage_rate_period	enum('hour','day','month')
                 if ($wageScheme->wage_rate_period == 'hour') {
                     // 3)Значение отработанного времени не округляем - часы и минуты переводим в десятичный формат и умножая на почасовку, получаем дробное, в общем случае, значение заработной платы.
                     $salary = ($minutes / 60) * $wageRate;
@@ -681,9 +691,7 @@ class Employee extends Model
         $totalAmount = round($salary + $servicesPercentSum + $productsPercentSum, 2, PHP_ROUND_HALF_UP);
 
         // TODO: добавить обработку параметра $payAfterCalculation - сразу же помечать записи из transactions и appointments(?) как оплаченные (ни в какаом случае не учитываем их в последующих расчетах зп) И пишем в calculated_wages дату оплаты и id юзера который "оплатил"
-
-        // TODO: генерить pdf ведомость из $servicesPerformedInfo и $productsSoldInfo
-        // TODO: делать запись о расчитанной зарплате в новой таблице calculated_wages, в ней должен быть флаг is_payed и поля calculation_start, calculation_end, employee_id, calculated_by, payed_by, wage_scheme_id
+        // делаем запись о расчитанной зарплате в новой таблице calculated_wages, в ней должен быть флаг is_payed и поля calculation_start, calculation_end, employee_id, calculated_by, payed_by, wage_scheme_id
         /*
         $table->integer('employee_id')->unsigned();
         $table->integer('wage_scheme_id')->unsigned();
@@ -711,8 +719,11 @@ class Employee extends Model
         //  если запись в calculated_wages есть, не даем заново расчитывать зп за пересекающийся период
         //  при нажатии кнопки Выплатить зп - устанавливаем is_payed=1 и в транзакции помечаем записи из transactions и appointments(?) как оплаченные (ни в какаом случае не учитываем их в последующих расчетах зп)
 
-        //return $totalAmount;
-        return TRUE;
+        return array(
+            'res' => TRUE,
+            'error' => '',
+            'total_amount' => $totalAmount
+        );
     }
 
     public function generatePayroll($periodStart, $periodEnd, $totalWage, $salaryData, $appointmentsData = null, $productsData = null) {
