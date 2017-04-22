@@ -50,7 +50,7 @@
                     <div class="form-group">
                         {{ 	Form::label('position_id', trans('adminlte_lang::message.employee_position'), ['class' => 'col-sm-4 control-label text-right']) }}
                         <div class="col-sm-8">
-                            {{	Form::select('position_id', $items, 1, ['class' => 'js-select-basic-single', 'required' => '', 'placeholder'=>trans('adminlte_lang::message.employee_position')]) }}
+                            {{	Form::select('position_id', $positions, 1, ['class' => 'js-select-basic-single', 'required' => '', 'placeholder'=>trans('adminlte_lang::message.employee_position')]) }}
                         </div>
                     </div>
                 </div>

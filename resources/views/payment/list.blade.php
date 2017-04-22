@@ -1,4 +1,4 @@
-@if(count($payments) == 0)
+@if(0 == count($payments))
 	<div class="row">
 		<hr>
 	</div>
@@ -71,6 +71,6 @@
 		</tbody>
 	</table>
 	<div class="text-center filtered">
-		{!! $payments->render(); !!} 
+		{!! $payments->render() !!}
 	</div>
 @endif

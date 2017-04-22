@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.employees') }}
+    {{ trans('adminlte_lang::message.employees') }}
 @endsection
 
 @section('main-content')
@@ -25,8 +25,61 @@
             <hr>
         </div>
     </div>
+
+    <form method="post" action="/employee" class="form">
+        {{ csrf_field() }}
+        {{ Form::hidden('organization_id', $user->organization_id, ['id' => 'organization_id']) }}
+        <fieldset>
+            <div class="row m-b">
+                <div class="col-sm-4">
+                    {{ Form::select(
+                        'position_id',
+                        $positions,
+                        null,
+                        [
+                            'class' => 'js-select-basic-single',
+                            'required' => '',
+                            'id' => 'position_id',
+                            'placeholder' => trans('adminlte_lang::message.position_not_chosen')
+                        ])
+                    }}
+                </div>
+                <div class="col-sm-4">
+                    {{ Form::select(
+                        'is_deleted',
+                        [1 => trans('adminlte_lang::message.deleted'), 2 => trans('adminlte_lang::message.not_deleted')],
+                        null,
+                        [
+                            'class' => 'js-select-basic-single',
+                            'required' => '',
+                            'id' => 'is_deleted',
+                            'placeholder' => trans('adminlte_lang::message.all')
+                        ])
+                    }}
+                </div>
+                <div class="col-sm-4">
+                    {{ Form::select(
+                        'is_fired',
+                        [1 => trans('adminlte_lang::message.fired'), 2 => trans('adminlte_lang::message.not_fired')],
+                        2,
+                        [
+                            'class' => 'js-select-basic-single',
+                            'required' => '',
+                            'id' => 'is_fired',
+                            'placeholder' => trans('adminlte_lang::message.all')
+                        ])
+                    }}
+                </div>
+            </div>
+            <div class="row m-b ">
+                <div class="col-sm-12 text-right">
+                    <input type="button" class="btn btn-primary" value={{ trans('adminlte_lang::message.show') }} id='form_submit'>
+                </div>
+            </div>
+        </fieldset>
+    </form>
     <div class="row m-t">
-        <div class="col-sm-12">
+        <div class="col-sm-12" id="result_container">
             <table class="table table-hover table-condensed">
                 <thead>
                 <tr>
@@ -64,9 +117,9 @@
                         <a href="{{ route('employee.edit', $employee->employee_id) }}#menu3" class="table-action-link"><i class='fa fa-clock-o'></i></a>
                         <a href="{{ route('employee.edit', $employee->employee_id) }}#menu4" class="table-action-link"><i class='fa fa-cog'></i></a>
                         @if ($user->hasAccessTo('employee', 'delete', 0))
-                        {!! Form::open(['route' => ['employee.destroy', $employee->employee_id], 'id' => 'form'.$employee->employee_id, 'style' => 'max-width: 32px; margin:0; padding:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-                        <a href="javascript: submitform('#form{{$employee->employee_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
-                        {!! Form::close() !!}
+                            {!! Form::open(['route' => ['employee.destroy', $employee->employee_id], 'id' => 'form'.$employee->employee_id, 'style' => 'max-width: 32px; margin:0; padding:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
+                                <a href="javascript: submitform('#form{{$employee->employee_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
+                            {!! Form::close() !!}
                         @endif
                     </td>
                 </tr>
@@ -81,8 +134,66 @@
 </div>
 @endsection
 
+@section('page-specific-scripts')
+    <script>
+        $(document).ready(function() {
+            $('#result_container').on('click', '.filtered > .pagination', function(e) {
+                var page = 0;
+                if ($(e.target).html() == '»') {
+                    page = parseInt($('.pagination li.active span').html()) + 1;
+                } else if ($(e.target).html() == '«'){
+                    page = parseInt($('.pagination li.active span').html()) - 1;
+                } else {
+                    page = parseInt($(e.target).html());
+                }
+
+                $.ajax({
+                    type: "POST",
+                    dataType: 'html',
+                    data: {
+                        'position_id'       : $('#position_id').val(),
+                        'is_deleted'        : $('#is_deleted').val(),
+                        'is_fired'          : $('#is_fired').val(),
+                        'organization_id'   : $('#organization_id').val(),
+                        'page'              : page
+                    },
+                    url: "/employee/list",
+                    success: function(data) {
+                        $('#result_container').html(data);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log('Error while processing payments data range!');
+                    }
+                });
+
+                return false;
+            });
+
+            $('#form_submit').on('click', function(e){
+                $.ajax({
+                    type: "POST",
+                    dataType: 'html',
+                    data: {
+                        'position_id'       : $('#position_id').val(),
+                        'is_deleted'        : $('#is_deleted').val(),
+                        'is_fired'          : $('#is_fired').val(),
+                        'organization_id'   : $('#organization_id').val()
+                    },
+                    url: "/employee/list",
+                    success: function(data) {
+                        $('#result_container').html(data);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log('Error while processing payments data range!');
+                    }
+                });
+            });
+        });
+    </script>
+@endsection
+
 <script>
-	function submitform(form_id){
-		$(form_id).submit();
-	}
+    function submitform(form_id) {
+        $(form_id).submit();
+    }
 </script>
