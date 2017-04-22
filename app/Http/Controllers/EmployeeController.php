@@ -20,7 +20,6 @@ use Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Input;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Validator;
 use Carbon\Carbon;
