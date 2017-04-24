@@ -63,6 +63,15 @@
             <a href="#" id="e_btn_calculate_wage" class="btn btn-primary">Calculate wage</a>
         </div>
 
+        <div class="row">
+            <hr/>
+        </div>
+
+        <div class="col-sm-12 clients-grid-block">
+            <table id="calculated_wages_grid" class="table table-hover table-condensed"></table>
+            <div id="calculated_wages_grid_pager"></div>
+        </div>
+
         <div class="col-sm-12">
             @if ($user->hasAccessTo('employee', 'delete', 0))
                 {!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "method" => 'DELETE', "class" => 'pull-left m-r']) !!}
@@ -87,6 +96,58 @@ $(document).ready(function() {
         minViewMode: 'months'
     });
 
+    $("#calculated_wages_grid").jqGrid({
+        url: '/employees/calculateWagesGridData/{{$employee->employee_id}}',
+        mtype: "GET",
+        styleUI: 'Bootstrap',
+        datatype: "json",
+        colNames: ['ID', 'Period start', 'Period end', 'Amount', 'Date payed', 'Pay'],
+        colModel: [
+            {index: 'cw_id', name: 'cw_id', key: true, width: 60, hidden: true, search: false},
+            {index: 'wage_period_start', name: 'wage_period_start', width: 100, search: false},
+            {index: 'wage_period_end', name: 'wage_period_end', width: 100, search: false},
+            {index: 'total_amount', align:'left', name: 'total_amount', width: 70, search: false},
+            {index: 'date_payed', align:'left', name: 'date_payed', width: 60, search: false},
+            {index: 'pay_button', align:'left', name: 'pay_button', width: 60, search: false}
+        ],
+        sortname: 'wage_period_start',
+        sortorder: 'desc',
+        viewrecords: true,
+        height: 550,
+        autowidth: true,
+        shrinkToFit: true,
+        rowNum: 10,
+        pager: "#calculated_wages_grid_pager",
+        //multiselect: true,
+        /*
+        onSelectRow: function(id, status, e){
+            //console.log(id, status, e);
+            var selRows = $('#clients_grid').getGridParam('selarrrow');
+            if (selRows.length > 0) {
+                $('#a_clients_delete_selected').removeClass("disabled");
+                $('#a_send_sms_to_selected').removeClass("disabled");
+                $('#a_clients_add_selected_to_category').removeClass("disabled");
+            } else {
+                $('#a_clients_delete_selected').addClass("disabled");
+                $('#a_send_sms_to_selected').addClass("disabled");
+                $('#a_clients_add_selected_to_category').addClass("disabled");
+            }
+        },
+        onSelectAll: function(aRowIds, status){
+            //console.log(aRowIds, status);
+            if (status == true) {
+                $('#a_clients_delete_selected').removeClass("disabled");
+                $('#a_send_sms_to_selected').removeClass("disabled");
+                $('#a_clients_add_selected_to_category').removeClass("disabled");
+            } else {
+                $('#a_clients_delete_selected').addClass("disabled");
+                $('#a_send_sms_to_selected').addClass("disabled");
+                $('#a_clients_add_selected_to_category').addClass("disabled");
+            }
+        }
+        */
+    });
+
     $('a#e_btn_calculate_wage').click(function () {
         if ($('a#e_btn_calculate_wage').hasClass( "disabled" )) {
             return false;
@@ -109,7 +170,7 @@ $(document).ready(function() {
                 }
 
                 if (data.res == true) {
-                    //$("#clients_grid").trigger("reloadGrid");
+                    $("#calculated_wages_grid").trigger("reloadGrid");
                     alert('Wage for selected month calculated');
                 } else {
                     alert('Error: '+data.error);
