@@ -519,6 +519,7 @@ return [
     'deleted'                   => 'Eliminados',
     'not_deleted'               => 'No eliminados',
     'no_such_employees'         => 'No hay empleados',
-    'you_can_add_employee'      => 'Puede agregar empleados'
+    'you_can_add_employee'      => 'Puede agregar empleados',
+    'summary'                   => 'Sumario'
 
 ];
