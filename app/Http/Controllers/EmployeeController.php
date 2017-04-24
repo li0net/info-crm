@@ -872,12 +872,12 @@ class EmployeeController extends Controller
             ]);
         }
 
-        $res = $employee->calculateWage($periodStart, $periodEnd);
-		Log::info(__METHOD__." calculate wage result:".print_r($res, TRUE));
+        $calcRes = $employee->calculateWage($periodStart, $periodEnd);
+		Log::info(__METHOD__." calculate wage result:".print_r($calcRes, TRUE));
 
         return response()->json([
-            'res' => true,
-            'error' => ''
+            'res' => $calcRes['res'],
+            'error' => $calcRes['error']
         ]);
     }
 
