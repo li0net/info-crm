@@ -84,7 +84,7 @@
                     <li  class="@if ($page == 'home') active @endif">
                         <a href="/home">{{ trans('adminlte_lang::message.appointments') }}</a>
                     </li>
-                    {{--<li><a href="/stub">{{ trans('adminlte_lang::message.review') }}</a></li>--}}
+                    <li><a href="/summary">{{ trans('adminlte_lang::message.summary') }}</a></li>
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.comments') }}</a></li>--}}
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.sms') }}</a></li>--}}
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.calls') }}</a></li>--}}

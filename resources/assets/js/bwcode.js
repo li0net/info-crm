@@ -1,6 +1,6 @@
 $(document).ready(function () {
     /** подгружаем нужные стили **/
-    $('head').append('<link rel="stylesheet" href="http://45.63.43.168/css/bwcode.css" type="text/css" />');
+    $('head').append('<link rel="stylesheet" href="http://infogroup.online/css/bwcode.css" type="text/css" />');
     // $('head').append('<link rel="stylesheet" href="http://localhost:8000/css/bwcode.css" type="text/css" />');
 
     /** ссылка-крестик, прячем виджет **/
@@ -16,7 +16,7 @@ $(document).ready(function () {
         // получаю из ссылки id суперорганизации
         var scId = $(this).data('id');
         if( scId == '' || scId == undefined || scId == false){
-            // ошибка елси не задано
+            // ошибка если не задано
             alert('Wrong data id of link!');
         } else {
             if ( $( "#bw_block" ).length ) {
@@ -40,7 +40,7 @@ $(document).ready(function () {
                     id: 'bw_frame',
                     frameBorder: 0,
                     // src: 'http://localhost:8000/api/v1/widget/show?sid='+scId,
-                    src: 'http://45.63.43.168/api/v1/widget/show?sid='+scId,
+                    src: 'http://infogroup.online/api/v1/widget/show?sid='+scId,
                     width: '500px',
                     height: frameHeight+'px'
                 }).appendTo('#bw_frame_block');
