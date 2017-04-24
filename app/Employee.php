@@ -620,7 +620,8 @@ class Employee extends Model
                 "FROM appointments a " .
                 "LEFT JOIN services s ON s.service_id=a.service_id " .
                 "LEFT JOIN clients c ON a.client_id=c.client_id ".
-                "WHERE a.employee_id=? AND (a.start BETWEEN '$startDate' AND '$endDate') OR (a.end BETWEEN '$startDate' AND '$endDate') AND " .
+                "WHERE a.employee_payed IS NULL AND ".  // отбираем только не оплаченные записи!
+                "a.employee_id=? AND (a.start BETWEEN '$startDate' AND '$endDate') OR (a.end BETWEEN '$startDate' AND '$endDate') AND " .
                 "a.state='finished' ".
                 "ORDER BY a.start ASC",
                 [$this->employee_id]
@@ -664,6 +665,7 @@ class Employee extends Model
                 "FROM transactions t " .
                 "LEFT JOIN products p ON p.product_id=t.product_id " .
                 "WHERE t.employee_id=? AND " .
+                "t.employee_payed IS NULL AND ".    // отбираем только не оплаченные транзакции!
                 "(t.created_at >= '$startDate' AND t.created_at <= '$endDate')",
                 [$this->employee_id]
             );
@@ -751,7 +753,7 @@ class Employee extends Model
         return view('employee.pdf.payroll');
     }
 
-	public function payWage($calculatedWageId) {
+	public function payWage(\App\CalculatedWage $cw) {
         // select appointments_data, products_data from calculated_wage table
         // IN TRANSACTION
         // mark approintments and transactions as payed to employee
@@ -759,6 +761,42 @@ class Employee extends Model
         //      $table->dateTime('date_payed')->nullable();
         //      $table->integer('payed_by')->unsigned()->nullable();
         // END TRANSACTION
+
+        $appData = json_decode($cw->appointments_data, true);
+        $productsData = json_decode($cw->products_data, true);
+
+        $appIds = [];
+        foreach($appData AS $startDate=>$app) {
+            $appIds = array_merge($appIds, array_keys($app));
+        }
+
+        $trIds = [];
+        foreach($productsData AS $product) {
+            $trIds = array_merge($trIds, array_keys($product));
+        }
+
+        DB::beginTransaction();
+        if (count($appIds)>0) {
+            DB::update(
+                "UPDATE appointments SET employee_payed=NOW() WHERE appointment_id IN ('" . implode("','", $appIds) . "') AND organization_id=?",
+                [$this->organization_id]
+            );
+        }
+
+        if (count($trIds)>0) {
+            DB::update(
+                "UPDATE transactions SET employee_payed=NOW() WHERE transaction_id IN ('" . implode("','", $trIds) . "') AND organization_id=?",
+                [$this->organization_id]
+            );
+        }
+
+        DB::update(
+            "UPDATE calculated_wages SET date_payed=NOW(), payed_by=?",
+            [request()->user()->user_id]
+        );
+        DB::commit();
+
+        return TRUE;
     }
 
 }
