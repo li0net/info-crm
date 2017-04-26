@@ -7,6 +7,7 @@ use App\Item;
 use App\ScheduleScheme;
 use App\Schedule;
 use App\WageScheme;
+use Dompdf\Exception;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -954,7 +955,37 @@ class EmployeeController extends Controller
             $pdf = \PDF::loadView('employee.pdf.payroll');
             return $pdf->download(str_replace(' ', '_', $cw->employee->name).'_payroll.pdf');
         //}
-
         //return view('employee.pdf.payroll');
+    }
+
+    public function payWage(Request $request, $cwId) {
+        $cw = \App\CalculatedWage::where('cw_id', $cwId)->with('employee')->first();
+        if (!$cw) {
+            return response()->json([
+                'res' => false,
+                'error' => 'Invalid calculated wage id given'
+            ]);
+        }
+        if ($cw->employee->organization_id != $request->user()->organization_id) {
+            return response()->json([
+                'res' => false,
+                'error' => 'Invalid calculated wage id given'
+            ]);
+        }
+
+        try {
+            $cw->employee->payWage($cw);
+        } catch(Exception $e) {
+            Log::error(__METHOD__." Exception caught when trying to pay calculated wage:".$e->getMessage());
+            return response()->json([
+                'res' => false,
+                'error' => 'Internal server error'
+            ]);
+        }
+
+        return response()->json([
+            'res' => true,
+            'error' => ''
+        ]);
     }
 }

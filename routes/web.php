@@ -230,3 +230,4 @@ Route::get('/employees/calculateWagesGridData/{empId}', function($empId)
     GridEncoder::encodeRequestedData(new \App\GridRepositories\CalculatedWagesGridRepository($empId), Input::all());
 });
 Route::get('/employees/downloadPayroll/{cwId}', '\App\Http\Controllers\EmployeeController@getPayroll');
+Route::get('/employees/payWage/{cwId}', '\App\Http\Controllers\EmployeeController@payWage');

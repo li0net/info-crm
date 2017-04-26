@@ -22,14 +22,6 @@ class CalculatedWagesGridRepository extends EloquentRepositoryAbstract {
             //->join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id')
             ->where('employee_id', $empId);
 
-        /*
-        {index: 'cw_id', name: 'cw_id', key: true, width: 60, hidden: true, search: false},
-            {index: 'wage_period_start', name: 'wage_period_start', width: 100, search: false},
-            {index: 'wage_period_end', name: 'wage_period_end', width: 100, search: false},
-            {index: 'total_amount', align:'left', name: 'total_amount', width: 70, search: false},
-            {index: 'date_payed', align:'left', name: 'date_payed', width: 60, search: false},
-            {index: 'pay_button', align:'left', name: 'pay_button', width: 60, search: false}
-        */
         $this->visibleColumns = [
             'cw_id',
             'wage_period_start',
@@ -60,6 +52,12 @@ class CalculatedWagesGridRepository extends EloquentRepositoryAbstract {
             }
 
             $rows[$i]['total_amount'] = "<a href='/employees/downloadPayroll/{$row['cw_id']}'>{$row['total_amount']}</a>";
+
+            if (empty($row['date_payed'])) {
+                $rows[$i]['pay_button'] = "<a href='javascript:gridPayCW(\"{$row['cw_id']}\")'>".trans('main.calculated_wage:grid_pay_link')."</a>";
+            } else {
+                $rows[$i]['pay_button'] = '';
+            }
         }
 
         return $rows;
