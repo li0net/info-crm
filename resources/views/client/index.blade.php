@@ -120,6 +120,16 @@
                     </div><!-- /.box-body -->
                 </div>
             </div>
+
+            <div class="col-md-4">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <h4>Filters</h4>
+                        <div id="clients_grid_search">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

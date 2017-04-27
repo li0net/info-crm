@@ -62,8 +62,8 @@
             @endif
         </div>
 
-        <div class="form-group">
-            <h3>Wages</h3>
+        <div class="col-sm-12">
+            <h2>Wages</h2>
         </div>
         <div class="form-group">
             <label for="wage_month" class="col-sm-3 control-label text-right">Select month to calculate wage</label>
@@ -74,10 +74,6 @@
         </div>
         <div class="col-sm-12 text-right">
             <a href="#" id="e_btn_calculate_wage" class="btn btn-primary">Calculate wage</a>
-        </div>
-
-        <div class="row">
-            <hr/>
         </div>
 
         <div class="col-sm-12 clients-grid-block">
