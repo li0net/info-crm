@@ -447,7 +447,7 @@ class EmployeeController extends Controller
 
         $validator = Validator::make($request->all(),
             [
-                'employee_id' => 'required|numeric|max:10'
+                'employee_id' => 'required|numeric'
             ]
         );
         if ($validator->fails()) {
