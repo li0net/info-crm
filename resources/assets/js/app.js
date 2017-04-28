@@ -243,13 +243,14 @@ $(document).ready(function () {
             mtype: "GET",
             styleUI: 'Bootstrap',
             datatype: "json",
-            colNames: ['ID', 'Имя', 'Контакты', 'Продано', 'Скидка'],
+            colNames: ['ID', 'Имя', 'Контакты', 'Продано', 'Скидка', 'Важность'],
             colModel: [
                 {index: 'client_id', name: 'client_id', key: true, width: 60, hidden: true, search: false},
                 {index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
                 {index: 'phone', name: 'phone', width: 100, search: true, stype: 'text'},
                 {index: 'total_bought', align:'left', name: 'total_bought', width: 70, search: false},
-                {index: 'discount', align:'left', name: 'discount', width: 60, search: false}
+                {index: 'discount', align:'left', name: 'discount', width: 60, search: false},
+                {index: 'importance', name: 'importance', width: 50, search: true, hidden: true}
             ],
             sortname: 'name',
             sortorder: 'asc',
@@ -297,6 +298,22 @@ $(document).ready(function () {
              },
              */
         });
+
+        $("#clients_grid_search").jqGrid(
+            'filterGrid',
+            '#clients_grid',
+            {
+                formtype: 'vertical',
+                filterModel: [
+                    {label:'Importance: ', name: 'importance', stype: 'select', defval: 'gold', sopt:{ value: "gold:Gold;silver:Silver;bonze:Bronze;:No category"}}
+                ],
+                autosearch: false,
+                enableSearch: true,
+                enableClear: true,
+                searchButton: 'Search',
+                clearButton: 'Clear'
+            }
+        );
 
         $("#client_main_search_field").keypress(function (e) {
             var key = e.charCode || e.keyCode || 0;

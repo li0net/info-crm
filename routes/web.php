@@ -222,5 +222,10 @@ Route::get('/oauth/managePersonalTokens', function() {
     ]);
 })->middleware('auth');
 
-Route::get('/employees/getPayroll', '\App\Http\Controllers\EmployeeController@getPayroll');
 Route::post('/employees/calculateWage', '\App\Http\Controllers\EmployeeController@calculateWage');
+Route::get('/employees/calculateWagesGridData/{empId}', function($empId)
+{
+    GridEncoder::encodeRequestedData(new \App\GridRepositories\CalculatedWagesGridRepository($empId), Input::all());
+});
+Route::get('/employees/downloadPayroll/{cwId}', '\App\Http\Controllers\EmployeeController@getPayroll');
+Route::get('/employees/payWage/{cwId}', '\App\Http\Controllers\EmployeeController@payWage');

@@ -7,6 +7,7 @@ use App\Item;
 use App\ScheduleScheme;
 use App\Schedule;
 use App\WageScheme;
+use Dompdf\Exception;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -881,8 +882,8 @@ class EmployeeController extends Controller
         ]);
     }
 
-
-    public function getPayroll() {
+    public function getPayroll(Request $request, $cwId) {
+        /*
         $servicesInfo = [
             '2017-04-10 10:30:00' => [
                 '5' => [
@@ -926,24 +927,65 @@ class EmployeeController extends Controller
             'num_periods' => 5,
             'total' => 500
         ];
+        */
 
-        $emp = Employee::find(3);
+        $cw = \App\CalculatedWage::where('cw_id', $cwId)->with('employee')->first();
+        if (!$cw) {
+            Log::error(__METHOD__." Non existent calculated_wade id given:$cwId");
+            return false;
+        }
+        if ($cw->employee->organization_id != $request->user()->organization_id) {
+            Log::error(__METHOD__." Given calculated_wade id does not belong to curr organization:{$request->user()->organization_id}");
+            return false;
+        }
+
         //$emp->generatePayroll(690, $servicesInfo, null, $salaryData);
-
+        $sData = json_decode($cw->salary_data, true);
+        Log::info(__METHOD__." cwId:$cwId salary:".print_r($sData, true));
         view()->share([
-            'apps' =>  $servicesInfo,
-            'products' => null,
-            'salary' => $salaryData,
-            'total_wage' => 690,
-            'employee_name' => $emp->name,
-            'period_start' => '2017-04-01 00:00:00',
-            'period_end'   => '2017-04-29 00:00:00',
+            'apps' =>  json_decode($cw->appointments_data, true),
+            'products' => json_decode($cw->products_data, true),
+            'salary' => json_decode($cw->salary_data, true),
+            'total_wage' => $cw->total_amount,
+            'employee_name' => $cw->employee->name,
+            'period_start' => $cw->wage_period_start,
+            'period_end'   => $cw->wage_period_end,
         ]);
         //if(request()->has('download')){
-        //$pdf = \PDF::loadView('employee.pdf.payroll');
-        //return $pdf->download('payroll.pdf');       // TODO: add employee name and date
+            $pdf = \PDF::loadView('employee.pdf.payroll');
+            return $pdf->download(str_replace(' ', '_', $cw->employee->name).'_payroll.pdf');
         //}
+        //return view('employee.pdf.payroll');
+    }
 
-        return view('employee.pdf.payroll');
+    public function payWage(Request $request, $cwId) {
+        $cw = \App\CalculatedWage::where('cw_id', $cwId)->with('employee')->first();
+        if (!$cw) {
+            return response()->json([
+                'res' => false,
+                'error' => 'Invalid calculated wage id given'
+            ]);
+        }
+        if ($cw->employee->organization_id != $request->user()->organization_id) {
+            return response()->json([
+                'res' => false,
+                'error' => 'Invalid calculated wage id given'
+            ]);
+        }
+
+        try {
+            $cw->employee->payWage($cw);
+        } catch(Exception $e) {
+            Log::error(__METHOD__." Exception caught when trying to pay calculated wage:".$e->getMessage());
+            return response()->json([
+                'res' => false,
+                'error' => 'Internal server error'
+            ]);
+        }
+
+        return response()->json([
+            'res' => true,
+            'error' => ''
+        ]);
     }
 }
