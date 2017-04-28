@@ -25,9 +25,7 @@ Route::get('/stub', function () {
     return view('stub');
 });
 
-Route::get('/summary', function () {
-    return view('summary');
-});
+Route::get('/summary', 'SummaryController@getSummary');
 
 /*
  * Гриды

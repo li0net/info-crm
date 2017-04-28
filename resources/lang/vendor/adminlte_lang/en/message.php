@@ -518,5 +518,6 @@ return [
     'not_deleted'               => 'Not deleted',
     'you_can_add_employee'      => 'You can add new employee',
     'no_such_employees'         => 'No such employees',
-    'summary'                   => 'Summary'
+    'summary'                   => 'Summary',
+    'organization_id'           => 'Organization ID'
 ];

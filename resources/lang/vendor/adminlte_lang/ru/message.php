@@ -524,5 +524,6 @@ return [
     'not_deleted'               => 'Не удаленные',
     'no_such_employees'         => 'Нет сотрудников с указанными параметрами',
     'you_can_add_employee'      => 'Вы можете добавить нового сотрудника',
-    'summary'                   => 'Сводка'
+    'summary'                   => 'Сводка',
+    'organization_id'           => 'ID организации'
 ];
