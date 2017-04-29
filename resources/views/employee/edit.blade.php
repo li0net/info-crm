@@ -736,14 +736,10 @@
                 //$('#routing-options').val(data.options);
                 window.routingOptions = data.options;
 
-                $('select.form-control[name="service-routing[]"]').each(function() {
+                $('select.js-select-basic-single[name="service-routing[]"]').each(function() {
                     var initialValue = $(this).attr('data-initial-value');
 
-                    if ( 0 != initialValue ) {
-                        $(this).val(initialValue);
-                    } else {
-                        $(this).val($(this).find('option').first().val());
-                    }
+                    $(this).val(initialValue).trigger("change");
                 });
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
