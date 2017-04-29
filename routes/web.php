@@ -25,6 +25,8 @@ Route::get('/stub', function () {
     return view('stub');
 });
 
+Route::get('/summary', 'SummaryController@getSummary');
+
 /*
  * Гриды
  */
@@ -36,6 +38,7 @@ Route::get('/clientCategories', 'ClientCategoriesController@index');
 
 Route::resource('/employee', 'EmployeeController');
 Route::put('/employee', 'EmployeeController@store');
+Route::post('/employee/list', ['as' => 'employee.list', 'uses' => 'EmployeeController@indexFiltered']);
 Route::post('/employees/saveWageScheme', 'EmployeeController@updateWageScheme');
 Route::post('/employees/updateServices', ['as' => 'employee.update_services', 'uses' => 'EmployeeController@updateServices']);
 Route::get('/employees/serviceOptions', 'EmployeeController@getServiceOptions');
@@ -228,5 +231,10 @@ Route::get('/oauth/managePersonalTokens', function() {
     ]);
 })->middleware('auth');
 
-Route::get('/employees/getPayroll', '\App\Http\Controllers\EmployeeController@getPayroll');
 Route::post('/employees/calculateWage', '\App\Http\Controllers\EmployeeController@calculateWage');
+Route::get('/employees/calculateWagesGridData/{empId}', function($empId)
+{
+    GridEncoder::encodeRequestedData(new \App\GridRepositories\CalculatedWagesGridRepository($empId), Input::all());
+});
+Route::get('/employees/downloadPayroll/{cwId}', '\App\Http\Controllers\EmployeeController@getPayroll');
+Route::get('/employees/payWage/{cwId}', '\App\Http\Controllers\EmployeeController@payWage');

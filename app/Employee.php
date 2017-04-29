@@ -502,14 +502,25 @@ class Employee extends Model
         return $res;
     }
 
+	/**
+	 * Расчет зарплаты сотрудника за переданый период
+     *
+     * @param $startDate string 'YYYY-MM-DD HH:MM:SS'
+     * @param $endDate string 'YYYY-MM-DD HH:MM:SS'
+     * @return array('res' => TRUE|FALSE, 'error' => 'text'|'', 'total_amount' => 10000.00|null)
+	 * */
 	public function calculateWage($startDate, $endDate, $payAfterCalculation=false) {
         //4)Период расчета - месяц. Если есть фикса - выплачиваем ее, вне зависимости от кол-ва отработанных дней.
 
         // пока что будет только одна wage_scheme на работника, чтобы не усложнять
         $wageScheme = $this->wageSchemes()->where('scheme_start', '<=', $startDate)->first();
         if (!$wageScheme) {
-            Log::error(__METHOD__.' No wage scheme found for employee '.$this->employee_id.' and start_date '.$startDate);
-            return FALSE;
+            Log::info(__METHOD__.' No wage scheme found for employee '.$this->employee_id.' and start_date '.$startDate);
+            return array(
+                'res' => FALSE,
+                'error' => 'No wage scheme found for given employee and start date'.$startDate,     // TODO: translate
+                'total_amount' => null
+            );
         }
 
         /*
@@ -522,7 +533,7 @@ class Employee extends Model
         $scheme->wage_rate_period;
         $scheme->is_client_discount_counted;
         $scheme->is_material_cost_counted;
-        //$scheme->organization_id = $request->user()->organization_id;
+        $scheme->organization_id = $request->user()->organization_id;
         */
 
         $wageSum = (float)0;
@@ -551,7 +562,7 @@ class Employee extends Model
         ];
 
         // wage_rate_period	enum('hour','day','month')
-        // Если ставка не ненулевая и одного из двух типов - hour/day
+        // Если ставка ненулевая и одного из двух типов - hour/day
         if ($wageRate > 0 AND ($wageScheme->wage_rate_period == 'hour' OR $wageScheme->wage_rate_period == 'day')) {
             // Отбираем интервалы расписаний в пределах нужного срока
             $workTimes = DB::select(
@@ -581,7 +592,6 @@ class Employee extends Model
                 }
 
                 // wage_rate	decimal(12,2)
-                // wage_rate_period	enum('hour','day','month')
                 if ($wageScheme->wage_rate_period == 'hour') {
                     // 3)Значение отработанного времени не округляем - часы и минуты переводим в десятичный формат и умножая на почасовку, получаем дробное, в общем случае, значение заработной платы.
                     $salary = ($minutes / 60) * $wageRate;
@@ -610,7 +620,8 @@ class Employee extends Model
                 "FROM appointments a " .
                 "LEFT JOIN services s ON s.service_id=a.service_id " .
                 "LEFT JOIN clients c ON a.client_id=c.client_id ".
-                "WHERE a.employee_id=? AND (a.start BETWEEN '$startDate' AND '$endDate') OR (a.end BETWEEN '$startDate' AND '$endDate') AND " .
+                "WHERE a.employee_payed IS NULL AND ".  // отбираем только не оплаченные записи!
+                "a.employee_id=? AND (a.start BETWEEN '$startDate' AND '$endDate') OR (a.end BETWEEN '$startDate' AND '$endDate') AND " .
                 "a.state='finished' ".
                 "ORDER BY a.start ASC",
                 [$this->employee_id]
@@ -654,6 +665,7 @@ class Employee extends Model
                 "FROM transactions t " .
                 "LEFT JOIN products p ON p.product_id=t.product_id " .
                 "WHERE t.employee_id=? AND " .
+                "t.employee_payed IS NULL AND ".    // отбираем только не оплаченные транзакции!
                 "(t.created_at >= '$startDate' AND t.created_at <= '$endDate')",
                 [$this->employee_id]
             );
@@ -681,9 +693,7 @@ class Employee extends Model
         $totalAmount = round($salary + $servicesPercentSum + $productsPercentSum, 2, PHP_ROUND_HALF_UP);
 
         // TODO: добавить обработку параметра $payAfterCalculation - сразу же помечать записи из transactions и appointments(?) как оплаченные (ни в какаом случае не учитываем их в последующих расчетах зп) И пишем в calculated_wages дату оплаты и id юзера который "оплатил"
-
-        // TODO: генерить pdf ведомость из $servicesPerformedInfo и $productsSoldInfo
-        // TODO: делать запись о расчитанной зарплате в новой таблице calculated_wages, в ней должен быть флаг is_payed и поля calculation_start, calculation_end, employee_id, calculated_by, payed_by, wage_scheme_id
+        // делаем запись о расчитанной зарплате в новой таблице calculated_wages, в ней должен быть флаг is_payed и поля calculation_start, calculation_end, employee_id, calculated_by, payed_by, wage_scheme_id
         /*
         $table->integer('employee_id')->unsigned();
         $table->integer('wage_scheme_id')->unsigned();
@@ -711,8 +721,11 @@ class Employee extends Model
         //  если запись в calculated_wages есть, не даем заново расчитывать зп за пересекающийся период
         //  при нажатии кнопки Выплатить зп - устанавливаем is_payed=1 и в транзакции помечаем записи из transactions и appointments(?) как оплаченные (ни в какаом случае не учитываем их в последующих расчетах зп)
 
-        //return $totalAmount;
-        return TRUE;
+        return array(
+            'res' => TRUE,
+            'error' => '',
+            'total_amount' => $totalAmount
+        );
     }
 
     public function generatePayroll($periodStart, $periodEnd, $totalWage, $salaryData, $appointmentsData = null, $productsData = null) {
@@ -740,7 +753,7 @@ class Employee extends Model
         return view('employee.pdf.payroll');
     }
 
-	public function payWage($calculatedWageId) {
+	public function payWage(\App\CalculatedWage $cw) {
         // select appointments_data, products_data from calculated_wage table
         // IN TRANSACTION
         // mark approintments and transactions as payed to employee
@@ -748,6 +761,42 @@ class Employee extends Model
         //      $table->dateTime('date_payed')->nullable();
         //      $table->integer('payed_by')->unsigned()->nullable();
         // END TRANSACTION
+
+        $appData = json_decode($cw->appointments_data, true);
+        $productsData = json_decode($cw->products_data, true);
+
+        $appIds = [];
+        foreach($appData AS $startDate=>$app) {
+            $appIds = array_merge($appIds, array_keys($app));
+        }
+
+        $trIds = [];
+        foreach($productsData AS $product) {
+            $trIds = array_merge($trIds, array_keys($product));
+        }
+
+        DB::beginTransaction();
+        if (count($appIds)>0) {
+            DB::update(
+                "UPDATE appointments SET employee_payed=NOW() WHERE appointment_id IN ('" . implode("','", $appIds) . "') AND organization_id=?",
+                [$this->organization_id]
+            );
+        }
+
+        if (count($trIds)>0) {
+            DB::update(
+                "UPDATE transactions SET employee_payed=NOW() WHERE transaction_id IN ('" . implode("','", $trIds) . "') AND organization_id=?",
+                [$this->organization_id]
+            );
+        }
+
+        DB::update(
+            "UPDATE calculated_wages SET date_payed=NOW(), payed_by=?",
+            [request()->user()->user_id]
+        );
+        DB::commit();
+
+        return TRUE;
     }
 
 }

@@ -254,5 +254,7 @@ return [
     'employee:sync_wage_schemes_error_message' => 'Error syncing wage calculation scheme. Please report about this error to your administrator.',
     'employee:sync_wage_schemes_success_message' => 'Wage calculation scheme successfully saved.',
     'employee:wage_scheme_label'       => 'Wage scheme',
-    'employee:wage_scheme_start_from_label' => 'Valid from'
+    'employee:wage_scheme_start_from_label' => 'Valid from',
+
+    'calculated_wage:grid_pay_link'    => 'Pay'
 ];

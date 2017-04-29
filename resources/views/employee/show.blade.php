@@ -51,7 +51,20 @@
             </dl>
         </div>
 
-        <h2>Wages</h2>
+        <div class="col-sm-12">
+            @if ($user->hasAccessTo('employee', 'delete', 0))
+                {!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "method" => 'DELETE', "class" => 'pull-left m-r']) !!}
+                {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger']) }}
+                {!! Form::close() !!}
+            @endif
+            @if ($user->hasAccessTo('employee', 'edit', 0))
+                {!! Html::linkRoute('employee.edit', trans('adminlte_lang::message.edit'), [$employee->employee_id], ['class'=>'btn btn-primary pull-left']) !!}
+            @endif
+        </div>
+
+        <div class="col-sm-12">
+            <h2>Wages</h2>
+        </div>
         <div class="form-group">
             <label for="wage_month" class="col-sm-3 control-label text-right">Select month to calculate wage</label>
             <div class="col-sm-9">
@@ -63,15 +76,9 @@
             <a href="#" id="e_btn_calculate_wage" class="btn btn-primary">Calculate wage</a>
         </div>
 
-        <div class="col-sm-12">
-            @if ($user->hasAccessTo('employee', 'delete', 0))
-                {!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "method" => 'DELETE', "class" => 'pull-left m-r']) !!}
-                {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger']) }}
-                {!! Form::close() !!}
-            @endif
-            @if ($user->hasAccessTo('employee', 'edit', 0))
-                {!! Html::linkRoute('employee.edit', trans('adminlte_lang::message.edit'), [$employee->employee_id], ['class'=>'btn btn-primary pull-left']) !!}
-            @endif
+        <div class="col-sm-12 clients-grid-block">
+            <table id="calculated_wages_grid" class="table table-hover table-condensed"></table>
+            <div id="calculated_wages_grid_pager"></div>
         </div>
     </div>
 </div>
@@ -80,11 +87,94 @@
 @section('page-specific-scripts')
 <script type="text/javascript">
 var employeeId = '{{$employee->employee_id}}';
+
+function gridPayCW(cwId) {
+    if (typeof cwId == 'undefined') {
+        return FALSE;
+    }
+
+    $.ajax({
+        type: "GET",
+        url: "/employees/payWage/"+cwId,
+        data: "",
+        dataType: 'json',
+        success: function(data) {
+            //var data = $.parseJSON(data);
+            if ( console && console.log ) {
+                console.log("Wage pay data:", data);
+            }
+
+            if (data.res == true) {
+                $("#calculated_wages_grid").trigger("reloadGrid");
+                alert('Wage marked as payed');
+            } else {
+                alert('Error: '+data.error);
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert('Server error:'+textStatus);
+            $('a#e_btn_calculate_wage').removeClass('disabled');
+        }
+    });
+}
+
 $(document).ready(function() {
     $('#e_wage_month').datepicker({
         autoclose: true,
         format: 'yyyy-mm',
         minViewMode: 'months'
+    });
+
+    $("#calculated_wages_grid").jqGrid({
+        url: '/employees/calculateWagesGridData/{{$employee->employee_id}}',
+        mtype: "GET",
+        styleUI: 'Bootstrap',
+        datatype: "json",
+        colNames: ['ID', 'Period start', 'Period end', 'Amount', 'Date payed', 'Pay'],
+        colModel: [
+            {index: 'cw_id', name: 'cw_id', key: true, width: 60, hidden: true, search: false},
+            {index: 'wage_period_start', name: 'wage_period_start', width: 100, search: false},
+            {index: 'wage_period_end', name: 'wage_period_end', width: 100, search: false},
+            {index: 'total_amount', align:'left', name: 'total_amount', width: 70, search: false},
+            {index: 'date_payed', align:'left', name: 'date_payed', width: 60, search: false},
+            {index: 'pay_button', align:'left', name: 'pay_button', width: 60, search: false}
+        ],
+        sortname: 'wage_period_start',
+        sortorder: 'desc',
+        viewrecords: true,
+        height: 550,
+        autowidth: true,
+        shrinkToFit: true,
+        rowNum: 10,
+        pager: "#calculated_wages_grid_pager",
+        //multiselect: true,
+        /*
+        onSelectRow: function(id, status, e){
+            //console.log(id, status, e);
+            var selRows = $('#clients_grid').getGridParam('selarrrow');
+            if (selRows.length > 0) {
+                $('#a_clients_delete_selected').removeClass("disabled");
+                $('#a_send_sms_to_selected').removeClass("disabled");
+                $('#a_clients_add_selected_to_category').removeClass("disabled");
+            } else {
+                $('#a_clients_delete_selected').addClass("disabled");
+                $('#a_send_sms_to_selected').addClass("disabled");
+                $('#a_clients_add_selected_to_category').addClass("disabled");
+            }
+        },
+        onSelectAll: function(aRowIds, status){
+            //console.log(aRowIds, status);
+            if (status == true) {
+                $('#a_clients_delete_selected').removeClass("disabled");
+                $('#a_send_sms_to_selected').removeClass("disabled");
+                $('#a_clients_add_selected_to_category').removeClass("disabled");
+            } else {
+                $('#a_clients_delete_selected').addClass("disabled");
+                $('#a_send_sms_to_selected').addClass("disabled");
+                $('#a_clients_add_selected_to_category').addClass("disabled");
+            }
+        }
+        */
     });
 
     $('a#e_btn_calculate_wage').click(function () {
@@ -109,7 +199,7 @@ $(document).ready(function() {
                 }
 
                 if (data.res == true) {
-                    //$("#clients_grid").trigger("reloadGrid");
+                    $("#calculated_wages_grid").trigger("reloadGrid");
                     alert('Wage for selected month calculated');
                 } else {
                     alert('Error: '+data.error);

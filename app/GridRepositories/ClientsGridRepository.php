@@ -27,6 +27,7 @@ class ClientsGridRepository extends EloquentGridRepositoryCustom {
             'discount',
 
             'email',        // не отоюражается отдельной колонкой в гриде, но нужно для добавления в колонку Контакты вместе с телефоном
+            'importance'
         ];
 
         $this->orderBy = [

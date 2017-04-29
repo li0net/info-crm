@@ -510,5 +510,14 @@ return [
     'fr'				        => 'Fr.',
     'sa'				        => 'Sa.',
     'all_day'				    => 'All day',
-
+    'all'                       => 'All',
+    'position_not_chosen'       => 'Position not chosen',
+    'fired'                     => 'Fired',
+    'not_fired'                 => 'Not fired',
+    'deleted'                   => 'Deleted',
+    'not_deleted'               => 'Not deleted',
+    'you_can_add_employee'      => 'You can add new employee',
+    'no_such_employees'         => 'No such employees',
+    'summary'                   => 'Summary',
+    'organization_id'           => 'Organization ID'
 ];

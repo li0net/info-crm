@@ -512,4 +512,14 @@ return [
     'fr'				        => 'Vi.',
     'sa'				        => 'Sá.',
     'all_day'				    => 'Todo el día',
+    'all'                       => 'Todos',
+    'position_not_chosen'       => 'La posición no está seleccionada',
+    'fired'                     => 'Despedido',
+    'not_fired'                 => 'No despedidos',
+    'deleted'                   => 'Eliminados',
+    'not_deleted'               => 'No eliminados',
+    'no_such_employees'         => 'No hay empleados',
+    'you_can_add_employee'      => 'Puede agregar empleados',
+    'summary'                   => 'Sumario',
+    'organization_id'           => 'ID de organización'
 ];
