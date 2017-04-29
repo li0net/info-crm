@@ -461,6 +461,7 @@ return [
 	'consider_cost_of_materials'=> 'Учитывать себестоимость материалов при расчете ЗП',
 	'scheme_create_new'			=> 'Создать новую схему',
 	'select_service'			=> 'Выберите услугу',
+	'select_client'			    => 'Выберите клиента',
 	'select_product'			=> 'Выберите товар',
 	'products'					=> 'Товары',
 	'payroll_schemes'			=> 'Все схемы расчета ЗП',

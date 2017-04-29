@@ -378,6 +378,11 @@ body.skin-orange {
       }
     }
   }
+  .select2-container{
+    .select2-search.select2-search--dropdown{
+      background-color: $brand-main;
+    }
+  }
   .select2-container.select2-container--open ul.select2-results__options li .dd_text{
     color: $brand-main-text;
   }

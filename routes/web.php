@@ -150,6 +150,15 @@ Route::post('/appointments/save', 'AppointmentsController@save');
 Route::get('/appointments/destroy/{appt}', ['as' => 'appointments.destroy', 'uses' => 'AppointmentsController@destroy']);
 Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
 Route::get('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
+
+Route::post('/appointments/findClient', 'AppointmentsController@findClient');
+
+Route::post('/appointments/getAvailableDays', 'AppointmentsController@getAvailableDays');
+Route::get('/appointments/getAvailableDays', 'AppointmentsController@getAvailableDays');
+
+Route::post('/appointments/getAvailableTime', 'AppointmentsController@getAvailableTime');
+Route::get('/appointments/getAvailableTime', 'AppointmentsController@getAvailableTime');
+
 Route::post('/appointments/getClientInfo', 'AppointmentsController@getClientInfo');
 Route::get('/appointments/e', ['as' => 'appointments.employeeOptions', 'uses' => 'AppointmentsController@populateEmployeeOptions']);
 

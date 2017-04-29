@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use App\Appointment;
 use App\Account;
-use App\Service;
-use App\Employee;
-use App\Storage;
+use App\Appointment;
 use App\Client;
+use App\Employee;
 use App\Product;
+use App\Service;
+use App\Storage;
 use App\StorageTransaction;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Illuminate\Support\Facades\Log;
@@ -42,6 +42,7 @@ class AppointmentsController extends Controller
         $servicesOptions = $this->prepareServicesSelectData($request);
         $timeOptions = $this->prepareTimesSelectData();
         $durationSelects = $this->prepareDurationSelects();
+        $clients = Client::where('is_active', 1)->orderBy('name')->get();
         $accounts = Account::where('organization_id', $request->user()->organization_id)
             ->get()
             ->pluck('title', 'account_id');
@@ -58,7 +59,8 @@ class AppointmentsController extends Controller
             'minutesOptions' => $durationSelects['minutes'],
             'user' => $request->user(),
             'storages' => $storages,
-            'accounts' => $accounts
+            'accounts' => $accounts,
+            'clients' => $clients
         ]);
     }
 
@@ -84,6 +86,9 @@ class AppointmentsController extends Controller
             ->get()
             ->pluck('products', 'storage_id');
 
+        $accounts = Account::where('organization_id', $request->user()->organization_id)
+            ->get()
+            ->pluck('title', 'account_id');
         /*
         // закомментировано, т.к. преобразовываем в часы и минуты во вьюшке
         // при добавлении таймзон, нужно будет делать это здесь
@@ -120,6 +125,8 @@ class AppointmentsController extends Controller
             }
         }
 
+        $clients = Client::where('is_active', 1)->orderBy('name')->get();
+
         return view('adminlte::appointmentform', [
             'appointment' => $appt,
             'servicesOptions' => $servicesOptions,
@@ -131,7 +138,9 @@ class AppointmentsController extends Controller
             'transactions'=> $transactions,
             'storages'=> $storages,
             'user' => $request->user(),
-            'clientInfo' => $clientInfo
+            'clientInfo' => $clientInfo,
+            'accounts' => $accounts,
+            'clients' => $clients
         ]);
     }
 
@@ -175,9 +184,9 @@ class AppointmentsController extends Controller
 
         Log::info(__METHOD__ . ' before validation');
         $validator = Validator::make($request->all(), [
-            'client_name' => 'required|max:120',
-            'client_phone' => 'required|phone_crm', // custom validation rule
-            'client_email' => 'email',
+            'client_id' => 'required',
+//            'client_phone' => 'required|phone_crm', // custom validation rule
+//            'client_email' => 'email',
             'service_id' => 'required|max:10|exists:services',
             'employee_id' => 'required|max:10|exists:employees',
             'date_from' => 'required|date_format:"Y-m-d"',    // date
@@ -230,35 +239,6 @@ class AppointmentsController extends Controller
                 'success' => false,
                 'validation_errors' => ['duration_minutes' => [trans('main.appointment:error_duration_not_selected')]]
             ]);
-        }
-
-        // Ищем клиента
-        // TODO: искать клиента по комбинации имени-номера телефона-имейла ??
-        //  имя и телефон нормализуем (имя - каждое слово с заглавной буквы, лишние пробелы между словами и до/после убираем, номер телефона - храним в стандартном формате)
-        $clientPhone = $request->user()->normalizePhoneNumber($request->input('client_phone'));
-        $client = Client::where('organization_id', $request->user()->organization_id)
-            ->where('phone', $clientPhone)
-            ->first();
-
-        // если такой клиент уже есть (поиск по номеру телефона) - добавляем ему email, если не было, иначе не апдейтим его
-        //  а его id прописываем в $appointment->client_id
-        $clientFound = FALSE;
-
-        if (is_null($client)) {
-            $client = new Client();
-            $client->name = $request->input('client_name');      // TODO: нормализовать
-            $client->phone = $clientPhone;
-            if ($request->input('client_email')) {
-                $client->email = $request->input('client_email');
-            }
-            $client->organization_id = $request->user()->organization_id;
-            $client->save();
-
-        } else {
-            if (empty($client->email) AND !empty($request->input('client_email'))) {
-                $client->email = $request->input('client_email');
-                $client->save();
-            }
         }
 
         // преобразовываем duration_hours, duration_minutes в timestamp end
@@ -333,7 +313,7 @@ class AppointmentsController extends Controller
             }
         }
 
-        $appointment->client_id = $client->client_id;
+        $appointment->client_id = $request->input('client_id');
         $appointment->service_id = $request->input('service_id');
         // преобразовываем date_from, time_from в timestamp start
         $appointment->start = $request->input('date_from') . ' ' . $request->input('time_from');
@@ -439,14 +419,14 @@ class AppointmentsController extends Controller
         // Все услуги организации
         $servicesDb = DB::table('services')
             ->join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id')
-            ->select('services.name', 'services.service_id')
+            ->select('services.name', 'services.service_id','service_categories.online_reservation_name')
             ->where('service_categories.organization_id', '=', $request->user()->organization_id)
             ->orderBy('services.name', 'asc')
             ->get();
 
         $servicesOptions = array();
         foreach ($servicesDb AS $service) {
-            $servicesOptions[] = [
+            $servicesOptions[$service->online_reservation_name][] = [
                 'value'     => $service->service_id,
                 'label'     => $service->name
             ];
@@ -454,6 +434,54 @@ class AppointmentsController extends Controller
 
         return $servicesOptions;
     }
+
+    /**
+     * Распознать/создать клиента
+     * по телефону и email отыскивает существующего или создаёт нового клиента
+     * используется по ajax
+     * @param Request $request
+     * @return mixed
+     */
+    public function findClient(Request $request){
+        //  нормализуем полученные поля
+        $clientName =  $request->user()->normalizeUserName($request->input('client_name'));
+        $clientPhone = $request->user()->normalizePhoneNumber($request->input('client_phone'));
+        $clientEmail = ($request->input('client_email')) ? $request->user()->normalizeEmail($request->input('client_email')) : '';
+
+        // Ищем клиента по телеыону и email
+        $client = Client::where('organization_id', $request->input('organization_id'))
+            ->where('phone', $clientPhone)
+            ->first();
+        if (is_null($client) AND !empty($clientEmail)) {
+            $client = Client::where('organization_id', $request->input('organization_id'))
+                ->where('email', $clientEmail)
+                ->first();
+        }
+
+        // если такой клиент уже есть (поиск по номеру телефона) - добавляем ему email, если не было, иначе не апдейтим его
+        //  а его id прописываем в $appointment->client_id
+        if (is_null($client)) {
+            $client = new Client();
+            $client->name = $clientName;
+            $client->phone = $clientPhone;
+            if ($request->input('client_email')) {
+                $client->email = $clientEmail;
+            }
+            $client->organization_id = $request->user()->organization_id;
+            $client->save();
+        } else {
+            if (empty($client->email) AND !empty($request->input('client_email'))) {
+                $client->email = $clientEmail;
+                $client->save();
+            }
+        }
+
+        // получаем обновлённый список клиентов
+        $clients = Client::where('is_active', 1)->orderBy('name')->get();
+
+        return response()->json(['client' => $client, 'clients' => $clients, ]);
+    }
+
 
     public function populateEmployeeOptions(Request $request)
     {
@@ -564,12 +592,102 @@ class AppointmentsController extends Controller
         return $selects;
     }
 
-    // источник данных для селекта Услуга на форме Записи (обновляется ajax'ом при смене сотрудника в селекте)
-    public function getEmployeesForServices(Service $service)
-    {
-        $employees = $service->employees()->get();
-        $employeesOptions = [];
+    /**
+     * Получает список дней, совбодных для записи
+     * @param Request $request
+     *      service_id
+     *      employee_id
+     * @return string
+     */
+    public function getAvailableDays(Request $request){
+        if ($request->input('employee_id') == 'any_employee') {
+            $service = Service::find($request->input('service_id'));
+            if (!$service) {
+                return json_encode($this->getCommonError());
+            }
+            $days = $service->getFreeWorkDaysForCurrMonth();
+        } else {
+            $employee = Employee::find($request->input('employee_id'));
+            $days = $employee->getFreeWorkDaysForCurrMonth();
+        }
 
+        if ( ! $days){
+            //TODO обработать на фронте эту ситуацию
+            echo json_encode([]);
+        }
+        echo json_encode($days);
+    }
+
+    /**
+     *  Отображает доступное время для записи для выбранного дня
+     * @param Request $request
+     * @return mixed
+     */
+    public function getAvailableTime(Request $request)
+    {
+        $formData = $request->only(['service_id', 'employee_id', 'date']);  // post параметр service_id, employee_id, day
+
+        $date = $request->input('date');
+
+        if ($request->input('employee_id') == 'any_employee') {
+            $service = Service::find($request->input('service_id'));
+            if (!$service) {
+                return json_encode($this->getCommonError());
+            }
+            $times = $service->getFreeWorkTimesForDay($date);
+
+        } else {
+            $employee = Employee::find($request->input('employee_id'));
+            $service = Service::find($request->input('service_id'));
+            $times = $employee->getFreeWorkTimesForDay($date, $service);
+        }
+
+        if ( ! $times){
+            //TODO обработать на фронте эту ситуацию
+            echo json_encode([]);
+        }
+
+        // отрисовываем список интервалов
+        echo json_encode($times);
+    }
+
+
+    // источник данных для селекта Услуга на форме Записи (обновляется ajax'ом при смене сотрудника в селекте)
+    public function getEmployeesForServices(Service $service, Request $request)
+
+    {
+        //$employees = $service->employees()->get();
+
+        // Отображаем только тех, что разрешили онлайн запись (в employee_settings)
+        $employees = DB::table('employees')
+            ->join('employee_provides_service', 'employees.employee_id', '=', 'employee_provides_service.employee_id')
+            ->join('employee_settings', 'employees.employee_id', '=', 'employee_settings.employee_id')
+            ->join('positions', 'employees.position_id', '=', 'positions.position_id')
+            ->select('employees.*','employees.avatar_image_name as avatar', 'employee_settings.*', 'positions.title as position_name' , 'positions.description as description')
+            ->where('employees.organization_id', $request->organization_id)
+            ->where('employee_provides_service.service_id', $service->service_id)
+            ->where('employee_settings.reg_permitted', 1)
+            ->get();
+
+        if ( $employees->count() != 0 ) {
+            // добавляем вариант "Мастер не важен"
+            $anyEmployee = array(
+                'employee_id'   => 'any_employee',
+                'name'          => trans('main.widget:employee_doesnot_matter_text'),
+                'avatar'        => null,
+                'position_name' => '',
+                'description'   => ''
+            );
+            // Мастер не важен на первом месте
+            $employees = $employees->toArray();
+            array_unshift($employees, (object)$anyEmployee);
+        } else {
+            //TODO обработать на фронте эту ситуацию
+            echo json_encode([]);
+        }
+
+        // строим список для вьюхи
+        $employeesOptions = [];
         foreach($employees AS $employee)
         {
             $employeesOptions[] = ['value' => $employee->employee_id, 'label' => $employee->name];
