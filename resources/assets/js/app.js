@@ -610,6 +610,7 @@ $(document).ready(function () {
                 alert("Error");
             }
         });
+        return false;
     });
 
     // CLIENT form
@@ -622,6 +623,12 @@ $(document).ready(function () {
     $(".js-select-basic-multiple").select2({
         templateResult: formatClientCatColor,
         allowClear: true
+    }).on("select2:open", function () {
+        $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
+    });
+
+
+    $(".js-select-basic-single-search").select2({
     }).on("select2:open", function () {
         $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });

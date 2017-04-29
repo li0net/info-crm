@@ -330,6 +330,22 @@ class User extends Authenticatable
         return $phoneNum;
     }
 
+    /**
+     * Нормализует имя юзера
+     * Удаляет лишние пробелы, Капитализует первые буквы
+     * @param $name
+     * @return mixed|string
+     */
+    public function normalizeUserName($name) {
+        // Удаляем лишние пробелы
+        $name = preg_replace('/\s+/', ' ',trim($name));
+
+        // капитализация первых символов
+        $name = ucwords(strtolower($name));
+
+        return $name;
+    }
+
     public function getAvatarUri() {
         $avatarPath = public_path() . 'uploaded_images/avatar/' . $this->oranization_id . '/' . $this->user_id . 'jpg';
         if (file_exists($avatarPath)) {
