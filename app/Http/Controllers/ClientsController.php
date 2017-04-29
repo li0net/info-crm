@@ -66,9 +66,20 @@ class ClientsController extends Controller
     public function index(Request $request)
     {
         $newClientUrl = action('ClientsController@create');
+
+        $clientCategories = ClientCategory::where('organization_id', $request->user()->organization_id)->get();
+        // "gold:Gold;silver:Silver;bonze:Bronze;:No category"
+        $categoriesStrForSelect = 'null:---;';
+        foreach ($clientCategories AS $cc) {
+            $categoriesStrForSelect .= $cc->cc_id . ':' . $cc->title . ';';
+        }
+        //if (strlen($categoriesStrForSelect) > 9) $categoriesStrForSelect = substr($categoriesStrForSelect, 0, -1);
+        $categoriesStrForSelect .= ':No category';
+
         return view('client.index', [
             'newClientUrl' => $newClientUrl,
-            'crmuser' => $request->user()
+            'crmuser' => $request->user(),
+            'categoriesStrForSelect' => $categoriesStrForSelect
         ]);
     }
 

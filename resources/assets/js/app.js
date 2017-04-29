@@ -299,22 +299,6 @@ $(document).ready(function () {
              */
         });
 
-        $("#clients_grid_search").jqGrid(
-            'filterGrid',
-            '#clients_grid',
-            {
-                formtype: 'vertical',
-                filterModel: [
-                    {label:'Importance: ', name: 'importance', stype: 'select', defval: 'gold', sopt:{ value: "gold:Gold;silver:Silver;bonze:Bronze;:No category"}}
-                ],
-                autosearch: false,
-                enableSearch: true,
-                enableClear: true,
-                searchButton: 'Search',
-                clearButton: 'Clear'
-            }
-        );
-
         $("#client_main_search_field").keypress(function (e) {
             var key = e.charCode || e.keyCode || 0;
             if (key === $.ui.keyCode.ENTER) { // 13

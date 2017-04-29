@@ -323,6 +323,23 @@
             );
             return $category;
         }
+
+        $("#clients_grid_search").jqGrid(
+                'filterGrid',
+                '#clients_grid',
+                {
+                    formtype: 'vertical',
+                    filterModel: [
+                        {label:'Importance: ', name: 'importance', stype: 'select', defval: 'null', sopt:{ value: "null:---;gold:Gold;silver:Silver;bonze:Bronze;:Not set"}},
+                        {label:'Category: ', name: 'category_id', stype: 'select', sopt:{ value: "{{$categoriesStrForSelect}}"}}
+                    ],
+                    autosearch: false,
+                    enableSearch: true,
+                    enableClear: true,
+                    searchButton: 'Search',
+                    clearButton: 'Clear'
+                }
+        );
     });
 </script>
 @endsection
