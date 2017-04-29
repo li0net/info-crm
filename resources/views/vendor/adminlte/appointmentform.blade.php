@@ -57,14 +57,16 @@
     </div>
     <div class="row m-t">
         {!! Form::open(['url' => '/appointments/save', 'id' => 'appointment_form']) !!}
+
         {{ Form::hidden('storage_options', null, ['id' => 'storage_options']) }}
         {{ Form::hidden('employee_options', null, ['id' => 'employee_options']) }}
         {{ Form::hidden('organization_id', $user->organization_id, ['id' => 'organization_id']) }}
+
         @if (isset($appointment))
         <input type="hidden" name="appointment_id" id="app_appointment_id" value="{{$appointment->appointment_id}}">
         @endif
-        <div class="col-sm-4 nav-stacked-block">
-            <ul class="modal-menu list-group clear-list m-t nav nav-tabs nav-stacked">
+        <div class="col-sm-4 nav-stacked-block" >
+            <ul id="app_side_tabs" class="modal-menu list-group clear-list m-t nav nav-tabs nav-stacked">
                 <li class="modal-menu-header nav-header">Визит</li>
 
                 <li class="modal-menu-l record_tab list-group-item first-item active" data-toggle="tab" data-target="#body_client" >
@@ -125,12 +127,14 @@
                 @include('appointment.tpl.goods_history')
             </div>
         </div>
+        <div class="col-sm-12">
+            <hr>
+        </div>
         <div class="col-sm-12 m-t text-right">
             <button type="submit" id="btn_submit_app_form" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
         </div>
         {!! Form::close() !!}
     </div>
-
 </div>
 @endsection
 
@@ -346,32 +350,49 @@
             $('.goods_transactions_box').on('click', '#remove_good_transaction', function(e) {
                 $(e.target).parents('.goods_sale').remove();
             });
+
+
             $('#btn_app_form_create_client').on('click', function() {
-                var client = $('#app_new_client_name').val();
+                var name = $('#app_new_client_name').val();
                 var phone = $('#app_new_client_phone').val();
                 var email = $('#app_new_client_email').val();
 
+                //TODO нормальный вывод
+                if (phone == '' || name == ''){
+                    alert('Name and Phone fields are required');
+                    return;
+                }
+                $('#body_client .tab-content').addClass('loadingbox');
                 $.ajax({
                     type: "POST",
                     url: "/appointments/findClient/",
-                    data: {'client_name': client,'client_phone':phone, 'client_email':email},
+                    data: {'organization_id': $('#organization_id').val(), 'client_name': name,'client_phone':phone, 'client_email':email},
                     success: function(data) {
-                        console.log(data);
-//                        if (data != "[][]") {
-//                            var data = $.parseJSON(data);
-//                            for (var i in data) {
-//                                $('<option>').val(data[i]).text(data[i]).appendTo('#app_time_from');
-//                            }
-//
-//                            $('#app_time_from').prop("disabled", false);
-//                        } else {
-//                            $('#app_time_from').prop("disabled", true);
-//                        }
+                        // clear form
+                        $('#app_new_client_name').val('');
+                        $('#app_new_client_phone').val('');
+                        $('#app_new_client_email').val('');
+
+                        // clear clients select
+                        $("#app_client_id option").each(function() {
+                            $(this).remove();
+                        });
+
+                        for (var i in data.clients) {
+                            $('<option>').val(data.clients[i].client_id).text(data.clients[i].name).appendTo('#app_client_id');
+                        }
+                        // set new client checked
+                        $('#app_client_id').val(data.client.client_id).prop('selected', true);
+
+                        $('#body_client a:first').tab('show');
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert('Server error:'+textStatus);
                     }
                 });
+
+                $('#body_client .tab-content').removeClass('loadingbox');
+
             });
         });
     </script>

@@ -2,7 +2,7 @@
 <div class="form-group">
     <label for="app_service_id">@lang('main.appointment:service_id_label')</label>
     <select name="service_id" id="app_service_id" class = "js-select-basic-single-search">
-        <option id="app_service_id_empty">{{ trans('adminlte_lang::message.select_service') }}</option>
+        <option id="app_service_id_empty" value="null">{{ trans('adminlte_lang::message.select_service') }}</option>
         @foreach($servicesOptions as $label => $services)
             <optgroup label="{{ $label }}">
                 @foreach($services as $service)
@@ -13,7 +13,7 @@
                     selected="selected"
                     @endif
                     value="{{$service['value']}}">{{$service['label']}}
-                    </option>
+                </option>
                 @endforeach
             </optgroup>
         @endforeach

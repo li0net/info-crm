@@ -125,6 +125,8 @@ class AppointmentsController extends Controller
             }
         }
 
+        $clients = Client::where('is_active', 1)->orderBy('name')->get();
+
         return view('adminlte::appointmentform', [
             'appointment' => $appt,
             'servicesOptions' => $servicesOptions,
@@ -137,7 +139,8 @@ class AppointmentsController extends Controller
             'storages'=> $storages,
             'user' => $request->user(),
             'clientInfo' => $clientInfo,
-            'accounts' => $accounts
+            'accounts' => $accounts,
+            'clients' => $clients
         ]);
     }
 
@@ -181,9 +184,9 @@ class AppointmentsController extends Controller
 
         Log::info(__METHOD__ . ' before validation');
         $validator = Validator::make($request->all(), [
-            'client_name' => 'required|max:120',
-            'client_phone' => 'required|phone_crm', // custom validation rule
-            'client_email' => 'email',
+            'client_id' => 'required',
+//            'client_phone' => 'required|phone_crm', // custom validation rule
+//            'client_email' => 'email',
             'service_id' => 'required|max:10|exists:services',
             'employee_id' => 'required|max:10|exists:employees',
             'date_from' => 'required|date_format:"Y-m-d"',    // date
@@ -236,35 +239,6 @@ class AppointmentsController extends Controller
                 'success' => false,
                 'validation_errors' => ['duration_minutes' => [trans('main.appointment:error_duration_not_selected')]]
             ]);
-        }
-
-        // Ищем клиента
-        // TODO: искать клиента по комбинации имени-номера телефона-имейла ??
-        //  имя и телефон нормализуем (имя - каждое слово с заглавной буквы, лишние пробелы между словами и до/после убираем, номер телефона - храним в стандартном формате)
-        $clientPhone = $request->user()->normalizePhoneNumber($request->input('client_phone'));
-        $client = Client::where('organization_id', $request->user()->organization_id)
-            ->where('phone', $clientPhone)
-            ->first();
-
-        // если такой клиент уже есть (поиск по номеру телефона) - добавляем ему email, если не было, иначе не апдейтим его
-        //  а его id прописываем в $appointment->client_id
-        $clientFound = FALSE;
-
-        if (is_null($client)) {
-            $client = new Client();
-            $client->name = $request->input('client_name');      // TODO: нормализовать
-            $client->phone = $clientPhone;
-            if ($request->input('client_email')) {
-                $client->email = $request->input('client_email');
-            }
-            $client->organization_id = $request->user()->organization_id;
-            $client->save();
-
-        } else {
-            if (empty($client->email) AND !empty($request->input('client_email'))) {
-                $client->email = $request->input('client_email');
-                $client->save();
-            }
         }
 
         // преобразовываем duration_hours, duration_minutes в timestamp end
@@ -339,7 +313,7 @@ class AppointmentsController extends Controller
             }
         }
 
-        $appointment->client_id = $client->client_id;
+        $appointment->client_id = $request->input('client_id');
         $appointment->service_id = $request->input('service_id');
         // преобразовываем date_from, time_from в timestamp start
         $appointment->start = $request->input('date_from') . ' ' . $request->input('time_from');
@@ -461,58 +435,51 @@ class AppointmentsController extends Controller
         return $servicesOptions;
     }
 
-
+    /**
+     * Распознать/создать клиента
+     * по телефону и email отыскивает существующего или создаёт нового клиента
+     * используется по ajax
+     * @param Request $request
+     * @return mixed
+     */
     public function findClient(Request $request){
-
-        //  нормализуем  имя
+        //  нормализуем полученные поля
         $clientName =  $request->user()->normalizeUserName($request->input('client_name'));
-        // нормализуем  номер телефона
         $clientPhone = $request->user()->normalizePhoneNumber($request->input('client_phone'));
-        $clientEmail = $request->input('client_email');
+        $clientEmail = ($request->input('client_email')) ? $request->user()->normalizeEmail($request->input('client_email')) : '';
 
-        // Ищем клиента
-        // TODO: искать клиента по комбинации имени-номера телефона-имейла ??
-        $client = Client::where('organization_id', $request->user()->organization_id)
+        // Ищем клиента по телеыону и email
+        $client = Client::where('organization_id', $request->input('organization_id'))
             ->where('phone', $clientPhone)
             ->first();
+        if (is_null($client) AND !empty($clientEmail)) {
+            $client = Client::where('organization_id', $request->input('organization_id'))
+                ->where('email', $clientEmail)
+                ->first();
+        }
 
         // если такой клиент уже есть (поиск по номеру телефона) - добавляем ему email, если не было, иначе не апдейтим его
         //  а его id прописываем в $appointment->client_id
-        $clientFound = FALSE;
-
         if (is_null($client)) {
             $client = new Client();
-            $client->name = $request->input('client_name');
+            $client->name = $clientName;
             $client->phone = $clientPhone;
             if ($request->input('client_email')) {
-                $client->email = $request->input('client_email');
+                $client->email = $clientEmail;
             }
             $client->organization_id = $request->user()->organization_id;
             $client->save();
-
         } else {
             if (empty($client->email) AND !empty($request->input('client_email'))) {
-                $client->email = $request->input('client_email');
+                $client->email = $clientEmail;
                 $client->save();
             }
         }
 
-//        if ($request->input('employee_id') == 'any_employee') {
-//            $service = Service::find($request->input('service_id'));
-//            if (!$service) {
-//                return json_encode($this->getCommonError());
-//            }
-//            $days = $service->getFreeWorkDaysForCurrMonth();
-//        } else {
-//            $employee = Employee::find($request->input('employee_id'));
-//            $days = $employee->getFreeWorkDaysForCurrMonth();
-//        }
-//
-//        if ( ! $days){
-//            //TODO обработать на фронте эту ситуацию
-//            echo json_encode([]);
-//        }
-        echo json_encode($request->input());
+        // получаем обновлённый список клиентов
+        $clients = Client::where('is_active', 1)->orderBy('name')->get();
+
+        return response()->json(['client' => $client, 'clients' => $clients, ]);
     }
 
 

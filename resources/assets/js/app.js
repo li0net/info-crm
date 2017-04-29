@@ -534,6 +534,12 @@ $(document).ready(function () {
     $("#appointment_form").on("submit", function (e) {
         e.preventDefault();
 
+        if($('#app_client_id').val() == 'null' || $('#app_service_id').val() == 'null'){
+            alert('At least Client and Service should be chosen!');
+            return false;
+        }
+
+
         if ($('#app_state').length) {
             $('#app_state').remove();
         }

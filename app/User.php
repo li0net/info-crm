@@ -346,6 +346,17 @@ class User extends Authenticatable
         return $name;
     }
 
+    /**
+     * Нормализует email
+     * @param $email
+     * @return mixed|string
+     */
+    public function normalizeEmail($email) {
+        // Удаляем лишние пробелы, приводинм к нижнему регистру
+        $email = strtolower(trim($email));
+        return $email;
+    }
+
     public function getAvatarUri() {
         $avatarPath = public_path() . 'uploaded_images/avatar/' . $this->oranization_id . '/' . $this->user_id . 'jpg';
         if (file_exists($avatarPath)) {

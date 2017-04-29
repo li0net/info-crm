@@ -14,28 +14,33 @@
                     <label for="app_client_name" class="col-sm-3 control-label text-right">@lang('main.appointment:client_name_label')</label>
                     <div class="col-sm-9">
                         <?php
-                        $old = old('client_name');
+                        $old = old('client_id');
+                        $needNull = TRUE;
                         if (!is_null($old)) {
                             $value = $old;
+                            $needNull = FALSE;
                         } elseif (isset($appointment)) {
-                            $value = $appointment->client->name;
+                            $value = $appointment->client->client_id;
+                            $needNull = FALSE;
                         } else {
                             $value = '';
                         }?>
                         <select name="client_id" id="app_client_id" class = "js-select-basic-single-search">
-                            <option id="app_client_id_empty">{{ trans('adminlte_lang::message.select_client') }}</option>
-                            @if (isset($clients) OR session()->has('clients'))
-                            <?php if(!isset($clients)) $clients = session('clients');?>
-                            @foreach($clients as $client)
-                            <option
-                                    @if (old('client_id') AND old('client_id') == $client['client_id'])
-                            selected="selected"
-                            @elseif (!old('client_id') AND isset($appointment) AND $appointment->client_id == $client['client_id'])
-                            selected="selected"
+                            @if ($needNull)
+                                <option id="app_client_id_empty" value="null">{{ trans('adminlte_lang::message.select_client') }}</option>
                             @endif
-                            value="{{$client['client_id']}}">{{$client['name']}}
-                            </option>
-                            @endforeach
+                            @if (isset($clients) OR session()->has('clients'))
+                                <?php if(!isset($clients)) $clients = session('clients');?>
+                                @foreach($clients as $client)
+                                <option
+                                        @if (old('client_id') AND old('client_id') == $client['client_id'])
+                                        selected="selected"
+                                        @elseif (!old('client_id') AND isset($appointment) AND $appointment->client_id == $client['client_id'])
+                                        selected="selected"
+                                        @endif
+                                        value="{{$client['client_id']}}">{{$client['name']}}
+                                </option>
+                                @endforeach
                             @endif
                         </select>
                         <!--    <input type="text" name="client_name" id="app_client_name" class = "form-control" value="{{$value}}" required>-->
@@ -51,17 +56,7 @@
                 <div class="form-group">
                     <label for="app_new_client_name" class="col-sm-3 control-label text-right">@lang('main.appointment:client_name_label')</label>
                     <div class="col-sm-9">
-                        <?php
-                        //                    $old = old('client_name');
-                        //                    if (!is_null($old)) {
-                        //                        $value = $old;
-                        //                    } elseif (isset($appointment)) {
-                        //                        $value = $appointment->client->name;
-                        //                    } else {
-                        //                        $value = '';
-                        //                    }
-                        ?>
-                        <input type="text" name="client_name" id="app_new_client_name" class = "form-control" value="{{$value}}" required>
+                        <input type="text" name="client_name" id="app_new_client_name" class = "form-control" value="">
                         <div id="client_name_error">
                             @foreach ($errors->get('client_name') as $message)
                             <br/>{{$message}}
@@ -70,18 +65,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label text-right" for="app_new_client_phone">@lang('main.appointment:client_phone_label')</label>
+                    <label class="col-sm-3 control-label text-right" for="app_new_client_phone">@lang('main.appointment:client_phone_label')*</label>
                     <div class="col-sm-9">
-                        <?php
-                        $old = old('client_phone');
-                        if (!is_null($old)) {
-                            $value = $old;
-                        } elseif (isset($appointment)) {
-                            $value = $appointment->client->phone;
-                        } else {
-                            $value = '';
-                        }?>
-                        <input type="text" name="client_phone" id="app_new_client_phone" class = "form-control" value="{{$value}}">
+                        <input type="text" name="client_phone" id="app_new_client_phone" class = "form-control" value="">
                         <div id="client_phone_error">
                             @foreach ($errors->get('client_phone') as $message)
                             <br/>{{$message}}
@@ -92,16 +78,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label text-right"for="app_new_client_email">@lang('main.appointment:client_email_label')</label>
                     <div class="col-sm-9">
-                        <?php
-                        $old = old('client_email');
-                        if (!is_null($old)) {
-                            $value = $old;
-                        } elseif (isset($appointment)) {
-                            $value = $appointment->client->email;
-                        } else {
-                            $value = '';
-                        }?>
-                        <input type="email" name="client_email" id="app_new_client_email" class = "form-control" value="{{$value}}">
+                        <input type="email" name="client_email" id="app_new_client_email" class = "form-control" value="">
                         <div id="client_email_error">
                             @foreach ($errors->get('client_email') as $message)
                             <br/>{{$message}}
@@ -112,11 +89,12 @@
                 <div class="text-right">
                     <button type="button" id="btn_app_form_create_client" class="btn btn-info">Распознать/Создать нового клиента</button>
                 </div>
+                <hr>
             </div>
         </div>
     </div>
 </div>
-<hr>
+
 <?php
 //dd($servicesOptions);
 //dd($clients);

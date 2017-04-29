@@ -458,18 +458,25 @@ class BaseWidgetController extends Controller
 
         // Ищем клиента
         // TODO: искать клиента по комбинации имени-номера телефона-имейла ??
-        //  имя и телефон нормализуем (имя - каждое слово с заглавной буквы, лишние пробелы между словами и до/после убираем, номер телефона - храним в стандартном формате)
         $usr = new User();
         $clientPhone = $usr->normalizePhoneNumber($request->input('client_phone'));
+        $clientName =  $request->user()->normalizeUserName($request->input('client_name'));
+
         $client = Client::where('organization_id', $request->input('organization_id'))
             ->where('phone', $clientPhone)
             ->first();
+
+        if (is_null($client) AND !empty($clientEmail)) {
+            $client = Client::where('organization_id', $request->input('organization_id'))
+                ->where('email', $clientEmail)
+                ->first();
+        }
 
         // если такой клиент уже есть (поиск по номеру телефона) - добавляем ему email, если не было, иначе не апдейтим его
         //  а его id прописываем в $appointment->client_id
         if (is_null($client)) {
             $client = new Client();
-            $client->name = $request->input('client_name');      // TODO: нормализовать
+            $client->name = $clientName;
             $client->phone = $clientPhone;
             /*
             if ($request->input('client_email')) {
