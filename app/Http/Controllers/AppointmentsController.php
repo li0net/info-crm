@@ -490,7 +490,6 @@ class AppointmentsController extends Controller
         return response()->json(['client' => $client, 'clients' => $clients, ]);
     }
 
-
     public function populateEmployeeOptions(Request $request)
     {
         if($request->ajax()){
@@ -705,15 +704,18 @@ class AppointmentsController extends Controller
     }
 
 
-
+    /**
+     * Создаёт/сохраняет данные о звонке
+     * @param Request $request
+     * @return mixed
+     */
     public function saveCall(Request $request){
         $callId = $request->input('call_id');
-        $callTitle = $request->input('call_title');
+        $callTitle = trim(strip_tags($request->input('call_title')));
         $callDate = $request->input('call_date');
-        $callDescription = $request->input('call_description');
+        $callDescription = trim(strip_tags($request->input('call_description')));
         $clientId = $request->input('client_id');
         $appointmentId = $request->input('appointment_id');
-        //dd($callId);
         if ($callId == '' ){
             //создание
             $appCall = new AppointmentCalls;
@@ -739,6 +741,28 @@ class AppointmentsController extends Controller
         }
         return response()->json(['result' => 1]);
     }
+
+    /**
+     *  получает данные о звонках
+     * @param Request $request
+     * @return mixed
+     */
+    public function getCalls(Request $request){
+        $clientId = $request->input('client_id');
+        $appointmentId = $request->input('appointment_id');
+
+        // Ищем звонки
+        $calls = AppointmentCalls::where('client_id', $clientId)->where('appointment_id', $appointmentId)->orderby('date')->get();
+
+//        if($calls) {
+//            foreach ($calls as &$call){
+//                $call->date = Carbon::createFromFormat('Y-m-d', $call->date);
+//            }
+//        }
+
+        return view('appointment.tpl.body_client_calls_table', ['calls' => $calls])->render();
+    }
+
 
     /**
      * Метод для ajax получения информации о клиенте (в интерфейсе создания/редактирования Записи)

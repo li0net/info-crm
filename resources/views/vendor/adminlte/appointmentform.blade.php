@@ -81,14 +81,14 @@
 <!--                    <i class="fa fa-comments-o"></i> Уведомления </li>-->
 <!--                <li class="modal-menu-l history_tab list-group-item" data-toggle="tab" data-target="#body_history" >-->
 <!--                    <i class="fa fa-file-text"></i> История изменений</li>-->
-                <li class="modal-menu-l goods_history_tab list-group-item last-item" data-toggle="tab" data-target="#goods_history" >
+                <li class="modal-menu-l goods_history_tab list-group-item last-item disabled" data-toggle="tab" data-target="#goods_history" >
                     <i class="fa fa-cubes"></i> Списание расходников</li>
 
                 <li class="modal-menu-header client_header_tab nav-header">Клиент</li>
 
                 <li class="modal-menu-l client_info_tab list-group-item first-item" data-toggle="tab" id="#rec_client_fulldata" data-target="#client_info" >
                     <i class="fa fa-address-card-o"></i> Данные клиента</li>
-                <li class="modal-menu-l client_history_tab list-group-item" data-toggle="tab" data-target="#client_history" >
+                <li class="modal-menu-l client_history_tab list-group-item disabled" data-toggle="tab" data-target="#client_history" >
                     <i class="fa fa-list-alt"></i> История посещений</li>
                 <li class="modal-menu-l client_statistics_tab list-group-item" data-toggle="tab"  data-target="#client_statistics" >
                     <i class="fa fa-pie-chart"></i> Статистика</li>
@@ -225,17 +225,7 @@
                         url: "/client/"+client_id,
                         data: {ajax_call:true},
                         success: function(data) {
-                            console.log(data);
                             $('#client_info').html(data);
-//                        if (data != "[][]") {
-//                            var data = $.parseJSON(data);
-//                            for (var i in data) {
-//                                $('<option>').val(data[i]).text(data[i]).appendTo('#app_date_from');
-//                            }
-//                            $('#app_date_from').prop("disabled", false);
-//                        } else {
-//                            $('#app_date_from').prop("disabled", true);
-//                        }
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
                             alert('Server error:'+textStatus);
@@ -247,17 +237,30 @@
                         url: "/appointments/getClientStats",
                         data: {'organization_id':$('#organization_id').val(),client_id:client_id},
                         success: function(data) {
-                            console.log(data);
                             $('#client_statistics').html(data);
-//                        if (data != "[][]") {
-//                            var data = $.parseJSON(data);
-//                            for (var i in data) {
-//                                $('<option>').val(data[i]).text(data[i]).appendTo('#app_date_from');
-//                            }
-//                            $('#app_date_from').prop("disabled", false);
-//                        } else {
-//                            $('#app_date_from').prop("disabled", true);
-//                        }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('Server error:'+textStatus);
+                        }
+                    });
+                }
+
+                //Update client calls
+                updateClientCalls()
+            }
+             /**
+             * Update client calls
+             */
+            function updateClientCalls() {
+                var client_id = $('#app_client_id option:selected').val();
+                if(client_id != 'null'){
+                    //update client calls
+                    $.ajax({
+                        type: "GET",
+                        url: "/appointments/getCalls",
+                        data: {appointment_id:$('#app_appointment_id').val(),client_id:client_id},
+                        success: function(data) {
+                            $('#app_calls_history').html(data);
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
                             alert('Server error:'+textStatus);
@@ -265,6 +268,7 @@
                     });
                 }
             }
+
 
             if ( $('#app_employee_id > option').length == 0) {
                 $('#service_employee').text('Сотрудник не выбран');
@@ -477,13 +481,11 @@
                     return;
                 }
 
-                if ($('#app_appointment_id').length && $('#app_appointment_id').val() !=''){
+                if ($('#app_appointment_id').length && $('#app_appointment_id').val() != ''){
                     // loader animation
                     $('#client_history').addClass('loadingbox');
 
-                    var appointment_id = ($('#app_call_appointment_id').val()=='') ? $('#app_call_appointment_id').val() : $('#app_appointment_id').val();
-
-                    console.log(call_title, call_date, call_description,appointment_id,client_id);
+                    var appointment_id = ($('#app_call_appointment_id').val() != '') ? $('#app_call_appointment_id').val() : $('#app_appointment_id').val();
 
                     $.ajax({
                         type: "POST",
@@ -497,24 +499,13 @@
                                 client_id:client_id
                         },
                         success: function(data) {
-                            console.log(data);
                             // clear form
-                            $('#call_title').val('');
-                            $('#call_date').val('');
-                            $('#call_description').val('');
+                            $('#app_call_title').val('');
+                            $('#app_call_date').val('');
+                            $('#app_call_description').val('');
 
-//                            // clear clients select
-//                            $("#app_client_id option").each(function() {
-//                                $(this).remove();
-//                            });
-//
-//                            for (var i in data.clients) {
-//                                $('<option>').val(data.clients[i].client_id).text(data.clients[i].name).appendTo('#app_client_id');
-//                            }
-//                            // set new client checked
-//                            $('#app_client_id').val(data.client.client_id).prop('selected', true);
-//
-//                            $('#body_client a:first').tab('show');
+                            //Update client calls
+                            updateClientCalls()
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
                             alert('Server error:'+textStatus);
@@ -524,6 +515,15 @@
                 } else {
                     alert('You must create appointment before adding calls');
                 }
+            });
+
+            // заносим данные звонка в форму для просмотра
+            $('body').on('click', '#table_calls .table-action-link', function() {
+                var id = $(this).data('id');
+                $('#app_call_title').val($('#tr_'+id).find('.td_title').text());
+                $('#app_call_date').val($('#tr_'+id).find('.td_date').text());
+                $('#app_call_description').val($('#tr_'+id).find('.td_description').text());
+                $('#app_call_id').val(id)
             });
 
             $('#app_call_date').datepicker({

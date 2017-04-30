@@ -19,5 +19,5 @@ use Illuminate\Support\Facades\DB;
 
 class AppointmentCalls extends Model
 {
-    //
+    public $timestamps = false;
 }

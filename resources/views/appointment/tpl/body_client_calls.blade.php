@@ -19,7 +19,7 @@
             <button type="button" id='save_call_info' class="btn btn-info">Save call info</button>
         </div>
     </div>
-    <div class="col-sm-7">
+    <div class="col-sm-7" id="app_calls_history">
 
     </div>
 
