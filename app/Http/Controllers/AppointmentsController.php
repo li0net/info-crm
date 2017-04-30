@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Account;
 use App\Appointment;
+use App\AppointmentCalls;
 use App\Client;
 use App\Employee;
 use App\Product;
@@ -701,6 +702,42 @@ class AppointmentsController extends Controller
         }
 
         echo json_encode($employeesOptions);
+    }
+
+
+
+    public function saveCall(Request $request){
+        $callId = $request->input('call_id');
+        $callTitle = $request->input('call_title');
+        $callDate = $request->input('call_date');
+        $callDescription = $request->input('call_description');
+        $clientId = $request->input('client_id');
+        $appointmentId = $request->input('appointment_id');
+        //dd($callId);
+        if ($callId == '' ){
+            //создание
+            $appCall = new AppointmentCalls;
+
+            $appCall->client_id = $clientId;
+            $appCall->appointment_id = $appointmentId;
+            $appCall->date = $callDate;
+            $appCall->title = $callTitle;
+            $appCall->description = $callDescription;
+
+            $appCall->save();
+        } else {
+            // редактирование
+            $appCall = AppointmentCalls::find($callId);
+
+            $appCall->client_id = $clientId;
+            $appCall->appointment_id = $appointmentId;
+            $appCall->date = $callDate;
+            $appCall->title = $callTitle;
+            $appCall->description = $callDescription;
+
+            $appCall->save();
+        }
+        return response()->json(['result' => 1]);
     }
 
     /**

@@ -130,7 +130,9 @@
             <div class="col-sm-8 tab-pane fade" id="client_info"></div>
             <div class="col-sm-8 tab-pane fade" id="client_history">Client history</div>
             <div class="col-sm-8 tab-pane fade" id="client_statistics"></div>
-            <div class="col-sm-8 tab-pane fade" id="client_calls">Phone calls</div>
+            <div class="col-sm-8 tab-pane fade" id="client_calls">
+                @include('appointment.tpl.body_client_calls')
+            </div>
         </div>
         <div class="col-sm-12">
             <hr>
@@ -459,6 +461,75 @@
 
                 $('#body_client .tab-content').removeClass('loadingbox');
 
+            });
+
+            // Calls form
+            $('#save_call_info').on('click', function(e) {
+                // getting data
+                var call_title = $('#app_call_title').val();
+                var call_date = $('#app_call_date').val();
+                var call_description = $('#app_call_description').val();
+                var client_id = $('#app_client_id').val();
+                var call_id = $('#app_call_id').val();
+
+                if (call_title =='' || call_date =='' || call_description ==''){
+                    alert('All call form\'s fields are required');
+                    return;
+                }
+
+                if ($('#app_appointment_id').length && $('#app_appointment_id').val() !=''){
+                    // loader animation
+                    $('#client_history').addClass('loadingbox');
+
+                    var appointment_id = ($('#app_call_appointment_id').val()=='') ? $('#app_call_appointment_id').val() : $('#app_appointment_id').val();
+
+                    console.log(call_title, call_date, call_description,appointment_id,client_id);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/appointments/saveCall/",
+                        data: {
+                                call_id: call_id,
+                                call_title: call_title,
+                                call_date: call_date,
+                                call_description: call_description,
+                                appointment_id: appointment_id,
+                                client_id:client_id
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            // clear form
+                            $('#call_title').val('');
+                            $('#call_date').val('');
+                            $('#call_description').val('');
+
+//                            // clear clients select
+//                            $("#app_client_id option").each(function() {
+//                                $(this).remove();
+//                            });
+//
+//                            for (var i in data.clients) {
+//                                $('<option>').val(data.clients[i].client_id).text(data.clients[i].name).appendTo('#app_client_id');
+//                            }
+//                            // set new client checked
+//                            $('#app_client_id').val(data.client.client_id).prop('selected', true);
+//
+//                            $('#body_client a:first').tab('show');
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('Server error:'+textStatus);
+                        }
+                    });
+                    $('#client_history').removeClass('loadingbox');
+                } else {
+                    alert('You must create appointment before adding calls');
+                }
+            });
+
+            $('#app_call_date').datepicker({
+                autoclose: true,
+                format: 'yyyy-mm-dd',
+                firstDay: 1
             });
         });
     </script>
