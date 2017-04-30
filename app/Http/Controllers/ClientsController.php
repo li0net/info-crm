@@ -106,13 +106,20 @@ class ClientsController extends Controller
             return 'You don\'t have access to this item';
         }
 
-        return view('client.show', [
+        if ($request->input('ajax_call')){
+            // урезанная версия для получения по ajax
+            $view = 'client.show_lite';
+        } else {
+            $view = 'client.show';
+        }
+
+        return view($view, [
             'clientCategoriesOptions' => $this->prepareClientCategoriesOptions(),
             'genderOptions' => $this->genderOptions,
             'importanceOptions' => $this->importanceOptions,
             'client' => $client,
             'crmuser' => $request->user()
-        ]);
+        ])->render();
     }
 
     /*

@@ -11,7 +11,7 @@
         <div class="tab-content form-horizontal">
             <div id="menu1" class="tab-pane fade in active">
                 <div class="form-group">
-                    <label for="app_client_name" class="col-sm-3 control-label text-right">@lang('main.appointment:client_name_label')</label>
+                    <label for="app_client_id" class="col-sm-3 control-label text-right">@lang('main.appointment:client_name_label')</label>
                     <div class="col-sm-9">
                         <?php
                         $old = old('client_id');
@@ -50,6 +50,8 @@
                             @endforeach
                         </div>
                     </div>
+                </div>
+                <div id="client_edit_oo">
                 </div>
             </div>
             <div id="menu2" class="tab-pane fade">

@@ -86,11 +86,11 @@
 
                 <li class="modal-menu-header client_header_tab nav-header">Клиент</li>
 
-                <li class="modal-menu-l client_tab list-group-item first-item" id="#rec_client_fulldata" data-target="client_edit" >
+                <li class="modal-menu-l client_info_tab list-group-item first-item" data-toggle="tab" id="#rec_client_fulldata" data-target="#client_info" >
                     <i class="fa fa-address-card-o"></i> Данные клиента</li>
-                <li class="modal-menu-l visit_history_tab list-group-item" data-target="#visit_history" >
+                <li class="modal-menu-l client_history_tab list-group-item" data-toggle="tab" data-target="#client_history" >
                     <i class="fa fa-list-alt"></i> История посещений</li>
-                <li class="modal-menu-l client_stats_tab list-group-item" data-target="#client_stats" >
+                <li class="modal-menu-l client_statistics_tab list-group-item" data-toggle="tab"  data-target="#client_statistics" >
                     <i class="fa fa-pie-chart"></i> Статистика</li>
 <!--                <li class="modal-menu-l sms_history_tab list-group-item" data-target="#sms_history" >-->
 <!--                    <i class="fa fa-envelope"></i> Отправленные SMS</li>-->
@@ -98,9 +98,9 @@
 <!--                    <i class="fa fa-send"></i> Отправить SMS</li>-->
 <!--                <li class="modal-menu-l card_tab list-group-item" data-target="#body_card" >-->
 <!--                    <i class="fa fa-qrcode"></i> Электронная карта</li>-->
-                <li class="modal-menu-l client_loyalty_cards_tab list-group-item" data-target="client_loyalty_cards_body"  >
+                <li class="modal-menu-l client_loyalty_cards_tab list-group-item disabled" data-target="client_loyalty_cards_body"  >
                     <i class="fa fa-credit-card"></i> Карты лояльности</li>
-                <li class="modal-menu-l phone_call_tabs list-group-item last-item" data-target="phone_call_body" >
+                <li class="modal-menu-l phone_call_tabs list-group-item last-item"data-toggle="tab"  data-target="#client_calls" >
                     <i class="fa fa-phone"></i> История звонков</li>
             </ul>
         </div>
@@ -117,15 +117,20 @@
             <div class="col-sm-8 tab-pane fade" id="body_payments">
                 @include('appointment.tpl.body_payments')
             </div>
-            <div class="col-sm-8 tab-pane fade" id="body_reminds">
-                @include('appointment.tpl.body_reminds')
-            </div>
-            <div class="col-sm-8 tab-pane fade" id="body_history">
-                @include('appointment.tpl.body_history')
-            </div>
+<!--            <div class="col-sm-8 tab-pane fade" id="body_reminds">-->
+
+<!--            </div>-->
+<!--            <div class="col-sm-8 tab-pane fade" id="body_history">-->
+<!--                @include('appointment.tpl.body_history')-->
+<!--            </div>-->
             <div class="col-sm-8 tab-pane fade" id="goods_history">
-                @include('appointment.tpl.goods_history')
+                @include('appointment.tpl.body_goods_history')
             </div>
+
+            <div class="col-sm-8 tab-pane fade" id="client_info"></div>
+            <div class="col-sm-8 tab-pane fade" id="client_history">Client history</div>
+            <div class="col-sm-8 tab-pane fade" id="client_statistics"></div>
+            <div class="col-sm-8 tab-pane fade" id="client_calls">Phone calls</div>
         </div>
         <div class="col-sm-12">
             <hr>
@@ -197,6 +202,67 @@
                     console.log('Error while processing services data range!');
                 }
             });
+
+            // Update data at client tabs
+            updateClientData();
+
+            // Client dropdown change event
+            $('#app_client_id').on('change', function(){
+                updateClientData();
+            });
+
+            /**
+             * Update data at client tabs
+             */
+            function updateClientData() {
+                var client_id = $('#app_client_id option:selected').val();
+                if(client_id != 'null'){
+                    // Update client information tab
+                    $.ajax({
+                        type: "GET",
+                        url: "/client/"+client_id,
+                        data: {ajax_call:true},
+                        success: function(data) {
+                            console.log(data);
+                            $('#client_info').html(data);
+//                        if (data != "[][]") {
+//                            var data = $.parseJSON(data);
+//                            for (var i in data) {
+//                                $('<option>').val(data[i]).text(data[i]).appendTo('#app_date_from');
+//                            }
+//                            $('#app_date_from').prop("disabled", false);
+//                        } else {
+//                            $('#app_date_from').prop("disabled", true);
+//                        }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('Server error:'+textStatus);
+                        }
+                    });
+                    //update client stats tab
+                    $.ajax({
+                        type: "GET",
+                        url: "/appointments/getClientStats",
+                        data: {'organization_id':$('#organization_id').val(),client_id:client_id},
+                        success: function(data) {
+                            console.log(data);
+                            $('#client_statistics').html(data);
+//                        if (data != "[][]") {
+//                            var data = $.parseJSON(data);
+//                            for (var i in data) {
+//                                $('<option>').val(data[i]).text(data[i]).appendTo('#app_date_from');
+//                            }
+//                            $('#app_date_from').prop("disabled", false);
+//                        } else {
+//                            $('#app_date_from').prop("disabled", true);
+//                        }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('Server error:'+textStatus);
+                        }
+                    });
+                }
+            }
 
             if ( $('#app_employee_id > option').length == 0) {
                 $('#service_employee').text('Сотрудник не выбран');
