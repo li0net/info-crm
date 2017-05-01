@@ -429,18 +429,34 @@ class AppointmentsController extends Controller
         $orgId = $request->input('organization_id');
 
         // Готовим данные статистики клиента
-        $clientStats = 'No Data';
-        $clientData = DB::table('appointments')
-            ->select(DB::raw('count(*) AS num_visits, MAX(start) AS last_visit'))
-            ->where('organization_id', $orgId)
-            ->where('client_id', $client->client_id)
+        $clientData= [
+            "num_visits" => 0,
+            "last_visit" => '',
+            "history" => [],
+        ];
+        $appoints = DB::table('appointments')
+            ->select('appointments.appointment_id','appointments.start','appointments.end', 'employees.name as employee', 'services.name as service')
+            ->join('employees', 'appointments.employee_id', '=', 'employees.employee_id')
+            ->join('services', 'appointments.service_id', '=', 'services.service_id')
+            ->where('appointments.organization_id', $orgId)
+            ->where('appointments.client_id', $client->client_id)
             ->whereRaw('appointments.start <= NOW()')
+            ->orderBy('appointments.start')
             ->get();
-        $clientData = $clientData->first();
-        if ($clientData->num_visits > 0) {
-            $clientStats = view('appointment.tpl.body_client_statistics', ['clientData' => $clientData])->render();
+        $clientData['num_visits'] = count($appoints);
+
+        // получаем дату последнего посещения и общую историю
+        if ($clientData['num_visits'] > 0 ){
+            $clientData["history"] = $appoints;
+            $dates = [];
+            foreach ($appoints as $visit){
+                $dates[] = $visit->start;
+            }
+            $clientData['last_visit'] = max($dates);
         }
-        return $clientStats;
+        $view = view('appointment.tpl.body_client_statistics', ['clientData' => $clientData])->render();
+
+        return $view;
     }
 
     /**

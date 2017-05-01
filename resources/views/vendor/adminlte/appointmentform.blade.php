@@ -88,10 +88,8 @@
 
                 <li class="modal-menu-l client_info_tab list-group-item first-item" data-toggle="tab" id="#rec_client_fulldata" data-target="#client_info" >
                     <i class="fa fa-address-card-o"></i> Данные клиента</li>
-                <li class="modal-menu-l client_history_tab list-group-item disabled" data-toggle="tab" data-target="#client_history" >
-                    <i class="fa fa-list-alt"></i> История посещений</li>
                 <li class="modal-menu-l client_statistics_tab list-group-item" data-toggle="tab"  data-target="#client_statistics" >
-                    <i class="fa fa-pie-chart"></i> Статистика</li>
+                    <i class="fa fa-pie-chart"></i> Статистика посещений</li>
 <!--                <li class="modal-menu-l sms_history_tab list-group-item" data-target="#sms_history" >-->
 <!--                    <i class="fa fa-envelope"></i> Отправленные SMS</li>-->
 <!--                <li class="modal-menu-l sms_tab list-group-item" data-target="#body_sms" >-->
@@ -128,7 +126,6 @@
             </div>
 
             <div class="col-sm-8 tab-pane fade" id="client_info"></div>
-            <div class="col-sm-8 tab-pane fade" id="client_history">Client history</div>
             <div class="col-sm-8 tab-pane fade" id="client_statistics"></div>
             <div class="col-sm-8 tab-pane fade" id="client_calls">
                 @include('appointment.tpl.body_client_calls')
