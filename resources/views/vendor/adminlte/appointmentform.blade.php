@@ -67,29 +67,29 @@
         @endif
         <div class="col-sm-4 nav-stacked-block" >
             <ul id="app_side_tabs" class="modal-menu list-group clear-list m-t nav nav-tabs nav-stacked">
-                <li class="modal-menu-header nav-header">Визит</li>
+                <li class="modal-menu-header nav-header">@lang('adminlte_lang::message.visit')</li>
 
                 <li class="modal-menu-l record_tab list-group-item first-item active" data-toggle="tab" data-target="#body_client" >
-                    <i class="fa fa-user"></i> Клиент</li>
+                    <i class="fa fa-user"></i> @lang('adminlte_lang::message.client')</li>
                 <li class="modal-menu-l record_tab list-group-item" data-toggle="tab" data-target="#body_service" >
-                    <i class="fa fa-calendar"></i> Услуга</li>
+                    <i class="fa fa-calendar"></i> @lang('adminlte_lang::message.service')</li>
                 <li class="modal-menu-l visit_tab list-group-item" data-toggle="tab" data-target="#body_status">
-                    <i class="fa fa-clock-o"></i> Статус визита</li>
+                    <i class="fa fa-clock-o"></i> @lang('adminlte_lang::message.visit_status')</li>
                 <li class="modal-menu-l payments_tab list-group-item" data-toggle="tab" data-target="#body_payments" >
-                    <i class="fa fa-usd"></i> Оплата визита</li>
+                    <i class="fa fa-usd"></i> @lang('adminlte_lang::message.visit_payment')</li>
 <!--                <li class="modal-menu-l reminds_tab list-group-item" data-toggle="tab" data-target="#body_reminds" >-->
 <!--                    <i class="fa fa-comments-o"></i> Уведомления </li>-->
 <!--                <li class="modal-menu-l history_tab list-group-item" data-toggle="tab" data-target="#body_history" >-->
 <!--                    <i class="fa fa-file-text"></i> История изменений</li>-->
                 <li class="modal-menu-l goods_history_tab list-group-item last-item disabled" data-toggle="tab" data-target="#goods_history" >
-                    <i class="fa fa-cubes"></i> Списание расходников</li>
+                    <i class="fa fa-cubes"></i> @lang('adminlte_lang::message.writeoff_goods')</li>
 
-                <li class="modal-menu-header client_header_tab nav-header">Клиент</li>
+                <li class="modal-menu-header client_header_tab nav-header">@lang('adminlte_lang::message.client')</li>
 
                 <li class="modal-menu-l client_info_tab list-group-item first-item" data-toggle="tab" id="#rec_client_fulldata" data-target="#client_info" >
-                    <i class="fa fa-address-card-o"></i> Данные клиента</li>
+                    <i class="fa fa-address-card-o"></i> @lang('adminlte_lang::message.client_info')</li>
                 <li class="modal-menu-l client_statistics_tab list-group-item" data-toggle="tab"  data-target="#client_statistics" >
-                    <i class="fa fa-pie-chart"></i> Статистика посещений</li>
+                    <i class="fa fa-pie-chart"></i> @lang('adminlte_lang::message.attendance_statistics')</li>
 <!--                <li class="modal-menu-l sms_history_tab list-group-item" data-target="#sms_history" >-->
 <!--                    <i class="fa fa-envelope"></i> Отправленные SMS</li>-->
 <!--                <li class="modal-menu-l sms_tab list-group-item" data-target="#body_sms" >-->
@@ -97,9 +97,9 @@
 <!--                <li class="modal-menu-l card_tab list-group-item" data-target="#body_card" >-->
 <!--                    <i class="fa fa-qrcode"></i> Электронная карта</li>-->
                 <li class="modal-menu-l client_loyalty_cards_tab list-group-item disabled" data-target="client_loyalty_cards_body"  >
-                    <i class="fa fa-credit-card"></i> Карты лояльности</li>
+                    <i class="fa fa-credit-card"></i> @lang('adminlte_lang::message.loyalty_cards')</li>
                 <li class="modal-menu-l phone_call_tabs list-group-item last-item"data-toggle="tab"  data-target="#client_calls" >
-                    <i class="fa fa-phone"></i> История звонков</li>
+                    <i class="fa fa-phone"></i> @lang('adminlte_lang::message.calls_history')</li>
             </ul>
         </div>
         <div class="tab-content">
@@ -268,7 +268,7 @@
 
 
             if ( $('#app_employee_id > option').length == 0) {
-                $('#service_employee').text('Сотрудник не выбран');
+                $('#service_employee').text("@lang('adminlte_lang::message.employee_not_chosen')");
             } else {
                 var employee_name = $('#app_employee_id option:selected').text();
                 $('#service_employee').text('' == employee_name ? $('#app_employee_id option:first').text() : employee_name);
@@ -310,7 +310,7 @@
 
                             $('#service_name').text($('#app_service_id option:selected').text());
                             if ( $('#app_employee_id > option').length == 0) {
-                                $('#service_employee').text('Сотрудник не выбран');
+                                $('#service_employee').text("@lang('adminlte_lang::message.employee_not_chosen')");
                             } else {
                                 var employee_name = $('#app_employee_id option:selected').text();
                                 $('#service_employee').text('' == employee_name ? $('#app_employee_id option:first').text() : employee_name);
@@ -328,7 +328,7 @@
 
             $('#app_employee_id').on('change', function(){
                 if ( $('#app_employee_id > option').length == 0) {
-                    $('#service_employee').text('Сотрудник не выбран');
+                    $('#service_employee').text("@lang('adminlte_lang::message.employee_not_chosen')");
                 } else {
                     var employee_name = $('#app_employee_id option:selected').text();
                     $('#service_employee').text('' == employee_name ? $('#app_employee_id option:first').text() : employee_name);
@@ -428,7 +428,7 @@
 
                 //TODO нормальный вывод
                 if (phone == '' || name == ''){
-                    alert('Name and Phone fields are required');
+                    alert("@lang('adminlte_lang::message.name_phone_required')");
                     return;
                 }
                 $('#body_client .tab-content').addClass('loadingbox');
@@ -474,7 +474,7 @@
                 var call_id = $('#app_call_id').val();
 
                 if (call_title =='' || call_date =='' || call_description ==''){
-                    alert('All call form\'s fields are required');
+                    alert("@lang('adminlte_lang::message.call_form_required')");
                     return;
                 }
 

@@ -5,7 +5,7 @@
         </div>
     @else
         <div class="col-sm-12">
-            <h3>Client Statistics</h3>
+            <h3>@lang('adminlte_lang::message.attendance_statistics')</h3>
             <p><b>@lang('main.appointment:client_num_visits'):&nbsp;</b>{{$clientData['num_visits']}}</p>
             <p><b>@lang('main.appointment:client_last_visit_date'):&nbsp;</b>{{date('Y.m.d H:i', strtotime($clientData['last_visit']))}}</p>
         </div>
@@ -13,15 +13,15 @@
             <hr>
         </div>
         <div class="col-sm-12">
-            <h3>Visits history</h3>
+            <h3>@lang('adminlte_lang::message.visits_history')</h3>
             <table class="table table-hover table-condensed">
                 <thead>
                 <tr>
                     <th class="text-center" width="10%">#</th>
                     <th>Employee</th>
                     <th>Service</th>
-                    <th width="15%">Date Start</th>
-                    <th width="15%">Date End</th>
+                    <th width="15%">@lang('adminlte_lang::message.date_start')</th>
+                    <th width="15%">@lang('adminlte_lang::message.date_end')</th>
                 </tr>
                 </thead>
                 <tbody>

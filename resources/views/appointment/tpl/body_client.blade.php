@@ -2,10 +2,10 @@
     <div class="col-sm-12">
         <ul class="nav nav-tabs">
             <li class="active">
-                <a data-toggle="tab" href="#menu1"><i class="fa fa-users" aria-hidden="true"></i>Существующий клиент</a>
+                <a data-toggle="tab" href="#menu1"><i class="fa fa-users" aria-hidden="true"></i>@lang('adminlte_lang::message.existing_client')</a>
             </li>
             <li class="">
-                <a data-toggle="tab" href="#menu2"><i class="fa fa-user-plus" aria-hidden="true"></i>Новый клиент/Распознать</a>
+                <a data-toggle="tab" href="#menu2"><i class="fa fa-user-plus" aria-hidden="true"></i>@lang('adminlte_lang::message.new_client_find')</a>
             </li>
         </ul>
         <div class="tab-content form-horizontal">
@@ -89,7 +89,7 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <button type="button" id="btn_app_form_create_client" class="btn btn-info">Распознать/Создать нового клиента</button>
+                    <button type="button" id="btn_app_form_create_client" class="btn btn-info">@lang('adminlte_lang::message.client_find_create')</button>
                 </div>
                 <hr>
             </div>

@@ -4,11 +4,11 @@
             <table class="table table-bordered table-hover table-bg-white">
                 <thead>
                     <tr >
-                        <td class="col-xs-5">Товар/услуга</td>
-                        <td class="col-xs-2 text-center">Цена,₽</td>
-                        <td class="col-xs-2 text-center">Оплачено,₽</td>
-                        <td class="col-xs-2 text-center">Остаток,₽</td>
-                        <td class="col-xs-1">Детали</td>
+                        <td class="col-xs-5">@lang('adminlte_lang::message.good_service')</td>
+                        <td class="col-xs-2 text-center">@lang('adminlte_lang::message.price_val')</td>
+                        <td class="col-xs-2 text-center">@lang('adminlte_lang::message.paid_val')</td>
+                        <td class="col-xs-2 text-center">@lang('adminlte_lang::message.balance_val')</td>
+                        <td class="col-xs-1">@lang('adminlte_lang::message.details')</td>
                     </tr>
                 </thead>
 
@@ -64,7 +64,7 @@
             <table class="table table-bordered table-hover payments-total-table">
                 <thead>
                 <tr class="details-row">
-                    <td class="col-xs-5">Оплачено (полностью)</td>
+                    <td class="col-xs-5">@lang('adminlte_lang::message.paid_total')</td>
                     <td class="col-xs-2 text-center">0</td>
                     <td class="col-xs-2 text-center">0</td>
                     <td class="col-xs-2 text-center"></td>
@@ -77,11 +77,11 @@
 
             <hr class="hr-line-dashed">
 
-            <h3>Оплата в кассу</h3>
+            <h3>@lang('adminlte_lang::message.payment_to_cashbox')</h3>
             <div class="row  form-horizontal">
                 <div class="col-sm-8">
                     {{ Form::select('new-transaction-account-id', $accounts, null, ['class' => 'js-select-basic-single']) }}
-                    {{--<select id="new-transaction-account-id" class="js-select-basic-single" data-placeholder="Выберите">--}}
+                    {{--<select id="new-transaction-account-id" class="js-select-basic-single" data-placeholder="@lang('adminlte_lang::message.choose')">--}}
                         {{--<option value="87128">Основная касса</option>--}}
                         {{--<option value="87129">Расчетный счет</option>--}}
                     {{--</select>--}}
@@ -90,7 +90,7 @@
                     <input id="new-transaction-amount" class="form-control input-sm" type="text" value="0">
                 </div>
                 <div class="text-right col-sm-2">
-                    <button class="btn btn-primary" id="create-transaction-btn" data-record-id="15537667" data-visit-id="12413512" data-salon-id="62909">Оплатить</button>
+                    <button class="btn btn-primary" id="create-transaction-btn" data-record-id="15537667" data-visit-id="12413512" data-salon-id="62909">@lang('adminlte_lang::message.pay')</button>
                 </div>
             </div>
         </div></div>

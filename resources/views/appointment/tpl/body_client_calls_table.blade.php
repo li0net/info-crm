@@ -3,8 +3,8 @@
     <thead>
         <tr>
             <th class="text-center" width="10%">#</th>
-            <th width="20%" >Date</th>
-            <th>Title</th>
+            <th width="20%">@lang('adminlte_lang::message.date')</th>
+            <th>@lang('adminlte_lang::message.call_title')</th>
         </tr>
     </thead>
     <tbody>
