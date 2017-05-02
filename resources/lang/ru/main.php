@@ -62,7 +62,7 @@ return [
     'organization:logo_recommend'           => 'Рекоммендуем использовать прозрачный PNG размером 200*50 px',
     'organization:logo_btn'                 => 'Загрузить фото',
     'organization:info_label'               => 'Описание',
-    'organization:id_label'                 => '# организации',
+    'organization:id_label'                 => 'ID организации',
 
     'appointment:client_wait_tab_label'     => 'Ожидание клиента',
     'appointment:client_came_tab_label'     => 'Клиент пришел',
