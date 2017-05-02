@@ -380,9 +380,9 @@ class EmployeeController extends Controller
 
         $validator = Validator::make($request->all(),
             [
-                'employee_id' => 'required|numeric|max:10',
+                'employee_id' => 'required|numeric',
                 'scheme_start' => 'date',
-                'wage_scheme_id' => 'numeric|max:10'
+                'wage_scheme_id' => 'numeric'
             ]
         );
         if ($validator->fails()) {
