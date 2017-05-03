@@ -211,6 +211,9 @@ return [
     'client:importance_silver'              => 'Серебро',
     'client:importance_gold'                => 'Золото',
     'client:form_page_header'               => 'Редактировать клиента',
+    'client:filter_panel_title'             => 'Фильтры',
+    'client:filter_button'                  => 'Фильтровать',
+    'client:filter_no_category_label'       => 'Нет категории',
 
     'client_category:form_page_header'      => 'Категории клиентов',
     'client_category:list_page_header'      => 'Категории клиентов',

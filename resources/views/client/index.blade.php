@@ -124,8 +124,43 @@
             <div class="col-md-4">
                 <div class="box box-primary">
                     <div class="box-body">
-                        <h4>Filters</h4>
-                        <div id="clients_grid_search">
+                        <h4>@lang('main.client:filter_panel_title')</h4>
+                        <div class="form-group">
+                            <label for="c_category_id_filter" class="col-sm-3 control-label">@lang('main.client:client_category_label')</label>
+                            <div class="col-sm-9">
+                                <select name="category_id_filter" id="c_category_id_filter" class="js-select-basic-single">
+                                    @foreach($clientCategoriesOptions AS $clientCategory)
+                                        <option data-color="{{$clientCategory['color']}}"
+                                                value="{{$clientCategory['value']}}">{{$clientCategory['label']}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="c_gender_filter" class="col-sm-3 control-label">@lang('main.client:gender_label')</label>
+                            <div class="col-sm-9">
+                                <select name="gender_filter" id="c_gender_filter" class="js-select-basic-single">
+                                    @foreach($genderOptions AS $gender)
+                                        <option value="{{$gender['value']}}">{{$gender['label']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="c_importance_filter" class="col-sm-3 control-label">@lang('main.client:importance_label')</label>
+                            <div class="col-sm-9">
+                                <select name="importance_filter" id="c_importance_filter" class="js-select-basic-single">
+                                    @foreach($importanceOptions AS $importance)
+                                        <option value="{{$importance['value']}}">{{$importance['label']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="text-right m-t">
+                            <button type="submit" id="btn_client_filter_search" class="btn btn-primary center-block">@lang('main.client:filter_button')</button>
                         </div>
                     </div>
                 </div>
@@ -324,22 +359,45 @@
             return $category;
         }
 
-        $("#clients_grid_search").jqGrid(
-                'filterGrid',
-                '#clients_grid',
-                {
-                    formtype: 'vertical',
-                    filterModel: [
-                        {label:'Importance: ', name: 'importance', stype: 'select', defval: 'null', sopt:{ value: "null:---;gold:Gold;silver:Silver;bonze:Bronze;:Not set"}},
-                        {label:'Category: ', name: 'category_id', stype: 'select', sopt:{ value: "{{$categoriesStrForSelect}}"}}
-                    ],
-                    autosearch: false,
-                    enableSearch: true,
-                    enableClear: true,
-                    searchButton: 'Search',
-                    clearButton: 'Clear'
+        $('#btn_client_filter_search').click(function() {
+            var $clientsGrid = $("#clients_grid");
+            var rules = [], i, postData = $clientsGrid.jqGrid("getGridParam", "postData"),
+                    colModel = $clientsGrid.jqGrid("getGridParam", "colModel"), fVal;
+
+            var filterFields = [
+                {'id': 'c_category_id_filter', 'field': 'category_id'},
+                {'id': 'c_gender_filter', 'field': 'gender'},
+                {'id': 'c_importance_filter', 'field': 'importance'}
+            ];
+            for (i = 0; i < filterFields.length; i++) {
+                fVal = $('#'+filterFields[i]['id']).val();
+                if (fVal != '-') {
+                    if (fVal == 'null') {
+                        rules.push({
+                            field: filterFields[i]['field'],
+                            op: "nu",
+                            data: fVal
+                        });
+                    } else {
+                        rules.push({
+                            field: filterFields[i]['field'],
+                            op: "eq",
+                            data: fVal
+                        });
+                    }
                 }
-        );
+            }
+
+            //console.log('rules', rules);
+            postData.filters = JSON.stringify({
+                groupOp: "AND",
+                rules: rules
+            });
+            $clientsGrid.jqGrid("setGridParam", { search: true });
+            $clientsGrid.trigger("reloadGrid", [{page: 1, current: true}]);
+            return false;
+        });
+
     });
 </script>
 @endsection
