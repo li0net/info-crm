@@ -67,41 +67,39 @@
         @endif
         <div class="col-sm-4 nav-stacked-block" >
             <ul id="app_side_tabs" class="modal-menu list-group clear-list m-t nav nav-tabs nav-stacked">
-                <li class="modal-menu-header nav-header">Визит</li>
+                <li class="modal-menu-header nav-header">@lang('adminlte_lang::message.visit')</li>
 
                 <li class="modal-menu-l record_tab list-group-item first-item active" data-toggle="tab" data-target="#body_client" >
-                    <i class="fa fa-user"></i> Клиент</li>
+                    <i class="fa fa-user"></i> @lang('adminlte_lang::message.client')</li>
                 <li class="modal-menu-l record_tab list-group-item" data-toggle="tab" data-target="#body_service" >
-                    <i class="fa fa-calendar"></i> Услуга</li>
+                    <i class="fa fa-calendar"></i> @lang('adminlte_lang::message.service')</li>
                 <li class="modal-menu-l visit_tab list-group-item" data-toggle="tab" data-target="#body_status">
-                    <i class="fa fa-clock-o"></i> Статус визита</li>
+                    <i class="fa fa-clock-o"></i> @lang('adminlte_lang::message.visit_status')</li>
                 <li class="modal-menu-l payments_tab list-group-item" data-toggle="tab" data-target="#body_payments" >
-                    <i class="fa fa-usd"></i> Оплата визита</li>
+                    <i class="fa fa-usd"></i> @lang('adminlte_lang::message.visit_payment')</li>
 <!--                <li class="modal-menu-l reminds_tab list-group-item" data-toggle="tab" data-target="#body_reminds" >-->
 <!--                    <i class="fa fa-comments-o"></i> Уведомления </li>-->
 <!--                <li class="modal-menu-l history_tab list-group-item" data-toggle="tab" data-target="#body_history" >-->
 <!--                    <i class="fa fa-file-text"></i> История изменений</li>-->
-                <li class="modal-menu-l goods_history_tab list-group-item last-item" data-toggle="tab" data-target="#goods_history" >
-                    <i class="fa fa-cubes"></i> Списание расходников</li>
+                <li class="modal-menu-l goods_history_tab list-group-item last-item disabled" data-toggle="tab" data-target="#goods_history" >
+                    <i class="fa fa-cubes"></i> @lang('adminlte_lang::message.writeoff_goods')</li>
 
-                <li class="modal-menu-header client_header_tab nav-header">Клиент</li>
+                <li class="modal-menu-header client_header_tab nav-header">@lang('adminlte_lang::message.client')</li>
 
-                <li class="modal-menu-l client_tab list-group-item first-item" id="#rec_client_fulldata" data-target="client_edit" >
-                    <i class="fa fa-address-card-o"></i> Данные клиента</li>
-                <li class="modal-menu-l visit_history_tab list-group-item" data-target="#visit_history" >
-                    <i class="fa fa-list-alt"></i> История посещений</li>
-                <li class="modal-menu-l client_stats_tab list-group-item" data-target="#client_stats" >
-                    <i class="fa fa-pie-chart"></i> Статистика</li>
+                <li class="modal-menu-l client_info_tab list-group-item first-item" data-toggle="tab" id="#rec_client_fulldata" data-target="#client_info" >
+                    <i class="fa fa-address-card-o"></i> @lang('adminlte_lang::message.client_info')</li>
+                <li class="modal-menu-l client_statistics_tab list-group-item" data-toggle="tab"  data-target="#client_statistics" >
+                    <i class="fa fa-pie-chart"></i> @lang('adminlte_lang::message.attendance_statistics')</li>
 <!--                <li class="modal-menu-l sms_history_tab list-group-item" data-target="#sms_history" >-->
 <!--                    <i class="fa fa-envelope"></i> Отправленные SMS</li>-->
 <!--                <li class="modal-menu-l sms_tab list-group-item" data-target="#body_sms" >-->
 <!--                    <i class="fa fa-send"></i> Отправить SMS</li>-->
 <!--                <li class="modal-menu-l card_tab list-group-item" data-target="#body_card" >-->
 <!--                    <i class="fa fa-qrcode"></i> Электронная карта</li>-->
-                <li class="modal-menu-l client_loyalty_cards_tab list-group-item" data-target="client_loyalty_cards_body"  >
-                    <i class="fa fa-credit-card"></i> Карты лояльности</li>
-                <li class="modal-menu-l phone_call_tabs list-group-item last-item" data-target="phone_call_body" >
-                    <i class="fa fa-phone"></i> История звонков</li>
+                <li class="modal-menu-l client_loyalty_cards_tab list-group-item disabled" data-target="client_loyalty_cards_body"  >
+                    <i class="fa fa-credit-card"></i> @lang('adminlte_lang::message.loyalty_cards')</li>
+                <li class="modal-menu-l phone_call_tabs list-group-item last-item"data-toggle="tab"  data-target="#client_calls" >
+                    <i class="fa fa-phone"></i> @lang('adminlte_lang::message.calls_history')</li>
             </ul>
         </div>
         <div class="tab-content">
@@ -117,14 +115,20 @@
             <div class="col-sm-8 tab-pane fade" id="body_payments">
                 @include('appointment.tpl.body_payments')
             </div>
-            <div class="col-sm-8 tab-pane fade" id="body_reminds">
-                @include('appointment.tpl.body_reminds')
-            </div>
-            <div class="col-sm-8 tab-pane fade" id="body_history">
-                @include('appointment.tpl.body_history')
-            </div>
+<!--            <div class="col-sm-8 tab-pane fade" id="body_reminds">-->
+
+<!--            </div>-->
+<!--            <div class="col-sm-8 tab-pane fade" id="body_history">-->
+<!--                @include('appointment.tpl.body_history')-->
+<!--            </div>-->
             <div class="col-sm-8 tab-pane fade" id="goods_history">
-                @include('appointment.tpl.goods_history')
+                @include('appointment.tpl.body_goods_history')
+            </div>
+
+            <div class="col-sm-8 tab-pane fade" id="client_info"></div>
+            <div class="col-sm-8 tab-pane fade" id="client_statistics"></div>
+            <div class="col-sm-8 tab-pane fade" id="client_calls">
+                @include('appointment.tpl.body_client_calls')
             </div>
         </div>
         <div class="col-sm-12">
@@ -198,8 +202,73 @@
                 }
             });
 
+            // Update data at client tabs
+            updateClientData();
+
+            // Client dropdown change event
+            $('#app_client_id').on('change', function(){
+                updateClientData();
+            });
+
+            /**
+             * Update data at client tabs
+             */
+            function updateClientData() {
+                var client_id = $('#app_client_id option:selected').val();
+                if(client_id != 'null'){
+                    // Update client information tab
+                    $.ajax({
+                        type: "GET",
+                        url: "/client/"+client_id,
+                        data: {ajax_call:true},
+                        success: function(data) {
+                            $('#client_info').html(data);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('Server error:'+textStatus);
+                        }
+                    });
+                    //update client stats tab
+                    $.ajax({
+                        type: "GET",
+                        url: "/appointments/getClientStats",
+                        data: {'organization_id':$('#organization_id').val(),client_id:client_id},
+                        success: function(data) {
+                            $('#client_statistics').html(data);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('Server error:'+textStatus);
+                        }
+                    });
+                }
+
+                //Update client calls
+                updateClientCalls()
+            }
+             /**
+             * Update client calls
+             */
+            function updateClientCalls() {
+                var client_id = $('#app_client_id option:selected').val();
+                if(client_id != 'null'){
+                    //update client calls
+                    $.ajax({
+                        type: "GET",
+                        url: "/appointments/getCalls",
+                        data: {appointment_id:$('#app_appointment_id').val(),client_id:client_id},
+                        success: function(data) {
+                            $('#app_calls_history').html(data);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('Server error:'+textStatus);
+                        }
+                    });
+                }
+            }
+
+
             if ( $('#app_employee_id > option').length == 0) {
-                $('#service_employee').text('Сотрудник не выбран');
+                $('#service_employee').text("@lang('adminlte_lang::message.employee_not_chosen')");
             } else {
                 var employee_name = $('#app_employee_id option:selected').text();
                 $('#service_employee').text('' == employee_name ? $('#app_employee_id option:first').text() : employee_name);
@@ -241,7 +310,7 @@
 
                             $('#service_name').text($('#app_service_id option:selected').text());
                             if ( $('#app_employee_id > option').length == 0) {
-                                $('#service_employee').text('Сотрудник не выбран');
+                                $('#service_employee').text("@lang('adminlte_lang::message.employee_not_chosen')");
                             } else {
                                 var employee_name = $('#app_employee_id option:selected').text();
                                 $('#service_employee').text('' == employee_name ? $('#app_employee_id option:first').text() : employee_name);
@@ -259,7 +328,7 @@
 
             $('#app_employee_id').on('change', function(){
                 if ( $('#app_employee_id > option').length == 0) {
-                    $('#service_employee').text('Сотрудник не выбран');
+                    $('#service_employee').text("@lang('adminlte_lang::message.employee_not_chosen')");
                 } else {
                     var employee_name = $('#app_employee_id option:selected').text();
                     $('#service_employee').text('' == employee_name ? $('#app_employee_id option:first').text() : employee_name);
@@ -359,7 +428,7 @@
 
                 //TODO нормальный вывод
                 if (phone == '' || name == ''){
-                    alert('Name and Phone fields are required');
+                    alert("@lang('adminlte_lang::message.name_phone_required')");
                     return;
                 }
                 $('#body_client .tab-content').addClass('loadingbox');
@@ -393,6 +462,71 @@
 
                 $('#body_client .tab-content').removeClass('loadingbox');
 
+            });
+
+            // Calls form
+            $('#save_call_info').on('click', function(e) {
+                // getting data
+                var call_title = $('#app_call_title').val();
+                var call_date = $('#app_call_date').val();
+                var call_description = $('#app_call_description').val();
+                var client_id = $('#app_client_id').val();
+                var call_id = $('#app_call_id').val();
+
+                if (call_title =='' || call_date =='' || call_description ==''){
+                    alert("@lang('adminlte_lang::message.call_form_required')");
+                    return;
+                }
+
+                if ($('#app_appointment_id').length && $('#app_appointment_id').val() != ''){
+                    // loader animation
+                    $('#client_history').addClass('loadingbox');
+
+                    var appointment_id = ($('#app_call_appointment_id').val() != '') ? $('#app_call_appointment_id').val() : $('#app_appointment_id').val();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/appointments/saveCall/",
+                        data: {
+                                call_id: call_id,
+                                call_title: call_title,
+                                call_date: call_date,
+                                call_description: call_description,
+                                appointment_id: appointment_id,
+                                client_id:client_id
+                        },
+                        success: function(data) {
+                            // clear form
+                            $('#app_call_title').val('');
+                            $('#app_call_date').val('');
+                            $('#app_call_description').val('');
+
+                            //Update client calls
+                            updateClientCalls()
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('Server error:'+textStatus);
+                        }
+                    });
+                    $('#client_history').removeClass('loadingbox');
+                } else {
+                    alert('You must create appointment before adding calls');
+                }
+            });
+
+            // заносим данные звонка в форму для просмотра
+            $('body').on('click', '#table_calls .table-action-link', function() {
+                var id = $(this).data('id');
+                $('#app_call_title').val($('#tr_'+id).find('.td_title').text());
+                $('#app_call_date').val($('#tr_'+id).find('.td_date').text());
+                $('#app_call_description').val($('#tr_'+id).find('.td_description').text());
+                $('#app_call_id').val(id)
+            });
+
+            $('#app_call_date').datepicker({
+                autoclose: true,
+                format: 'yyyy-mm-dd',
+                firstDay: 1
             });
         });
     </script>

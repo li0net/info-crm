@@ -490,29 +490,29 @@ $(document).ready(function () {
         format: 'yyyy-mm-dd',
         firstDay: 1
     });
-
-    $('#app_client_phone').blur(function() {
-        if($("#app_client_info_container").length == 0) {
-            return;
-        }
-
-        $('#app_client_info_container').html('');
-        var that = this;
-        $.ajax({
-            type: "POST",
-            dataType: 'html',
-            url: "/appointments/getClientInfo/",
-            data: {phone: $(that).val()},
-            success: function(data) {
-                if (data.length>0) {
-                    $('#app_client_info_container').html(data);
-                }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert('Server error:'+textStatus);
-            }
-        });
-    });
+    // поиск клиента заменён на селект
+    // $('#app_client_phone').blur(function() {
+    //     if($("#app_client_info_container").length == 0) {
+    //         return;
+    //     }
+    //
+    //     $('#app_client_info_container').html('');
+    //     var that = this;
+    //     $.ajax({
+    //         type: "POST",
+    //         dataType: 'html',
+    //         url: "/appointments/getClientInfo/",
+    //         data: {phone: $(that).val()},
+    //         success: function(data) {
+    //             if (data.length>0) {
+    //                 $('#app_client_info_container').html(data);
+    //             }
+    //         },
+    //         error: function(XMLHttpRequest, textStatus, errorThrown) {
+    //             alert('Server error:'+textStatus);
+    //         }
+    //     });
+    // });
 
     // Appointment form submit
     $("#appointment_form").on("submit", function (e) {

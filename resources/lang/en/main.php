@@ -62,6 +62,8 @@ return [
     'organization:logo_recommend'           => 'We recommend use transparent PNG image 200*50 px',
     'organization:logo_btn'                 => 'Upload photo',
     'organization:info_label'               => 'Description',
+    'organization:id_label'                 => 'Organization ID',
+
 
     'appointment:client_wait_tab_label'     => 'Ожидание клиента',
     'appointment:client_came_tab_label'     => 'Клиент пришел',

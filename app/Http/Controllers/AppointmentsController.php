@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Account;
 use App\Appointment;
+use App\AppointmentCalls;
 use App\Client;
 use App\Employee;
 use App\Product;
@@ -108,23 +109,6 @@ class AppointmentsController extends Controller
         }
 
         $employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
-
-        // Готовим данные клиента
-        $clientInfo = '';
-        $clientDataAccessLevel = $request->user()->hasAccessTo('appointment_client_data', 'view', 0);
-        if ($clientDataAccessLevel > 0) {
-            $clientData = DB::table('appointments')
-                ->select(DB::raw('count(*) AS num_visits, MAX(start) AS last_visit'))
-                ->where('organization_id', $request->user()->organization_id)
-                ->where('client_id', $appt->client_id)
-                ->whereRaw('appointments.start <= NOW()')
-                ->get();
-            $clientData = $clientData->first();
-            if ($clientData->num_visits > 0) {
-                $clientInfo = view('appointment.tpl.clientinfo', ['clientData' => $clientData])->render();
-            }
-        }
-
         $clients = Client::where('is_active', 1)->orderBy('name')->get();
 
         return view('adminlte::appointmentform', [
@@ -138,7 +122,6 @@ class AppointmentsController extends Controller
             'transactions'=> $transactions,
             'storages'=> $storages,
             'user' => $request->user(),
-            'clientInfo' => $clientInfo,
             'accounts' => $accounts,
             'clients' => $clients
         ]);
@@ -436,6 +419,47 @@ class AppointmentsController extends Controller
     }
 
     /**
+     * получение статистики посещений клиенат
+     * @param Request $request
+     * @return string
+     */
+    public function getClientStats(Request $request){
+        //$clientId =  $request->input('client_id');
+        $client = Client::where('client_id', $request->input('client_id'))->first();
+        $orgId = $request->input('organization_id');
+
+        // Готовим данные статистики клиента
+        $clientData= [
+            "num_visits" => 0,
+            "last_visit" => '',
+            "history" => [],
+        ];
+        $appoints = DB::table('appointments')
+            ->select('appointments.appointment_id','appointments.start','appointments.end', 'employees.name as employee', 'services.name as service')
+            ->join('employees', 'appointments.employee_id', '=', 'employees.employee_id')
+            ->join('services', 'appointments.service_id', '=', 'services.service_id')
+            ->where('appointments.organization_id', $orgId)
+            ->where('appointments.client_id', $client->client_id)
+            ->whereRaw('appointments.start <= NOW()')
+            ->orderBy('appointments.start')
+            ->get();
+        $clientData['num_visits'] = count($appoints);
+
+        // получаем дату последнего посещения и общую историю
+        if ($clientData['num_visits'] > 0 ){
+            $clientData["history"] = $appoints;
+            $dates = [];
+            foreach ($appoints as $visit){
+                $dates[] = $visit->start;
+            }
+            $clientData['last_visit'] = max($dates);
+        }
+        $view = view('appointment.tpl.body_client_statistics', ['clientData' => $clientData])->render();
+
+        return $view;
+    }
+
+    /**
      * Распознать/создать клиента
      * по телефону и email отыскивает существующего или создаёт нового клиента
      * используется по ajax
@@ -481,7 +505,6 @@ class AppointmentsController extends Controller
 
         return response()->json(['client' => $client, 'clients' => $clients, ]);
     }
-
 
     public function populateEmployeeOptions(Request $request)
     {
@@ -696,44 +719,105 @@ class AppointmentsController extends Controller
         echo json_encode($employeesOptions);
     }
 
+
+    /**
+     * Создаёт/сохраняет данные о звонке
+     * @param Request $request
+     * @return mixed
+     */
+    public function saveCall(Request $request){
+        $callId = $request->input('call_id');
+        $callTitle = trim(strip_tags($request->input('call_title')));
+        $callDate = $request->input('call_date');
+        $callDescription = trim(strip_tags($request->input('call_description')));
+        $clientId = $request->input('client_id');
+        $appointmentId = $request->input('appointment_id');
+        if ($callId == '' ){
+            //создание
+            $appCall = new AppointmentCalls;
+
+            $appCall->client_id = $clientId;
+            $appCall->appointment_id = $appointmentId;
+            $appCall->date = $callDate;
+            $appCall->title = $callTitle;
+            $appCall->description = $callDescription;
+
+            $appCall->save();
+        } else {
+            // редактирование
+            $appCall = AppointmentCalls::find($callId);
+
+            $appCall->client_id = $clientId;
+            $appCall->appointment_id = $appointmentId;
+            $appCall->date = $callDate;
+            $appCall->title = $callTitle;
+            $appCall->description = $callDescription;
+
+            $appCall->save();
+        }
+        return response()->json(['result' => 1]);
+    }
+
+    /**
+     *  получает данные о звонках
+     * @param Request $request
+     * @return mixed
+     */
+    public function getCalls(Request $request){
+        $clientId = $request->input('client_id');
+        $appointmentId = $request->input('appointment_id');
+
+        // Ищем звонки
+        $calls = AppointmentCalls::where('client_id', $clientId)->where('appointment_id', $appointmentId)->orderby('date')->get();
+
+//        if($calls) {
+//            foreach ($calls as &$call){
+//                $call->date = Carbon::createFromFormat('Y-m-d', $call->date);
+//            }
+//        }
+
+        return view('appointment.tpl.body_client_calls_table', ['calls' => $calls])->render();
+    }
+
+
     /**
      * Метод для ajax получения информации о клиенте (в интерфейсе создания/редактирования Записи)
      * @param Request $request
      *
      */
-    public function getClientInfo(Request $request) {
-        // Если юзеру не разрешено просматривать данные клиентов, возвращаем пустую строку
-        $accessLevel = $request->user()->hasAccessTo('appointment_client_data', 'view', 0);
-        if ($accessLevel < 1) {
-            echo '';
-            return;
-        }
-
-        // будем искать клиента по номеру телефона
-        // TODO: искать по email и комбинации phone+email
-        $phone = $request->input('phone');
-        if (empty($phone)) {
-            echo '';
-            return;
-        }
-
-        $phone = $request->user()->normalizePhoneNumber($phone);
-
-        //"SELECT count(*) AS num_visits, MAX(start) AS last_visit FROM appointments a JOIN clients c ON a.client_id=c.client_id WHERE c.phone=:phone AND a.start<=NOW()";
-        $clientData = DB::table('appointments')
-            ->select(DB::raw('count(*) AS num_visits, MAX(appointments.start) AS last_visit'))
-            ->join('clients', 'appointments.client_id', '=', 'clients.client_id')
-            ->where('clients.is_active', true)
-            ->where('clients.phone', $phone)
-            ->whereRaw('appointments.start <= NOW()')
-            ->get();
-        $clientData = $clientData->first();
-        if ($clientData->num_visits == 0) {
-            echo '';
-            exit;
-        }
-        //echo print_r($clientData, TRUE); exit;
-
-        echo view('appointment.tpl.clientinfo', ['clientData' => $clientData])->render();
-    }
+//    public function getClientInfo(Request $request) {
+//        // Если юзеру не разрешено просматривать данные клиентов, возвращаем пустую строку
+//        $accessLevel = $request->user()->hasAccessTo('appointment_client_data', 'view', 0);
+//        if ($accessLevel < 1) {
+//            echo '';
+//            return;
+//        }
+//
+//        // будем искать клиента по номеру телефона
+//        // TODO: искать по email и комбинации phone+email
+//        $phone = $request->input('phone');
+//        if (empty($phone)) {
+//            echo '';
+//            return;
+//        }
+//
+//        $phone = $request->user()->normalizePhoneNumber($phone);
+//
+//        //"SELECT count(*) AS num_visits, MAX(start) AS last_visit FROM appointments a JOIN clients c ON a.client_id=c.client_id WHERE c.phone=:phone AND a.start<=NOW()";
+//        $clientData = DB::table('appointments')
+//            ->select(DB::raw('count(*) AS num_visits, MAX(appointments.start) AS last_visit'))
+//            ->join('clients', 'appointments.client_id', '=', 'clients.client_id')
+//            ->where('clients.is_active', true)
+//            ->where('clients.phone', $phone)
+//            ->whereRaw('appointments.start <= NOW()')
+//            ->get();
+//        $clientData = $clientData->first();
+//        if ($clientData->num_visits == 0) {
+//            echo '';
+//            exit;
+//        }
+//        //echo print_r($clientData, TRUE); exit;
+//
+//        echo view('appointment.tpl.clientinfo', ['clientData' => $clientData])->render();
+//    }
 }

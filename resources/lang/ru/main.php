@@ -62,6 +62,7 @@ return [
     'organization:logo_recommend'           => 'Рекоммендуем использовать прозрачный PNG размером 200*50 px',
     'organization:logo_btn'                 => 'Загрузить фото',
     'organization:info_label'               => 'Описание',
+    'organization:id_label'                 => 'ID организации',
 
     'appointment:client_wait_tab_label'     => 'Ожидание клиента',
     'appointment:client_came_tab_label'     => 'Клиент пришел',
@@ -263,7 +264,7 @@ return [
 
     'employee:sync_wage_schemes_error_message' => 'Ошибка привязки схемы расчета заработной платы. Пожалуйста сообщите об этой ошибке вашему администратору.',
     'employee:sync_wage_schemes_success_message' => 'Схема расчета заработной платы успешно сохранена.',
-    'employee:wage_scheme_label'       => 'Схема рассчета зарплаты',
+    'employee:wage_scheme_label'       => 'Схема расчета зарплаты',
     'employee:wage_scheme_start_from_label' => 'Действует с',
 
     'calculated_wage:grid_pay_link'    => 'Оплатить'

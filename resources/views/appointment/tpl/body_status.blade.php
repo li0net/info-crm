@@ -1,19 +1,19 @@
 <div class="col-sm-12">
     <div class="row m-b alt-control-bar">
         <div class="col-sm-3">
-            <label>Услуга</label>
+            <label>@lang('adminlte_lang::message.service')</label>
         </div>
         <div class="col-sm-3">
-            <label>Сотрудник</label>
+            <label>@lang('adminlte_lang::message.employee')</label>
         </div>
         <div class="col-sm-2">
-            <label>Цена, ₽</label>
+            <label>@lang('adminlte_lang::message.price_val')</label>
         </div>
         <div class="col-sm-2">
-            <label>Скидка, %</label>
+            <label>@lang('adminlte_lang::message.discount_val')</label>
         </div>
         <div class="col-sm-2">
-            <label>Итог, ₽</label>
+            <label>@lang('adminlte_lang::message.total_val')</label>
         </div>
     </div>
 
