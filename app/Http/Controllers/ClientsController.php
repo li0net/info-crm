@@ -67,19 +67,12 @@ class ClientsController extends Controller
     {
         $newClientUrl = action('ClientsController@create');
 
-        $clientCategories = ClientCategory::where('organization_id', $request->user()->organization_id)->get();
-        // "gold:Gold;silver:Silver;bonze:Bronze;:No category"
-        $categoriesStrForSelect = 'null:---;';
-        foreach ($clientCategories AS $cc) {
-            $categoriesStrForSelect .= $cc->cc_id . ':' . $cc->title . ';';
-        }
-        //if (strlen($categoriesStrForSelect) > 9) $categoriesStrForSelect = substr($categoriesStrForSelect, 0, -1);
-        $categoriesStrForSelect .= ':No category';
-
         return view('client.index', [
             'newClientUrl' => $newClientUrl,
             'crmuser' => $request->user(),
-            'categoriesStrForSelect' => $categoriesStrForSelect
+            'clientCategoriesOptions' => $this->prepareClientCategoriesOptions(true),
+            'genderOptions' => array_merge([['value' => '-', 'label' => '-']], $this->genderOptions),
+            'importanceOptions' => array_merge([['value' => '-', 'label' => '-']], $this->importanceOptions),
         ]);
     }
 
@@ -292,8 +285,22 @@ class ClientsController extends Controller
         return redirect()->to('/clients');
     }
 
-    private function prepareClientCategoriesOptions() {
+    private function prepareClientCategoriesOptions($forFilter = false) {
         $clientCategoriesOptions = array();
+
+        // добавляем вариант "Нет категории" для фильтра
+        if ($forFilter) {
+            $clientCategoriesOptions[] = [
+                'value'     => '-',
+                'label'     => '-',
+                'color'     => '#ffffff'
+            ];
+            $clientCategoriesOptions[] = [
+                'value'     => 'no_category',
+                'label'     => trans('main.client:filter_no_category_label'),
+                'color'     => '#ffffff'
+            ];
+        }
 
         $clientCategories = ClientCategory::where('organization_id', request()->user()->organization_id)->get();
         foreach ($clientCategories AS $cc) {

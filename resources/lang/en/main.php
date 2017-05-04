@@ -210,6 +210,9 @@ return [
     'client:importance_bronze'              => 'Bronze',
     'client:importance_silver'              => 'Silver',
     'client:importance_gold'                => 'Gold',
+    'client:filter_panel_title'             => 'Filters',
+    'client:filter_button'                  => 'Filter',
+    'client:filter_no_category_label'       => 'No category',
 
     'client_category:form_page_header'      => 'Категории клиентов',
     'client_category:list_page_header'      => 'Категории клиентов',

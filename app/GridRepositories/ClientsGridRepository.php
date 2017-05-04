@@ -14,25 +14,31 @@ class ClientsGridRepository extends EloquentGridRepositoryCustom {
     {
         $orgId = Request::user()->organization_id;
 
+        $search = request()->input('_search', 'false');
+        $filters = request()->input('filters', NULL);
+
         $this->Database = DB::table('clients')
-            //->join('access_permissions', 'users.users_id', '=', 'access_permissions.user_id')
             ->where('organization_id', $orgId)
             ->where('is_active', true);
 
-        $this->visibleColumns = [
-            'client_id',
-            'name',
-            'phone',
-            'total_bought',
-            'discount',
+        // при фильтрации по категории клиента нужно смерджить с category_client
+        if ($search == true AND strpos($filters, 'category_id')!==FALSE) {
+            $this->Database = $this->Database->join('category_client', 'clients.client_id', '=', 'category_client.client_id');
+        }
 
-            'email',        // не отоюражается отдельной колонкой в гриде, но нужно для добавления в колонку Контакты вместе с телефоном
-            'importance'
+        $this->visibleColumns = [
+            'clients.client_id',
+            'clients.name',
+            'clients.phone',
+            'clients.total_bought',
+            'clients.discount',
+
+            'clients.email',        // не отоюражается отдельной колонкой в гриде, но нужно для добавления в колонку Контакты вместе с телефоном
+            'clients.importance'
         ];
 
         $this->orderBy = [
-            array('name', 'asc'),
-            //array('table_1.name', 'desc')
+            array('name', 'asc')
         ];
     }
 
