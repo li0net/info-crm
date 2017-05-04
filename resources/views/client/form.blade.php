@@ -234,7 +234,7 @@
                         } else {
                             $value = '';
                         }?>
-                        <textarea name="comment" id="c_comment" class="form-control" placeholder="@lang('main.client:comment_label')">{{$value}}</textarea>
+                        <textarea name="comment" id="c_comment" rows='5' class="form-control" placeholder="@lang('main.client:comment_label')">{{$value}}</textarea>
                         @foreach ($errors->get('comment') as $message)
                         <?='<br/>'?>{{$message}}
                         @endforeach

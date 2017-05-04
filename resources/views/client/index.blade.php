@@ -159,7 +159,7 @@
                             </div>
                         </div>
 
-                        <div class="text-right m-t">
+                        <div class="col-sm-12 text-right m-t">
                             <button type="submit" id="btn_client_filter_search" class="btn btn-primary center-block">@lang('main.client:filter_button')</button>
                         </div>
                     </div>

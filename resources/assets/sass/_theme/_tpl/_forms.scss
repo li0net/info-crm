@@ -290,6 +290,12 @@ body.skin-orange {
     .btn{
       margin-top: 7px;
     }
+    .control-label {
+      margin-bottom: 0;
+      padding-top: 12px;
+      font-size: 12pt;
+      font-weight: normal;
+    }
   }
   .form-control {
     border: 1px solid $brand-main;

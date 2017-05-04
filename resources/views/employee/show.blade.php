@@ -50,32 +50,34 @@
                 <dd>{{ $employee->position->title }}</dd>
             </dl>
         </div>
-
         <div class="col-sm-12">
             @if ($user->hasAccessTo('employee', 'delete', 0))
-                {!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "method" => 'DELETE', "class" => 'pull-left m-r']) !!}
-                {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger']) }}
-                {!! Form::close() !!}
+            {!! Form::open(['route' => ['employee.destroy', $employee->employee_id], "method" => 'DELETE', "class" => 'pull-left m-r']) !!}
+            {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger']) }}
+            {!! Form::close() !!}
             @endif
             @if ($user->hasAccessTo('employee', 'edit', 0))
-                {!! Html::linkRoute('employee.edit', trans('adminlte_lang::message.edit'), [$employee->employee_id], ['class'=>'btn btn-primary pull-left']) !!}
+            {!! Html::linkRoute('employee.edit', trans('adminlte_lang::message.edit'), [$employee->employee_id], ['class'=>'btn btn-primary pull-left']) !!}
             @endif
         </div>
 
-        <div class="col-sm-12">
-            <h2>Wages</h2>
-        </div>
-        <div class="form-group">
-            <label for="wage_month" class="col-sm-3 control-label text-right">Select month to calculate wage</label>
-            <div class="col-sm-9">
+        <div class="col-sm-12"><hr></div>
+    </div>
+    <div class="row form-horizontal">
+        <div class="col-sm-12"><h2>Wages</h2></div>
+
+        <div class="form-group col-sm-10">
+            <label for="wage_month" class="col-sm-5 control-label text-right">Select month to calculate wage</label>
+            <div class="col-sm-7">
                 <!--<div class="input-group-addon"><i class="fa fa-calendar"></i></div>-->
                 <input type="text" class="form-control hasDatepicker" name="wage_month" id="e_wage_month" value="{{date('Y-m')}}" placeholder="@lang('main.client:birthday_label')">
             </div>
         </div>
-        <div class="col-sm-12 text-right">
-            <a href="#" id="e_btn_calculate_wage" class="btn btn-primary">Calculate wage</a>
+        <div class="col-sm-2 text-right">
+            <a href="#" id="e_btn_calculate_wage" class="btn btn-info">Calculate wage</a>
         </div>
-
+    </div>
+    <div class="row">
         <div class="col-sm-12 clients-grid-block">
             <table id="calculated_wages_grid" class="table table-hover table-condensed"></table>
             <div id="calculated_wages_grid_pager"></div>
@@ -137,10 +139,10 @@ $(document).ready(function() {
         sortname: 'wage_period_start',
         sortorder: 'desc',
         viewrecords: true,
-        height: 550,
+        height: 250,
         autowidth: true,
         shrinkToFit: true,
-        rowNum: 10,
+        rowNum: 5,
         pager: "#calculated_wages_grid_pager",
         //multiselect: true,
         /*
