@@ -391,7 +391,7 @@
 
                                 <!-- выбор даты с которой схема начинает действовать -->
                                 <div class="form-group">
-                                    <label for="ws_scheme_start" class="col-sm-4 text-right ctrl-label">@lang('main.employee:wage_scheme_start_from_label')</label>
+                                    <label for="ws_scheme_start" class="hasDatepicker col-sm-4 text-right ctrl-label">@lang('main.employee:wage_scheme_start_from_label')</label>
                                     <div class="col-sm-7">
                                         <div class="input-group">
                                             <?php
@@ -463,13 +463,13 @@
         // обновляем отображение
         updateSheduleTable();
 
-        // инициируем датапикер
-        $("#shedule_week").datepicker({
-            format: 'YYYY-MM-DD',
-            weekStart: 1,
-            calendarWeeks: true,
-            todayHighlight: true
-        });
+//        // инициируем датапикер
+//        $("#shedule_week").datepicker({
+//            format: 'YYYY-MM-DD',
+//            weekStart: 1,
+//            calendarWeeks: true,
+//            todayHighlight: true
+//        });
 
         // инициируем moment.js
         moment.locale('en', {
@@ -520,9 +520,6 @@
             //анимация
             $('#operating_schedule').removeClass('loadingbox');
         });
-
-        // выбор текущей недели
-        $('#shedule_week').find('td.today.day').click();
 
         // обработчки заголовков - часов
         $( "#operating_schedule thead th")
@@ -776,6 +773,7 @@
 
         // check if important lists are empty and show info-window
         checkZeroLists(['position_id', 'wage_scheme_id']);
+        $('#shedule_week').find('td.today.day').click();
     });
 </script>
 @endsection

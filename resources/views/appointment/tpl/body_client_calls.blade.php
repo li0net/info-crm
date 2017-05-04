@@ -9,7 +9,7 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                <input type="text" class="form-control" name="birthday" id="app_call_date" placeholder="@lang('adminlte_lang::message.date')">
+                <input type="text" class="form-control hasDatepicker" name="birthday" id="app_call_date" placeholder="@lang('adminlte_lang::message.date')">
             </div>
         </div>
         <div class="form-group">

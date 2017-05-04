@@ -32,7 +32,7 @@
                     {{ Form::label('date', trans('adminlte_lang::message.date_and_time'), ['class' => 'form-spacing-top']) }}
                 </div>
                 <div class="col-sm-4">
-                    {{ Form::text('payment-date', '10-02-2017', ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'id' => 'payment-date']) }}
+                    {{ Form::text('payment-date', '10-02-2017', ['class' => 'form-control hasDatepicker', 'required' => '', 'maxlength' => '110', 'id' => 'payment-date']) }}
                 </div>
                 <div class="col-sm-2">
                     {{ Form::select('payment-hour', $payment_hours, null, ['class' => 'js-select-basic-single', 'required' => '', 'id' => 'payment-hour']) }}
@@ -144,25 +144,6 @@
 @section('page-specific-scripts')
 	<script>
 		$(document).ready(function(e){
-			$('#payment-date').datepicker({
-				autoclose: true,
-				orientation: 'auto',
-				format: 'dd-mm-yyyy',
-				weekStart: 1
-			});
-
-			var today = new Date();
-
-			$('#payment-date').datepicker('update', today);
-			$('#payment-hour').val(today.getHours());
-			$('#payment-minute').val(today.getMinutes());
-
-			$('#payment-date').datepicker()
-				.on('show', function(e) {
-					$('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
-					$('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
-				});
-
 			$('input[name="beneficiary_type"]').on('change', function() {
 				switch($(this).val()) {
 					case 'client':

@@ -233,38 +233,6 @@
 @section('page-specific-scripts')
 <script>
     $(document).ready(function(){
-        $('#date-from').datepicker({
-            autoclose: true,
-            orientation: 'auto',
-            format: 'dd-mm-yyyy',
-            weekStart: 1
-        });
-
-        var today = new Date();
-
-        $('#date-from').datepicker('update', today);
-
-        $('#date-to').datepicker({
-            autoclose: true,
-            orientation: 'auto',
-            format: 'dd-mm-yyyy',
-            weekStart: 1
-        });
-
-        $('#date-to').datepicker('update', today);
-
-        $('#date-from').datepicker()
-            .on('show', function(e) {
-                $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
-                $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
-            });
-
-        $('#date-to').datepicker()
-            .on('show', function(e) {
-                $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
-                $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
-            });
-
         $('#form_submit').on('click', function(e){
             var me = this;
             $.ajax({

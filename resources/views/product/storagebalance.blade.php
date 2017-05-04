@@ -33,7 +33,7 @@
                 <div class="col-sm-4">
                     <div class="input-group">
                         <span class="input-group-addon">{{ trans('adminlte_lang::message.on_date') }}&nbsp;&nbsp;</span>
-                        <input class="form-control" name="report_date" data-days-offset="-1" type="text" id="report-date">
+                        <input class="form-control hasDatepicker" name="report_date" data-days-offset="-1" type="text" id="report-date">
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -151,22 +151,6 @@
 @section('page-specific-scripts')
 <script>
     $(document).ready(function(){
-        $('#report-date').datepicker({
-            autoclose: true,
-            orientation: 'auto',
-            format: 'dd-mm-yyyy',
-            weekStart: 1
-        });
-
-        var today = new Date();
-
-        $('#report-date').datepicker('update', today);
-
-        $('#report-date').datepicker().on('show', function(e) {
-            $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
-            $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
-        });
-
         $('#form_submit').on('click', function(e){
             var me = this;
             $.ajax({

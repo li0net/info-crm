@@ -476,43 +476,38 @@ $(document).ready(function () {
         CKEDITOR.replace('o_info');
     }
 
+    /** Datepickers **********************************/
     // Datepicker defaults
     $.datepicker.setDefaults({
-        //language: 'ru',
+        language: $('#current_lang').html(),
         format: 'yyyy-mm-dd',
         firstDay: 1,
         autoclose: true
     });
-
-    // APPOINTMENT FORM
-    $('#app_date_from').datepicker({
+    $('.hasDatepicker').datepicker({
+        language: $('#current_lang').html(),
         autoclose: true,
         format: 'yyyy-mm-dd',
-        firstDay: 1
+        firstDay: 1,
+        todayHighlight: true
     });
-    // поиск клиента заменён на селект
-    // $('#app_client_phone').blur(function() {
-    //     if($("#app_client_info_container").length == 0) {
-    //         return;
-    //     }
-    //
-    //     $('#app_client_info_container').html('');
-    //     var that = this;
-    //     $.ajax({
-    //         type: "POST",
-    //         dataType: 'html',
-    //         url: "/appointments/getClientInfo/",
-    //         data: {phone: $(that).val()},
-    //         success: function(data) {
-    //             if (data.length>0) {
-    //                 $('#app_client_info_container').html(data);
-    //             }
-    //         },
-    //         error: function(XMLHttpRequest, textStatus, errorThrown) {
-    //             alert('Server error:'+textStatus);
-    //         }
-    //     });
-    // });
+
+    var today = new Date();
+    $('#payment-date, #date-from, #date-to, #transaction-date, #filter-date-from, #filter-date-to, #report-date, #dp').datepicker('update', today);
+    $('#dp').datepicker('update', today);
+
+    $('#payment-hour, #transaction-hour').val(today.getHours());
+    $('#payment-minute, #transaction-minute').val(today.getMinutes());
+
+
+    $('#payment-date, #date-from, #date-to, #filter-date-from, #filter-date-to, #transaction-date, #report-date').datepicker().on('show', function(e) {
+        $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
+        $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
+    });
+
+    // выбор текущей недели
+    $('#dp').find('td.today.day').click();
+    /** /Datepickers **********************************/
 
     // Appointment form submit
     $("#appointment_form").on("submit", function (e) {
@@ -522,7 +517,6 @@ $(document).ready(function () {
             alert('At least Client and Service should be chosen!');
             return false;
         }
-
 
         if ($('#app_state').length) {
             $('#app_state').remove();
@@ -618,13 +612,6 @@ $(document).ready(function () {
             }
         });
         return false;
-    });
-
-    // CLIENT form
-    $('#c_birthday').datepicker({
-        autoclose: true,
-        format: 'yyyy-mm-dd',
-        firstDay: 1
     });
     // select2 multiple select init
     $(".js-select-basic-multiple").select2({
@@ -826,33 +813,6 @@ $(document).ready(function () {
         $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
 
-    $('#ws_scheme_start').datepicker({
-        autoclose: true,
-        format: 'yyyy-mm-dd',
-        firstDay: 1
-    });
-
-    $(function () {
-        $.fn.datepicker.dates['ru'] = {
-            days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
-            daysShort: ["Вск", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб"],
-            daysMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-            months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-            monthsShort: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
-            today: "Сегодня",
-            clear: "Очистить",
-            format: "dd.mm.yyyy",
-            weekStart: 1,
-        monthsTitle: 'Месяцы'
-        };
-
-        $('#dp').datepicker({
-            language: 'ru',
-            format: 'yyyy-mm-dd',
-            startDate: '19/01/2017'
-        });
-    });
-
     $('#dp').on('changeDate', function() {
 
         $('#my_hidden_input').val(
@@ -914,8 +874,6 @@ $(document).ready(function () {
         }
         $(this).removeClass('activated');
     });
-
-
 
     return false;
 });

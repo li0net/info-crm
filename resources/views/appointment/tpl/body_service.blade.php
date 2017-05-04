@@ -50,7 +50,7 @@
 </div>
 
 <div class="form-group">
-    <label for="app_date_from">@lang('main.appointment:date_time_from')</label>
+    <label for="app_date_from" class="hasDatepicker">@lang('main.appointment:date_time_from')</label>
     <div class="row">
         <div class="col-sm-6">
             <?php /*

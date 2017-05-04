@@ -522,12 +522,6 @@
                 $('#app_call_description').val($('#tr_'+id).find('.td_description').text());
                 $('#app_call_id').val(id)
             });
-
-            $('#app_call_date').datepicker({
-                autoclose: true,
-                format: 'yyyy-mm-dd',
-                firstDay: 1
-            });
         });
     </script>
 @endsection

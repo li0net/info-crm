@@ -174,39 +174,6 @@
                 type: 'welcome'
             });
         }
-
-        $('#filter-date-from').datepicker({
-            autoclose: true,
-            orientation: 'auto',
-            format: 'dd-mm-yyyy',
-            weekStart: 1
-        });
-
-        var today = new Date();
-
-        $('#filter-date-from').datepicker('update', today);
-
-        $('#filter-date-to').datepicker({
-            autoclose: true,
-            orientation: 'auto',
-            format: 'dd-mm-yyyy',
-            weekStart: 1
-        });
-
-        $('#filter-date-to').datepicker('update', today);
-
-        $('#filter-date-from').datepicker()
-            .on('show', function(e) {
-                $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
-                $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
-            });
-
-        $('#filter-date-to').datepicker()
-            .on('show', function(e) {
-                $('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
-                $('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
-            });
-
         $('#form_submit').on('click', function(e){
             var me = this;
             $.ajax({

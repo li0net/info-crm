@@ -48,7 +48,7 @@
                 </span> --}}
             {{-- <div id="dp" @changeDate = 'onSelectDate'></div> --}}
             {{-- <input type="text" id="dp" class="form-control" value="02-12-2018" @change = 'onSelectDate'> --}}
-            <div id="dp" data-date="12/03/2012"></div>
+            <div id="dp" class="hasDatepicker" data-date="12/03/2012"></div>
             <input type="hidden" id="my_hidden_input">
             {{-- <picker :value.sync="startDate"></picker> --}}
             {{-- <picker></picker> --}}

@@ -213,7 +213,7 @@
                                 $value = '';
                             }?>
                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            <input type="text" class="form-control" name="birthday" id="c_birthday" value="{{$value}}" placeholder="@lang('main.client:birthday_label')">
+                            <input type="text" class="form-control hasDatepicker" name="birthday" id="c_birthday" value="{{$value}}" placeholder="@lang('main.client:birthday_label')">
                             @foreach ($errors->get('birthday') as $message)
                             <br/>{{$message}}
                             @endforeach

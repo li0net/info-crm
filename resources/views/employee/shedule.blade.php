@@ -4,7 +4,7 @@
             <div class="input-group" >
                 <input type='hidden' id='employee_id' name='employee_id' value="{{ $employee->employee_id }}" />
                 <input type='hidden' id='sheduleWeek' name='sheduleWeek' placeholder="Select Week" />
-                <div id="shedule_week" class="datepicker-week datepicker-white"></div>
+                <div id="shedule_week" class="datepicker-week datepicker-white hasDatepicker"></div>
             </div>
         </div>
         <div class="col-md-8">

@@ -69,7 +69,7 @@
             <label for="wage_month" class="col-sm-3 control-label text-right">Select month to calculate wage</label>
             <div class="col-sm-9">
                 <!--<div class="input-group-addon"><i class="fa fa-calendar"></i></div>-->
-                <input type="text" class="form-control" name="wage_month" id="e_wage_month" value="{{date('Y-m')}}" placeholder="@lang('main.client:birthday_label')">
+                <input type="text" class="form-control hasDatepicker" name="wage_month" id="e_wage_month" value="{{date('Y-m')}}" placeholder="@lang('main.client:birthday_label')">
             </div>
         </div>
         <div class="col-sm-12 text-right">
@@ -119,11 +119,6 @@ function gridPayCW(cwId) {
 }
 
 $(document).ready(function() {
-    $('#e_wage_month').datepicker({
-        autoclose: true,
-        format: 'yyyy-mm',
-        minViewMode: 'months'
-    });
 
     $("#calculated_wages_grid").jqGrid({
         url: '/employees/calculateWagesGridData/{{$employee->employee_id}}',

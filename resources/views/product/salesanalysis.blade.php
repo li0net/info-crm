@@ -29,13 +29,13 @@
 				<div class="col-sm-4">
 					<div class="input-group">
 						<span class="input-group-addon">{{ trans('adminlte_lang::message.date_from') }}&nbsp;&nbsp;</span>
-						<input class="form-control" name="report_date" data-days-offset="-1" type="text" id="date-from">
+						<input class="form-control hasDatepicker" name="report_date" data-days-offset="-1" type="text" id="date-from">
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<div class="input-group">
 						<span class="input-group-addon">{{ trans('adminlte_lang::message.date_to') }}&nbsp;&nbsp;</span>
-						<input class="form-control" name="report_date" data-days-offset="-1" type="text" id="date-to">
+						<input class="form-control hasDatepicker" name="report_date" data-days-offset="-1" type="text" id="date-to">
 					</div>
 				</div>
 				<div class="col-sm-4">
@@ -128,38 +128,6 @@
 @section('page-specific-scripts')
 	<script>
 		$(document).ready(function(){
-			$('#date-from').datepicker({
-				autoclose: true,
-				orientation: 'auto',
-				format: 'dd-mm-yyyy',
-				weekStart: 1
-			});
-
-			var today = new Date();
-
-			$('#date-from').datepicker('update', today);
-
-			$('#date-from').datepicker().on('show', function(e) {
-				$('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
-				$('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
-			});
-
-			$('#date-to').datepicker({
-				autoclose: true,
-				orientation: 'auto',
-				format: 'dd-mm-yyyy',
-				weekStart: 1
-			});
-
-			var today = new Date();
-
-			$('#date-to').datepicker('update', today);
-
-			$('#date-to').datepicker().on('show', function(e) {
-				$('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
-				$('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
-			});
-
 			$('#form_submit').on('click', function(e){
 				var me = this;
 				$.ajax({

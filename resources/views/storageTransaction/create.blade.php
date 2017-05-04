@@ -34,7 +34,7 @@
                         {{ Form::label('date', 'Дата и время:') }}
                     </div>
                     <div class="col-sm-5">
-                        {{ Form::text('transaction-date', '10-02-2017', ['class' => 'form-control', 'required' => '', 'maxlength' => '110', 'id' => 'transaction-date']) }}
+                        {{ Form::text('transaction-date', '10-02-2017', ['class' => 'form-control hasDatepicker', 'required' => '', 'maxlength' => '110', 'id' => 'transaction-date']) }}
                     </div>
                     <div class="col-sm-2">
                         {{ Form::select('transaction-hour', $transaction_hours, null, ['class' => 'js-select-basic-single', 'required' => '', 'id' => 'transaction-hour']) }}
@@ -170,19 +170,6 @@
 @section('page-specific-scripts')
 	<script type="text/javascript">
 		$(document).ready(function($) {
-			$('#transaction-date').datepicker({
-				autoclose: true,
-				orientation: 'auto',
-				format: 'dd-mm-yyyy',
-				weekStart: 1
-			});
-
-			var today = new Date();
-
-			$('#transaction-date').datepicker('update', today);
-			$('#transaction-hour').val(today.getHours());
-			$('#transaction-minute').val(today.getMinutes());
-
 			$('select[name="type"]').on('change', function(e){
 				$('.transaction-type-content').children().remove();
 				if( $(this).val() == 'income') {
@@ -286,13 +273,6 @@
 									</div>');
 				}
 			});
-
-			$('#transaction-date').datepicker()
-				.on('show', function(e) {
-					$('.datepicker.datepicker-dropdown').removeClass('datepicker-orient-bottom');
-					$('.datepicker.datepicker-dropdown').addClass('datepicker-orient-top');
-				});
-
 			$('.transaction-type-content').on('change', 'select[name="storage_id"]', function(e){
 				$.ajax({
 					type: 'POST',
