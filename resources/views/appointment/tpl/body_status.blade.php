@@ -76,13 +76,13 @@
                 </div>
                 <div class="row alt-control-bar">
                     <div class="col-sm-4">
-                        {{ Form::select('storage_id[]', [], null, ['class' => 'js-select-basic-single', 'data-initial-value' => $transaction->storage1_id]) }}
+                        {{ Form::select('storage_id[]', [], null, ['class' => 'js-select-basic-single-alt', 'data-initial-value' => $transaction->storage1_id]) }}
                     </div>
                     <div class="col-sm-4">
-                        {{ Form::select('product_id[]', $storages[$transaction->storage1_id]->pluck('title', 'product_id')->all(), $transaction->product_id, ['class' => 'js-select-basic-single', 'data-initial-value' => $transaction->product_id]) }}
+                        {{ Form::select('product_id[]', $storages[$transaction->storage1_id]->pluck('title', 'product_id')->all(), $transaction->product_id, ['class' => 'js-select-basic-single-alt', 'data-initial-value' => $transaction->product_id]) }}
                     </div>
                     <div class="col-sm-4">
-                        {{ Form::select('master_id[]', $employees, null, ['class' => 'js-select-basic-single', 'data-initial-value' => $transaction->employee_id]) }}
+                        {{ Form::select('master_id[]', $employees, null, ['class' => 'js-select-basic-single-alt', 'data-initial-value' => $transaction->employee_id]) }}
                     </div>
                 </div>
                 <div class="row alt-control-bar">

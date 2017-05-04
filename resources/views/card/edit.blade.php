@@ -71,10 +71,10 @@
                                             <div class="col-sm-2"></div>
                                             <div class="col-sm-8" style="padding:0">
                                                 <div class="col-sm-5">
-                                                    {{ Form::select('storage_id[]', [], $card_item[0], ['class' => 'form-control', 'maxlength' => '110', 'data-initial-value' => $card_item[0]]) }}
+                                                    {{ Form::select('storage_id[]', [], $card_item[0], ['class' => 'js-select-basic-single-alt', 'maxlength' => '110', 'data-initial-value' => $card_item[0]]) }}
                                                 </div>
                                                 <div class="col-sm-5">
-                                                    {{ Form::select('product_id[]', $storages[$card_item[0]]->pluck('title', 'product_id')->all(), $card_item[1], ['class' => 'form-control', 'maxlength' => '110']) }}
+                                                    {{ Form::select('product_id[]', $storages[$card_item[0]]->pluck('title', 'product_id')->all(), $card_item[1], ['class' => 'js-select-basic-single-alt', 'maxlength' => '110']) }}
                                                 </div>
                                                 <div class="col-sm-2">
                                                     {{ Form::text('amount[]', $card_item[2], ['class' => 'form-control', 'maxlength' => '110']) }}
@@ -90,11 +90,11 @@
                                     @endforeach
                                     <div class="wrap-it alt-control-bar">
                                         <div class="col-sm-5">
-                                            {{ Form::select('storage_id[]', $storages, '0', ['class' => 'form-control', 'maxlength' => '110', 'id' => '']) }}
+                                            {{ Form::select('storage_id[]', $storages, '0', ['class' => 'js-select-basic-single-alt', 'maxlength' => '110', 'id' => '']) }}
                                         </div>
                                         <div class="col-sm-4">
                                             {{ Form::select('product_id[]', [], null, 	[
-                                            'class' => 'form-control',
+                                            'class' => 'js-select-basic-single-alt',
                                             'maxlength' => '110',
                                             'placeholder' => trans('adminlte_lang::message.select_good')
                                             ]) }}

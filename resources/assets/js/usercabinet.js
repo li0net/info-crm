@@ -194,9 +194,9 @@ $(document).ready(function () {
     });
 });
 $(document).ready(function() {
-    $(".bootstrap-select a").removeAttr("title");
-    $(".bootstrap-select .btn").removeAttr("title");
-    $(".bootstrap-select button").removeAttr("aria-describedby");
-    $(".bootstrap-select .filter-option").removeAttr("title");
-    $(".bootstrap-select span").removeAttr("title");
-});z
+    // $(".bootstrap-select a").removeAttr("title");
+    // $(".bootstrap-select .btn").removeAttr("title");
+    // $(".bootstrap-select button").removeAttr("aria-describedby");
+    // $(".bootstrap-select .filter-option").removeAttr("title");
+    // $(".bootstrap-select span").removeAttr("title");
+});

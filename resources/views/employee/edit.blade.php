@@ -129,7 +129,7 @@
                                                 'service-duration-hour[]',
                                                 $service_duration_hours,
                                                 date_parse($employee_attached_service->pivot->duration)['hour'],
-                                                ['class' => 'js-select-basic-single', 'required' => ''])
+                                                ['class' => 'js-select-basic-single-alt', 'required' => ''])
                                                 }}
                                             </div>
                                             <div class="col-sm-2">
@@ -137,7 +137,7 @@
                                                 'service-duration-minute[]',
                                                 $service_duration_minutes,
                                                 date_parse($employee_attached_service->pivot->duration)['minute'],
-                                                ['class' => 'js-select-basic-single', 'required' => ''])
+                                                ['class' => 'js-select-basic-single-alt', 'required' => ''])
                                                 }}
                                             </div>
                                             <div class="col-sm-3">
@@ -146,7 +146,7 @@
                                                 $service_routings,
                                                 $employee_attached_service->pivot->routing_id,
                                                 [
-                                                'class' => 'js-select-basic-single',
+                                                'class' => 'js-select-basic-single-alt',
                                                 'required' => '',
                                                 'data-initial-value' => $employee_attached_service->pivot->routing_id
                                                 ])

@@ -77,14 +77,14 @@
                                         <div class="wrap-it alt-control-bar">
                                             <div class="col-sm-11" style="padding:0">
                                                 <div class="col-sm-4">
-                                                    {{ Form::select('services_cats_detailed[]',  [], $service_setting[0], ['class' => 'form-control',
+                                                    {{ Form::select('services_cats_detailed[]',  [], $service_setting[0], ['class' => 'js-select-basic-single-alt',
                                                     'required' => '',
                                                     'maxlength' => '110',
                                                     'data-initial-value' => $service_setting[0]]) }}
                                                 </div>
                                                 <div class="col-sm-4">
                                                     {{ Form::select('services_detailed[]', $service_ctgs[$service_setting[0]]->pluck('name', 'service_id')->all(),
-                                                    $service_setting[1], ['class' => 'form-control',
+                                                    $service_setting[1], ['class' => 'js-select-basic-single-alt',
                                                     'required' => '',
                                                     'maxlength' => '110']) }}
                                                 </div>
@@ -93,7 +93,7 @@
                                                     'maxlength' => '110']) }}
                                                 </div>
                                                 <div class="col-sm-2">
-                                                    {{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], $service_setting[3], ['class' => 'form-control',
+                                                    {{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], $service_setting[3], ['class' => 'js-select-basic-single-alt',
                                                     'required' => '',
                                                     'maxlength' => '110']) }}
                                                 </div>
@@ -109,16 +109,16 @@
                                     <div class="wrap-it alt-control-bar">
                                         <div class="col-sm-11">
                                             <div class="col-sm-4">
-                                                {{ Form::select('services_cats_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110']) }}
+                                                {{ Form::select('services_cats_detailed[]', [], null, ['class' => 'js-select-basic-single-alt', 'maxlength' => '110']) }}
                                             </div>
                                             <div class="col-sm-4">
-                                                {{ Form::select('services_detailed[]', [], null, ['class' => 'form-control', 'maxlength' => '110']) }}
+                                                {{ Form::select('services_detailed[]', [], null, ['class' => 'js-select-basic-single-alt', 'maxlength' => '110']) }}
                                             </div>
                                             <div class="col-sm-2">
-                                                {{ Form::text('services_percent_detailed[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
+                                                {{ Form::text('services_percent_detailed[]', null, ['class' => 'js-select-basic-single-alt', 'maxlength' => '110']) }}
                                             </div>
                                             <div class="col-sm-2">
-                                                {{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'maxlength' => '110']) }}
+                                                {{ Form::select('services_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'js-select-basic-single-alt', 'maxlength' => '110']) }}
                                             </div>
                                         </div>
                                         <div class="col-sm-1 text-center" style="">
@@ -178,14 +178,14 @@
                                             {{-- <div class="col-sm-2"></div>							 --}}
                                             <div class="col-sm-11" style="padding:0">
                                                 <div class="col-sm-4">
-                                                    {{ Form::select('products_cats_detailed[]', [], $product_setting[0], ['class' => 'form-control',
+                                                    {{ Form::select('products_cats_detailed[]', [], $product_setting[0], ['class' => 'js-select-basic-single-alt',
                                                     'required' => '',
                                                     'maxlength' => '110',
                                                     'data-initial-value' => $product_setting[0]]) }}
                                                 </div>
                                                 <div class="col-sm-4">
                                                     {{ Form::select('products_detailed[]', $product_ctgs[$product_setting[0]]->pluck('title', 'product_id')->all(),
-                                                    $product_setting[1], ['class' => 'form-control',
+                                                    $product_setting[1], ['class' => 'js-select-basic-single-alt',
                                                     'required' => '',
                                                     'maxlength' => '110']) }}
                                                 </div>
@@ -195,7 +195,7 @@
                                                 </div>
                                                 <div class="col-sm-2">
                                                     {{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'],
-                                                    $product_setting[3], ['class' => 'form-control',
+                                                    $product_setting[3], ['class' => 'js-select-basic-single-alt',
                                                     'required' => '',
                                                     'maxlength' => '110']) }}
                                                 </div>
@@ -211,16 +211,16 @@
                                     <div class="wrap-it alt-control-bar">
                                         <div class="col-sm-11">
                                             <div class="col-sm-4">
-                                                {{ Form::select('products_cats_detailed[]', [], null, ['class' => 'form-control', 'placeholder' => 'Category']) }}
+                                                {{ Form::select('products_cats_detailed[]', [], null, ['class' => 'js-select-basic-single-alt', 'placeholder' => 'Category']) }}
                                             </div>
                                             <div class="col-sm-4">
-                                                {{ Form::select('products_detailed[]', [], null, ['class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.select_good')]) }}
+                                                {{ Form::select('products_detailed[]', [], null, ['class' => 'js-select-basic-single-alt', 'placeholder' => trans('adminlte_lang::message.select_good')]) }}
                                             </div>
                                             <div class="col-sm-2">
-                                                {{ Form::text('products_percent_detailed[]', null, ['class' => 'form-control', 'maxlength' => '110', 'placeholder' => 'Percent']) }}
+                                                {{ Form::text('products_percent_detailed[]', null, ['class' => 'js-select-basic-single-alt', 'maxlength' => '110', 'placeholder' => 'Percent']) }}
                                             </div>
                                             <div class="col-sm-2">
-                                                {{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.unit')]) }}
+                                                {{ Form::select('products_unit_detailed[]', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'js-select-basic-single-alt', 'placeholder' => trans('adminlte_lang::message.unit')]) }}
                                             </div>
                                         </div>
                                         <div class="col-sm-1 text-center" style="">

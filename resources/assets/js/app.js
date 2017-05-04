@@ -613,14 +613,14 @@ $(document).ready(function () {
         });
         return false;
     });
-    // select2 multiple select init
+
+    /** SELECT2 SELECT INIT **/
     $(".js-select-basic-multiple").select2({
         templateResult: formatClientCatColor,
         allowClear: true
     }).on("select2:open", function () {
         $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
-
 
     $(".js-select-basic-single-search").select2({
     }).on("select2:open", function () {
@@ -633,14 +633,15 @@ $(document).ready(function () {
         $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
 
-    $(".alt-control-bar .js-select-basic-single").select2({
+    $(".js-select-basic-single-alt").select2({
         theme: "alt-control",
         minimumResultsForSearch: Infinity
     }).on("select2:open", function () {
         $('.select2-results__options').niceScroll({cursorcolor:"#969696", cursorborder: "1px solid #787878", cursorborderradius: "0", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.9, cursoropacitymax:1, boxzoom:true, autohidemode:false});
     });
 
-    // iCheck init
+
+    /** ICHECK INIT **/
     $('input[type="checkbox"]').iCheck({
         checkboxClass: 'icheckbox_flat-purple',
         labelHover: false,
@@ -651,7 +652,6 @@ $(document).ready(function () {
         labelHover: false,
         cursor: true
     });
-
 
     function formatClientCatColor(cat) {
         if (!cat.id) { return cat.text; }

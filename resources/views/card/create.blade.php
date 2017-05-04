@@ -67,11 +67,11 @@
                                 </div>
                                 <div class="wrap-it alt-control-bar">
                                     <div class="col-sm-5">
-                                        {{ Form::select('storage_id[]', $storages, '0', ['class' => 'form-control', 'maxlength' => '110', 'id' => '']) }}
+                                        {{ Form::select('storage_id[]', $storages, '0', ['class' => 'js-select-basic-single-alt', 'maxlength' => '110', 'id' => '']) }}
                                     </div>
                                     <div class="col-sm-4">
                                         {{ Form::select('product_id[]', [], null, 	[
-                                        'class' => 'form-control',
+                                        'class' => 'js-select-basic-single-alt',
                                         'maxlength' => '110',
                                         'placeholder' => trans('adminlte_lang::message.select_good')
                                         ]) }}

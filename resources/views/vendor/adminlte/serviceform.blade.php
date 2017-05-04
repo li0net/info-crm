@@ -217,7 +217,7 @@
                                 $service_employees,
                                 $service_attached_employee->pivot->employee_id,
                                 [
-                                    'class' => 'js-select-basic-single',
+                                    'class' => 'js-select-basic-single-alt',
                                     'required' => '',
                                     'data-initial-value' => $service_attached_employee->pivot->employee_id
                                 ])
@@ -228,7 +228,7 @@
                                 'service-duration-hour[]',
                                 $service_duration_hours,
                                 date_parse($service_attached_employee->pivot->duration)['hour'],
-                                ['class' => 'js-select-basic-single', 'required' => ''])
+                                ['class' => 'js-select-basic-single-alt', 'required' => ''])
                                 }}
                             </div>
                             <div class="col-sm-2">
@@ -236,7 +236,7 @@
                                 'service-duration-minute[]',
                                 $service_duration_minutes,
                                 date_parse($service_attached_employee->pivot->duration)['minute'],
-                                ['class' => 'js-select-basic-single', 'required' => ''])
+                                ['class' => 'js-select-basic-single-alt', 'required' => ''])
                                 }}
                             </div>
                             <div class="col-sm-3">
@@ -245,7 +245,7 @@
                                 $service_routings,
                                 $service_attached_employee->pivot->routing_id,
                                 [
-                                'class' => 'js-select-basic-single',
+                                'class' => 'js-select-basic-single-alt',
                                 'required' => '',
                                 'data-initial-value' => $service_attached_employee->pivot->routing_id
                                 ])
@@ -283,7 +283,7 @@
                                 [],
                                 $resource_attached_service->pivot->resource_id,
                                 [
-                                'class' => 'form-control',
+                                'class' => 'js-select-basic-single-alt',
                                 'required' => '',
                                 'data-initial-value' => $resource_attached_service->pivot->resource_id
                                 ])
@@ -330,7 +330,7 @@
         window.routingOptions = [];
 
         $('#add-employee').on('click', function(e){
-            $('.employee-content').prepend('<div class="row"><div class="col-sm-3"><select required="required" name="service-employee[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><select required="required" name="service-duration-hour[]" class="js-select-basic-single"><option value="0">0 ч</option><option value="1">1 ч</option><option value="2">2 ч</option><option value="3">3 ч</option><option value="4">4 ч</option><option value="5">5 ч</option><option value="6">6 ч</option><option value="7">7 ч</option><option value="8">8 ч</option><option value="9">9 ч</option></select></div> <div class="col-sm-2"><select required="required" name="service-duration-minute[]" class="js-select-basic-single"><option value="00">00 мин</option><option value="15">15 мин</option><option value="30">30 мин</option><option value="45">45 мин</option></select></div> <div class="col-sm-3"><select required="required" name="service-routing[]" class="js-select-basic-single"></select></div> <div class="col-sm-2"><button type="button" id="delete-employee" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>');
+            $('.employee-content').prepend('<div class="row"><div class="col-sm-3"><select required="required" name="service-employee[]" class="js-select-basic-single-alt"></select></div> <div class="col-sm-2"><select required="required" name="service-duration-hour[]" class="js-select-basic-single-alt"><option value="0">0 ч</option><option value="1">1 ч</option><option value="2">2 ч</option><option value="3">3 ч</option><option value="4">4 ч</option><option value="5">5 ч</option><option value="6">6 ч</option><option value="7">7 ч</option><option value="8">8 ч</option><option value="9">9 ч</option></select></div> <div class="col-sm-2"><select required="required" name="service-duration-minute[]" class="js-select-basic-single-alt"><option value="00">00 мин</option><option value="15">15 мин</option><option value="30">30 мин</option><option value="45">45 мин</option></select></div> <div class="col-sm-3"><select required="required" name="service-routing[]" class="js-select-basic-single-alt"></select></div> <div class="col-sm-2"><button type="button" id="delete-employee" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>');
             sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-employee[]"]').first();
             sel.html(window.employeeOptions);
 
@@ -351,7 +351,7 @@
         });
 
         $('#add-resource').on('click', function(e){
-            $('.resource-content').prepend('<div class="row"><div class="col-sm-6"><select required="required" name="service-resource[]" class="js-select-basic-single"></select></div> <div class="col-sm-4"><input type="text" name="amount[]" class="form-control" value="0"></div> <div class="col-sm-2"><button type="button" id="delete-resource" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>');
+            $('.resource-content').prepend('<div class="row"><div class="col-sm-6"><select required="required" name="service-resource[]" class="js-select-basic-single-alt"></select></div> <div class="col-sm-4"><input type="text" name="amount[]" class="form-control" value="0"></div> <div class="col-sm-2"><button type="button" id="delete-resource" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>');
             sel = $('.resource-content').children('.row').first().children('.col-sm-6').children('select[name="service-resource[]"]').first();
             sel.html($('#resource-options').val());
 
