@@ -58,7 +58,7 @@ class ApiController extends Controller
 
         $phone = trans('main.user:grid_phone_hidden_message');
         // проверяем есть у юзера права на просмотр телефонов клиентов
-        $showPhone = Request::user()->hasAccessTo('clients_phone', 'view', null);
+        $showPhone = $request->user()->hasAccessTo('clients_phone', 'view', null);
         if ($showPhone) {
             $phone = trans('main.user:grid_phone_hidden_message');
         }
@@ -177,7 +177,7 @@ class ApiController extends Controller
 
         $appts = DB::select(
             "SELECT a.note, a.state, a.service_sum, e.name as employee_name, a.employee_id, a.service_id, s.name as service_name, ".
-                "c.name as client_name, c.phone as client_phone, c.email as client_email, ".
+                "a.client_id, c.name as client_name, c.phone as client_phone, c.email as client_email, ".
             "(CASE WHEN a.start < '$startDateTime' THEN '$startDateTime' ELSE start END) AS start, ".
             "(CASE WHEN a.`end` > '$endDateTime' THEN '$endDateTime' ELSE `end` END) AS `end` ".
             "FROM appointments a ".
