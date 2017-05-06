@@ -32,6 +32,6 @@ Route::post('/v1/widget/getOrgInformation', 'Widget\BaseWidgetController@getOrgI
 Route::get('/v1/widget/locale/{locale?}', ['as' => 'locale.setlocale', 'uses' => 'LocaleController@setLocale']);
 //->middleware('auth:api');
 
-Route::get('/v1/mobile/userData', 'Mobile\ApiController@getUserData')->middleware('auth:api');
+Route::get('/v1/mobile/clientData', 'Mobile\ApiController@getClientData')->middleware('auth:api');
 Route::get('/v1/mobile/searchClient', 'Mobile\ApiController@searchClient')->middleware('auth:api');
 Route::get('/v1/mobile/appointmentsForDate', 'Mobile\ApiController@getAppointments')->middleware('auth:api');

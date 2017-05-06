@@ -16,9 +16,6 @@ use App\ServiceCategoriesGridRepository;
 use Carbon\Carbon;
 use App\Service;
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
 Route::get('/', 'LandingController@index');
 
 Route::get('/stub', function () {

@@ -38,7 +38,7 @@ class ApiController extends Controller
         }
     }
 
-    public function getUserData(Request $request) {
+    public function getClientData(Request $request) {
         $clientId = $request->input('client_id');
         if (is_null($clientId)) {
             return response('Invalid request data', 403);
@@ -56,9 +56,16 @@ class ApiController extends Controller
             $gender = trans('main.client:gender_woman');
         }
 
+        $phone = trans('main.user:grid_phone_hidden_message');
+        // проверяем есть у юзера права на просмотр телефонов клиентов
+        $showPhone = Request::user()->hasAccessTo('clients_phone', 'view', null);
+        if ($showPhone) {
+            $phone = trans('main.user:grid_phone_hidden_message');
+        }
+
         $clientData = [
             'name'  => $client['name'],
-            'phone' => $client['phone'],
+            'phone' => $phone,
             'email' => $client['email'],
             'gender' => $gender,
             'discount' => $client['discount'],

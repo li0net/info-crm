@@ -60,6 +60,13 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
+        // For mobile API requests
+        if ($request->is('api/v*/mobile/*')) {
+            // The response MUST include a WWW-Authenticate header field
+            header('WWW-Authenticate: Bearer realm="InfoCRM"');
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+
         return redirect()->guest('login');
     }
 }
