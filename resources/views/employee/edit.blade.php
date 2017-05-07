@@ -23,24 +23,24 @@
                 <div class="col-sm-12">
                     <ul class="nav nav-tabs">
                         <li class="active">
-                            <a data-toggle="tab" href="#menu1"><i class="fa fa-id-card-o" aria-hidden="true"></i>{{ trans('adminlte_lang::message.information') }}</a>
+                            <a data-toggle="tab" href="#info-tab"><i class="fa fa-id-card-o" aria-hidden="true"></i>{{ trans('adminlte_lang::message.information') }}</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" href="#menu2"><i class="fa fa-list" aria-hidden="true"></i>{{ trans('adminlte_lang::message.services') }}</a>
+                            <a data-toggle="tab" href="#services-tab"><i class="fa fa-tags" aria-hidden="true"></i>{{ trans('adminlte_lang::message.services') }}</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" href="#menu3"><i class="fa fa-calendar" aria-hidden="true"></i>{{ trans('adminlte_lang::message.schedule') }}</a>
+                            <a data-toggle="tab" href="#schedule-tab"><i class="fa fa-calendar" aria-hidden="true"></i>{{ trans('adminlte_lang::message.schedule') }}</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" href="#menu4"><i class="fa fa-cog" aria-hidden="true"></i>{{ trans('adminlte_lang::message.employee_settings') }}</a>
+                            <a data-toggle="tab" href="#settings-tab"><i class="fa fa-cog" aria-hidden="true"></i>{{ trans('adminlte_lang::message.employee_settings') }}</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" href="#menu5"><i class="fa fa-money" aria-hidden="true"></i>{{ trans('adminlte_lang::message.payroll_calc') }}</a>
+                            <a data-toggle="tab" href="#payroll-tab"><i class="fa fa-money" aria-hidden="true"></i>{{ trans('adminlte_lang::message.payroll_calc') }}</a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <div id="menu1" class="tab-pane fade in active">
+                        <div id="info-tab" class="tab-pane fade in active">
                             {!! Form::model($employee, ['route' => ['employee.update', $employee->employee_id], 'method' => 'PUT', 'class' => 'hidden form-horizontal', 'id' => 'employee_form__info', 'files' => 'true']) !!}
                             {!! Form::hidden('id', 'employee_form__info') !!}
                             <div class="col-sm-8">
@@ -94,7 +94,7 @@
                             {!! Form::close() !!}
                         </div>
 
-                        <div id="menu2" class="tab-pane fade">
+                        <div id="services-tab" class="tab-pane fade">
 
                             {!! Form::model($employee, ['route' => ['employee.update_services'], 'method' => 'POST', "id" => "employee_form__services"]) !!}
 
@@ -168,11 +168,11 @@
                             {!! Form::close() !!}
                         </div>
 
-                        <div id="menu3" class="tab-pane fade">
+                        <div id="schedule-tab" class="tab-pane fade">
                             @include('employee.shedule')
                         </div>
 
-                        <div id="menu4" class="tab-pane fade form-horizontal">
+                        <div id="settings-tab" class="tab-pane fade form-horizontal">
                             {!! Form::model($settings[0], ['route' => ['employee.update', $employee->employee_id], "method" => 'PUT', "id" => "employee_form__settings"]) !!}
                             {!! Form::hidden('id', 'employee_form__settings') !!}
                             <h4 class="fat">{{ trans('adminlte_lang::message.notifications') }}</h4>
@@ -357,7 +357,7 @@
                             <br>
                             {!! Form::close() !!}
                         </div>
-                        <div id="menu5" class="tab-pane fade">
+                        <div id="payroll-tab" class="tab-pane fade">
                             <?php $accessLevel = $crmuser->hasAccessTo('wage_schemes', 'edit', 0); ?>
                             @if($accessLevel > 0)
 
@@ -433,10 +433,8 @@
 @stop
 @section('page-specific-scripts')
 <script type="text/javascript">
-
     // получаем стартовое значение и обновляем вид таблиц
     var $scheduleData = JSON.parse('<?=$shedule_data?>');
-
 
     /**
      * обновляет отображение таблицы прасписания на основании массива $scheduleData
@@ -456,20 +454,20 @@
     }
 
     $(document).ready(function(){
+
+        //checking hash - if have - open hashed tab
+        var hash = window.location.hash ;
+        if (hash != undefined && hash != ''){
+            $('.nav-tabs a[href="'+hash+'-tab"]').tab('show');
+            console.log(hash);
+            console.log(hash+"-tab");
+        }
+
         window.serviceOptions = [];
         window.routingOptions = [];
 
-
         // обновляем отображение
         updateSheduleTable();
-
-//        // инициируем датапикер
-//        $("#shedule_week").datepicker({
-//            format: 'YYYY-MM-DD',
-//            weekStart: 1,
-//            calendarWeeks: true,
-//            todayHighlight: true
-//        });
 
         // инициируем moment.js
         moment.locale('en', {

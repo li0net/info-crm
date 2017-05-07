@@ -120,6 +120,9 @@ body.skin-orange {
         &:hover{
           @include opacity(1);
         }
+        &.danger-action{
+          color: $red-color;
+        }
       }
     }
   }

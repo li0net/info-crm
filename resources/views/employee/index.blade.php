@@ -89,7 +89,7 @@
                     <th>{{ trans('adminlte_lang::message.employee_email') }}</th>
                     <th>{{ trans('adminlte_lang::message.employee_phone') }}</th>
                     <th>{{ trans('adminlte_lang::message.employee_position') }}</th>
-                    <th class="text-right">{{ trans('adminlte_lang::message.actions') }}</th>
+                    <th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -108,17 +108,18 @@
                     <td>{{ $employee->phone }}</td>
                     <td>{{ $employee->position->title }}</td>
 
-                    <td class="text-right">
+                    <td class="text-center">
                         <a href="{{ route('employee.show', $employee->employee_id) }}" class="table-action-link"><i class='fa fa-eye'></i></a>
                         @if ($user->hasAccessTo('employee', 'edit', 0))
-                        <a href="{{ route('employee.edit', $employee->employee_id) }}#menu1" id="employee_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
+                        <a href="{{ route('employee.edit', $employee->employee_id) }}#info" id="employee_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
                         @endif
-                        <a href="{{ route('employee.edit', $employee->employee_id) }}#menu2" class="table-action-link"><i class='fa fa-tags'></i></a>
-                        <a href="{{ route('employee.edit', $employee->employee_id) }}#menu3" class="table-action-link"><i class='fa fa-clock-o'></i></a>
-                        <a href="{{ route('employee.edit', $employee->employee_id) }}#menu4" class="table-action-link"><i class='fa fa-cog'></i></a>
+                        <a href="{{ route('employee.edit', $employee->employee_id) }}#services" class="table-action-link"><i class='fa fa-tags'></i></a>
+                        <a href="{{ route('employee.edit', $employee->employee_id) }}#schedule" class="table-action-link"><i class='fa fa-calendar'></i></a>
+                        <a href="{{ route('employee.edit', $employee->employee_id) }}#settings" class="table-action-link"><i class='fa fa-cog'></i></a>
+                        <a href="{{ route('employee.edit', $employee->employee_id) }}#payroll" class="table-action-link"><i class="fa fa-money"></i></a>
                         @if ($user->hasAccessTo('employee', 'delete', 0))
                             {!! Form::open(['route' => ['employee.destroy', $employee->employee_id], 'id' => 'form'.$employee->employee_id, 'style' => 'max-width: 32px; margin:0; padding:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-                                <a href="javascript: submitform('#form{{$employee->employee_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
+                                <a href="javascript: submitform('#form{{$employee->employee_id}}')" class="table-action-link danger-action"><i class='fa fa-trash-o'></i></a>
                             {!! Form::close() !!}
                         @endif
                     </td>
