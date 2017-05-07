@@ -33,15 +33,24 @@ $(document).ready(function () {
                 $('<a/>', {
                     id: 'bw_block_close',
                     href: '#'
-                }).appendTo('#bw_block');
+                }).prependTo('#bw_block');
+
                 // высота экрана для фрейма
                 var frameHeight = $( window ).height()-7;
+
+                // ширина экрана для фрейма
+                var frameWidth = ($( window ).width() < 500) ? $( window ).width() : '500';
+
+                // положение кнопки закрытия виджета зависит от ширины экрана
+                var closePosition = (frameWidth == 500) ? 510 : frameWidth-40;
+                $( "#bw_block_close" ).css('right',closePosition+'px');
+
                 $('<iframe/>', {
                     id: 'bw_frame',
                     frameBorder: 0,
                     // src: 'http://localhost:8000/api/v1/widget/show?sid='+scId,
-                    src: 'http://infogroup.online/api/v1/widget/show?sid='+scId,
-                    width: '500px',
+                    src: '//infogroup.online/api/v1/widget/show?sid='+scId,
+                    width: frameWidth+'px',
                     height: frameHeight+'px'
                 }).appendTo('#bw_frame_block');
             }

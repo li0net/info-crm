@@ -23,7 +23,8 @@
 }
 #bw_block_close{
   position: absolute !important;
-  right: 510px !important;
+  right: 510px;
+  z-index: 1000000;
   top: 13px !important;
   width: 35px !important;
   height: 35px !important;
@@ -34,4 +35,9 @@
   background-position: center center !important;
   background-size: 12px 12px !important;
   box-sizing: border-box !important;
+}
+@media (max-width: 495px) {
+  #bw_frame_block{
+    width: 100%;
+  }
 }

@@ -24,7 +24,6 @@ body{
   left:0;
   right:0;
   overflow:hidden;
-
 }
 
 .hidden{
@@ -348,6 +347,71 @@ footer{
         background-color: #f1f1f1
       }
     }
+  }
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+
+  /* Required for text-overflow to do anything */
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.fat{
+  font-weight: bold;
+}
+
+@media (max-width: 495px) {
+  .mob-hidden{
+    display: none;
+  }
+  .col-xxs-1{
+    width: 100/12*1%;
+    padding: 2%;
+  }
+  .col-xxs-2{
+    width: 100/12*2%;
+    padding: 2%;
+  }
+  .col-xxs-8{
+    width: 100/12*8%;
+    padding: 2%;
+  }
+  .col-xxs-10{
+    width: 100/12*10%;
+    padding: 2%;
+  }
+  .col-xxs-11{
+    width: 100/12*11%;
+    padding: 2%;
+  }
+  .col-xxs-12{
+    width: 100%;
+    padding: 2%;
+  }
+  .widget-head-info,
+  .widget-icon-info,
+  .widget-icon-lang{
+    position: absolute;
+    top:0;
+  }
+  .widget-icon-lang{
+    left:50px;
+    width: 50px;
+  }
+  .widget-icon-info{
+    right:0;
+    width: 50px;
+  }
+  .widget-head-info{
+    left:100px;
+    right:50px;
+    text-align: left;
+    width: auto;
+  }
+  .info-header{
+    padding-left: 50px !important;
   }
 }
 
