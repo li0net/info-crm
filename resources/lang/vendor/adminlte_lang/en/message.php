@@ -177,6 +177,7 @@ return [
 	'documents'				  	=> 'Documents',
 	'reports'				  	=> 'Reports',
 	'storages'				  	=> 'Warehouses',
+    'select_storage'		    => 'Choose the warehouse',
 	'products'				  	=> 'Products',
 	'routings'				  	=> 'Routings',
 	'routing'					=> 'Routing',
@@ -550,4 +551,5 @@ return [
     'payment_to_cashbox'	    => 'Payment to cashbox',
     'choose'	                => 'Choose',
     'pay'	                    => 'Pay',
+    'card_updated'	            => 'Card updated!',
 ];

@@ -79,11 +79,12 @@ class CardController extends Controller
      */
     public function create(Request $request)
     {
-        $storages = Storage::where('organization_id', $request->user()->organization_id)
-                                                        ->orderBy('title')
-                                                        ->with('products')
-                                                        ->get()
-                                                        ->pluck('title', 'storage_id');
+        // getting the list of storages for select
+        $stRows = Storage::where('organization_id', $request->user()->organization_id)->with('products')->get()->all();
+        $storages = [];
+        foreach ($stRows as $row){
+            $storages[$row['storage_id']] = $row['title'];
+        }
 
         return view('card.create', compact('storages'));
     }
@@ -107,9 +108,16 @@ class CardController extends Controller
 
         $input = $request->input();
 
-        array_pop($input['storage_id']);
-        array_pop($input['product_id']);
-        array_pop($input['amount']);
+        // removing empty strings
+        $i = 0;
+        foreach($input['storage_id'] as $prod){
+            if ($prod == ''){
+                unset($input['product_id'][$i]);
+                unset($input['storage_id'][$i]);
+                unset($input['amount'][$i]);
+            }
+            $i++;
+        }
 
         $card = new Card;
 
@@ -125,7 +133,7 @@ class CardController extends Controller
 
         $card->save();
 
-        Session::flash('success', 'Новая технологическая карта успешно сохранена!');
+        Session::flash('success', trans('adminlte_lang::message.card_updated'));
 
         return redirect()->route('card.show', $card->storage_id);
     }
@@ -151,15 +159,25 @@ class CardController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $card = Card::find($id);
-        $storages = Storage::where('organization_id', $request->user()->organization_id)
+        // getting the list of storages for select
+        $stRows = Storage::where('organization_id', $request->user()->organization_id)->with('products')->get()->all();
+        $storages = [];
+        foreach ($stRows as $row){
+            $storages[$row['storage_id']] = $row['title'];
+        }
+
+        // getting the list of cards
+        $cards = Storage::where('organization_id', $request->user()->organization_id)
                                     ->orderBy('title')
                                     ->with('products')
                                     ->get()
                                     ->pluck('products', 'storage_id');
 
-        $card_items = array();
+        // get current card
+        $card = Card::find($id);
 
+        // get items of current card
+        $card_items = array();
         if(null !== $card->card_items) {
             $items = json_decode($card->card_items);
 
@@ -168,7 +186,7 @@ class CardController extends Controller
             }
         }
 
-        return view('card.edit', compact('card', 'storages', 'card_items'));
+        return view('card.edit', compact('card', 'cards', 'storages', 'card_items'));
     }
 
     /**
@@ -188,18 +206,24 @@ class CardController extends Controller
         $this->validate($request, [
             'title' => 'required'
         ]);
-
+        // getting fields
         $input = $request->input();
 
-        array_pop($input['product_id']);
-        array_pop($input['storage_id']);
-        array_pop($input['amount']);
+        // removing empty strings
+        $i = 0;
+        foreach($input['storage_id'] as $prod){
+            if ($prod == ''){
+                unset($input['product_id'][$i]);
+                unset($input['storage_id'][$i]);
+                unset($input['amount'][$i]);
+            }
+            $i++;
+        }
 
         $card = card::where('organization_id', $request->user()->organization_id)->where('card_id', $id)->first();
         if (is_null($card)) {
             return 'No such card';
         }
-
         $card->title = $request->title;
         $card->card_items = json_encode(array($input['storage_id'],
                                                 $input['product_id'],
@@ -209,7 +233,7 @@ class CardController extends Controller
 
         $card->save();
 
-        Session::flash('success', 'Новая технологическая карта успешно сохранена!');
+        Session::flash('success', trans('adminlte_lang::message.card_updated'));
 
         return redirect()->route('card.show', $card->card_id);
     }

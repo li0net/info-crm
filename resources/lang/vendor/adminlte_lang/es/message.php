@@ -181,6 +181,7 @@ return [
 	'documents'					=> 'Documentos',
 	'reports'					=> 'Informes',
 	'storages'					=> 'Almacenes',
+    'select_storage'		    => 'Seleccionar tienda',
 	'products'					=> 'Productos',
 	'routings'					=> 'Cartas tecnológicas',
 	'routing'					=> 'Carta tecnológicas',
@@ -552,4 +553,5 @@ return [
     'payment_to_cashbox'	    => 'Pago a caja',
     'choose'	                => 'Escoger',
     'pay'	                    => 'Paga',
+    'card_updated'	            => 'Card updated!',
 ];

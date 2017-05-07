@@ -285,6 +285,10 @@ body.skin-orange {
     p {
       padding-top: 7px;
     }
+    &.table-form-group{
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
   }
   .form-horizontal{
     .btn{
@@ -292,7 +296,7 @@ body.skin-orange {
     }
     .control-label {
       margin-bottom: 0;
-      padding-top: 13px;
+      padding-top: 6px;
       font-size: 11pt;
       font-weight: normal;
     }

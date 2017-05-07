@@ -181,6 +181,7 @@ return [
 	'documents'					=> 'Документы',
 	'reports'					=> 'Отчеты',
 	'storages'					=> 'Склады',
+	'select_storage'		    => 'Выберите Склад',
 	'products'					=> 'Товары',
 	'routings'					=> 'Технологические карты',
 	'routing'					=> 'Технологическая карта',
@@ -556,4 +557,5 @@ return [
     'payment_to_cashbox'	    => 'Оплата в кассу',
     'choose'	                => 'Выберите',
     'pay'	                    => 'Оплатить',
+    'card_updated'	            => 'Kарта успешно сохранена!',
 ];

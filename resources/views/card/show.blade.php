@@ -29,14 +29,14 @@
                 <dd>{{ $card->description }}</dd>
             </dl>
         </div>
-        <div class="col-sm-12">
-            @if ($user->hasAccessTo('card', 'edit', 0))
-                {!! Html::linkRoute('card.edit', trans('adminlte_lang::message.edit'), [$card->card_id], ['class'=>'btn btn-primary pull-left']) !!}
-            @endif
+        <div class="col-sm-12 text-left">
             @if ($user->hasAccessTo('card', 'delete', 0))
-                {!! Form::open(['route' => ['card.destroy', $card->card_id], "method" => 'DELETE']) !!}
+                {!! Form::open(['route' => ['card.destroy', $card->card_id], "class" => 'pull-left', "method" => 'DELETE']) !!}
                     {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger pull-left m-r']) }}
                 {!! Form::close() !!}
+            @endif
+            @if ($user->hasAccessTo('card', 'edit', 0))
+                {!! Html::linkRoute('card.edit', trans('adminlte_lang::message.edit'), [$card->card_id], ['class'=>'btn btn-primary pull-left']) !!}
             @endif
         </div>
     </div>

@@ -65,27 +65,9 @@
                                         <hr>
                                     </div>
                                 </div>
-                                <div class="wrap-it alt-control-bar">
-                                    <div class="col-sm-5">
-                                        {{ Form::select('storage_id[]', $storages, '0', ['class' => 'js-select-basic-single-alt', 'maxlength' => '110', 'id' => '']) }}
-                                    </div>
-                                    <div class="col-sm-4">
-                                        {{ Form::select('product_id[]', [], null, 	[
-                                        'class' => 'js-select-basic-single-alt',
-                                        'maxlength' => '110',
-                                        'placeholder' => trans('adminlte_lang::message.select_good')
-                                        ]) }}
-                                    </div>
-                                    <div class="col-sm-2">
-                                        {{ Form::text('amount[]', null, ['class' => 'form-control', 'maxlength' => '110']) }}
-                                    </div>
-                                    <div class="col-sm-1 text-center">
-                                        <button type="button" id="add-card-item" class="btn btn-add">
-                                            <i class="fa fa-plus-circle"></i>
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                    </div>
-                                </div>
+
+                                <@include('card.templates')
+
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -106,58 +88,22 @@
                 </label>
             </div>
 
-            <div class="m-t text-right">
+            <div class="m-t text-right col-sm-11">
                 {{	Form::submit(trans('adminlte_lang::message.routine_create_new'), ['class' => 'btn btn-primary']) }}
             </div>
             {!! Form::close() !!}
         </div>
 	</div>
+
     <!--templates-->
-    @include('card.templates')
+    <div class="hidden templates">
+        <div id="card-items-tpl">
+            @include('card.templates')
+        </div>
+    </div>
     <!--templates-->
-
-    @endsection
-
-@section('page-specific-scripts')
-	<script type="text/javascript">
-		$(document).ready(function($) {
-			var options = '';
-			$.ajax({
-				type: "GET",
-				dataType: 'json',
-				url: '/storageData',
-				data: {},
-				success: function(data) {
-					for (var i = 0; i < data.length; i++) {
-						options = options + '<option value=' + data[i].storage_id + '>' + data[i].title + '</option>';
-					}
-
-					$('#storage_options').val(options);
-
-					$('select.form-control[name="storage_id[]"]').find('option').remove();
-					$('select.form-control[name="storage_id[]"]').append(options);
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log('Error while processing services data range!');
-				}
-			});
-
-			$('#card-items').on('change', 'select[name="storage_id[]"]', function(e){
-				$.ajax({
-					type: 'POST',
-					dataType: 'json',
-					data: {'storage_id' : $(this).val()},
-					url: "<?php echo route('card.productOptions') ?>",
-					success: function(data) {
-						$(e.target).parent().next().children('select[name="product_id[]"]').first().html('');
-						$(e.target).parent().next().children('select[name="product_id[]"]').first().html(data.options);
-					}
-				});
-			});
-		});
-	</script>
 @endsection
 
-{{-- @section('scripts')
-	{!! Html::script('js/parsley.min.js') !!}
-@endsection --}}
+@section('page-specific-scripts')
+    @include('card.scripts')
+@endsection

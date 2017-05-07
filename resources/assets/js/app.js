@@ -129,7 +129,7 @@ const app = new Vue({
     mounted: function () {
         this.detailed_services_count = $('#detailed-services').find('.wrap-it').length-1;
         this.detailed_products_count = $('#detailed-products').find('.wrap-it').length-1;
-        this.card_items_count = $('#card-items').find('.wrap-it').length-1;
+        this.card_items_count = $('#card-items').find('.wrap-it').length-2;
         this.transaction_items_count = $('#transaction-items').find('.wrap-it').length-1;
 
         if(this.detailed_services_count != 0) {
@@ -138,10 +138,6 @@ const app = new Vue({
 
         if(this.detailed_products_count != 0) {
             $('a[href="#detailed-products"] .badge.label-danger').removeClass('hidden');
-        }
-
-        if(this.card_items_count != 0) {
-            $('a[href="#card-items"] .badge.label-danger').removeClass('hidden');
         }
 
         if(this.transaction_items_count != 0) {
@@ -361,9 +357,6 @@ $(document).ready(function () {
                     data: {'client_ids' : JSON.stringify(selIds)},
                     success: function(data) {
                         var data = $.parseJSON(data);
-                        //if ( console && console.log ) {
-                        //console.log( "Employees data:", data);
-                        //}
 
                         if (data.success == true) {
                             $("#clients_grid").trigger("reloadGrid");
@@ -701,27 +694,27 @@ $(document).ready(function () {
     $('#card-items').on('click', '#add-card-item', function(e) {
         if( $(this).hasClass('btn-add') ) {
             $('#card-items').append($('#card-items-tpl').html());
+            $('#card-items .wrap-it:last-of-type select[name="storage_id[]"]').removeClass('form-control').addClass('js-select-basic-single-alt');
+            $('#card-items .wrap-it:last-of-type select[name="product_id[]"]').removeClass('form-control').addClass('js-select-basic-single-alt');
 
-            $('select.form-control[name="storage_id[]"]').last().find('option').remove();
-            $('select.form-control[name="storage_id[]"]').last().append($('#storage_options').val());
-
+            $('#card-items .wrap-it:last-of-type .js-select-basic-single-alt').select2({
+                theme: "alt-control",
+                minimumResultsForSearch: Infinity
+            }).on("select2:open", function () {
+                $('.select2-results__options').niceScroll({cursorcolor:"#969696", cursorborder: "1px solid #787878", cursorborderradius: "0", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.9, cursoropacitymax:1, boxzoom:true, autohidemode:false});
+            });
             app.card_items_count++;
-            //$('a[href="#card-items"] .badge.label-danger').removeClass('hidden');
+
+
             $(this).addClass('btn-remove').removeClass('btn-add');
             $(this).off();
             $(this).on('click', function(e) {
                 $(this).parents('.wrap-it').remove();
                 app.card_items_count--;
-                // if (app.card_items_count == 0) {
-                //     $('a[href="#card-items"] .badge.label-danger').addClass('hidden');
-                // }
             });
         } else {
             $(this).parents('.wrap-it').remove();
             app.card_items_count--;
-            // if (app.card_items_count == 0) {
-            //     $('a[href="#card-items"] .badge.label-danger').addClass('hidden');
-            // }
         }
     });
 

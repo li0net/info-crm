@@ -22,4 +22,6 @@
     <!--текущая локаль-->
     <div id="current_lang">{{Config::get('app.locale')}}</div>
 
+    <!--текстовки склад-->
+    <div id="storage_select_storage">{{ trans('adminlte_lang::message.select_storage') }}</div>
 </div>

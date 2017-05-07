@@ -45,8 +45,7 @@
 					<th>{{ trans('adminlte_lang::message.title') }}</th>
 					<th>{{ trans('adminlte_lang::message.description') }}</th>
 					<th></th>
-					<th></th>
-					<th></th>
+					<th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
 				</thead>
 				<tbody>
 					@foreach($cards as $card)
@@ -62,8 +61,8 @@
 								@if( null !== $card->card_items )
 									<div class="row">
 										<div class="col-sm-12 text-center">
-											<div class="form-group">
-												<a href="#card-items-{{$card->card_id}}" data-toggle="collapse" class="btn btn-link btn-xs card-items-toggle">
+											<div class="form-group table-form-group">
+												<a href="#card-items-{{$card->card_id}}" data-toggle="collapse" class="btn btn-link link-blue btn-xs card-items-toggle">
 												<span class="badge label-danger hidden">0</span>
 												{{ trans('adminlte_lang::message.routine_structure') }}
 												<i class="fa fa-caret-down"></i></a>
@@ -79,7 +78,6 @@
 										<div class="row">
 											<div class="col-sm-12"><hr></div>
 										</div>
-										
 										<div class="form-group">
 											@foreach($card->card_items as $card_item)
 												<div class="row">
@@ -98,13 +96,13 @@
 									</div>
 								@endif
 							</td>
-							<td class="text-right">
+							<td class="text-center">
 								@if ($user->hasAccessTo('card', 'edit', 0))
-									<a href="{{ route('card.edit', $card->card_id) }}" id="card_edit" class="btn btn-default btn-sm"><i class='fa fa-pencil'></i></a>
+									<a href="{{ route('card.edit', $card->card_id) }}" id="card_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
 								@endif
 								@if ($user->hasAccessTo('card', 'delete', 0))
 									{!! Form::open(['route' => ['card.destroy', $card->card_id], 'id' => 'form'.$card->card_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$card->card_id}}')" class="btn btn-default btn-sm"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$card->card_id}}')" class="table-action-link danger-action"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	
