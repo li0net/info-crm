@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
         // For mobile API requests
         if ($request->is('api/v*/mobile/*')) {
             // The response MUST include a WWW-Authenticate header field
-            header('WWW-Authenticate: Bearer realm="InfoCRM"');
+            header('WWW-Authenticate: Bearer realm="InfoGroup"');
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
