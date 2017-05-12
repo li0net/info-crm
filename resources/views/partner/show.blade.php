@@ -58,13 +58,13 @@
             </dl>
         </div>
         <div class="m-t text-right">
-            @if ($user->hasAccessTo('partner', 'edit', 0))
-            {!! Html::linkRoute('partner.edit', trans('adminlte_lang::message.edit'), [$partner->partner_id], ['class'=>'btn btn-primary pull-right']) !!}
-            @endif
             @if ($user->hasAccessTo('partner', 'delete', 0))
-            {!! Form::open(['route' => ['partner.destroy', $partner->partner_id], 'method' => 'DELETE', 'class' => 'pull-right']) !!}
+            {!! Form::open(['route' => ['partner.destroy', $partner->partner_id], 'method' => 'DELETE', 'class' => 'pull-left']) !!}
             {{ Form::submit(trans('adminlte_lang::message.delete'), ['class'=>'btn btn-danger m-r']) }}
             {!! Form::close() !!}
+            @endif
+            @if ($user->hasAccessTo('partner', 'edit', 0))
+                {!! Html::linkRoute('partner.edit', trans('adminlte_lang::message.edit'), [$partner->partner_id], ['class'=>'btn btn-primary pull-left m-l']) !!}
             @endif
         </div>
     </div>

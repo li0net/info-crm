@@ -554,4 +554,11 @@ return [
     'choose'	                => 'Escoger',
     'pay'	                    => 'Paga',
     'card_updated'	            => 'Card updated!',
+    'code'	                    => 'Código',
+    'product'	                => 'Bienes',
+    'payment'	                => 'Pago',
+    'paid'	                    => 'Pagado',
+    'create'	                => 'Crear',
+    'from_storage'  	  	  	=> 'franco almacén',
+    'to_storage'  	  	  	    => 'El almacén',
 ];

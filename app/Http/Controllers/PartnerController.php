@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Partner;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Session;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class PartnerController extends Controller

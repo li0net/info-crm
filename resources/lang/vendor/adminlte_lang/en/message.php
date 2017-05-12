@@ -552,4 +552,11 @@ return [
     'choose'	                => 'Choose',
     'pay'	                    => 'Pay',
     'card_updated'	            => 'Card updated!',
+    'code'	                    => 'Code',
+    'product'	                => 'Product',
+    'payment'	                => 'Payment',
+    'paid'	                    => 'Paid',
+    'create'	                => 'Create',
+    'from_storage'  	  	  	=> 'From storage',
+    'to_storage'  	  	  	    => 'To storage',
 ];

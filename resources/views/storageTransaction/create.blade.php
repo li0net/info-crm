@@ -31,10 +31,10 @@
             <div class="row">
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('date', 'Дата и время:') }}
+                        {{ Form::label('date', trans('adminlte_lang::message.date_and_time')) }}
                     </div>
                     <div class="col-sm-5">
-                        {{ Form::text('transaction-date', '10-02-2017', ['class' => 'form-control hasDatepicker', 'required' => '', 'maxlength' => '110', 'id' => 'transaction-date']) }}
+                        {{ Form::text('transaction-date', '', ['class' => 'form-control hasDatepicker', 'required' => '', 'maxlength' => '110', 'id' => 'transaction-date']) }}
                     </div>
                     <div class="col-sm-2">
                         {{ Form::select('transaction-hour', $transaction_hours, null, ['class' => 'js-select-basic-single', 'required' => '', 'id' => 'transaction-hour']) }}
@@ -49,11 +49,18 @@
 
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('type', 'Тип: ') }}
+                        {{ Form::label('type', trans('adminlte_lang::message.storage_type')) }}
                     </div>
                     <div class="col-sm-9">
-                        {{ Form::select('type', ['income' => 'Приход', 'expenses' => 'Расход', 'discharge' => 'Списание', 'transfer' => 'Перемещение'],
-                        'income', ['class' => 'js-select-basic-single', 'required' => '']) }}
+                        {{ Form::select('type', [
+                            'income' => trans('adminlte_lang::message.storage_income'),
+                            'expenses' => trans('adminlte_lang::message.storage_expense'),
+                            'discharge' => trans('adminlte_lang::message.storage_discharge'),
+                            'transfer' => trans('adminlte_lang::message.transfer')
+                            ],
+                        'income', [
+                        'class' => 'js-select-basic-single',
+                        'required' => '']) }}
                     </div>
                     <label class="col-sm-1 text-left">
                         <a class="fa fa-info-circle" original-title="">&nbsp;</a>
@@ -62,7 +69,7 @@
                 <div class="transaction-type-content">
                     <div class="form-group">
                         <div class="col-sm-2 control-label">
-                            {{ Form::label('partner_id', 'Контрагент: ') }}
+                            {{ Form::label('partner_id', trans('adminlte_lang::message.partner')) }}
                         </div>
                         <div class="col-sm-9">
                             {{ Form::select('partner_id', $partners, null, ['class' => 'js-select-basic-single', 'required' => '']) }}
@@ -74,71 +81,69 @@
 
                     <div class="form-group">
                         <div class="col-sm-2 control-label">
-                            {{ Form::label('storage_id', 'Склад: ') }}
+                            {{ Form::label('storage_id', trans('adminlte_lang::message.storage')) }}
                         </div>
                         <div class="col-sm-9">
-                            {{ Form::select('storage_id', $storages, null, ['class' => 'js-select-basic-single', 'required' => '']) }}
+                            {{ Form::select('storage_id', $storages, null, [
+                                'placeholder' => trans('adminlte_lang::message.select_storage'),
+                                'class' => 'js-select-basic-single',
+                                'required' => '']) }}
                         </div>
                         <label class="col-sm-1 text-left">
                             <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                         </label>
                     </div>
                 </div>
-
                 <div id="transaction-items" class="form-group collapse in">
                     <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-8">
-                            <div class="col-sm-3">Товар</div>
-                            <div class="col-sm-2">Цена</div>
-                            <div class="col-sm-2">Количество</div>
-                            <div class="col-sm-1">Скидка</div>
-                            <div class="col-sm-2">Сумма</div>
-                            <div class="col-sm-2">Код</div>
+                        <div class="col-sm-9 col-sm-offset-2">
+                            <div class="col-sm-3 text-center">{{ trans('adminlte_lang::message.product') }}</div>
+                            <div class="col-sm-2 text-center">{{ trans('adminlte_lang::message.price') }}</div>
+                            <div class="col-sm-2 text-center">{{ trans('adminlte_lang::message.amount') }}</div>
+                            <div class="col-sm-2 text-center">{{ trans('adminlte_lang::message.discount') }}</div>
+                            <div class="col-sm-2 text-center">{{ trans('adminlte_lang::message.sum') }}</div>
+                            <div class="col-sm-1 text-center">{{ trans('adminlte_lang::message.code') }}</div>
                         </div>
-                        <div class="col-sm-2"></div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-10 col-sm-offset-1">
+                        <div class="col-sm-9 col-sm-offset-2">
                             <hr>
                         </div>
                     </div>
                     <div class="row" id="transaction-content">
-                        <div class="wrap-it">
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-8" style="padding:0">
-                                <div class="col-sm-3">
-                                    {{ Form::select('product_id', [], null, ['class' => 'js-select-basic-single',
+                        <div class="wrap-it alt-control-bar col-sm-9 col-sm-offset-2">
+                            <div class="col-sm-3 text-center">
+                                {{ Form::select('product_id', [], null, [
+                                    'class' => 'js-select-basic-single-alt',
                                     'maxlength' => '110',
-                                    'placeholder' => 'Выберите товар']) }}
-                                </div>
-                                <div class="col-sm-2">
-                                    {{ Form::text('price', null, ['class' => 'form-control']) }}
-                                </div>
-                                <div class="col-sm-2">
-                                    {{ Form::text('amount', null, ['class' => 'form-control']) }}
-                                </div>
-                                <div class="col-sm-1">
-                                    {{ Form::text('discount', null, ['class' => 'form-control']) }}
-                                </div>
-                                <div class="col-sm-2">
-                                    {{ Form::text('sum', null, ['class' => 'form-control']) }}
-                                </div>
-                                <div class="col-sm-2">
-                                    {{ Form::text('code', null, ['class' => 'form-control']) }}
-                                </div>
+                                    'placeholder' => trans('adminlte_lang::message.select_good')
+                                ]) }}
+                            </div>
+                            <div class="col-sm-2 text-center">
+                                {{ Form::text('price', null, ['class' => 'form-control']) }}
+                            </div>
+                            <div class="col-sm-2 text-center">
+                                {{ Form::text('amount', null, ['class' => 'form-control']) }}
+                            </div>
+                            <div class="col-sm-2 text-center">
+                                {{ Form::text('discount', null, ['class' => 'form-control']) }}
+                            </div>
+                            <div class="col-sm-2 text-center">
+                                {{ Form::text('sum', null, ['class' => 'form-control']) }}
+                            </div>
+                            <div class="col-sm-1 text-center">
+                                {{ Form::text('code', null, ['class' => 'form-control']) }}
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('is_paidfor', 'Оплата: ') }}
+                        {{ Form::label('is_paidfor', trans('adminlte_lang::message.payment')) }}
                     </div>
                     <label class="col-sm-9 text-left" style="font-weight: 300">
                         {{ Form::checkbox('is_paidfor', 1, 0, ['style' => 'margin-right: 10px;']) }}
-                        Оплачено
+                        {{ trans('adminlte_lang::message.paid') }}
                     </label>
                     <label class="col-sm-1 text-left">
                         <a class="fa fa-info-circle" id="is_paidfor" original-title="">&nbsp;</a>
@@ -147,7 +152,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('description', 'Описание:') }}
+                        {{ Form::label('description', trans('adminlte_lang::message.description')) }}
                     </div>
                     <div class="col-sm-9">
                         {{ Form::textarea('description', null, ['class' => 'form-control']) }}
@@ -158,8 +163,8 @@
                 </div>
             </div>
 
-            <div class="m-t text-right">
-                {{	Form::submit('Создать новую складскую операцию', ['class' => 'btn btn-primary']) }}
+            <div class="m-t text-right col-sm-12">
+                {{	Form::submit(trans('adminlte_lang::message.create'), ['class' => 'btn btn-primary']) }}
             </div>
             {!! Form::close() !!}
         </div>
@@ -176,10 +181,10 @@
 					$('.transaction-type-content').append(
 								'<div class="form-group"> \
 									<div class="col-sm-2 control-label"> \
-										{{ Form::label('partner_id', 'Контрагент: ') }} \
+										{{ Form::label('partner_id', trans('adminlte_lang::message.partner')) }} \
 									</div> \
 									<div class="col-sm-9"> \
-										{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '']) }} \
+										{{ Form::select('partner_id', $partners, null, ['class' => 'js-select-basic-single', 'required' => '']) }} \
 									</div> \
 									<label class="col-sm-1 text-left"> \
 										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
@@ -188,10 +193,10 @@
 								\
 								<div class="form-group"> \
 									<div class="col-sm-2 control-label"> \
-										{{ Form::label('storage_id', 'Склад: ') }} \
+										{{ Form::label('storage_id',trans('adminlte_lang::message.storage')) }} \
 									</div> \
 									<div class="col-sm-9">\
-										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
+										{{ Form::select('storage_id', $storages, null, ['placeholder' => trans('adminlte_lang::message.select_storage'),'class' => 'js-select-basic-single-alt', 'required' => '']) }} \
 									</div> \
 									<label class="col-sm-1 text-left"> \
 										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
@@ -201,10 +206,10 @@
 					$('.transaction-type-content').append(
 								'<div class="form-group"> \
 									<div class="col-sm-2 control-label"> \
-										{{ Form::label('client_id', 'Клиент: ') }} \
+										{{ Form::label('client_id', trans('adminlte_lang::message.client')) }} \
 									</div> \
 									<div class="col-sm-9"> \
-										{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '']) }} \
+										{{ Form::select('client_id', $clients, null, ['class' => 'js-select-basic-single', 'required' => '']) }} \
 									</div> \
 									<label class="col-sm-1 text-left"> \
 										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
@@ -213,10 +218,10 @@
 								\
 								<div class="form-group"> \
 									<div class="col-sm-2 control-label"> \
-										{{ Form::label('employee_id', 'Сотрудник: ') }} \
+										{{ Form::label('employee_id', trans('adminlte_lang::message.employee')) }} \
 									</div> \
 									<div class="col-sm-9"> \
-										{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '']) }} \
+										{{ Form::select('employee_id', $employees, null, ['class' => 'js-select-basic-single', 'required' => '']) }} \
 									</div> \
 									<label class="col-sm-1 text-left"> \
 										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
@@ -225,10 +230,10 @@
 								\
 								<div class="form-group"> \
 									<div class="col-sm-2 control-label"> \
-										{{ Form::label('storage_id', 'Склад: ') }} \
+										{{ Form::label('storage_id', trans('adminlte_lang::message.storage')) }} \
 									</div> \
 									<div class="col-sm-9"> \
-										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
+										{{ Form::select('storage_id', $storages, null, ['placeholder' => trans('adminlte_lang::message.select_storage'),'class' => 'js-select-basic-single', 'required' => '']) }} \
 									</div> \
 									<label class="col-sm-1 text-left"> \
 										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
@@ -238,10 +243,10 @@
 					$('.transaction-type-content').append(
 									'<div class="form-group"> \
 										<div class="col-sm-2 control-label"> \
-											{{ Form::label('storage_id', 'Склад: ') }} \
+											{{ Form::label('storage_id', trans('adminlte_lang::message.storage')) }} \
 										</div> \
 										<div class="col-sm-9"> \
-											{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
+											{{ Form::select('storage_id', $storages, null, ['placeholder' => trans('adminlte_lang::message.select_storage'),'class' => 'js-select-basic-single', 'required' => '']) }} \
 										</div> \
 										<label class="col-sm-1 text-left"> \
 											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
@@ -251,10 +256,10 @@
 					$('.transaction-type-content').append(
 									'<div class="form-group"> \
 										<div class="col-sm-2 control-label"> \
-											{{ Form::label('storage_id', 'Со склада: ') }} \
+											{{ Form::label('storage_id', trans('adminlte_lang::message.from_storage')) }} \
 										</div> \
 										<div class="col-sm-9"> \
-											{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
+											{{ Form::select('storage_id', $storages, null, ['placeholder' => trans('adminlte_lang::message.select_storage'),'class' => 'js-select-basic-single', 'required' => '']) }} \
 										</div> \
 										<label class="col-sm-1 text-left"> \
 											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
@@ -262,16 +267,21 @@
 									</div> \
 									<div class="form-group"> \
 										<div class="col-sm-2 control-label"> \
-											{{ Form::label('storage2_id', 'На склад: ') }} \
+											{{ Form::label('storage2_id', trans('adminlte_lang::message.to_storage')) }} \
 										</div> \
 										<div class="col-sm-9"> \
-											{{ Form::select('storage2_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
+											{{ Form::select('storage2_id', $storages, null, ['placeholder' => trans('adminlte_lang::message.select_storage'),'class' => 'js-select-basic-single', 'required' => '']) }} \
 										</div> \
 										<label class="col-sm-1 text-left"> \
 											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
 										</label> \
 									</div>');
 				}
+                $(".js-select-basic-single").select2({
+                    minimumResultsForSearch: Infinity
+                }).on("select2:open", function () {
+                    $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
+                });
 			});
 			$('.transaction-type-content').on('change', 'select[name="storage_id"]', function(e){
 				$.ajax({
