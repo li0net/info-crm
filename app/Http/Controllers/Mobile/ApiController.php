@@ -192,4 +192,25 @@ class ApiController extends Controller
 
         return response()->json($appts);
     }
+
+    /*
+    Филиал
+    Запрос: Адрес + язык
+    Ответ: Список филиалов, у каждого филиала: картинка + айди филиала
+    */
+    public function getBranches(Request $request) {
+        // get user's super organization id
+        // select organizations for that super org id
+        $branches = [];
+        $orgs = $request->user()->organization->superOrganization->organizations;
+        foreach ($orgs AS $org) {
+            $branches[] = [
+                'org_id'    => $org->organization_id,
+                'name'      => $org->name,
+                'logo'      => $org->getLogoUri()
+            ];
+        }
+
+        return response()->json($branches);
+    }
 }
