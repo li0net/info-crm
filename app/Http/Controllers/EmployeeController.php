@@ -296,7 +296,7 @@ class EmployeeController extends Controller
             if ($request->file('avatar') !== null) {
                 $imageName = time().'.'.$request->file('avatar')->getClientOriginalExtension();
 
-                $request->file('avatar')->move(public_path('images'), $imageName);
+                $request->file('avatar')->move(public_path('uploaded_images'), $imageName);
 
                 $employee->avatar_image_name = $imageName;
             }
