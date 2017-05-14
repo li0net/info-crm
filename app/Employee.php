@@ -48,7 +48,9 @@ class Employee extends Model
 	protected $fillable = [
 		'name',
 		'email',
-		'phone'
+		'phone',
+        'descr',
+        'position_id'
 	];
 
 	public function organization()
@@ -797,6 +799,22 @@ class Employee extends Model
         DB::commit();
 
         return TRUE;
+    }
+
+    /**
+     * Возвращает путь к аватару сотрудника
+     * если лого нет  - возвращает урл дефолтного аватара
+     * @return string
+     */
+    public function getAvatarUri() {
+        $logoUri = asset('img/crm/avatar/avatar100.jpg');
+        if ($this->avatar_image_name) {
+            $logoPath = public_path('uploaded_images') . $this->avatar_image_name;
+            if (file_exists($logoPath)) {
+                $logoUri = asset('uploaded_images/' . $this->avatar_image_name);
+            }
+        }
+        return $logoUri;
     }
 
 }

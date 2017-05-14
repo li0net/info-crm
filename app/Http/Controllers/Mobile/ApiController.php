@@ -44,7 +44,10 @@ class ApiController extends Controller
             return response('Invalid request data', 403);
         }
 
-        $client = Client::where('client_id', $clientId)->where('organization_id', $request->user()->organization_id)->first();
+        $client = Client::where('client_id', $clientId)
+            ->where('organization_id', $request->user()->organization_id)
+            ->where('is_active', 1)
+            ->first();
         if (!$client) {
             return response('Invalid client id', 403);
         }
@@ -71,8 +74,8 @@ class ApiController extends Controller
             'discount' => $client['discount'],
             'birthday' => $client['birthday'],
             'comment' => $client['comment'],
-            'total_bought' => $client['total_bought'],
-            'total_paid' => $client['total_paid'],
+            'total_bought' => round($client['total_bought'], 2),
+            'total_paid' => round($client['total_paid'], 2),
             'online_reservation_available' => $client['online_reservation_available']
         ];
 
@@ -212,5 +215,195 @@ class ApiController extends Controller
         }
 
         return response()->json($branches);
+    }
+
+    /*
+    Список сотрудников - Запрос: Адрес + язык + айди филиала
+    Ответ: Список сотрудников: Имя + Фамилия + Портрет
+    */
+    public function getBranchEmployees(Request $request) {
+        $orgId = $request->input('branch_id');
+
+        if (is_null($orgId)) {
+            return response('Invalid request data', 403);
+        }
+
+        $orgs = $request->user()->organization->superOrganization->organizations;
+        $employeesData = [];
+
+        $branchFound = false;
+        foreach ($orgs AS $org) {
+            if ($org->organization_id == $orgId) {
+                $branchFound = true;
+                $emplsForOrg = $org->employees;
+                foreach ($emplsForOrg AS $emp) {
+                    $employeesData[] = [
+                        'employee_id'   => $emp->employee_id,
+                        'name'          => $emp->name,
+                        'avatar'        => $emp->getAvatarUri()
+                    ];
+                }
+            }
+        }
+
+        if (!$branchFound) {
+            return response('Invalid branch id', 403);
+        }
+
+        return response()->json($employeesData);
+    }
+
+    /*
+    Создать запись в журнал Запрос:  Данные для записи(дата, время, услуга, мастер и т.д.)
+    Ответ: Ок/Ошибка
+    */
+    public function createAppointment(Request $request) {
+        /*
+        array:10 [
+            "client_name" => "Имечко фамилия"
+            "client_phone" => "986463466"
+            "client_email" => "dfdffd"
+            "service_id" => "17"
+            "employee_id" => "4"
+            "date_from" => "2016-12-27"
+            "time_from" => "11:30"
+            "duration_hours" => "00"
+            "duration_minutes" => "45"
+            "note" => "Может опоздать на 20 минут"
+        ]
+        */
+
+        //Log::info(__METHOD__ . ' before validation');
+        $validator = Validator::make($request->all(), [
+            'client_name' => 'required|max:120',
+            'client_phone' => 'required|phone_crm', // custom validation rule
+            'service_id' => 'required|max:10|exists:services',
+            'employee_id' => 'required|max:10|exists:employees',
+            'date_from' => 'required|date_format:"Y-m-d"',    // date
+            'time_from' => 'required',      // date_format:'H:i'
+            'duration_hours' => 'required',
+            'duration_minutes' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $errs = $validator->messages();
+            //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
+
+            return json_encode([
+                'success' => false,
+                'validation_errors' => $errs
+            ]);
+        }
+
+        // Создать или найти клиента по client_phone и client_email
+        $clientName =  $request->user()->normalizeUserName($request->input('client_name'));
+        $clientPhone = $request->user()->normalizePhoneNumber($request->input('client_phone'));
+        $clientEmail = ($request->input('client_email')) ? $request->user()->normalizeEmail($request->input('client_email')) : '';
+
+        // Ищем клиента по телефону и email
+        $client = Client::where('organization_id', $request->input('organization_id'))
+            ->where('phone', $clientPhone)
+            ->first();
+        if (is_null($client) AND !empty($clientEmail)) {
+            $client = Client::where('organization_id', $request->input('organization_id'))
+                ->where('email', $clientEmail)
+                ->first();
+        }
+        // если такой клиент уже есть (поиск по номеру телефона) - добавляем ему email, если не было, иначе не апдейтим его
+        if (is_null($client)) {
+            $client = new Client();
+            $client->name = $clientName;
+            $client->phone = $clientPhone;
+            if ($request->input('client_email')) {
+                $client->email = $clientEmail;
+            }
+            $client->organization_id = $request->user()->organization_id;
+            $client->save();
+        } else {
+            if (empty($client->email) AND !empty($request->input('client_email'))) {
+                $client->email = $clientEmail;
+                $client->save();
+            }
+        }
+
+
+        // не позволяем создать запись с 0 длительностью
+        if ($request->input('duration_hours') == '00' AND $request->input('duration_minutes') == '00') {
+            return response('Invalid duration data', 403);
+        }
+
+        // преобразовываем duration_hours, duration_minutes в timestamp end
+        $endDateTime = strtotime(
+            $request->input('date_from') . ' ' . $request->input('time_from') . ' + ' . $request->input('duration_hours') . ' hours ' . $request->input('duration_minutes') . ' minutes'
+        );
+        $endDateTime = date('Y-m-d H:i:s', $endDateTime);
+
+        // Проверяем есть ли у юзера права на создание Записи
+        $accessLevel = $request->user()->hasAccessTo('appointment', 'create', 0);
+        if ($accessLevel < 1) {
+            //throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+            return response('Permission denied', 403);
+        }
+
+        // Проверка что данное время все еще свободно у мастера
+        $service = Service::where('service_id', $request->input('service_id'))
+            ->join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id')
+            ->where('service_categories.organization_id', $request->user()->organization_id)
+            ->first();
+        if (!$service) return response()->json(array('success' => false, 'error' => 'Service data error'));
+
+        $employee = Employee::find($request->input('employee_id'))->where('organization_id', $request->user()->organization_id)->first();
+        if (!$employee) return response()->json(array('success' => false, 'error' => 'Employee data error'));
+
+        $freeTimeIntervals = $employee->getFreeTimeIntervals($request->input('date_from') . ' ' . $request->input('time_from').':00', $endDateTime);
+        if (count($freeTimeIntervals) != 1) {   // время свободно если возвращается один свободный интервал
+            return response()->json(array('success' => false, 'error' => trans('main.widget:error_time_already_taken')));
+        }
+        if ($freeTimeIntervals[0]->work_start != $request->input('date_from') . ' ' . $request->input('time_from') . ':00' OR $freeTimeIntervals[0]->work_end != $endDateTime) {
+            // если границы интервала не равны (тут могут быть только уже) тем которые передавались в качестве параметров, значит не весь диапазон времени свободен
+            return response()->json(array('success' => false, 'error' => trans('main.widget:error_time_already_taken')));
+        }
+
+        $appointment = new Appointment();
+        $appointment->organization_id = $request->user()->organization_id;
+        if ($request->input('employee_id')) {
+            $appointment->is_employee_important = 1;
+        }
+
+
+        $appointment->client_id = $client->client_id;
+        $appointment->service_id = $request->input('service_id');
+        // преобразовываем date_from, time_from в timestamp start
+        $appointment->start = $request->input('date_from') . ' ' . $request->input('time_from');
+        $appointment->end = $endDateTime;
+        $appointment->employee_id = $request->input('employee_id');
+        if (!empty($request->input('note'))) {
+            $appointment->note = $request->input('note');
+        }
+        if ($request->input('service_price')) {
+            $appointment->service_price = $request->input('service_price');
+        }
+        if ($request->input('service_discount')) {
+            $appointment->service_discount = $request->input('service_discount');
+        }
+        if ($request->input('service_sum')) {
+            $appointment->service_sum = $request->input('service_sum');
+        }
+
+        if ( $request->input('remind_by_sms_in')) {
+            $appointment->remind_by_sms_in = $request->input('remind_by_sms_in_value');
+        } else {
+            $appointment->remind_by_sms_in = 0;
+        }
+
+        if ( $request->input('remind_by_email_in')) {
+            $appointment->remind_by_email_in = $request->input('remind_by_email_in_value');
+        } else {
+            $appointment->remind_by_email_in = 0;
+        }
+        $appointment->state = 'created';  // пока поддерживаем только создание
+
+        $appointment->save();
+
+        return response()->json(array('success' => true, 'error' => ''));
     }
 }

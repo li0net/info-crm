@@ -36,3 +36,5 @@ Route::get('/v1/mobile/clientData', 'Mobile\ApiController@getClientData')->middl
 Route::get('/v1/mobile/searchClient', 'Mobile\ApiController@searchClient')->middleware('auth:api');
 Route::get('/v1/mobile/appointmentsForDate', 'Mobile\ApiController@getAppointments')->middleware('auth:api');
 Route::get('/v1/mobile/branchesData', 'Mobile\ApiController@getBranches')->middleware('auth:api');
+Route::get('/v1/mobile/branchEmployees', 'Mobile\ApiController@getBranchEmployees')->middleware('auth:api');
+Route::post('/v1/mobile/appointment', 'Mobile\ApiController@createAppointment')->middleware('auth:api');

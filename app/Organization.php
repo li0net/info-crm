@@ -112,6 +112,11 @@ class Organization extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
+
     /**
      * получает путь к лого организации
      * если лого нет  - возвращает пустое значение
