@@ -262,7 +262,8 @@ class CardController extends Controller
     {
         if($request->ajax()){
 
-            $options = Product::where('storage_id', $request->storage_id)->pluck('title', 'product_id')->all();
+            //выбираем только пролдукты,к оторые етьс на складе amount > 0
+            $options = Product::where('storage_id', $request->storage_id)->where('amount', '>' , 0)->pluck('title', 'product_id')->all();
 
             $data = view('card.options', compact('options'))->render();
             return response()->json(['options' => $data]);

@@ -123,10 +123,10 @@
                                 {{ Form::text('price', null, ['class' => 'form-control']) }}
                             </div>
                             <div class="col-sm-2 text-center">
-                                {{ Form::text('amount', null, ['class' => 'form-control']) }}
+                                {{ Form::text('amount', null, ['class' => 'form-control', 'value'=>1]) }}
                             </div>
                             <div class="col-sm-2 text-center">
-                                {{ Form::text('discount', null, ['class' => 'form-control']) }}
+                                {{ Form::text('discount', null, ['class' => 'form-control', 'value'=>0]) }}
                             </div>
                             <div class="col-sm-2 text-center">
                                 {{ Form::text('sum', null, ['class' => 'form-control']) }}
@@ -283,6 +283,7 @@
                     $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
                 });
 			});
+
 			$('.transaction-type-content').on('change', 'select[name="storage_id"]', function(e){
 				$.ajax({
 					type: 'POST',

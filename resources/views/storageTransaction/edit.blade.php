@@ -53,9 +53,14 @@
                     {{ Form::label('type', 'Тип: ') }}
                 </div>
                 <div class="col-sm-9">
-                    {{ Form::select('type', ['income' => 'Приход', 'expenses' => 'Расход', 'discharge' => 'Списание', 'transfer' => 'Перемещение'],
+                    {{ Form::select('type', [
+                        'income' => trans('adminlte_lang::message.storage_income'),
+                        'expenses' => trans('adminlte_lang::message.storage_expense'),
+                        'discharge' => trans('adminlte_lang::message.storage_discharge'),
+                        'transfer' => trans('adminlte_lang::message.transfer')
+                    ],
                     $transaction->type,
-                    ['class' => 'form-control', 'required' => '']) }}
+                    [ 'class' => 'js-select-basic-single', 'required' => '']) }}
                 </div>
                 <label class="col-sm-1 text-left">
                     <a class="fa fa-info-circle" original-title="">&nbsp;</a>
@@ -65,10 +70,10 @@
                 @if ($transaction->type == 'income')
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('partner_id', 'Контрагент: ') }}
+                        {{ Form::label('partner_id', trans('adminlte_lang::message.partner')) }}
                     </div>
                     <div class="col-sm-9">
-                        {{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '']) }}
+                        {{ Form::select('partner_id', $partners, null, ['class' => 'js-select-basic-single', 'required' => '']) }}
                     </div>
                     <label class="col-sm-1 text-left">
                         <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -77,10 +82,13 @@
 
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('storage_id', 'Склад: ') }}
+                        {{ Form::label('storage_id', trans('adminlte_lang::message.storage')) }}
                     </div>
                     <div class="col-sm-9">
-                        {{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
+                        {{ Form::select('storage_id', $storages, null, [
+                            'placeholder' => trans('adminlte_lang::message.select_storage'),
+                            'class' => 'js-select-basic-single',
+                            'required' => '' ]) }}
                     </div>
                     <label class="col-sm-1 text-left">
                         <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -89,10 +97,10 @@
                 @elseif ($transaction->type == 'expenses')
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('client_id', 'Клиент: ') }}
+                        {{ Form::label('client_id', trans('adminlte_lang::message.client')) }}
                     </div>
                     <div class="col-sm-9">
-                        {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '']) }}
+                        {{ Form::select('client_id', $clients, null, ['class' => 'js-select-basic-single', 'required' => '']) }}
                     </div>
                     <label class="col-sm-1 text-left">
                         <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -101,10 +109,10 @@
 
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('employee_id', 'Сотрудник: ') }}
+                        {{ Form::label('employee_id', trans('adminlte_lang::message.employee')) }}
                     </div>
                     <div class="col-sm-9">
-                        {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '']) }}
+                        {{ Form::select('employee_id', $employees, null, ['class' => 'js-select-basic-single', 'required' => '']) }}
                     </div>
                     <label class="col-sm-1 text-left">
                         <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -113,10 +121,10 @@
 
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('storage_id', 'Склад: ') }}
+                        {{ Form::label('storage_id', trans('adminlte_lang::message.storage')) }}
                     </div>
                     <div class="col-sm-9">
-                        {{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
+                        {{ Form::select('storage_id', $storages, null, ['class' => 'js-select-basic-single', 'required' => '']) }}
                     </div>
                     <label class="col-sm-1 text-left">
                         <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -125,10 +133,10 @@
                 @elseif ($transaction->type == 'discharge')
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('storage_id', 'Склад: ') }}
+                        {{ Form::label('storage_id', trans('adminlte_lang::message.storage')) }}
                     </div>
                     <div class="col-sm-9">
-                        {{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
+                        {{ Form::select('storage_id', $storages, null, ['class' => 'js-select-basic-single', 'required' => '']) }}
                     </div>
                     <label class="col-sm-1 text-left">
                         <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -137,10 +145,10 @@
                 @else
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('storage1_id', 'Со склада: ') }}
+                        {{ Form::label('storage1_id', trans('adminlte_lang::message.from_storage')) }}
                     </div>
                     <div class="col-sm-9">
-                        {{ Form::select('storage1_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
+                        {{ Form::select('storage1_id', $storages, null, ['class' => 'js-select-basic-single', 'required' => '']) }}
                     </div>
                     <label class="col-sm-1 text-left">
                         <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -148,10 +156,10 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-2 control-label">
-                        {{ Form::label('storage2_id', 'На склад: ') }}
+                        {{ Form::label('storage2_id', trans('adminlte_lang::message.to_storage')) }}
                     </div>
                     <div class="col-sm-9">
-                        {{ Form::select('storage2_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
+                        {{ Form::select('storage2_id', $storages, null, ['class' => 'js-select-basic-single', 'required' => '']) }}
                     </div>
                     <label class="col-sm-1 text-left">
                         <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
@@ -162,56 +170,50 @@
 
             <div id="transaction-items" class="form-group collapse in">
                 <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-8">
-                        <div class="col-sm-3">Товар</div>
-                        <div class="col-sm-2">Цена</div>
-                        <div class="col-sm-2">Количество</div>
-                        <div class="col-sm-1">Скидка</div>
-                        <div class="col-sm-2">Сумма</div>
-                        <div class="col-sm-2">Код</div>
+                    <div class="col-sm-9 col-sm-offset-2">
+                        <div class="col-sm-3 text-center">{{ trans('adminlte_lang::message.product') }}</div>
+                        <div class="col-sm-2 text-center">{{ trans('adminlte_lang::message.price') }}</div>
+                        <div class="col-sm-2 text-center">{{ trans('adminlte_lang::message.amount') }}</div>
+                        <div class="col-sm-2 text-center">{{ trans('adminlte_lang::message.discount') }}</div>
+                        <div class="col-sm-2 text-center">{{ trans('adminlte_lang::message.sum') }}</div>
+                        <div class="col-sm-1 text-center">{{ trans('adminlte_lang::message.code') }}</div>
                     </div>
-                    <div class="col-sm-2"></div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
+                    <div class="col-sm-9 col-sm-offset-2">
                         <hr>
                     </div>
                 </div>
                 <div class="row" id="transaction-content">
-                    <div class="wrap-it">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-8" style="padding:0">
-                            <div class="col-sm-3">
-                                {{ Form::select('product_id', $pr[$transaction->product_id]->pluck('title', 'product_id'),
-                                $transaction->product_id,
-                                ['class' => 'form-control',
-                                'maxlength' => '110',
-                                'placeholder' => 'Выберите товар']) }}
-                            </div>
-                            <div class="col-sm-2">
-                                {{ Form::text('price',$transaction->price, ['class' => 'form-control']) }}
-                            </div>
-                            <div class="col-sm-2">
-                                {{ Form::text('amount', $transaction->amount, ['class' => 'form-control']) }}
-                            </div>
-                            <div class="col-sm-1">
-                                {{ Form::text('discount', $transaction->discount, ['class' => 'form-control']) }}
-                            </div>
-                            <div class="col-sm-2">
-                                {{ Form::text('sum', $transaction->sum, ['class' => 'form-control']) }}
-                            </div>
-                            <div class="col-sm-2">
-                                {{ Form::text('code', $transaction->code, ['class' => 'form-control']) }}
-                            </div>
+                    <div class="wrap-it alt-control-bar col-sm-9 col-sm-offset-2">
+                        <div class="col-sm-3 text-center">
+                        {{ Form::select('product_id', $pr[$transaction->product_id]->pluck('title', 'product_id'),
+                            $transaction->product_id,
+                            ['class' => 'js-select-basic-single-alt',
+                            'maxlength' => '110',
+                            'placeholder' => trans('adminlte_lang::message.select_good')]) }}
+                        </div>
+                        <div class="col-sm-2">
+                            {{ Form::text('price',$transaction->price, ['class' => 'form-control']) }}
+                        </div>
+                        <div class="col-sm-2">
+                            {{ Form::text('amount', $transaction->amount, ['class' => 'form-control']) }}
+                        </div>
+                        <div class="col-sm-2">
+                            {{ Form::text('discount', $transaction->discount, ['class' => 'form-control']) }}
+                        </div>
+                        <div class="col-sm-2">
+                            {{ Form::text('sum', $transaction->sum, ['class' => 'form-control']) }}
+                        </div>
+                        <div class="col-sm-1">
+                            {{ Form::text('code', $transaction->code, ['class' => 'form-control']) }}
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="col-sm-2 control-label">
-                    {{ Form::label('is_paidfor', 'Оплата: ') }}
+                    {{ Form::label('is_paidfor', trans('adminlte_lang::message.payment')) }}
                 </div>
                 <label class="col-sm-9 text-left" style="font-weight: 300">
                     {{ Form::checkbox('is_paidfor', true, $transaction->is_paidfor == true, ['style' => 'margin-right: 10px;']) }}
@@ -224,7 +226,7 @@
 
             <div class="form-group">
                 <div class="col-sm-2 control-label">
-                    {{ Form::label('description', 'Описание:') }}
+                    {{ Form::label('description', trans('adminlte_lang::message.description')) }}
                 </div>
                 <div class="col-sm-9">
                     {{ Form::textarea('description', null, ['class' => 'form-control']) }}
@@ -234,8 +236,7 @@
                 </label>
             </div>
 
-
-            <div class="text-left m-t ">
+            <div class="col-sm-11  text-right">
                 {!! Html::linkRoute('storagetransaction.show',  trans('adminlte_lang::message.cancel'), [$transaction->id], ['class'=>'btn btn-danger m-r']) !!}
                 {{ Form::submit(trans('adminlte_lang::message.save'), ['class'=>'btn btn-primary']) }}
             </div>
@@ -252,106 +253,110 @@
                 $('.transaction-type-content').children().remove();
                 if( $(this).val() == 'income') {
                     $('.transaction-type-content').append(
-                                '<div class="form-group"> \
-                                    <div class="col-sm-2 control-label"> \
-                                        {{ Form::label('partner_id', 'Контрагент: ') }} \
-                                    </div> \
-                                    <div class="col-sm-9"> \
-                                        {{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '']) }} \
-                                    </div> \
-                                    <label class="col-sm-1 text-left"> \
-                                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
-                                    </label> \
-                                </div> \
-                                \
-                                <div class="form-group"> \
-                                    <div class="col-sm-2 control-label"> \
-                                        {{ Form::label('storage_id', 'Склад: ') }} \
-                                    </div> \
-                                    <div class="col-sm-9">\
-                                        {{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
-                                    </div> \
-                                    <label class="col-sm-1 text-left"> \
-                                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
-                                    </label> \
-                                </div>');
+                        '<div class="form-group"> \
+                            <div class="col-sm-2 control-label"> \
+                                {{ Form::label('partner_id', trans('adminlte_lang::message.partner')) }} \
+									</div> \
+									<div class="col-sm-9"> \
+										{{ Form::select('partner_id', $partners, null, ['class' => 'js-select-basic-single', 'required' => '']) }} \
+									</div> \
+									<label class="col-sm-1 text-left"> \
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+									</label> \
+								</div> \
+								\
+								<div class="form-group"> \
+									<div class="col-sm-2 control-label"> \
+										{{ Form::label('storage_id',trans('adminlte_lang::message.storage')) }} \
+									</div> \
+									<div class="col-sm-9">\
+										{{ Form::select('storage_id', $storages, null, ['placeholder' => trans('adminlte_lang::message.select_storage'),'class' => 'js-select-basic-single-alt', 'required' => '']) }} \
+									</div> \
+									<label class="col-sm-1 text-left"> \
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+									</label> \
+								</div>');
                 } else if ($(this).val() == 'expenses') {
                     $('.transaction-type-content').append(
-                                '<div class="form-group"> \
-                                    <div class="col-sm-2 control-label"> \
-                                        {{ Form::label('client_id', 'Клиент: ') }} \
-                                    </div> \
-                                    <div class="col-sm-9"> \
-                                        {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '']) }} \
-                                    </div> \
-                                    <label class="col-sm-1 text-left"> \
-                                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
-                                    </label> \
-                                </div> \
-                                \
-                                <div class="form-group"> \
-                                    <div class="col-sm-2 control-label"> \
-                                        {{ Form::label('employee_id', 'Сотрудник: ') }} \
-                                    </div> \
-                                    <div class="col-sm-9"> \
-                                        {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '']) }} \
-                                    </div> \
-                                    <label class="col-sm-1 text-left"> \
-                                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
-                                    </label> \
-                                </div> \
-                                \
-                                <div class="form-group"> \
-                                    <div class="col-sm-2 control-label"> \
-                                        {{ Form::label('storage_id', 'Склад: ') }} \
-                                    </div> \
-                                    <div class="col-sm-9"> \
-                                        {{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
-                                    </div> \
-                                    <label class="col-sm-1 text-left"> \
-                                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
-                                    </label> \
-                                </div>');
+                        '<div class="form-group"> \
+                            <div class="col-sm-2 control-label"> \
+                                {{ Form::label('client_id', trans('adminlte_lang::message.client')) }} \
+									</div> \
+									<div class="col-sm-9"> \
+										{{ Form::select('client_id', $clients, null, ['class' => 'js-select-basic-single', 'required' => '']) }} \
+									</div> \
+									<label class="col-sm-1 text-left"> \
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+									</label> \
+								</div> \
+								\
+								<div class="form-group"> \
+									<div class="col-sm-2 control-label"> \
+										{{ Form::label('employee_id', trans('adminlte_lang::message.employee')) }} \
+									</div> \
+									<div class="col-sm-9"> \
+										{{ Form::select('employee_id', $employees, null, ['class' => 'js-select-basic-single', 'required' => '']) }} \
+									</div> \
+									<label class="col-sm-1 text-left"> \
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+									</label> \
+								</div> \
+								\
+								<div class="form-group"> \
+									<div class="col-sm-2 control-label"> \
+										{{ Form::label('storage_id', trans('adminlte_lang::message.storage')) }} \
+									</div> \
+									<div class="col-sm-9"> \
+										{{ Form::select('storage_id', $storages, null, ['placeholder' => trans('adminlte_lang::message.select_storage'),'class' => 'js-select-basic-single', 'required' => '']) }} \
+									</div> \
+									<label class="col-sm-1 text-left"> \
+										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+									</label> \
+								</div>');
                 } else if ($(this).val() == 'discharge') {
                     $('.transaction-type-content').append(
-                                    '<div class="form-group"> \
-                                        <div class="col-sm-2 control-label"> \
-                                            {{ Form::label('storage_id', 'Склад: ') }} \
-                                        </div> \
-                                        <div class="col-sm-9"> \
-                                            {{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
-                                        </div> \
-                                        <label class="col-sm-1 text-left"> \
-                                            <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
-                                        </label> \
-                                    </div>');
+                        '<div class="form-group"> \
+                            <div class="col-sm-2 control-label"> \
+                                {{ Form::label('storage_id', trans('adminlte_lang::message.storage')) }} \
+										</div> \
+										<div class="col-sm-9"> \
+											{{ Form::select('storage_id', $storages, null, ['placeholder' => trans('adminlte_lang::message.select_storage'),'class' => 'js-select-basic-single', 'required' => '']) }} \
+										</div> \
+										<label class="col-sm-1 text-left"> \
+											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+										</label> \
+									</div>');
                 } else {
                     $('.transaction-type-content').append(
-                                    '<div class="form-group"> \
-                                        <div class="col-sm-2 control-label"> \
-                                            {{ Form::label('storage_id', 'Со склада: ') }} \
-                                        </div> \
-                                        <div class="col-sm-9"> \
-                                            {{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
-                                        </div> \
-                                        <label class="col-sm-1 text-left"> \
-                                            <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
-                                        </label> \
-                                    </div> \
-                                    <div class="form-group"> \
-                                        <div class="col-sm-2 control-label"> \
-                                            {{ Form::label('storage2_id', 'На склад: ') }} \
-                                        </div> \
-                                        <div class="col-sm-9"> \
-                                            {{ Form::select('storage2_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
-                                        </div> \
-                                        <label class="col-sm-1 text-left"> \
-                                            <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
-                                        </label> \
-                                    </div>');
+                        '<div class="form-group"> \
+                            <div class="col-sm-2 control-label"> \
+                                {{ Form::label('storage_id', trans('adminlte_lang::message.from_storage')) }} \
+										</div> \
+										<div class="col-sm-9"> \
+											{{ Form::select('storage_id', $storages, null, ['placeholder' => trans('adminlte_lang::message.select_storage'),'class' => 'js-select-basic-single', 'required' => '']) }} \
+										</div> \
+										<label class="col-sm-1 text-left"> \
+											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+										</label> \
+									</div> \
+									<div class="form-group"> \
+										<div class="col-sm-2 control-label"> \
+											{{ Form::label('storage2_id', trans('adminlte_lang::message.to_storage')) }} \
+										</div> \
+										<div class="col-sm-9"> \
+											{{ Form::select('storage2_id', $storages, null, ['placeholder' => trans('adminlte_lang::message.select_storage'),'class' => 'js-select-basic-single', 'required' => '']) }} \
+										</div> \
+										<label class="col-sm-1 text-left"> \
+											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
+										</label> \
+									</div>');
                 }
+                $(".js-select-basic-single").select2({
+                    minimumResultsForSearch: Infinity
+                }).on("select2:open", function () {
+                    $('.select2-results__options').niceScroll({cursorcolor:"#ffae1a", cursorborder: "1px solid #DF9917", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.7, cursoropacitymax:1, boxzoom:true, autohidemode:false});
+                });
             });
-
 
             $('.transaction-type-content').on('change', 'select[name="storage_id"]', function(e){
                 $.ajax({
@@ -370,5 +375,5 @@
 @endsection
 
 {{-- @section('scripts')
-    {!! Html::script('js/parsley.min.js') !!}
+	{!! Html::script('js/parsley.min.js') !!}
 @endsection --}}

@@ -110,9 +110,9 @@ class StorageTransactionController extends Controller
     public function create(Request $request)
     {
         $partners = Partner::where('organization_id', $request->user()->organization_id)->pluck('title', 'partner_id');
+        $clients = Client::where('organization_id', $request->user()->organization_id)->pluck('name', 'client_id');
         $accounts = Account::where('organization_id', $request->user()->organization_id)->pluck('title', 'account_id');
         $employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
-        $clients = Client::where('organization_id', $request->user()->organization_id)->pluck('name', 'client_id');
         $storages = Storage::where('organization_id', $request->user()->organization_id)->pluck('title', 'storage_id');
 
         $transaction_hours = $this->populateTimeIntervals(strtotime('00:00:00'), strtotime('23:45:00'), 60, '', ' ч', 'G');
@@ -254,6 +254,7 @@ class StorageTransactionController extends Controller
             $transaction->account_id = 0;
         }
 
+        $transaction->appointment_id = 0;
         $transaction->description = $request->description;
         $transaction->is_paidfor = $request->ispaidfor == 1;
         $transaction->product_id = $request->product_id;
@@ -269,6 +270,7 @@ class StorageTransactionController extends Controller
 
         $product = Product::where('organization_id', $request->user()->organization_id)->where('product_id', $request->product_id)->first();
 
+        //TODO при построении формы добавить проверку на amount
         if ($request->type == 'income') {
             $product->amount +=  $request->amount;
         } elseif ($request->type == 'expenses') {
