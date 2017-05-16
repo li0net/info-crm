@@ -62,7 +62,7 @@
                 </tbody>
             </table>
             <div class="text-center">
-                {!! $storages->render(); !!}
+                {!! $storages->render() !!}
             </div>
         </div>
     </div>

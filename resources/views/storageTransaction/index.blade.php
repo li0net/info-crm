@@ -171,7 +171,7 @@
                     </tbody>
                 </table>
                 <div class="text-center">
-                    {!! $transactions->render(); !!}
+                    {!! $transactions->render() !!}
                 </div>
             </div>
         </div>

@@ -81,7 +81,7 @@
                 </tbody>
             </table>
             <div class="text-center">
-                {!! $partners->render(); !!}
+                {!! $partners->render() !!}
             </div>
         </div>
     </div>

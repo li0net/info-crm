@@ -62,7 +62,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-					{!! $units->render(); !!} 
+					{!! $units->render() !!}
 			</div>
 		</div>
 	</div>		

@@ -85,7 +85,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-				{!! $products->render(); !!} 
+				{!! $products->render() !!}
 			</div>
 		</div>
 	</div>		

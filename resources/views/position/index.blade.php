@@ -55,7 +55,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-				{!! $positions->render(); !!} 
+				{!! $positions->render() !!}
 			</div>
 		</div>
 	</div>

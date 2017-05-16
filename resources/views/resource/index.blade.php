@@ -56,7 +56,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-					{!! $resources->render(); !!} 
+					{!! $resources->render() !!}
 			</div>
 		</div>
 	</div>		

@@ -73,7 +73,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-				{!! $accounts->render(); !!}
+				{!! $accounts->render() !!}
 			</div>
 		</div>
 	</div>

@@ -128,7 +128,7 @@
                 </tbody>
             </table>
             <div class="text-center">
-                {!! $employees->render(); !!}
+                {!! $employees->render() !!}
             </div>
         </div>
     </div>

@@ -63,7 +63,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-				{!! $productCategories->render(); !!} 
+				{!! $productCategories->render() !!}
 			</div>
 		</div>
 	</div>		

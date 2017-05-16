@@ -79,7 +79,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-					{!! $items->render(); !!} 
+					{!! $items->render() !!}
 			</div>
 		</div>
 	</div>

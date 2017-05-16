@@ -86,7 +86,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-					{!! $schemes->render(); !!} 
+					{!! $schemes->render() !!}
 			</div>
 		</div>
 	</div>
