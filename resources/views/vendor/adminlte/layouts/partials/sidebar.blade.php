@@ -91,26 +91,27 @@
                 </ul>
             </li>
 
-            <li class="treeview @if(in_array($page, array('employee','services','clients','salesanalysis','storagebalance'),'salesanalysis'))) activated @endif">
+            {{--<li class="treeview @if(in_array($page, array('employee','services','clients','salesanalysis','storagebalance'),'salesanalysis'))) activated @endif">--}}
+            <li class="treeview @if(in_array($page, array('employee', 'services', 'clients', 'salesanalysis', 'storagebalance'))) @endif">
                 <a href="#"><i class='fa fa-line-chart'></i> <span>{{ trans('adminlte_lang::message.stats') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.indicators') }}</a></li>--}}
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.recurrence') }}</a></li>--}}
-                    <li  class="@if ($page == 'employee') active @endif">
+                    <li  class="@if ($page == 'employee') @endif">
                         <a href="{{ url('employee')}}">{{ trans('adminlte_lang::message.employees') }}</a>
                     </li>
-                    <li  class="@if ($page == 'services') active @endif">
+                    <li  class="@if ($page == 'services') @endif">
                         <a href="{{ url('/services')}}">{{ trans('adminlte_lang::message.services') }}</a>
                     </li>
-                    <li  class="@if ($page == 'clients') active @endif">
+                    <li  class="@if ($page == 'clients') @endif">
                         <a href="{{ url('clients')}}">{{ trans('adminlte_lang::message.clients') }}</a>
                     </li>
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.finance_report') }}</a></li>--}}
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.pl_report') }}</a></li>--}}
-                    <li  class="@if ($page == 'storagebalance') active @endif">
+                    <li  class="@if ($page == 'storagebalance') @endif">
                         <a href="{{ url('/storagebalance') }}">{{ trans('adminlte_lang::message.stock_balance') }}</a>
                     </li>
-                    <li  class="@if ($page == 'salesanalysis') active @endif">
+                    <li  class="@if ($page == 'salesanalysis') @endif">
                         <a href="{{ url('/salesanalysis') }}">{{ trans('adminlte_lang::message.sales_analysis') }}</a>
                     </li>
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.settings') }}</a></li>--}}
