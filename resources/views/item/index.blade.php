@@ -70,7 +70,7 @@
 								@endif
 								@if ($user->hasAccessTo('item', 'delete', 0))
 									{!! Form::open(['route' => ['item.destroy', $item->item_id], 'id' => 'form'.$item->item_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$item->item_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$item->item_id}}')" class="table-action-link danger-action"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	

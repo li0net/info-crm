@@ -47,7 +47,7 @@
 
 								@if ($user->hasAccessTo('resource', 'delete', 0))
 									{!! Form::open(['route' => ['resource.destroy', $resource->resource_id], 'id' => 'form'.$resource->resource_id, 'class' => 'pull-left', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$resource->resource_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$resource->resource_id}}')" class="table-action-link danger-action"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	

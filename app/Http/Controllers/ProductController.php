@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Product;
 use App\ProductCategory;
-use App\storageTransaction;
+use App\StorageTransaction;
 use App\Storage;
 use App\Partner;
 use App\Employee;

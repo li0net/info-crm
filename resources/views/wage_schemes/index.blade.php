@@ -77,7 +77,7 @@
 									<a href="{{ route('wage_scheme.edit', $scheme->scheme_id) }}" id="scheme_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
 
 									{!! Form::open(['route' => ['wage_scheme.destroy', $scheme->scheme_id], 'id' => 'form'.$scheme->scheme_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$scheme->scheme_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$scheme->scheme_id}}')" class="table-action-link danger-action"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	
