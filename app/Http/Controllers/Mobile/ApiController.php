@@ -406,4 +406,71 @@ class ApiController extends Controller
 
         return response()->json(array('success' => true, 'error' => ''));
     }
+
+    /*
+    Получить свободное для записи время у работника
+    Ответ: json объект [{'work_start' => '2017-02-20 10:00:00', 'work_end' => '2017-02-20 16:30:00'}, ...] / Ошибка
+    */
+    public function getEmployeeFreeTime(Request $request) {
+        // employee_id, service_id
+        $emplId = $request->input('employee_id');
+        //$serviceId = $request->input('service_id');
+
+        if (is_null($emplId)) {
+            return response('Invalid request data', 403);
+        }
+
+        $employee = Employee::where('employee_id', $emplId)->where('organization_id', $request->user()->organization_id)->first();
+        if (!$employee) {
+            return response('Invalid employee id', 403);
+        }
+
+        $freeIntervals = $employee->getFreeTimeIntervals();     // from current time to end of month
+        return responce()->json($freeIntervals);
+    }
+
+    /*
+    Получить услуги для подразделения
+    Ответ: json объект / Ошибка
+    */
+    public function getServicesForOrganization(Request $request) {
+        $orgId = $request->input('branch_id');
+        if (is_null($orgId)) {
+            return response('Invalid request data', 403);
+        }
+
+        $services = DB::table('services')
+            ->join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id')
+            ->join('organizations', 'organizations.organization_id', '=', 'service_categories..organization_id')
+            ->select('services.*')
+            ->where('organization.organization_id', $request->user()->organization_id)
+            ->get();
+
+        if ($services->count() == 0) {
+            return [];
+        }
+
+        $services = $services->toArray();
+        $serviceData = [];
+        foreach($services AS $service) {
+            $servObj = Service::with('employees')->where('service_id', $service->service_id)->first();
+            $serviceData[] = [
+                'service_id'    => $service->service_id,
+                'name'          => $service->name,
+                'description'   => $service->description,
+                'price'         => round($service->price_min, 2),
+                'duration'      => $service->duration,
+                'employees'     => []
+            ];
+
+            foreach($servObj->employees AS $emp) {
+                $serviceData[count($serviceData)-1]['employees'][] = [
+                    'employee_id'   => $emp->employee_id,
+                    'name'          => $emp->name,
+                ];
+            }
+        }
+
+        return response()->json($serviceData);
+    }
 }
