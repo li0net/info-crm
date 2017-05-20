@@ -40,3 +40,4 @@ Route::get('/v1/mobile/branchEmployees', 'Mobile\ApiController@getBranchEmployee
 Route::post('/v1/mobile/appointment', 'Mobile\ApiController@createAppointment')->middleware('auth:api');
 Route::get('/v1/mobile/employeeFreeTime', 'Mobile\ApiController@getEmployeeFreeTime')->middleware('auth:api');
 Route::get('/v1/mobile/branchServices', 'Mobile\ApiController@getServicesForOrganization')->middleware('auth:api');
+Route::get('/v1/mobile/dailyStatistics', 'Mobile\ApiController@getDailyStatistics')->middleware('auth:api');

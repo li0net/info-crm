@@ -473,4 +473,105 @@ class ApiController extends Controller
 
         return response()->json($serviceData);
     }
+
+    /*
+    Для мобильного приложения в идеале по максимуму нужна следующая статистика за конкретную дату:
+    1) Кол-во клиентов за день, чел;
+    2) Средняя заполненность по мастерам, % = общее время оказания услуг/общее рабочее время мастеров *100% ;
+    3) Записей на сумму, руб;
+    4) Оказано услуг на сумму, руб.
+    5) Поступлений в кассу, руб.
+    6) Средний чек, руб.
+    */
+    public function getDailyStatistics(Request $request) {
+        //http://infogroup.online/v1/mobile/dailyStatistics?day=2017-05-15
+
+        $day = $request->input('day');      // 2017-05-15
+        if (!preg_match('/^\d\d\d\d-\d\d-\d\d$/', $day)) {
+            return response('Invalid day format', 403);
+        }
+
+        $dayStart = $day.' 00:00:00';
+        $dayEnd = $day.' 23:59:59';
+
+        $statistics = ['employee_stats' => []];
+        $emplData = [];
+        $clientsCount = 0;
+        $serviceSum = 0;
+        $apptsSum = 0;
+
+        // 1) Кол-во клиентов за день, чел;
+        // 2) Средняя заполненность по мастерам, % = общее время оказания услуг/общее рабочее время мастеров *100% ;
+        // 4) Оказано услуг на сумму, руб.
+        //  общее время оказания услуг:
+        $appointments = DB::select(
+            "SELECT employee_id, SUM( TIMESTAMPDIFF(MINUTE, start, end) ) AS total_service_time, count(*) AS clients_count, SUM(IFNULL(service_sum,0)) AS service_sum ".
+            "FROM appointments ".
+            "WHERE organization_id=:orgId ".
+            "AND `start` BETWEEN :dayStart AND :dayEnd ".
+            "AND `state`='finished' ".
+            "AND start IS NOT NULL AND end IS NOT NULL ".
+            "AND end>start ".
+            "GROUP BY employee_id",
+            ['orgId' => $request->user()->organization_id, 'dayStart' => $dayStart, 'dayEnd' => $dayEnd]
+        );
+        foreach ($appointments AS $appt) {
+            $clientsCount += $appt->clients_count;
+            $serviceSum += $appt->service_sum;
+            $emplData[$appt->employee_id] = [
+                'service_time' => $appt->total_service_time
+            ];
+        }
+
+        //  общее рабочее время мастеров:
+        $schedules = DB::select(
+            "SELECT schedules.employee_id, SUM( TIMESTAMPDIFF(MINUTE, work_start, (CASE WHEN work_end > :dayEnd THEN :dayEnd ELSE work_end END)) ) AS total_work_time ".
+            "FROM schedules ".
+            "JOIN employees ON employees.employee_id = schedules.employee_id ".
+            "WHERE employees.organization_id=:orgId AND ".
+            "(".
+                "(work_start >= :dayStart AND work_end <= :dayEnd)  OR ".     // не отбираем записи которые начились до рассматриваемого периода и закончились в нем
+                "(work_start >= :dayStart AND work_start<:dayEnd AND work_end > :dayEnd) ".
+            ") ".
+            "GROUP BY schedules.employee_id",
+            ['orgId' => $request->user()->organization_id, 'dayStart' => $dayStart, 'dayEnd' => $dayEnd]
+		);
+        foreach ($schedules AS $schedule) {
+            $emplData[$schedule->employee_id] = [
+                'work_time' => $schedule->total_work_time
+            ];
+            if (!isset($emplData[$schedule->employee_id]['service_time'])) {
+                $statistics['employee_stats'][$schedule->employee_id]['utilization'] = 0;
+            } else {
+                $statistics['employee_stats'][$schedule->employee_id]['utilization'] = round($emplData[$schedule->employee_id]['service_time']/$schedule->total_work_time, 2) * 100;
+            }
+        }
+
+        // 3) Записей на сумму, руб;
+        $appointments = DB::select(
+            "SELECT SUM(IFNULL(service_sum,0)) AS appt_sum ".
+            "FROM appointments ".
+            "WHERE organization_id=:orgId ".
+            "AND `start` BETWEEN :dayStart AND :dayEnd ".
+            "AND `state`!='failed' ".
+            "AND start IS NOT NULL AND end IS NOT NULL ".
+            "AND end>start",
+            ['orgId' => $request->user()->organization_id, 'dayStart' => $dayStart, 'dayEnd' => $dayEnd]
+        );
+        foreach ($appointments AS $appt) {
+            $apptsSum += $appt->appt_sum;
+        }
+
+        // TODO: 5) Поступлений в кассу, руб.
+        // ?? выборка из transactions
+        // пока что сделаю равным 4) Оказано услуг на сумму, руб.
+
+        $statistics['clients_count'] = $clientsCount;   //1) Кол-во клиентов за день, чел;
+        $statistics['appointments_sum'] = $apptsSum;    //3) Записей на сумму, руб;
+        $statistics['services_sum'] = $serviceSum;      //4) Оказано услуг на сумму, руб.
+        $statistics['payed_sum'] = $serviceSum;         //5) Поступлений в кассу, руб. ??? ПОКА ЧТО РАВНО 4
+        $statistics['average_receipt'] = ($clientsCount == 0) ? 0 : round($serviceSum/$clientsCount, 2); //6) Средний чек, руб.
+
+        return response()->json($statistics);
+    }
 }
