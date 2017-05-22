@@ -401,6 +401,7 @@ class ApiController extends Controller
             $appointment->remind_by_email_in = 0;
         }
         $appointment->state = 'created';  // пока поддерживаем только создание
+        $appointment->source = 'other';   // пока используем это значение, чтобы отличать от записей созданных через сайт или виджет
 
         $appointment->save();
 
@@ -426,7 +427,7 @@ class ApiController extends Controller
         }
 
         $freeIntervals = $employee->getFreeTimeIntervals();     // from current time to end of month
-        return responce()->json($freeIntervals);
+        return response()->json($freeIntervals);
     }
 
     /*
@@ -441,9 +442,9 @@ class ApiController extends Controller
 
         $services = DB::table('services')
             ->join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id')
-            ->join('organizations', 'organizations.organization_id', '=', 'service_categories..organization_id')
+            ->join('organizations', 'organizations.organization_id', '=', 'service_categories.organization_id')
             ->select('services.*')
-            ->where('organization.organization_id', $request->user()->organization_id)
+            ->where('organizations.organization_id', $request->user()->organization_id)
             ->get();
 
         if ($services->count() == 0) {
@@ -525,27 +526,36 @@ class ApiController extends Controller
 
         //  общее рабочее время мастеров:
         $schedules = DB::select(
-            "SELECT schedules.employee_id, SUM( TIMESTAMPDIFF(MINUTE, work_start, (CASE WHEN work_end > :dayEnd THEN :dayEnd ELSE work_end END)) ) AS total_work_time ".
+            "SELECT schedules.employee_id, SUM( TIMESTAMPDIFF(MINUTE, work_start, (CASE WHEN work_end > :dayEnd THEN :dayEnd2 ELSE work_end END)) ) AS total_work_time ".
             "FROM schedules ".
             "JOIN employees ON employees.employee_id = schedules.employee_id ".
             "WHERE employees.organization_id=:orgId AND ".
             "(".
-                "(work_start >= :dayStart AND work_end <= :dayEnd)  OR ".     // не отбираем записи которые начились до рассматриваемого периода и закончились в нем
-                "(work_start >= :dayStart AND work_start<:dayEnd AND work_end > :dayEnd) ".
+                "(work_start >= :dayStart AND work_end <= :dayEnd3)  OR ".     // не отбираем записи которые начились до рассматриваемого периода и закончились в нем
+                "(work_start >= :dayStart2 AND work_start<:dayEnd4 AND work_end > :dayEnd5) ".
             ") ".
             "GROUP BY schedules.employee_id",
-            ['orgId' => $request->user()->organization_id, 'dayStart' => $dayStart, 'dayEnd' => $dayEnd]
+            [
+                'orgId' => $request->user()->organization_id,
+                'dayStart' => $dayStart,
+                'dayStart2' => $dayStart,
+                'dayEnd' => $dayEnd,
+                'dayEnd2' => $dayEnd,
+                'dayEnd3' => $dayEnd,
+                'dayEnd4' => $dayEnd,
+                'dayEnd5' => $dayEnd
+            ]
 		);
         foreach ($schedules AS $schedule) {
-            $emplData[$schedule->employee_id] = [
-                'work_time' => $schedule->total_work_time
-            ];
+            $emplData[$schedule->employee_id]['work_time'] = $schedule->total_work_time;
+
             if (!isset($emplData[$schedule->employee_id]['service_time'])) {
                 $statistics['employee_stats'][$schedule->employee_id]['utilization'] = 0;
             } else {
                 $statistics['employee_stats'][$schedule->employee_id]['utilization'] = round($emplData[$schedule->employee_id]['service_time']/$schedule->total_work_time, 2) * 100;
             }
         }
+        Log::debug(__METHOD__." emplData:".print_r($emplData, TRUE));
 
         // 3) Записей на сумму, руб;
         $appointments = DB::select(
