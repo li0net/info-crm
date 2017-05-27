@@ -83,6 +83,6 @@
 		</tbody>
 	</table>
 	<div class="text-center filtered">
-		{!! $transactions->render(); !!} 
+		{!! $transactions->render() !!}
 	</div>
 @endif

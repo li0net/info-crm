@@ -33,7 +33,7 @@
 					<th>{{ trans('adminlte_lang::message.category_title') }}</th>
 					<th>{{ trans('adminlte_lang::message.description') }}</th>
 					<th>{{ trans('adminlte_lang::message.parent_category') }}</th>
-					<th>{{ trans('adminlte_lang::message.actions') }}</th>
+					<th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
 				</thead>
 				<tbody>
 					@foreach($productCategories as $productCategory)
@@ -48,13 +48,13 @@
 							<td>
 								{{ $productCategory->parent_category_id }}
 							</td>
-							<td class="text-right">
+							<td class="text-center">
 								@if ($user->hasAccessTo('productCategories', 'edit', 0))
 									<a href="{{ route('productCategories.edit', $productCategory->product_category_id) }}" id="product_category_edit" class="table-action-link"><i class='fa fa-pencil'></i></a>
 								@endif
 								@if ($user->hasAccessTo('productCategories', 'delete', 0))
 									{!! Form::open(['route' => ['productCategories.destroy', $productCategory->product_category_id], 'id' => 'form'.$productCategory->product_category_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$productCategory->product_category_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$productCategory->product_category_id}}')" class="table-action-link danger-action"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	
@@ -63,7 +63,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-				{!! $productCategories->render(); !!} 
+				{!! $productCategories->render() !!}
 			</div>
 		</div>
 	</div>		

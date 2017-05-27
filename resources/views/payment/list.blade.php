@@ -62,7 +62,7 @@
 						@endif
 						@if ($user->hasAccessTo('payment', 'delete', 0))
 							{!! Form::open(['route' => ['payment.destroy', $payment->payment_id], 'id' => 'form'.$payment->payment_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-								<a href="javascript: submitform('#form{{$payment->payment_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
+								<a href="javascript: submitform('#form{{$payment->payment_id}}')" class="table-action-link danger-action"><i class='fa fa-trash-o'></i></a>
 							{!! Form::close() !!}
 						@endif
 					</td>	

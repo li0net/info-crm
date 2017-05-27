@@ -64,7 +64,7 @@
 								@endif
 								@if ($user->hasAccessTo('account', 'delete', 0))
 									{!! Form::open(['route' => ['account.destroy', $account->account_id], 'id' => 'form'.$account->account_id, 'style' => 'max-width: 32px; margin:0; display: inline-block; float: none;', 'method' => 'DELETE']) !!}
-										<a href="javascript: submitform('#form{{$account->account_id}}')" class="table-action-link"><i class='fa fa-trash-o'></i></a>
+										<a href="javascript: submitform('#form{{$account->account_id}}')" class="table-action-link danger-action"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
 							</td>	
@@ -73,7 +73,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-				{!! $accounts->render(); !!}
+				{!! $accounts->render() !!}
 			</div>
 		</div>
 	</div>

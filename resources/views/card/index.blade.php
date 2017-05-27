@@ -111,7 +111,7 @@
 				</tbody>
 			</table>
 			<div class="text-center">
-				{!! $cards->render(); !!} 
+				{!! $cards->render() !!}
 			</div>
 		</div>
 	</div>		
