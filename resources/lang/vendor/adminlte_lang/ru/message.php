@@ -572,4 +572,5 @@ return [
     'to_storage'  	  	  	    => 'На склад',
     'add_product'  	  	  	    => 'Добавить товар',
     'select_employee'		    => 'Выберите сотрудника',
+    'goods_sale'		        => 'Продажа товаров',
 ];

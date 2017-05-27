@@ -48,11 +48,17 @@ class AppointmentsController extends Controller
         $accounts = Account::where('organization_id', $request->user()->organization_id)
             ->get()
             ->pluck('title', 'account_id');
-        $storages = Storage::where('organization_id', $request->user()->organization_id)
+
+        $products = Storage::where('organization_id', $request->user()->organization_id)
             ->orderBy('title')
             ->with('products')
             ->get()
             ->pluck('products', 'storage_id');
+
+        $storages = Storage::where('organization_id', $request->user()->organization_id)
+            ->orderBy('title')
+            ->get()
+            ->pluck('title', 'storage_id');
 
         return view('adminlte::appointmentform', [
             'servicesOptions' => $servicesOptions,
@@ -84,11 +90,16 @@ class AppointmentsController extends Controller
         $durationSelects = $this->prepareDurationSelects();
         $transactions = StorageTransaction::where('appointment_id', $appt->appointment_id)->get();
 
-        $storages = Storage::where('organization_id', $request->user()->organization_id)
+        $products = Storage::where('organization_id', $request->user()->organization_id)
             ->orderBy('title')
             ->with('products')
             ->get()
             ->pluck('products', 'storage_id');
+
+        $storages = Storage::where('organization_id', $request->user()->organization_id)
+            ->orderBy('title')
+            ->get()
+            ->pluck('title', 'storage_id');
 
         $accounts = Account::where('organization_id', $request->user()->organization_id)
             ->get()
@@ -114,7 +125,6 @@ class AppointmentsController extends Controller
             ->where('employee_provides_service.service_id', $appt->service->service_id)
             ->where('employee_settings.reg_permitted', 1)
             ->get();
-
         if ( $employees->count() != 0 ) {
             // добавляем вариант "Мастер не важен"
             $anyEmployee = array(
@@ -130,15 +140,17 @@ class AppointmentsController extends Controller
         }
         // строим список для вьюхи
         $employeesOptions = [];
+        $transactionEmployeesOptions = [];
         foreach($employees AS $employee)
         {
             $employeesOptions[] = ['value' => $employee->employee_id, 'label' => $employee->name];
+            $transactionEmployeesOptions[$employee->employee_id] = $employee->name;
         }
 
         $clients = Client::where('is_active', 1)->orderBy('name')->get();
 
         // получаем список доступных дней с добавлением выбранного ранее
-        $daysOptions = $this->getAvailableServiceDays($employee->employee_id, $appt->service->service_id);
+        $daysOptions = $this->getAvailableServiceDays($appt->employee_id, $appt->service->service_id);
         if( ! empty($appt->start)){
             $dateStart = date('Y-m-d', strtotime($appt->start));
             array_push($daysOptions, $dateStart);
@@ -148,14 +160,13 @@ class AppointmentsController extends Controller
         // получаем список доступного для записи времени с добавлением выбранного ранее
         $timeOptions = [];
         if ( !empty($dateStart) ){
-            $timeOptions = $this->getAvailableServiceTime($employee->employee_id, $appt->service->service_id, $dateStart);
+            $timeOptions = $this->getAvailableServiceTime($appt->employee_id, $appt->service->service_id, $dateStart);
             if (isset($appointment) AND ! empty($appt->start)) {
                 $timeStart = date('H:i', strtotime($appt->start));
                 array_push($timeOptions , $timeStart);
                 sort($timeOptions );
             }
         }
-
         return view('adminlte::appointmentform', [
             'appointment' => $appt,
             'servicesOptions' => $servicesOptions,
@@ -164,8 +175,11 @@ class AppointmentsController extends Controller
             'hoursOptions' => $durationSelects['hours'],
             'minutesOptions' => $durationSelects['minutes'],
             'employeesOptions' => $employeesOptions,
+            'transactionEmployeesOptions' => $transactionEmployeesOptions,
+            'employees' => $employees,
             'transactions'=> $transactions,
             'storages'=> $storages,
+            'products'=> $products,
             'user' => $request->user(),
             'accounts' => $accounts,
             'clients' => $clients

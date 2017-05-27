@@ -58,7 +58,7 @@
     <hr class="hr-line-dashed">
 
     <div class="form-group sale_product goods-content to-hide to-hide2 alt-control-bar" style="display: block;">
-        <h2>Продажа товаров</h2>
+        <h2>@lang('adminlte_lang::message.goods_sale')</h2>
         <div class="goods_transactions_box">
             @if(isset($transactions))
             @foreach($transactions as $transaction)
@@ -71,18 +71,18 @@
                         <label>@lang('adminlte_lang::message.good')</label>
                     </div>
                     <div class="col-sm-4">
-                        <label>@lang('adminlte_lang::message.good')</label>
+                        <label>@lang('adminlte_lang::message.employee')</label>
                     </div>
                 </div>
                 <div class="row alt-control-bar">
                     <div class="col-sm-4">
-                        {{ Form::select('storage_id[]', [], null, ['class' => 'js-select-basic-single-alt', 'data-initial-value' => $transaction->storage1_id]) }}
+                        {{ Form::select('storage_id[]', $storages, null, ['class' => 'js-select-basic-single-alt', 'data-initial-value' => $transaction->storage1_id]) }}
                     </div>
                     <div class="col-sm-4">
-                        {{ Form::select('product_id[]', $storages[$transaction->storage1_id]->pluck('title', 'product_id')->all(), $transaction->product_id, ['class' => 'js-select-basic-single-alt', 'data-initial-value' => $transaction->product_id]) }}
+                        {{ Form::select('product_id[]', $products[$transaction->storage1_id]->pluck('title', 'product_id')->all(), $transaction->product_id, ['class' => 'js-select-basic-single-alt', 'data-initial-value' => $transaction->product_id]) }}
                     </div>
                     <div class="col-sm-4">
-                        {{ Form::select('master_id[]', $employees, null, ['class' => 'js-select-basic-single-alt', 'data-initial-value' => $transaction->employee_id]) }}
+                        {{ Form::select('master_id[]', $transactionEmployeesOptions, $transaction->employee_id, ['class' => 'js-select-basic-single-alt', 'data-initial-value' => $transaction->employee_id]) }}
                     </div>
                 </div>
                 <div class="row alt-control-bar">
@@ -137,7 +137,7 @@
             @endif
         </div>
         <div class="text-right">
-            <input type="button" id="add_good_transaction" class="btn btn-primary" value="Добавить товар">
+            <input type="button" id="add_good_transaction" class="btn btn-primary" value="@lang('adminlte_lang::message.add_product')">
         </div>
     </div>
 </div>

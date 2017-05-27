@@ -25,7 +25,7 @@
         @if (isset($employeesOptions) OR session()->has('employeesOptions'))
             <?php if(!isset($employeesOptions)) $employeesOptions = session('employeesOptions');?>
             @if(!empty($employeesOptions))
-                <option id="app_employee_id_empty" selected value="null">{{ trans('adminlte_lang::message.select_employee') }}</option>
+                {{--<option id="app_employee_id_empty" selected value="null">{{ trans('adminlte_lang::message.select_employee') }}</option>--}}
                 @foreach($employeesOptions as $employee)
                     <option
                         @if (old('employee_id') AND old('employee_id') == $employee['value'])

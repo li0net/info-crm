@@ -563,4 +563,5 @@ return [
     'to_storage'  	  	  	    => 'To storage',
     'add_product'  	  	  	    => 'Add product',
     'select_employee'		    => 'Select employee',
+    'goods_sale'		        => 'Sale of goods',
 ];

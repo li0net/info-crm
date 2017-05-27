@@ -58,8 +58,8 @@
         <div class="row m-t">
             {!! Form::open(['url' => '/appointments/save', 'id' => 'appointment_form']) !!}
 
-            {{ Form::hidden('storage_options', null, ['id' => 'storage_options']) }}
             {{ Form::hidden('employee_options', null, ['id' => 'employee_options']) }}
+            {{ Form::hidden('storage_options', null, ['id' => 'storage_options']) }}
             {{ Form::hidden('organization_id', $user->organization_id, ['id' => 'organization_id']) }}
 
             @if (isset($appointment))
@@ -427,13 +427,15 @@
             });
             $('#add_good_transaction').on('click', function() {
                 $('.goods_transactions_box').append(
-                    '<div id="vis_sale_box_1" class="goods_sale m-b col-sm-12 alt-control-bar"><div class="row"><div class="col-sm-4"><label>Склад</label></div> <div class="col-sm-4"><label>Товар</label></div> <div class="col-sm-4"><label>Сотрудник</label></div></div> <div class="row"><div class="col-sm-4"><select data-initial-value="0" name="storage_id[]" class="js-select-basic-single-alt"></select></div> <div class="col-sm-4"><select data-initial-value="0" name="product_id[]" class="js-select-basic-single-alt"></select></div> <div class="col-sm-4"><select data-initial-value="0" name="master_id[]" class="js-select-basic-single-alt"></option></select></div></div> <div class="row"><div class="col-sm-2"><label>Количество</label></div> <div class="col-sm-2"><label>Цена, ₽</label></div> <div class="col-sm-2"><label>Скидка, %</label></div> <div class="col-sm-2"><label>Итог, ₽</label></div></div> <div class="row"><div class="col-sm-2 "><input data-number="1" type="text" name="amount[]" value="1" placeholder="Кол-во" class="form-control input-sm sg_amount add_goods_amount_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="price[]" value="0" class="form-control input-sm sg_price add_goods_price_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="discount[]" value="0" class="form-control input-sm sg_discount add_goods_discount_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="sum[]" value="0" class="form-control input-sm sg_cost add_goods_cost_input_1"></div> <div class="col-sm-4 text-right"><button id="remove_good_transaction" class="btn btn-danger" ><i class="fa fa-trash-o"></i></button></div></div></div>');
+                    '<div id="vis_sale_box_1" class="goods_sale m-b col-sm-12 alt-control-bar"><div class="row"><div class="col-sm-4"><label>Склад</label></div> <div class="col-sm-4"><label>@lang('adminlte_lang::message.good')</label></div> <div class="col-sm-4"><label>@lang('adminlte_lang::message.employee')</label></div></div> <div class="row"><div class="col-sm-4"><select data-initial-value="0" name="storage_id[]" class="js-select-basic-single-alt"></select></div> <div class="col-sm-4"><select data-initial-value="0" name="product_id[]" class="js-select-basic-single-alt"></select></div> <div class="col-sm-4"><select data-initial-value="0" name="master_id[]" class="js-select-basic-single-alt"></option></select></div></div> <div class="row"><div class="col-sm-2"><label>@lang('adminlte_lang::message.amount')</label></div> <div class="col-sm-2"><label>@lang('adminlte_lang::message.price_val')</label></div> <div class="col-sm-2"><label>@lang('adminlte_lang::message.discount_val')</label></div> <div class="col-sm-2"><label>@lang('adminlte_lang::message.total_val')</label></div></div> <div class="row"><div class="col-sm-2 "><input data-number="1" type="text" name="amount[]" value="1" placeholder="Кол-во" class="form-control input-sm sg_amount add_goods_amount_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="price[]" value="0" class="form-control input-sm sg_price add_goods_price_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="discount[]" value="0" class="form-control input-sm sg_discount add_goods_discount_input_1"></div> <div class="col-sm-2"><input data-number="1" type="text" name="sum[]" value="0" class="form-control input-sm sg_cost add_goods_cost_input_1"></div> <div class="col-sm-4 text-right"><button id="remove_good_transaction" class="btn btn-danger" ><i class="fa fa-trash-o"></i></button></div></div></div>');
 
-                $('select.form-control[name="storage_id[]"]').last().find('option').remove();
-                $('select.form-control[name="storage_id[]"]').last().append($('#storage_options').val());
+                $('select.js-select-basic-single-alt[name="storage_id[]"]').last().find('option').remove();
+                $('select.js-select-basic-single-alt[name="storage_id[]"]').last().prepend('<option id="storage_id_empty" selected value="null">@lang('adminlte_lang::message.select_storage')</option>');
+                $('select.js-select-basic-single-alt[name="storage_id[]"]').last().append($('#storage_options').val());
+                console.log($('#storage_options').val());
 
-                $('select.form-control[name="master_id[]"]').last().find('option').remove();
-                $('select.form-control[name="master_id[]"]').last().append($('#employee_options').val());
+                $('select.js-select-basic-single-alt[name="master_id[]"]').last().find('option').remove();
+                $('select.js-select-basic-single-alt[name="master_id[]"]').last().append($('#employee_options').val());
 
                 $(".js-select-basic-single-alt").select2({
                     theme: "alt-control",
