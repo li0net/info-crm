@@ -30,12 +30,12 @@ class AppointmentsController extends Controller
         $this->middleware('permissions')->only(['create', 'edit', 'save']);
     }
 
-    public function view(ServiceCategory $appointment) {
-        return view('adminlte::servicecategoryview', compact('serviceCategory'));
-    }
+//    public function view(ServiceCategory $appointment) {
+//        return view('adminlte::servicecategoryview', compact('serviceCategory'));
+//    }
 
-    // форма создания Записи
     /**
+     * форма создания Записи
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -43,6 +43,7 @@ class AppointmentsController extends Controller
         $servicesOptions = $this->prepareServicesSelectData($request);
         $timeOptions = $this->prepareTimesSelectData();
         $durationSelects = $this->prepareDurationSelects();
+
         $clients = Client::where('is_active', 1)->orderBy('name')->get();
         $accounts = Account::where('organization_id', $request->user()->organization_id)
             ->get()
@@ -76,11 +77,13 @@ class AppointmentsController extends Controller
         if ($request->user()->organization_id != $appt->employee->organization_id) {
             return 'You don\'t have access to this item';
         }
-
         $servicesOptions = $this->prepareServicesSelectData($request);
-        $timeOptions = $this->prepareTimesSelectData();
+
+
+
         $durationSelects = $this->prepareDurationSelects();
         $transactions = StorageTransaction::where('appointment_id', $appt->appointment_id)->get();
+
         $storages = Storage::where('organization_id', $request->user()->organization_id)
             ->orderBy('title')
             ->with('products')
@@ -101,24 +104,66 @@ class AppointmentsController extends Controller
         }
         */
 
-        $employees = $appt->service->employees()->get();
+        // Отображаем только тех, что разрешили онлайн запись (в employee_settings)
+        $employees = DB::table('employees')
+            ->join('employee_provides_service', 'employees.employee_id', '=', 'employee_provides_service.employee_id')
+            ->join('employee_settings', 'employees.employee_id', '=', 'employee_settings.employee_id')
+            ->join('positions', 'employees.position_id', '=', 'positions.position_id')
+            ->select('employees.*','employees.avatar_image_name as avatar', 'employee_settings.*', 'positions.title as position_name' , 'positions.description as description')
+            ->where('employees.organization_id', $request->user()->organization_id)
+            ->where('employee_provides_service.service_id', $appt->service->service_id)
+            ->where('employee_settings.reg_permitted', 1)
+            ->get();
+
+        if ( $employees->count() != 0 ) {
+            // добавляем вариант "Мастер не важен"
+            $anyEmployee = array(
+                'employee_id'   => 'any_employee',
+                'name'          => trans('main.widget:employee_doesnot_matter_text'),
+                'avatar'        => null,
+                'position_name' => '',
+                'description'   => ''
+            );
+            // Мастер не важен на первом месте
+            $employees = $employees->toArray();
+            array_unshift($employees, (object)$anyEmployee);
+        }
+        // строим список для вьюхи
         $employeesOptions = [];
         foreach($employees AS $employee)
         {
             $employeesOptions[] = ['value' => $employee->employee_id, 'label' => $employee->name];
         }
 
-        $employees = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
         $clients = Client::where('is_active', 1)->orderBy('name')->get();
+
+        // получаем список доступных дней с добавлением выбранного ранее
+        $daysOptions = $this->getAvailableServiceDays($employee->employee_id, $appt->service->service_id);
+        if( ! empty($appt->start)){
+            $dateStart = date('Y-m-d', strtotime($appt->start));
+            array_push($daysOptions, $dateStart);
+            sort($daysOptions);
+        }
+
+        // получаем список доступного для записи времени с добавлением выбранного ранее
+        $timeOptions = [];
+        if ( !empty($dateStart) ){
+            $timeOptions = $this->getAvailableServiceTime($employee->employee_id, $appt->service->service_id, $dateStart);
+            if (isset($appointment) AND ! empty($appt->start)) {
+                $timeStart = date('H:i', strtotime($appt->start));
+                array_push($timeOptions , $timeStart);
+                sort($timeOptions );
+            }
+        }
 
         return view('adminlte::appointmentform', [
             'appointment' => $appt,
             'servicesOptions' => $servicesOptions,
+            'daysOptions' => $daysOptions,
             'timeOptions' => $timeOptions,
             'hoursOptions' => $durationSelects['hours'],
             'minutesOptions' => $durationSelects['minutes'],
             'employeesOptions' => $employeesOptions,
-            'employees'=> $employees,
             'transactions'=> $transactions,
             'storages'=> $storages,
             'user' => $request->user(),
@@ -181,7 +226,6 @@ class AppointmentsController extends Controller
         if ($validator->fails()) {
             $errs = $validator->messages();
             //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
-
             return json_encode([
                 'success' => false,
                 'validation_errors' => $errs
@@ -223,17 +267,17 @@ class AppointmentsController extends Controller
                 'validation_errors' => ['duration_minutes' => [trans('main.appointment:error_duration_not_selected')]]
             ]);
         }
-
         // преобразовываем duration_hours, duration_minutes в timestamp end
         $endDateTime = strtotime(
             $request->input('date_from') . ' ' . $request->input('time_from') . ' + ' . $request->input('duration_hours') . ' hours ' . $request->input('duration_minutes') . ' minutes'
         );
         $endDateTime = date('Y-m-d H:i:s', $endDateTime);
-
         $appId = $request->input('appointment_id');
+
         // определить создание это или редактирование (по наличию поля service_category_id)
         // если редактирвоание - проверить что объект принадлежит текущему пользователю
         if (!is_null($appId)) {  // редактирование
+
             // Проверяем есть ли у юзера права на редактирование Записи
             $accessLevel = $request->user()->hasAccessTo('appointment', 'edit', 0);
             if ($accessLevel < 1) {
@@ -250,6 +294,7 @@ class AppointmentsController extends Controller
                     'error' => 'Data error. Record doesn\'t exist'
                 ]);
             }
+
             if (empty($request->input('note'))) {
                 $appointment->note = NULL;
             }
@@ -305,6 +350,7 @@ class AppointmentsController extends Controller
         if (!empty($request->input('note'))) {
             $appointment->note = $request->input('note');
         }
+        //dd($request->input('service_price'));
         if ($request->input('service_price')) {
             $appointment->service_price = $request->input('service_price');
         }
@@ -360,8 +406,6 @@ class AppointmentsController extends Controller
 
             $transaction->save();
         }
-
-        //return redirect()->route('appointments.index');
         echo json_encode(array('success' => true, 'error' => ''));
     }
 
@@ -384,21 +428,21 @@ class AppointmentsController extends Controller
         return redirect()->route('appointments.index');
     }
 
+    public function populateEmployeeOptions(Request $request)
+    {
+        if($request->ajax()){
+            $options = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
+            $data = view('services.options', compact('options'))->render();
+            return response()->json(['options' => $data]);
+        }
+    }
+    /**
+     * get list of services for select
+     * @param $request
+     * @return array
+     */
     protected function prepareServicesSelectData($request)
     {
-        /*
-        $employeesOptions = array();
-        $empsDb = Employee::where('organization_id', $request->user()->organization_id)
-            ->orderby('name', 'asc')
-            ->get();
-        foreach ($empsDb AS $employee) {
-            $serviceCategoriesOptions[] = [
-                'value'     => $employee->employee_id,
-                'label'     => $employee->name
-            ];
-        }
-        */
-
         // Все услуги организации
         $servicesDb = DB::table('services')
             ->join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id')
@@ -418,6 +462,255 @@ class AppointmentsController extends Controller
         return $servicesOptions;
     }
 
+    protected function prepareTimesSelectData() {
+        $timeOptions = array();
+
+        $startTs = strtotime('00:00:00 today');
+        // 96 интервалов по 15 минут в сутках (последний нам не нужен для отображения)
+        for($i=1; $i<=95; $i++) {
+            $timeStr = date('H:i', $startTs);
+            $timeOptions[] = [
+                'label' => $timeStr,
+                'value' => $timeStr
+            ];
+
+            $startTs += 60*15;      // переходим к следующему 15минутному интервалу
+        }
+
+        return $timeOptions;
+    }
+
+    protected function prepareDurationSelects() {
+        $selects = array();
+
+        // TODO: localization (можно просто h. вместо полного слова в разных формах)
+        $selects['hours'] = [
+            [
+                'label' => '0 '.trans_choice('main.hours_in_day', 0),
+                'value' => '00'
+            ],
+            [
+                'label' => '1 '.trans_choice('main.hours_in_day', 1),
+                'value' => '01'
+            ],
+            [
+                'label' => '2 '.trans_choice('main.hours_in_day', 2),
+                'value' => '02'
+            ],
+            [
+                'label' => '3 '.trans_choice('main.hours_in_day', 3),
+                'value' => '03'
+            ],
+            [
+                'label' => '4 '.trans_choice('main.hours_in_day', 4),
+                'value' => '04'
+            ],
+            [
+                'label' => '5 '.trans_choice('main.hours_in_day', 5),
+                'value' => '05'
+            ],
+            [
+                'label' => '6 '.trans_choice('main.hours_in_day', 6),
+                'value' => '06'
+            ],
+            [
+                'label' => '7 '.trans_choice('main.hours_in_day', 7),
+                'value' => '07'
+            ],
+            [
+                'label' => '8 '.trans_choice('main.hours_in_day', 8),
+                'value' => '08'
+            ]
+        ];
+
+        $selects['minutes'] = [
+            [
+                'label' => '0 '.trans('main.minutes_short'),
+                'value' => '00'
+            ],
+            [
+                'label' => '15 '.trans('main.minutes_short'),
+                'value' => '15'
+            ],
+            [
+                'label' => '30 '.trans('main.minutes_short'),
+                'value' => '30'
+            ],
+            [
+                'label' => '45 '.trans('main.minutes_short'),
+                'value' => '45'
+            ]
+        ];
+
+        return $selects;
+    }
+
+    /**
+     * Получает список дней, свободных для записи
+     * @param $employeeId
+     * @param $serviceId
+     * @return array
+     */
+    protected function getAvailableServiceDays($employeeId, $serviceId){
+        $days = [];
+        if ($employeeId == 'any_employee') {
+            $service = Service::find($serviceId);
+            if ( ! $service) {
+                return $days;
+            }
+            $days = $service->getFreeWorkDaysForCurrMonth();
+        } else {
+            $employee = Employee::find($employeeId);
+            $days = $employee->getFreeWorkDaysForCurrMonth();
+        }
+
+        return $days;
+    }
+
+    /**
+     * Получает список дней, свободных для записи
+     * версия для аджакс
+     * @param Request $request
+     */
+    public function getAvailableDays(Request $request)
+    {
+        $days = $this->getAvailableServiceDays($request->input('employee_id'), $request->input('service_id'));
+        echo json_encode($days);
+    }
+
+
+    /**
+     * Отображает доступное время для записи для выбранного дня
+     * @param $employeeId
+     * @param $serviceId
+     * @param $date
+     * @return array|string
+     */
+    protected function getAvailableServiceTime($employeeId, $serviceId, $date)
+    {
+        $times = [];
+        if ($employeeId == 'any_employee') {
+            $service = Service::find($serviceId);
+            if (!$service) {
+                return json_encode($this->getCommonError());
+            }
+            $times = $service->getFreeWorkTimesForDay($date);
+        } else {
+            $employee = Employee::find($employeeId);
+            $service = Service::find($serviceId);
+            $times = $employee->getFreeWorkTimesForDay($date, $service);
+        }
+        return $times;
+    }
+
+    /**
+     * Отображает доступное время для записи для выбранного дня
+     * аджакс-версия
+     * @param Request $request
+     */
+    public function getAvailableTime(Request $request)
+    {
+        $times = $this->getAvailableServiceTime($request->input('employee_id'), $request->input('service_id'), $request->input('date'));
+        // отрисовываем список интервалов
+        echo json_encode($times);
+    }
+
+    /**
+     * получает список сотрудников для выбранного сервисясервиса.
+     * обновляется ajax'ом при смене сотрудника в селекте
+     * @param Service $service
+     * @param Request $request
+     */
+    public function getEmployeesForService(Service $service, Request $request)
+    {
+        // Отображаем только тех, что разрешили онлайн запись (в employee_settings)
+        $employees = DB::table('employees')
+            ->join('employee_provides_service', 'employees.employee_id', '=', 'employee_provides_service.employee_id')
+            ->join('employee_settings', 'employees.employee_id', '=', 'employee_settings.employee_id')
+            ->join('positions', 'employees.position_id', '=', 'positions.position_id')
+            ->select('employees.*','employees.avatar_image_name as avatar', 'employee_settings.*', 'positions.title as position_name' , 'positions.description as description')
+            ->where('employees.organization_id', $request->organization_id)
+            ->where('employee_provides_service.service_id', $service->service_id)
+            ->where('employee_settings.reg_permitted', 1)
+            ->get();
+
+        if ( $employees->count() != 0 ) {
+            // добавляем вариант "Мастер не важен"
+            $anyEmployee = array(
+                'employee_id'   => 'any_employee',
+                'name'          => trans('main.widget:employee_doesnot_matter_text'),
+                'avatar'        => null,
+                'position_name' => '',
+                'description'   => ''
+            );
+            // Мастер не важен на первом месте
+            $employees = $employees->toArray();
+            array_unshift($employees, (object)$anyEmployee);
+        } else {
+            echo json_encode([]);
+        }
+
+        // строим список для вьюхи
+        $employeesOptions = [];
+        foreach($employees AS $employee)
+        {
+            $employeesOptions[] = ['value' => $employee->employee_id, 'label' => $employee->name];
+        }
+
+        echo json_encode($employeesOptions);
+    }
+
+    /**
+     * Создаёт/сохраняет данные о звонке
+     * @param Request $request
+     * @return mixed
+     */
+    public function saveCall(Request $request){
+        $callId = $request->input('call_id');
+        $callTitle = trim(strip_tags($request->input('call_title')));
+        $callDate = $request->input('call_date');
+        $callDescription = trim(strip_tags($request->input('call_description')));
+        $clientId = $request->input('client_id');
+        $appointmentId = $request->input('appointment_id');
+        if ($callId == '' ){
+            //создание
+            $appCall = new AppointmentCalls;
+
+            $appCall->client_id = $clientId;
+            $appCall->appointment_id = $appointmentId;
+            $appCall->date = $callDate;
+            $appCall->title = $callTitle;
+            $appCall->description = $callDescription;
+
+            $appCall->save();
+        } else {
+            // редактирование
+            $appCall = AppointmentCalls::find($callId);
+
+            $appCall->client_id = $clientId;
+            $appCall->appointment_id = $appointmentId;
+            $appCall->date = $callDate;
+            $appCall->title = $callTitle;
+            $appCall->description = $callDescription;
+
+            $appCall->save();
+        }
+        return response()->json(['result' => 1]);
+    }
+
+    /**
+     *  получает данные о звонках
+     * @param Request $request
+     * @return mixed
+     */
+    public function getCalls(Request $request){
+        $clientId = $request->input('client_id');
+        $appointmentId = $request->input('appointment_id');
+
+        // Ищем звонки
+        $calls = AppointmentCalls::where('client_id', $clientId)->where('appointment_id', $appointmentId)->orderby('date')->get();
+        return view('appointment.tpl.body_client_calls_table', ['calls' => $calls])->render();
+    }
     /**
      * получение статистики посещений клиенат
      * @param Request $request
@@ -505,319 +798,4 @@ class AppointmentsController extends Controller
 
         return response()->json(['client' => $client, 'clients' => $clients, ]);
     }
-
-    public function populateEmployeeOptions(Request $request)
-    {
-        if($request->ajax()){
-            $options = Employee::where('organization_id', $request->user()->organization_id)->pluck('name', 'employee_id');
-            $data = view('services.options', compact('options'))->render();
-            return response()->json(['options' => $data]);
-        }
-    }
-
-    protected function prepareEmployeesSelectData($request)
-    {
-        // Все сотрудники организации
-        $employeesOptions = array();
-        $empsDb = Employee::where('organization_id', $request->user()->organization_id)
-            ->orderby('name', 'asc')
-            ->get();
-        foreach ($empsDb AS $employee) {
-            $employeesOptions[] = [
-                'value'     => $employee->employee_id,
-                'label'     => $employee->name
-            ];
-        }
-
-        return $employeesOptions;
-    }
-
-    protected function prepareTimesSelectData() {
-        $timeOptions = array();
-
-        $startTs = strtotime('00:00:00 today');
-        // 96 интервалов по 15 минут в сутках (последний нам не нужен для отображения)
-        for($i=1; $i<=95; $i++) {
-            $timeStr = date('H:i', $startTs);
-            $timeOptions[] = [
-                'label' => $timeStr,
-                'value' => $timeStr
-            ];
-
-            $startTs += 60*15;      // переходим к следующему 15минутному интервалу
-        }
-
-        return $timeOptions;
-    }
-
-    protected function prepareDurationSelects() {
-        $selects = array();
-
-        // TODO: localization (можно просто h. вместо полного слова в разных формах)
-        $selects['hours'] = [
-            [
-                'label' => '0 '.trans_choice('main.hours_in_day', 0),
-                'value' => '00'
-            ],
-            [
-                'label' => '1 '.trans_choice('main.hours_in_day', 1),
-                'value' => '01'
-            ],
-            [
-                'label' => '2 '.trans_choice('main.hours_in_day', 2),
-                'value' => '02'
-            ],
-            [
-                'label' => '3 '.trans_choice('main.hours_in_day', 3),
-                'value' => '03'
-            ],
-            [
-                'label' => '4 '.trans_choice('main.hours_in_day', 4),
-                'value' => '04'
-            ],
-            [
-                'label' => '5 '.trans_choice('main.hours_in_day', 5),
-                'value' => '05'
-            ],
-            [
-                'label' => '6 '.trans_choice('main.hours_in_day', 6),
-                'value' => '06'
-            ],
-            [
-                'label' => '7 '.trans_choice('main.hours_in_day', 7),
-                'value' => '07'
-            ],
-            [
-                'label' => '8 '.trans_choice('main.hours_in_day', 8),
-                'value' => '08'
-            ]
-        ];
-
-        $selects['minutes'] = [
-            [
-                'label' => '0 '.trans('main.minutes_short'),
-                'value' => '00'
-            ],
-            [
-                'label' => '15 '.trans('main.minutes_short'),
-                'value' => '15'
-            ],
-            [
-                'label' => '30 '.trans('main.minutes_short'),
-                'value' => '30'
-            ],
-            [
-                'label' => '45 '.trans('main.minutes_short'),
-                'value' => '45'
-            ]
-        ];
-
-        return $selects;
-    }
-
-    /**
-     * Получает список дней, совбодных для записи
-     * @param Request $request
-     *      service_id
-     *      employee_id
-     * @return string
-     */
-    public function getAvailableDays(Request $request){
-        if ($request->input('employee_id') == 'any_employee') {
-            $service = Service::find($request->input('service_id'));
-            if (!$service) {
-                return json_encode($this->getCommonError());
-            }
-            $days = $service->getFreeWorkDaysForCurrMonth();
-        } else {
-            $employee = Employee::find($request->input('employee_id'));
-            $days = $employee->getFreeWorkDaysForCurrMonth();
-        }
-
-        if ( ! $days){
-            //TODO обработать на фронте эту ситуацию
-            echo json_encode([]);
-        }
-        echo json_encode($days);
-    }
-
-    /**
-     *  Отображает доступное время для записи для выбранного дня
-     * @param Request $request
-     * @return mixed
-     */
-    public function getAvailableTime(Request $request)
-    {
-        $formData = $request->only(['service_id', 'employee_id', 'date']);  // post параметр service_id, employee_id, day
-
-        $date = $request->input('date');
-
-        if ($request->input('employee_id') == 'any_employee') {
-            $service = Service::find($request->input('service_id'));
-            if (!$service) {
-                return json_encode($this->getCommonError());
-            }
-            $times = $service->getFreeWorkTimesForDay($date);
-
-        } else {
-            $employee = Employee::find($request->input('employee_id'));
-            $service = Service::find($request->input('service_id'));
-            $times = $employee->getFreeWorkTimesForDay($date, $service);
-        }
-
-        if ( ! $times){
-            //TODO обработать на фронте эту ситуацию
-            echo json_encode([]);
-        }
-
-        // отрисовываем список интервалов
-        echo json_encode($times);
-    }
-
-
-    // источник данных для селекта Услуга на форме Записи (обновляется ajax'ом при смене сотрудника в селекте)
-    public function getEmployeesForServices(Service $service, Request $request)
-
-    {
-        //$employees = $service->employees()->get();
-
-        // Отображаем только тех, что разрешили онлайн запись (в employee_settings)
-        $employees = DB::table('employees')
-            ->join('employee_provides_service', 'employees.employee_id', '=', 'employee_provides_service.employee_id')
-            ->join('employee_settings', 'employees.employee_id', '=', 'employee_settings.employee_id')
-            ->join('positions', 'employees.position_id', '=', 'positions.position_id')
-            ->select('employees.*','employees.avatar_image_name as avatar', 'employee_settings.*', 'positions.title as position_name' , 'positions.description as description')
-            ->where('employees.organization_id', $request->organization_id)
-            ->where('employee_provides_service.service_id', $service->service_id)
-            ->where('employee_settings.reg_permitted', 1)
-            ->get();
-
-        if ( $employees->count() != 0 ) {
-            // добавляем вариант "Мастер не важен"
-            $anyEmployee = array(
-                'employee_id'   => 'any_employee',
-                'name'          => trans('main.widget:employee_doesnot_matter_text'),
-                'avatar'        => null,
-                'position_name' => '',
-                'description'   => ''
-            );
-            // Мастер не важен на первом месте
-            $employees = $employees->toArray();
-            array_unshift($employees, (object)$anyEmployee);
-        } else {
-            //TODO обработать на фронте эту ситуацию
-            echo json_encode([]);
-        }
-
-        // строим список для вьюхи
-        $employeesOptions = [];
-        foreach($employees AS $employee)
-        {
-            $employeesOptions[] = ['value' => $employee->employee_id, 'label' => $employee->name];
-        }
-
-        echo json_encode($employeesOptions);
-    }
-
-
-    /**
-     * Создаёт/сохраняет данные о звонке
-     * @param Request $request
-     * @return mixed
-     */
-    public function saveCall(Request $request){
-        $callId = $request->input('call_id');
-        $callTitle = trim(strip_tags($request->input('call_title')));
-        $callDate = $request->input('call_date');
-        $callDescription = trim(strip_tags($request->input('call_description')));
-        $clientId = $request->input('client_id');
-        $appointmentId = $request->input('appointment_id');
-        if ($callId == '' ){
-            //создание
-            $appCall = new AppointmentCalls;
-
-            $appCall->client_id = $clientId;
-            $appCall->appointment_id = $appointmentId;
-            $appCall->date = $callDate;
-            $appCall->title = $callTitle;
-            $appCall->description = $callDescription;
-
-            $appCall->save();
-        } else {
-            // редактирование
-            $appCall = AppointmentCalls::find($callId);
-
-            $appCall->client_id = $clientId;
-            $appCall->appointment_id = $appointmentId;
-            $appCall->date = $callDate;
-            $appCall->title = $callTitle;
-            $appCall->description = $callDescription;
-
-            $appCall->save();
-        }
-        return response()->json(['result' => 1]);
-    }
-
-    /**
-     *  получает данные о звонках
-     * @param Request $request
-     * @return mixed
-     */
-    public function getCalls(Request $request){
-        $clientId = $request->input('client_id');
-        $appointmentId = $request->input('appointment_id');
-
-        // Ищем звонки
-        $calls = AppointmentCalls::where('client_id', $clientId)->where('appointment_id', $appointmentId)->orderby('date')->get();
-
-//        if($calls) {
-//            foreach ($calls as &$call){
-//                $call->date = Carbon::createFromFormat('Y-m-d', $call->date);
-//            }
-//        }
-
-        return view('appointment.tpl.body_client_calls_table', ['calls' => $calls])->render();
-    }
-
-
-    /**
-     * Метод для ajax получения информации о клиенте (в интерфейсе создания/редактирования Записи)
-     * @param Request $request
-     *
-     */
-//    public function getClientInfo(Request $request) {
-//        // Если юзеру не разрешено просматривать данные клиентов, возвращаем пустую строку
-//        $accessLevel = $request->user()->hasAccessTo('appointment_client_data', 'view', 0);
-//        if ($accessLevel < 1) {
-//            echo '';
-//            return;
-//        }
-//
-//        // будем искать клиента по номеру телефона
-//        // TODO: искать по email и комбинации phone+email
-//        $phone = $request->input('phone');
-//        if (empty($phone)) {
-//            echo '';
-//            return;
-//        }
-//
-//        $phone = $request->user()->normalizePhoneNumber($phone);
-//
-//        //"SELECT count(*) AS num_visits, MAX(start) AS last_visit FROM appointments a JOIN clients c ON a.client_id=c.client_id WHERE c.phone=:phone AND a.start<=NOW()";
-//        $clientData = DB::table('appointments')
-//            ->select(DB::raw('count(*) AS num_visits, MAX(appointments.start) AS last_visit'))
-//            ->join('clients', 'appointments.client_id', '=', 'clients.client_id')
-//            ->where('clients.is_active', true)
-//            ->where('clients.phone', $phone)
-//            ->whereRaw('appointments.start <= NOW()')
-//            ->get();
-//        $clientData = $clientData->first();
-//        if ($clientData->num_visits == 0) {
-//            echo '';
-//            exit;
-//        }
-//        //echo print_r($clientData, TRUE); exit;
-//
-//        echo view('appointment.tpl.clientinfo', ['clientData' => $clientData])->render();
-//    }
 }

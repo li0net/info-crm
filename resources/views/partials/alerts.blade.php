@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12" id="alerts_block">
         @if (Session::has('success'))
             <div class="alert alert-success" role="alert">
                 <strong>{{ trans('adminlte_lang::message.success') }}</strong> {{ Session::get('success') }}
@@ -13,7 +13,7 @@
         @endif
 
         @if (count($errors) > 0)
-            <div class="alert alert-danger">
+            <div class="alert alert-error">
                 <ul>
                     @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>

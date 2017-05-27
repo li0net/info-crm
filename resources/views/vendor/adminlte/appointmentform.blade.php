@@ -29,115 +29,116 @@
 <div class="container-fluid">
 
     @include('partials.alerts')
+    <div id="appointment_form_container">
+        <div class="row">
+            <div class="form-group m-b">
+                <div class="col-sm-12">
+                    <div class="input-group input-pills in_status">
 
-    <div class="row">
-        <div class="form-group m-b">
-            <div class="col-sm-12">
-                <div class="input-group input-pills in_status">
-
-                    <input type="radio" class="raw" name="options" id="option1" autocomplete="off" checked>
-                    <label for="option1">
-                        <i class="fa fa-clock-o"></i> <span class="hidden-xs">@lang('main.appointment:client_wait_tab_label')</span>
-                    </label>
-                    <input type="radio" class="raw" name="options" id="option2" autocomplete="off">
-                    <label for="option2">
-                        <i class="fa fa-plus-circle"></i> <span class="hidden-xs">@lang('main.appointment:client_came_tab_label')</span>
-                    </label>
-                    <input type="radio" class="raw" name="options" id="option3" autocomplete="off">
-                    <label for="option3">
-                        <i class="fa fa-minus-circle"></i> <span class="hidden-xs">@lang('main.appointment:client_didnt_came_tab_label')</span>
-                    </label>
-                    <input type="radio" class="raw" name="options" id="option4" autocomplete="off">
-                    <label for="option4">
-                        <i class="fa fa-check-circle"></i> <span class="hidden-xs">@lang('main.appointment:client_confirm_tab_label')</span>
-                    </label>
+                        <input type="radio" class="raw" name="options" id="option1" autocomplete="off" checked>
+                        <label for="option1">
+                            <i class="fa fa-clock-o"></i> <span class="hidden-xs">@lang('main.appointment:client_wait_tab_label')</span>
+                        </label>
+                        <input type="radio" class="raw" name="options" id="option2" autocomplete="off">
+                        <label for="option2">
+                            <i class="fa fa-plus-circle"></i> <span class="hidden-xs">@lang('main.appointment:client_came_tab_label')</span>
+                        </label>
+                        <input type="radio" class="raw" name="options" id="option3" autocomplete="off">
+                        <label for="option3">
+                            <i class="fa fa-minus-circle"></i> <span class="hidden-xs">@lang('main.appointment:client_didnt_came_tab_label')</span>
+                        </label>
+                        <input type="radio" class="raw" name="options" id="option4" autocomplete="off">
+                        <label for="option4">
+                            <i class="fa fa-check-circle"></i> <span class="hidden-xs">@lang('main.appointment:client_confirm_tab_label')</span>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row m-t">
-        {!! Form::open(['url' => '/appointments/save', 'id' => 'appointment_form']) !!}
+        <div class="row m-t">
+            {!! Form::open(['url' => '/appointments/save', 'id' => 'appointment_form']) !!}
 
-        {{ Form::hidden('storage_options', null, ['id' => 'storage_options']) }}
-        {{ Form::hidden('employee_options', null, ['id' => 'employee_options']) }}
-        {{ Form::hidden('organization_id', $user->organization_id, ['id' => 'organization_id']) }}
+            {{ Form::hidden('storage_options', null, ['id' => 'storage_options']) }}
+            {{ Form::hidden('employee_options', null, ['id' => 'employee_options']) }}
+            {{ Form::hidden('organization_id', $user->organization_id, ['id' => 'organization_id']) }}
 
-        @if (isset($appointment))
-        <input type="hidden" name="appointment_id" id="app_appointment_id" value="{{$appointment->appointment_id}}">
-        @endif
-        <div class="col-sm-4 nav-stacked-block" >
-            <ul id="app_side_tabs" class="modal-menu list-group clear-list m-t nav nav-tabs nav-stacked">
-                <li class="modal-menu-header nav-header">@lang('adminlte_lang::message.visit')</li>
+            @if (isset($appointment))
+                <input type="hidden" name="appointment_id" id="app_appointment_id" value="{{$appointment->appointment_id}}">
+            @endif
+            <div class="col-sm-4 nav-stacked-block" >
+                <ul id="app_side_tabs" class="modal-menu list-group clear-list m-t nav nav-tabs nav-stacked">
+                    <li class="modal-menu-header nav-header">@lang('adminlte_lang::message.visit')</li>
 
-                <li class="modal-menu-l record_tab list-group-item first-item active" data-toggle="tab" data-target="#body_client" >
-                    <i class="fa fa-user"></i> @lang('adminlte_lang::message.client')</li>
-                <li class="modal-menu-l record_tab list-group-item" data-toggle="tab" data-target="#body_service" >
-                    <i class="fa fa-calendar"></i> @lang('adminlte_lang::message.service')</li>
-                <li class="modal-menu-l visit_tab list-group-item" data-toggle="tab" data-target="#body_status">
-                    <i class="fa fa-clock-o"></i> @lang('adminlte_lang::message.visit_status')</li>
-                <li class="modal-menu-l payments_tab list-group-item" data-toggle="tab" data-target="#body_payments" >
-                    <i class="fa fa-usd"></i> @lang('adminlte_lang::message.visit_payment')</li>
-<!--                <li class="modal-menu-l reminds_tab list-group-item" data-toggle="tab" data-target="#body_reminds" >-->
-<!--                    <i class="fa fa-comments-o"></i> Уведомления </li>-->
-<!--                <li class="modal-menu-l history_tab list-group-item" data-toggle="tab" data-target="#body_history" >-->
-<!--                    <i class="fa fa-file-text"></i> История изменений</li>-->
-                <li class="modal-menu-l goods_history_tab list-group-item last-item disabled" data-toggle="tab" data-target="#goods_history" >
-                    <i class="fa fa-cubes"></i> @lang('adminlte_lang::message.writeoff_goods')</li>
+                    <li class="modal-menu-l record_tab list-group-item first-item active" data-toggle="tab" data-target="#body_client" >
+                        <i class="fa fa-user"></i> @lang('adminlte_lang::message.client')</li>
+                    <li class="modal-menu-l record_tab list-group-item" data-toggle="tab" data-target="#body_service" >
+                        <i class="fa fa-calendar"></i> @lang('adminlte_lang::message.service')</li>
+                    <li class="modal-menu-l visit_tab list-group-item" data-toggle="tab" data-target="#body_status">
+                        <i class="fa fa-clock-o"></i> @lang('adminlte_lang::message.visit_status')</li>
+                    <li class="modal-menu-l payments_tab list-group-item" data-toggle="tab" data-target="#body_payments" >
+                        <i class="fa fa-usd"></i> @lang('adminlte_lang::message.visit_payment')</li>
+                    <!--                <li class="modal-menu-l reminds_tab list-group-item" data-toggle="tab" data-target="#body_reminds" >-->
+                    <!--                    <i class="fa fa-comments-o"></i> Уведомления </li>-->
+                    <!--                <li class="modal-menu-l history_tab list-group-item" data-toggle="tab" data-target="#body_history" >-->
+                    <!--                    <i class="fa fa-file-text"></i> История изменений</li>-->
+                    <li class="modal-menu-l goods_history_tab list-group-item last-item disabled" data-toggle="tab" data-target="#goods_history" >
+                        <i class="fa fa-cubes"></i> @lang('adminlte_lang::message.writeoff_goods')</li>
 
-                <li class="modal-menu-header client_header_tab nav-header">@lang('adminlte_lang::message.client')</li>
+                    <li class="modal-menu-header client_header_tab nav-header">@lang('adminlte_lang::message.client')</li>
 
-                <li class="modal-menu-l client_info_tab list-group-item first-item" data-toggle="tab" id="#rec_client_fulldata" data-target="#client_info" >
-                    <i class="fa fa-address-card-o"></i> @lang('adminlte_lang::message.client_info')</li>
-                <li class="modal-menu-l client_statistics_tab list-group-item" data-toggle="tab"  data-target="#client_statistics" >
-                    <i class="fa fa-pie-chart"></i> @lang('adminlte_lang::message.attendance_statistics')</li>
-<!--                <li class="modal-menu-l sms_history_tab list-group-item" data-target="#sms_history" >-->
-<!--                    <i class="fa fa-envelope"></i> Отправленные SMS</li>-->
-<!--                <li class="modal-menu-l sms_tab list-group-item" data-target="#body_sms" >-->
-<!--                    <i class="fa fa-send"></i> Отправить SMS</li>-->
-<!--                <li class="modal-menu-l card_tab list-group-item" data-target="#body_card" >-->
-<!--                    <i class="fa fa-qrcode"></i> Электронная карта</li>-->
-                <li class="modal-menu-l client_loyalty_cards_tab list-group-item disabled" data-target="client_loyalty_cards_body"  >
-                    <i class="fa fa-credit-card"></i> @lang('adminlte_lang::message.loyalty_cards')</li>
-                <li class="modal-menu-l phone_call_tabs list-group-item last-item"data-toggle="tab"  data-target="#client_calls" >
-                    <i class="fa fa-phone"></i> @lang('adminlte_lang::message.calls_history')</li>
-            </ul>
+                    <li class="modal-menu-l client_info_tab list-group-item first-item" data-toggle="tab" id="#rec_client_fulldata" data-target="#client_info" >
+                        <i class="fa fa-address-card-o"></i> @lang('adminlte_lang::message.client_info')</li>
+                    <li class="modal-menu-l client_statistics_tab list-group-item" data-toggle="tab"  data-target="#client_statistics" >
+                        <i class="fa fa-pie-chart"></i> @lang('adminlte_lang::message.attendance_statistics')</li>
+                    <!--                <li class="modal-menu-l sms_history_tab list-group-item" data-target="#sms_history" >-->
+                    <!--                    <i class="fa fa-envelope"></i> Отправленные SMS</li>-->
+                    <!--                <li class="modal-menu-l sms_tab list-group-item" data-target="#body_sms" >-->
+                    <!--                    <i class="fa fa-send"></i> Отправить SMS</li>-->
+                    <!--                <li class="modal-menu-l card_tab list-group-item" data-target="#body_card" >-->
+                    <!--                    <i class="fa fa-qrcode"></i> Электронная карта</li>-->
+                    <li class="modal-menu-l client_loyalty_cards_tab list-group-item disabled" data-target="client_loyalty_cards_body"  >
+                        <i class="fa fa-credit-card"></i> @lang('adminlte_lang::message.loyalty_cards')</li>
+                    <li class="modal-menu-l phone_call_tabs list-group-item last-item"data-toggle="tab"  data-target="#client_calls" >
+                        <i class="fa fa-phone"></i> @lang('adminlte_lang::message.calls_history')</li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div class="col-sm-8 tab-pane fade in active" id="body_client">
+                    @include('appointment.tpl.body_client')
+                </div>
+                <div class="col-sm-8 tab-pane fade" id="body_service">
+                    @include('appointment.tpl.body_service')
+                </div>
+                <div class="col-sm-8 tab-pane fade" id="body_status">
+                    @include('appointment.tpl.body_status')
+                </div>
+                <div class="col-sm-8 tab-pane fade" id="body_payments">
+                    @include('appointment.tpl.body_payments')
+                </div>
+                <!--            <div class="col-sm-8 tab-pane fade" id="body_reminds">-->
+
+                <!--            </div>-->
+                <!--            <div class="col-sm-8 tab-pane fade" id="body_history">-->
+            <!--                @include('appointment.tpl.body_history')-->
+                <!--            </div>-->
+                <div class="col-sm-8 tab-pane fade" id="goods_history">
+                    @include('appointment.tpl.body_goods_history')
+                </div>
+
+                <div class="col-sm-8 tab-pane fade" id="client_info"></div>
+                <div class="col-sm-8 tab-pane fade" id="client_statistics"></div>
+                <div class="col-sm-8 tab-pane fade" id="client_calls">
+                    @include('appointment.tpl.body_client_calls')
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <hr>
+            </div>
+            <div class="col-sm-12 m-t text-right">
+                <button type="submit" id="btn_submit_app_form" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
+            </div>
+            {!! Form::close() !!}
         </div>
-        <div class="tab-content">
-            <div class="col-sm-8 tab-pane fade in active" id="body_client">
-                @include('appointment.tpl.body_client')
-            </div>
-             <div class="col-sm-8 tab-pane fade" id="body_service">
-                @include('appointment.tpl.body_service')
-            </div>
-            <div class="col-sm-8 tab-pane fade" id="body_status">
-                @include('appointment.tpl.body_status')
-            </div>
-            <div class="col-sm-8 tab-pane fade" id="body_payments">
-                @include('appointment.tpl.body_payments')
-            </div>
-<!--            <div class="col-sm-8 tab-pane fade" id="body_reminds">-->
-
-<!--            </div>-->
-<!--            <div class="col-sm-8 tab-pane fade" id="body_history">-->
-<!--                @include('appointment.tpl.body_history')-->
-<!--            </div>-->
-            <div class="col-sm-8 tab-pane fade" id="goods_history">
-                @include('appointment.tpl.body_goods_history')
-            </div>
-
-            <div class="col-sm-8 tab-pane fade" id="client_info"></div>
-            <div class="col-sm-8 tab-pane fade" id="client_statistics"></div>
-            <div class="col-sm-8 tab-pane fade" id="client_calls">
-                @include('appointment.tpl.body_client_calls')
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <hr>
-        </div>
-        <div class="col-sm-12 m-t text-right">
-            <button type="submit" id="btn_submit_app_form" class="btn btn-primary center-block">@lang('main.btn_submit_label')</button>
-        </div>
-        {!! Form::close() !!}
     </div>
 </div>
 @endsection
@@ -202,6 +203,9 @@
                 }
             });
 
+            // enable/disable related selects
+            updateRelatedSelects();
+
             // Update data at client tabs
             updateClientData();
 
@@ -210,6 +214,26 @@
                 updateClientData();
             });
 
+            // enable/disable related selects
+
+            function updateRelatedSelects() {
+                if ($('#app_employee_id option').size() == 0){
+                    $('#app_employee_id').prop("disabled", true);
+                } else {
+                    $('#app_employee_id').prop("disabled", false);
+                }
+                if ($('#app_time_from option').size() == 0){
+                    $('#app_time_from').prop("disabled", true);
+                } else {
+                    $('#app_time_from').prop("disabled", false);
+                }
+                if ($('#app_date_from option').size() == 0){
+                    $('#app_date_from').prop("disabled", true);
+                } else {
+                    $('#app_date_from').prop("disabled", false);
+                }
+
+            }
             /**
              * Update data at client tabs
              */
@@ -319,6 +343,7 @@
                         } else {
                             $('#app_employee_id').prop("disabled", true);
                         }
+                        updateRelatedSelects();
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert('Server error:'+textStatus);
@@ -393,7 +418,7 @@
             $('.toggle-info').on('click', function() {
                 var id = $(this).data('id');
                 $("#info-section-"+id).toggle();
-                console.log("#info-section-"+id);Z
+                console.log("#info-section-"+id);
                 $(this).find('.fa-caret-down').toggle();
                 $(this).find('.fa-caret-up').toggle();
 

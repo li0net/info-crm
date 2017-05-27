@@ -376,6 +376,7 @@ return [
     'storage_not_chosen'		=> 'Storage not chosen',
 	'payment_item_not_chosen'	=> 'Payment item not chosen',
 	'employee_not_chosen'		=> 'Employee not chosen',
+    'service_not_chosen'		=> 'Service not chosen',
 	'client_not_chosen'			=> 'Client not chosen',
 	'show'						=> 'Show',
 	'expenses'					=> 'Expenses',
@@ -559,4 +560,5 @@ return [
     'create'	                => 'Create',
     'from_storage'  	  	  	=> 'From storage',
     'to_storage'  	  	  	    => 'To storage',
+    'add_product'  	  	  	    => 'Add product',
 ];

@@ -379,6 +379,7 @@ return [
 	'partner_not_chosen'		=> 'Ningún contratante seleccionado',
 	'account_not_chosen'		=> 'Ninguna cuenta seleccionada',
     'storage_not_chosen'		=> 'Storage not chosen',
+    'service_not_chosen'		=> 'Service not chosen',
 	'payment_item_not_chosen'	=> 'Ninguna partida de pago seleccionada',
 	'employee_not_chosen'		=> 'Ningún empleado seleccionado',
 	'client_not_chosen'			=> 'Ningún cliente seleccionado',
@@ -561,4 +562,5 @@ return [
     'create'	                => 'Crear',
     'from_storage'  	  	  	=> 'franco almacén',
     'to_storage'  	  	  	    => 'El almacén',
+    'add_product'  	  	  	    => 'Añadir este artículo',
 ];

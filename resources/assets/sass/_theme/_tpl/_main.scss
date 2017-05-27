@@ -319,12 +319,15 @@ body.skin-orange {
     &.alert-error .close {
       color: $red-color !important;
       background: transparent !important;
+      border: 1px solid $red-color;
     }
     &.alert-success,
     &.alert-success span,
     &.alert-success .close {
       background: transparent !important;
       color: #75AD4C !important;
+      border: 1px solid #75AD4C;
+      padding: 5px;
     }
   }
 

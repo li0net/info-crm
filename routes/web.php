@@ -145,8 +145,7 @@ Route::get('/appointments/create', ['as' => 'appointments.create', 'uses' => 'Ap
 Route::get('/appointments/edit/{appt}', ['as' => 'appointments.edit', 'uses' => 'AppointmentsController@edit']);
 Route::post('/appointments/save', 'AppointmentsController@save');
 Route::get('/appointments/destroy/{appt}', ['as' => 'appointments.destroy', 'uses' => 'AppointmentsController@destroy']);
-Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
-Route::get('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
+Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForService');
 
 Route::post('/appointments/findClient', 'AppointmentsController@findClient');
 Route::get('/appointments/getClientStats', 'AppointmentsController@getClientStats');

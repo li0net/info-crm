@@ -380,6 +380,7 @@ return [
 	'storage_not_chosen'		=> 'Склад не выбран',
 	'payment_item_not_chosen'	=> 'Статья платежа не выбрана',
 	'employee_not_chosen'		=> 'Сотрудник не выбран',
+	'service_not_chosen'		=> 'Услуга не выбрана',
 	'client_not_chosen'			=> 'Клиент не выбран',
 	'show'						=> 'Показать',
 	'expenses'					=> 'Расходы',
@@ -568,4 +569,5 @@ return [
     'create'	                => 'Создать',
     'from_storage'  	  	  	=> 'Со склада',
     'to_storage'  	  	  	    => 'На склад',
+    'add_product'  	  	  	    => 'Добавить товар',
 ];

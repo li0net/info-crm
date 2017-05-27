@@ -505,9 +505,12 @@ $(document).ready(function () {
     // Appointment form submit
     $("#appointment_form").on("submit", function (e) {
         e.preventDefault();
+        
+        // clear alerts
+        clearFormAlerts();
 
         if($('#app_client_id').val() == 'null' || $('#app_service_id').val() == 'null'){
-            alert('At least Client and Service should be chosen!');
+            showFormError('At least Client and Service should be chosen!');
             return false;
         }
 
@@ -546,67 +549,44 @@ $(document).ready(function () {
             data: $("#appointment_form").serialize(),
             dataType: "json",
             beforeSend: function() {
-                //$('#result').html('<img src="loading.gif" />');
-                var btn = $('#btn_submit_app_form');
-                btnLabel = $(btn).val();
-                $(btn).prop('disabled', true);
-                $(btn).val("Сохранение...");	// localize
+                $('#appointment_form_container').addClass('loadingbox');
             },
             success: function(data) {
-                //$('#result').html(data);
-                var btn = $('#btn_submit_app_form');
-                $(btn).val(btnLabel);
-                $(btn).prop('disabled', false);
-
-                var errorContainers = [
-                    'client_name_error',
-                    'client_phone_error',
-                    'client_email_error',
-                    'service_id_error',
-                    'note_error',
-                    'employee_id_error',
-                    'date_from_error',
-                    'time_from_error',
-                    'duration_hours_error',
-                    'duration_minutes_error'
-                ];
-                for (var i = 0; i < errorContainers.length; i++) {
-                    $('#' + errorContainers[i]).html('');
-                }
+                console.log('SUCCESS DATA');
+                console.log(data);
 
                 if (data.success) {
-                    alert("Saved");
+                    console.log('success');
+                    showFormSuccess('Changes successfully saved');                    
                 } else {
+                    console.log('error');
                     if (data.validation_errors !== undefined) {
+                        var errorMsg = '';
                         for (var field_name in data.validation_errors) {
                             if (data.validation_errors.hasOwnProperty(field_name)) {
-                                if (data.validation_errors[field_name] instanceof Array) {
-                                    var errorMsg = data.validation_errors[field_name].join('<br/>');
-                                } else {
-                                    var errorMsg = data.validation_errors[field_name];
-                                }
-
-                                $('#' + field_name + '_error').html(errorMsg);
+                                errorMsg += data.validation_errors[field_name]+'<br/>';
                             }
                         }
+                        if(errorMsg !=''){
+                            showFormError(errorMsg);                            
+                        }
                     }
-
                     if (data.error !== undefined) {
-                        alert("Error:" + data.error);
+                        showFormError(data.error);
                     }
                 }
-                window.location.href = '/home';
+                // window.location.href = '/home';
             },
             error: function(data) {
-                var btn = $('#btn_submit_app_form');
-                $(btn).val(btnLabel);
-                $(btn).prop('disabled', false);
-                alert("Error");
+                console.log('ERROR DATA');
+                console.log(data);
             }
         });
+
+        $('#appointment_form_container').removeClass('loadingbox');
+
         return false;
     });
-
     /** SELECT2 SELECT INIT **/
     $(".js-select-basic-multiple").select2({
         templateResult: formatClientCatColor,
@@ -915,3 +895,20 @@ function ClientCategoryFormatEditColumn(cellvalue, options, rowObject)
 
     return  url + urlDel;
 }
+
+/**
+ * Actions with form alerts
+ */
+function showFormSuccess(msg){
+    $('#alerts_block').html('<div class="alert alert-success">'+msg+'</div>');
+    $('#alerts_block').find('.alert').show();
+}
+function showFormError(msg){
+    $('#alerts_block').html('<div class="alert alert-danger">'+msg+'</div>');
+    $('#alerts_block').find('.alert').show();
+}
+function clearFormAlerts(){
+    $('#alerts_block').html('');
+    $('#alerts_block').find('.alert').hide();
+}
+

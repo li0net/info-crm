@@ -22,14 +22,14 @@
             @if(isset($appointment))
             {{ Form::label('', $appointment->service->name, ['id' => 'service_name']) }}
             @else
-            {{ Form::label('', 'Услуга не выбрана', ['id' => 'service_name']) }}
+            {{ Form::label('', trans('adminlte_lang::message.employee_not_chosen'), ['id' => 'service_name']) }}
             @endif
         </div>
         <div class="col-sm-3">
             @if(isset($appointment))
             {{ Form::label('', $appointment->employee->name, ['id' => 'service_employee']) }}
             @else
-            {{ Form::label('', 'Сотрудник не выбран', ['id' => 'service_employee']) }}
+            {{ Form::label('', trans('adminlte_lang::message.service_not_chosen'), ['id' => 'service_employee']) }}
             @endif
         </div>
         <div class="col-sm-2">
@@ -87,16 +87,16 @@
                 </div>
                 <div class="row alt-control-bar">
                     <div class="col-sm-2">
-                        <label>Количество</label>
+                        <label>{{ trans('adminlte_lang::message.amount') }}</label>
                     </div>
                     <div class="col-sm-2">
-                        <label>Цена, ₽</label>
+                        <label>{{ trans('adminlte_lang::message.price_val') }}</label>
                     </div>
                     <div class="col-sm-2">
-                        <label>Скидка, %</label>
+                        <label>{{ trans('adminlte_lang::message.discount_val') }}</label>
                     </div>
                     <div class="col-sm-2">
-                        <label>Итог, ₽</label>
+                        <label>{{ trans('adminlte_lang::message.total_val') }}</label>
                     </div>
                 </div>
                 <div class="row alt-control-bar">
