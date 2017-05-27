@@ -542,6 +542,7 @@ return [
     'date_start'	            => 'Date Start',
     'date_end'	                => 'Date End',
     'good_service'	            => 'Good/Service',
+    'good'	                    => 'Good',
     'price_val'	                => 'Price,$',
     'paid_val'	                => 'Paid,$',
     'total_val'	                => 'Total,$',
@@ -561,4 +562,5 @@ return [
     'from_storage'  	  	  	=> 'From storage',
     'to_storage'  	  	  	    => 'To storage',
     'add_product'  	  	  	    => 'Add product',
+    'select_employee'		    => 'Select employee',
 ];

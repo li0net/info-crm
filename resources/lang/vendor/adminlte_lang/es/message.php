@@ -544,6 +544,7 @@ return [
     'date_start'	            => 'Fecha de inicio',
     'date_end'	                => 'Fecha Fin',
     'good_service'	            => 'Buen servicio',
+    'good'	                    => 'Buen',
     'price_val'	                => 'Precio,€',
     'paid_val'	                => 'Pagado,€',
     'total_val'	                => 'Total,€',
@@ -563,4 +564,5 @@ return [
     'from_storage'  	  	  	=> 'franco almacén',
     'to_storage'  	  	  	    => 'El almacén',
     'add_product'  	  	  	    => 'Añadir este artículo',
+    'select_employee'		    => 'Seleccionar empleado',
 ];

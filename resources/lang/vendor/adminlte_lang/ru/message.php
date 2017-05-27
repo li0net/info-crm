@@ -548,6 +548,7 @@ return [
     'date_start'	            => 'Дата начала',
     'date_end'	                => 'Окончено',
     'good_service'	            => 'Товар/услуга',
+    'good'	                    => 'Товар',
     'price_val'	                => 'Цена,₽',
     'paid_val'	                => 'Оплачено,₽',
     'total_val'	                => 'Итог,₽',
@@ -570,4 +571,5 @@ return [
     'from_storage'  	  	  	=> 'Со склада',
     'to_storage'  	  	  	    => 'На склад',
     'add_product'  	  	  	    => 'Добавить товар',
+    'select_employee'		    => 'Выберите сотрудника',
 ];

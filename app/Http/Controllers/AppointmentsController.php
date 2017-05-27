@@ -56,7 +56,7 @@ class AppointmentsController extends Controller
 
         return view('adminlte::appointmentform', [
             'servicesOptions' => $servicesOptions,
-            'timeOptions' => $timeOptions,
+            'timeOptions' => [],
             'hoursOptions' => $durationSelects['hours'],
             'minutesOptions' => $durationSelects['minutes'],
             'user' => $request->user(),

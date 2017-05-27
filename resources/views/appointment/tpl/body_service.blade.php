@@ -5,14 +5,14 @@
         @foreach($servicesOptions as $label => $services)
             <optgroup label="{{ $label }}">
                 @foreach($services as $service)
-                <option
-                    @if (old('service_id') AND old('service_id') == $service['value'])
-                    selected="selected"
-                    @elseif (!old('service_id') AND isset($appointment) AND $appointment->service_id == $service['value'])
-                    selected="selected"
-                    @endif
-                    value="{{$service['value']}}">{{$service['label']}}
-                </option>
+                    <option
+                        @if (old('service_id') AND old('service_id') == $service['value'])
+                        selected="selected"
+                        @elseif (!old('service_id') AND isset($appointment) AND $appointment->service_id == $service['value'])
+                        selected="selected"
+                        @endif
+                        value="{{$service['value']}}">{{$service['label']}}
+                    </option>
                 @endforeach
             </optgroup>
         @endforeach
@@ -21,19 +21,22 @@
 
 <div class="form-group">
     <label for="app_employee_id">@lang('main.appointment:employee_id_label')</label>
-    <select name="employee_id" id="app_employee_id" class = "js-select-basic-single" >
+    <select name="employee_id" id="app_employee_id" class = "js-select-basic-single" placeholder ="@lang('adminlte_lang::message.employee')" >
         @if (isset($employeesOptions) OR session()->has('employeesOptions'))
             <?php if(!isset($employeesOptions)) $employeesOptions = session('employeesOptions');?>
-            @foreach($employeesOptions as $employee)
-                <option
-                    @if (old('employee_id') AND old('employee_id') == $employee['value'])
-                        selected="selected"
-                    @elseif (!old('employee_id') AND isset($appointment) AND $appointment->employee_id == $employee['value'])
-                        selected="selected"
-                    @endif
-                    value="{{$employee['value']}}">{{$employee['label']}}
-                </option>
-            @endforeach
+            @if(!empty($employeesOptions))
+                <option id="app_employee_id_empty" selected value="null">{{ trans('adminlte_lang::message.select_employee') }}</option>
+                @foreach($employeesOptions as $employee)
+                    <option
+                        @if (old('employee_id') AND old('employee_id') == $employee['value'])
+                            selected="selected"
+                        @elseif (!old('employee_id') AND isset($appointment) AND $appointment->employee_id == $employee['value'])
+                            selected="selected"
+                        @endif
+                        value="{{$employee['value']}}">{{$employee['label']}}
+                    </option>
+                @endforeach
+            @endif
         @endif
     </select>
 </div>
@@ -50,6 +53,7 @@
                     }
                 ?>
                 @if(!empty($daysOptions))
+                    <option id="app_date_from_empty" selected value="null">@lang('main.appointment:date_time_from')</option>
                     @foreach($daysOptions as $key => $val)
                     <option
                         @if ($oldDate AND $oldDate == $val)

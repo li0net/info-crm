@@ -42,7 +42,7 @@
         <div class="col-sm-2">
             {{ Form::text(
             "service_discount",
-            isset($appointment) ? $appointment->service_discount : null,
+            (isset($appointment)&& !empty($appointment->service_discount)) ? $appointment->service_discount : 0,
             ['class' => 'form-control input-sm neo_visit_rec_discount', 'placeholder' => trans('adminlte_lang::message.discount')]
             ) }}
         </div>
@@ -65,13 +65,13 @@
             <div class="goods_sale m-b col-sm-12 alt-control-bar" data-number="1" id="vis_sale_box_1">
                 <div class="row">
                     <div class="col-sm-4">
-                        <label>Склад</label>
+                        <label>@lang('adminlte_lang::message.stock')</label>
                     </div>
                     <div class="col-sm-4">
-                        <label>Товар</label>
+                        <label>@lang('adminlte_lang::message.good')</label>
                     </div>
                     <div class="col-sm-4">
-                        <label>Сотрудник</label>
+                        <label>@lang('adminlte_lang::message.good')</label>
                     </div>
                 </div>
                 <div class="row alt-control-bar">

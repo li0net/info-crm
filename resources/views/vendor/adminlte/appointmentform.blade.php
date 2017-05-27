@@ -232,7 +232,6 @@
                 } else {
                     $('#app_date_from').prop("disabled", false);
                 }
-
             }
             /**
              * Update data at client tabs
@@ -331,7 +330,6 @@
                             for (var i in data) {
                                 $('<option>').val(data[i].value).text(data[i].label).appendTo('#app_employee_id');
                             }
-
                             $('#service_name').text($('#app_service_id option:selected').text());
                             if ( $('#app_employee_id > option').length == 0) {
                                 $('#service_employee').text("@lang('adminlte_lang::message.employee_not_chosen')");
@@ -339,6 +337,7 @@
                                 var employee_name = $('#app_employee_id option:selected').text();
                                 $('#service_employee').text('' == employee_name ? $('#app_employee_id option:first').text() : employee_name);
                             }
+                            $('#app_employee_id').prepend('<option id="app_employee_id_empty" selected value="null">{{ trans('adminlte_lang::message.select_employee') }}</option>');
                             $('#app_employee_id').prop("disabled", false);
                         } else {
                             $('#app_employee_id').prop("disabled", true);
@@ -352,6 +351,7 @@
             });
 
             $('#app_employee_id').on('change', function(){
+                $('#app_employee_id_empty').remove();
                 if ( $('#app_employee_id > option').length == 0) {
                     $('#service_employee').text("@lang('adminlte_lang::message.employee_not_chosen')");
                 } else {
@@ -372,6 +372,7 @@
                                     $('<option>').val(data[i]).text(data[i]).appendTo('#app_date_from');
                                 }
                                 $('#app_date_from').prop("disabled", false);
+                                $('#app_date_from').prepend('<option id="app_date_from_empty" selected value="null">@lang('main.appointment:date_time_from')</option>');
                             } else {
                                 $('#app_date_from').prop("disabled", true);
                             }
@@ -384,6 +385,7 @@
             });
 
             $('#app_date_from').on('change', function(){
+                $('#app_date_from_empty').remove();
                 var date = $(this).val();
                 var employee_id =  $('#app_employee_id').val();
                 var service_id =  $('#app_service_id').val();
