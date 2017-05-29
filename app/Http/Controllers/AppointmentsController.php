@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use App\Account;
 use App\Appointment;
 use App\AppointmentCalls;
+use App\Card;
 use App\Client;
 use App\Employee;
 use App\Product;
@@ -68,7 +69,7 @@ class AppointmentsController extends Controller
             'user' => $request->user(),
             'storages' => $storages,
             'accounts' => $accounts,
-            'clients' => $clients
+            'clients' => $clients,
         ]);
     }
 
@@ -86,9 +87,8 @@ class AppointmentsController extends Controller
         $servicesOptions = $this->prepareServicesSelectData($request);
 
 
-
         $durationSelects = $this->prepareDurationSelects();
-        $transactions = StorageTransaction::where('appointment_id', $appt->appointment_id)->get();
+        $transactions = StorageTransaction::where('appointment_id', $appt->appointment_id)->where('type', 'expenses')->get();
 
         $products = Storage::where('organization_id', $request->user()->organization_id)
             ->orderBy('title')
@@ -120,7 +120,7 @@ class AppointmentsController extends Controller
             ->join('employee_provides_service', 'employees.employee_id', '=', 'employee_provides_service.employee_id')
             ->join('employee_settings', 'employees.employee_id', '=', 'employee_settings.employee_id')
             ->join('positions', 'employees.position_id', '=', 'positions.position_id')
-            ->select('employees.*','employees.avatar_image_name as avatar', 'employee_settings.*', 'positions.title as position_name' , 'positions.description as description')
+            ->select('employees.*','employees.avatar_image_name as avatar', 'employee_settings.*', 'positions.title as position_name' , 'positions.description as description',"employee_provides_service.routing_id")
             ->where('employees.organization_id', $request->user()->organization_id)
             ->where('employee_provides_service.service_id', $appt->service->service_id)
             ->where('employee_settings.reg_permitted', 1)
@@ -141,10 +141,44 @@ class AppointmentsController extends Controller
         // строим список для вьюхи
         $employeesOptions = [];
         $transactionEmployeesOptions = [];
+        $aptCardId = FALSE; // технологическая карта
+
         foreach($employees AS $employee)
         {
             $employeesOptions[] = ['value' => $employee->employee_id, 'label' => $employee->name];
             $transactionEmployeesOptions[$employee->employee_id] = $employee->name;
+
+            // получаем карту списания расходников
+            if ( isset($appt->employee_id) ){
+                if($employee->employee_id == $appt->employee_id AND ! empty($employee->routing_id)){
+                    $aptCardId = $employee->routing_id;
+                }
+            }
+        }
+
+        // Если есть списания - отображем их, елси нет - пытаемся получить из технологической карты
+        // TODO добавить возможность подключать элементы изх карты на лету при создании и редактировании
+        $dischargeItems = [];
+        $dischargeTransactions = StorageTransaction::where('appointment_id', $appt->appointment_id)->where('type', 'discharge')->get();
+        if ( count($dischargeTransactions) > 0 )
+        {
+            foreach ($dischargeTransactions as $item)
+            {
+                $dischargeItems[] = array($item['storage1_id'], $item['product_id'], $item['amount']);
+            }
+        } else {
+            if( ! empty($aptCardId)) {
+                $card = Card::find($aptCardId);
+                // get items of current card
+                $dischargeItems = array();
+                if(null !== $card->card_items) {
+                    $items = json_decode($card->card_items);
+
+                    foreach ($items[0] as $key => $value) {
+                        $dischargeItems[] = array($value, $items[1][$key], $items[2][$key]);
+                    }
+                }
+            }
         }
 
         $clients = Client::where('is_active', 1)->orderBy('name')->get();
@@ -182,7 +216,8 @@ class AppointmentsController extends Controller
             'products'=> $products,
             'user' => $request->user(),
             'accounts' => $accounts,
-            'clients' => $clients
+            'clients' => $clients,
+            'dischargeItems' => $dischargeItems,
         ]);
     }
 
@@ -388,9 +423,9 @@ class AppointmentsController extends Controller
         }
 
         $appointment->save();
-
+        // продажа товаров
         for ($i = 0; $i < count($request->storage_id); $i++) {
-            $transaction = new storageTransaction;
+            $transaction = new StorageTransaction;
 
             $transaction->appointment_id = $appointment->appointment_id;
             $transaction->date = date_create($request->input('date-from') . $request->input('time-from'));
@@ -419,6 +454,42 @@ class AppointmentsController extends Controller
             $product->save();
 
             $transaction->save();
+        }
+        // списание расходников
+        if ($request->card_storage_id AND count($request->card_storage_id) > 0){
+            for ($i = 0; $i < count($request->card_storage_id); $i++) {
+                if( ! empty($request->card_storage_id[$i]) AND ! empty($request->card_product_id[$i]) AND ! empty($request->card_amount[$i]) ) {
+                    $dischargeTransaction = new StorageTransaction;
+                    $dischargeTransaction->date = date_create($request->input('date-from') . $request->input('time-from'));
+                    date_format($dischargeTransaction->date, 'U = Y-m-d H:i:s');
+
+                    $dischargeTransaction->type = 'discharge';
+
+                    $dischargeTransaction->client_id = $appointment->client_id;
+                    $dischargeTransaction->employee_id = $appointment->employee_id;
+                    $dischargeTransaction->storage1_id = $request->card_storage_id[$i];
+                    $dischargeTransaction->storage2_id = 0;
+                    $dischargeTransaction->partner_id = 0;
+                    $dischargeTransaction->account_id = 0;
+                    $dischargeTransaction->appointment_id = $appointment->appointment_id;
+                    $dischargeTransaction->description = '';
+                    $dischargeTransaction->organization_id = $request->user()->organization_id;
+
+                    $dischargeTransaction->is_paidfor = false;
+                    $dischargeTransaction->product_id = $request->card_product_id[$i];
+                    $dischargeTransaction->price = 0;
+                    $dischargeTransaction->amount = $request->card_amount[$i];
+                    $dischargeTransaction->discount = 0;
+                    $dischargeTransaction->sum = 0;
+                    $dischargeTransaction->code = 0;
+                    $dischargeTransaction->transaction_items = '';
+                    $dischargeTransaction->save();
+
+                    $product = Product::find($request->card_product_id[$i]);
+                    $product->amount -= $request->card_amount[$i];
+                    $product->save();
+                }
+            }
         }
         echo json_encode(array('success' => true, 'error' => ''));
     }

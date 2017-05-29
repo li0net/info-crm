@@ -675,7 +675,12 @@ $(document).ready(function () {
         if( $(this).hasClass('btn-add') ) {
             $('#card-items').append($('#card-items-tpl').html());
             $('#card-items .wrap-it:last-of-type select[name="storage_id[]"]').removeClass('form-control').addClass('js-select-basic-single-alt');
+            // $('#card-items .wrap-it:last-of-type select[name="storage_id[]"]').prepend('<option id="storage_id_empty" selected value="null">'+$('#select_storage-placeholder-tpl').html()+'</option>');
             $('#card-items .wrap-it:last-of-type select[name="product_id[]"]').removeClass('form-control').addClass('js-select-basic-single-alt');
+
+            $('#card-items .wrap-it:last-of-type select[name="card_storage_id[]"]').removeClass('form-control').addClass('js-select-basic-single-alt');
+            // $('#card-items .wrap-it:last-of-type select[name="card_storage_id[]"]').prepend('<option id="storage_id_empty" selected value="null">'+$('#select_storage-placeholder-tpl').html()+'</option>');
+            $('#card-items .wrap-it:last-of-type select[name="card_product_id[]"]').removeClass('form-control').addClass('js-select-basic-single-alt');
 
             $('#card-items .wrap-it:last-of-type .js-select-basic-single-alt').select2({
                 theme: "alt-control",
@@ -684,7 +689,6 @@ $(document).ready(function () {
                 $('.select2-results__options').niceScroll({cursorcolor:"#969696", cursorborder: "1px solid #787878", cursorborderradius: "0", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.9, cursoropacitymax:1, boxzoom:true, autohidemode:false});
             });
             app.card_items_count++;
-
 
             $(this).addClass('btn-remove').removeClass('btn-add');
             $(this).off();

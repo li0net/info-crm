@@ -81,7 +81,7 @@
                     <!--                    <i class="fa fa-comments-o"></i> Уведомления </li>-->
                     <!--                <li class="modal-menu-l history_tab list-group-item" data-toggle="tab" data-target="#body_history" >-->
                     <!--                    <i class="fa fa-file-text"></i> История изменений</li>-->
-                    <li class="modal-menu-l goods_history_tab list-group-item last-item disabled" data-toggle="tab" data-target="#goods_history" >
+                    <li class="modal-menu-l goods_history_tab list-group-item last-item " data-toggle="tab" data-target="#goods_history" >
                         <i class="fa fa-cubes"></i> @lang('adminlte_lang::message.writeoff_goods')</li>
 
                     <li class="modal-menu-header client_header_tab nav-header">@lang('adminlte_lang::message.client')</li>
@@ -115,12 +115,11 @@
                 <div class="col-sm-8 tab-pane fade" id="body_payments">
                     @include('appointment.tpl.body_payments')
                 </div>
-                <!--            <div class="col-sm-8 tab-pane fade" id="body_reminds">-->
-
-                <!--            </div>-->
-                <!--            <div class="col-sm-8 tab-pane fade" id="body_history">-->
-            <!--                @include('appointment.tpl.body_history')-->
-                <!--            </div>-->
+                <!--<div class="col-sm-8 tab-pane fade" id="body_reminds">-->
+                <!--</div>-->
+                <!--<div class="col-sm-8 tab-pane fade" id="body_history">-->
+                    {{--@include('appointment.tpl.body_history')--}}
+                <!--</div>-->
                 <div class="col-sm-8 tab-pane fade" id="goods_history">
                     @include('appointment.tpl.body_goods_history')
                 </div>
@@ -146,6 +145,29 @@
 @section('page-specific-scripts')
     <script type="text/javascript">
         $(document).ready(function($) {
+            // форма списания расходников
+            $('#card-items .wrap-it select.form-control').select2({
+                theme: "alt-control",
+                minimumResultsForSearch: Infinity
+            }).on("select2:open", function () {
+                $('.select2-results__options').niceScroll({cursorcolor:"#969696", cursorborder: "1px solid #787878", cursorborderradius: "0", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.9, cursoropacitymax:1, boxzoom:true, autohidemode:false});
+            });
+
+            $('#card-items').on('change', 'select[name="card_storage_id[]"]', function(e){
+            // getting the list of products when choose storage
+                $(this).find('[value=null]').remove();
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'storage_id' : $(this).val()},
+                    url: "<?php echo route('card.productOptions') ?>",
+                    success: function(data) {
+                        $(e.target).parent().next().children('select[name="card_product_id[]"]').first().html('');
+                        $(e.target).parent().next().children('select[name="card_product_id[]"]').first().html(data.options);
+                    }
+                });
+            });
+
             var options = '';
             $.ajax({
                 type: "GET",
