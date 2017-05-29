@@ -201,6 +201,9 @@ class AppointmentsController extends Controller
                 sort($timeOptions );
             }
         }
+
+        //$service = Service::find($appt->service->service_id);
+
         return view('adminlte::appointmentform', [
             'appointment' => $appt,
             'servicesOptions' => $servicesOptions,
@@ -218,6 +221,8 @@ class AppointmentsController extends Controller
             'accounts' => $accounts,
             'clients' => $clients,
             'dischargeItems' => $dischargeItems,
+            'service' => $appt->service,
+
         ]);
     }
 
