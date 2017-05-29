@@ -95,6 +95,15 @@ class AppointmentsController extends Controller
             ->with('products')
             ->get()
             ->pluck('products', 'storage_id');
+        $rawProducts = Product::where('organization_id', $request->user()->organization_id)
+            ->orderBy('title')
+            ->get();
+        $productNames = [];
+        if (count($rawProducts) > 0)
+        {
+            foreach($rawProducts as $prod)
+            $productNames[$prod['product_id']] = $prod['title'];
+        }
 
         $storages = Storage::where('organization_id', $request->user()->organization_id)
             ->orderBy('title')
@@ -221,6 +230,7 @@ class AppointmentsController extends Controller
             'accounts' => $accounts,
             'clients' => $clients,
             'dischargeItems' => $dischargeItems,
+            'productNames' => $productNames,
             'service' => $appt->service,
 
         ]);

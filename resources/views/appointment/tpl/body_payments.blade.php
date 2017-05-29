@@ -1,4 +1,5 @@
 <?php
+
     $paySum = 0; // сумма к оплате
     $productsCount = 0; // количестов товаров
     $productsPrice = 0; // общая цена товаров
@@ -62,7 +63,7 @@
                     <tbody id="info-section-2" class="info-section" data-id="2">
                         @foreach($transactions as $transaction)
                             <tr class="details-row toggle-info-section" data-section-id="2">
-                                <td class="col-xs-3">{{$transaction->product_id}}</td>
+                                <td class="col-xs-3">{{$productNames[$transaction->product_id]}}</td>
                                 <td class="col-xs-2 text-center">{{$transaction->amount}}</td>
                                 <td class="col-xs-2 text-center" >{{$transaction->price}}</td>
                                 <td class="col-xs-2 text-center" id="section-header-paid-2">{{$transaction->sum}}</td>
