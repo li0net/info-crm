@@ -566,4 +566,5 @@ return [
     'add_product'  	  	  	    => 'Añadir este artículo',
     'select_employee'		    => 'Seleccionar empleado',
     'goods_sale'		        => 'Venta de bienes',
+    'total'	                    => 'Total',
 ];

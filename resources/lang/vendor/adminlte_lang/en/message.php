@@ -564,4 +564,5 @@ return [
     'add_product'  	  	  	    => 'Add product',
     'select_employee'		    => 'Select employee',
     'goods_sale'		        => 'Sale of goods',
+    'total'	                    => 'Total',
 ];

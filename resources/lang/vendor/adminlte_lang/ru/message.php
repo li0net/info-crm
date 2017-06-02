@@ -573,4 +573,5 @@ return [
     'add_product'  	  	  	    => 'Добавить товар',
     'select_employee'		    => 'Выберите сотрудника',
     'goods_sale'		        => 'Продажа товаров',
+    'total'	                    => 'Итог',
 ];

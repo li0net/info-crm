@@ -75,7 +75,7 @@
                         <i class="fa fa-calendar"></i> @lang('adminlte_lang::message.service')</li>
                     <li class="modal-menu-l visit_tab list-group-item" data-toggle="tab" data-target="#body_status">
                         <i class="fa fa-clock-o"></i> @lang('adminlte_lang::message.visit_status')</li>
-                    <li class="modal-menu-l payments_tab list-group-item" data-toggle="tab" data-target="#body_payments" >
+                    <li class="modal-menu-l payments_tab list-group-item" data-toggle="tab" data-target="#body_payments" id="body_payments_tab" >
                         <i class="fa fa-usd"></i> @lang('adminlte_lang::message.visit_payment')</li>
                     <!--                <li class="modal-menu-l reminds_tab list-group-item" data-toggle="tab" data-target="#body_reminds" >-->
                     <!--                    <i class="fa fa-comments-o"></i> Уведомления </li>-->
@@ -572,6 +572,115 @@
                 $('#app_call_date').val($('#tr_'+id).find('.td_date').text());
                 $('#app_call_description').val($('#tr_'+id).find('.td_description').text());
                 $('#app_call_id').val(id)
+            });
+            // обновляем вкладку оплаты данными с других форм
+            $('#body_payments_tab').on('click', function() {
+                $('#body_payments_tab').addClass('loadingbox');
+
+                // собираем обновлённый список услуг
+                var app = [];
+                app['name'] = $.trim($('#app_service_id option:selected').text());
+                app['col'] = 1;
+                app['price'] = $('input[name=service_price]').val();
+                app['sum'] = $('input[name=service_sum]').val();
+
+                if ( app['name'] != undefined && app['name'] != '' ){
+                    $('#appointment_sum_block').html('');
+                    var row;
+                    row ='<tr class="details-row toggle-info-section" data-section-id="1">';
+                        row +='<td class="col-xs-3">'+app['name']+'</td>';
+                        row +='<td class="col-xs-2 text-center">'+app['col']+'</td>';
+                        row +='<td class="col-xs-2 text-center">'+app['price']+'</td>';
+                        row +='<td class="col-xs-2 text-center" id="section-header-paid-1">'+app['sum']+'</td>';
+                        row +='<td class="col-xs-2 text-center" id="section-header-unpaid-1">0</td>';
+                        row +='<td class="col-xs-1 text-center">&nbsp;</td>';
+                    row +='</tr>';
+                    $('#appointment_sum_block').html(row);
+                }
+                console.log(app);
+
+                // собираем обновлённый список товаров
+                var goods = [];
+                var goods_string = '';
+                $( ".goods_transactions_box > .goods_sale" ).each(function( index ) {
+                    var good = [];
+                    good['name'] = $.trim($(this).find('select[name="product_id[]"] option:selected').text());
+                    good['col'] = $.trim($(this).find('input[name="amount[]"]').val());
+                    good['price'] = $.trim($(this).find('input[name="price[]"]').val());
+                    good['sum'] = $.trim($(this).find('input[name="sum[]"]').val());
+                    goods.push(good);
+                });
+                if(goods.length > 0){
+                    var head_row, goods_row, total_row;
+                    var goods_price = 0; // общее количество товаров
+                    var goods_col = 0;   // общая цена товаров
+                    var goods_sum = 0;   // общая оплата за товары
+
+                    // удаляем старые элементы
+                    $('#info-section-2').remove('');
+                    $('#product_sum_block').remove('');
+
+                    // список товаров
+                    $.each( goods, function(){
+                        goods_row += '<tr class="details-row toggle-info-section" data-section-id="2">';
+                            goods_row += '<td class="col-xs-3">' +this['name']+ '</td>';
+                            goods_row += '<td class="col-xs-2 text-center">' +this['col']+ '</td>';
+                            goods_row += '<td class="col-xs-2 text-center" >' +this['price']+ '</td>';
+                            goods_row += '<td class="col-xs-2 text-center" id="section-header-paid-2">' +this['sum']+ '</td>';
+                            goods_row += '<td class="col-xs-2 text-center" id="section-header-unpaid-2">' + (parseFloat(this['price']) * parseFloat(this['col']) - parseFloat(this['sum'])) + '</td>';
+                            goods_row += '<td>&nbsp;</td>';
+                        goods_row += '</tr>';
+
+                        goods_col += parseFloat(this['col']);
+                        goods_price += parseFloat(this['col']) * parseFloat(this['price']);
+                        goods_sum += parseFloat(this['sum']);
+                    });
+
+                    // строим заголовок
+                    head_row = '<tbody class="section-header" id="product_sum_block">';
+                        head_row += '<tr class="details-row toggle-info-section" data-section-id="2">';
+                            head_row += '<td class="col-xs-3">@lang('adminlte_lang::message.products')</td>';
+                            head_row += '<td class="col-xs-2 text-center">'+goods_col+'</td>';
+                            head_row += '<td class="col-xs-2 text-center" >'+goods_price+'</td>';
+                            head_row += '<td class="col-xs-2 text-center" id="section-header-paid-2">'+goods_sum+'</td>';
+                            head_row += '<td class="col-xs-2 text-center" id="section-header-unpaid-2">' + parseFloat(goods_price - goods_sum) + '</td>';
+                            head_row += '<td class="col-xs-1 text-center">';
+                                head_row += '<a  href="#" data-id="2" class="btn btn-link toggle-info"><i class="fa fa-caret-down"></i><i class="fa fa-caret-up"></i></a>';
+                            head_row += '</td>';
+                        head_row += '</tr>';
+                    head_row += '</tbody>';
+
+                    // строка ИТОГО
+                    total_row = '<tr class="small total-row">';
+                        total_row += '<td class="col-xs-3"><span class="section-subtotal-title" id="section-subtotal-title-2">@lang('adminlte_lang::message.total'):</span></td>';
+                        total_row += ' <td class="col-xs-2 text-center">'+goods_col+'</td>';
+                        total_row += '<td class="col-xs-2 text-center">'+goods_price+'</td>';
+                        total_row += '<td class="col-xs-2 text-center">'+goods_sum+'</td>';
+                        total_row += '<td class="text-center" id="section-footer-unpaid-2">0</td>';
+                        total_row += '<td>&nbsp;</td>';
+                    total_row += '</tr>';
+
+                    //собираю общий блок
+                    goods_string +=  head_row;
+                    goods_string +=  '<tbody id="info-section-2" class="info-section" data-id="2">';
+//                        goods_string +=  goods_row;
+//                        goods_string +=  total_row;
+                    goods_string +=  '</tbody>';
+
+                    $('#payments_table').append(goods_string);
+
+                    // обновляем строку ИТОГО
+                    goods_sum = parseFloat(goods_sum);
+                    app['sum'] = parseFloat(app['sum']);
+                    goods_price= parseFloat(goods_price);
+                    app['price'] = parseFloat(app['price']);
+                    $('.payments-total-table .payments-total-table-sum').html(goods_sum +  app['sum']);
+                    $('.payments-total-table .payments-total-table-least').html( (goods_price +  app['price']) - (goods_sum +  app['sum']) );
+                    $('#new-transaction-amount').val(goods_sum +  app['sum']);
+
+                }
+                $('#body_payments_tab').removeClass('loadingbox');
+
             });
         });
     </script>
