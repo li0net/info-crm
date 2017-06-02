@@ -563,7 +563,7 @@ class ApiController extends Controller
             "FROM appointments ".
             "WHERE organization_id=:orgId ".
             "AND `start` BETWEEN :dayStart AND :dayEnd ".
-            "AND `state`!='failed' ".
+            //"AND `state`!='failed' ".
             "AND start IS NOT NULL AND end IS NOT NULL ".
             "AND end>start",
             ['orgId' => $request->user()->organization_id, 'dayStart' => $dayStart, 'dayEnd' => $dayEnd]
