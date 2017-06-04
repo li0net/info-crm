@@ -24,4 +24,25 @@
 
     <!--текстовки склад-->
     <div id="storage_select_storage">{{ trans('adminlte_lang::message.select_storage') }}</div>
+
+    <div id="js_photo">{{ trans('adminlte_lang::message.photo') }}</div>
+    <div id="js_service_not_chosen">{{ trans('adminlte_lang::message.service_not_chosen') }}</div>
+    <div id="js_employee_not_chosen">{{ trans('adminlte_lang::message.employee_not_chosen') }}</div>
+    <div id="js_actions">{{ trans('adminlte_lang::message.actions') }}</div>
+    <div id="js_designation">{{ trans('adminlte_lang::message.designation') }}</div>
+    <div id="js_designation_online">{{ trans('adminlte_lang::message.designation_online') }}</div>
+    <div id="js_sex">{{ trans('adminlte_lang::message.sex') }}</div>
+    <div id="js_category">{{ trans('adminlte_lang::message.category') }}</div>
+    <div id="js_description">{{ trans('adminlte_lang::message.description') }}</div>
+    <div id="js_duration">{{ trans('adminlte_lang::message.duration') }}</div>
+    <div id="js_min_price">{{ trans('adminlte_lang::message.min_price') }}</div>
+    <div id="js_max_price">{{ trans('adminlte_lang::message.max_price') }}</div>
+    <div id="js_women">{{ trans('adminlte_lang::message.women') }}</div>
+    <div id="js_men">{{ trans('adminlte_lang::message.men') }}</div>
+    <div id="js_all">{{ trans('adminlte_lang::message.all') }}</div>
+    <div id="js_name">{{ trans('adminlte_lang::message.name') }}</div>
+    <div id="js_contacts">{{ trans('adminlte_lang::message.contacts') }}</div>
+    <div id="js_sold">{{ trans('adminlte_lang::message.sold') }}</div>
+    <div id="js_discount">{{ trans('adminlte_lang::message.discount') }}</div>
+    <div id="js_importance">{{ trans('adminlte_lang::message.discount') }}</div>
 </div>

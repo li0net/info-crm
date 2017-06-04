@@ -135,7 +135,7 @@
                             } else {
                                 $value = '';
                             }?>
-                            {{ Form::select('currency', ['rur' => 'RUR', 'usd' => 'USD', 'eur' => 'EUR'], $value, ['id' => 'o_currency', 'class' => 'form-control']) }}
+                            {{ Form::select('currency', ['rur' => 'RUR', 'usd' => 'USD', 'eur' => 'EUR'], $value, ['id' => 'o_currency', 'class' => 'js-select-basic-single']) }}
                             @foreach ($errors->get('currency') as $message)
                                 <?='<br/>'?>{{$message}}
                             @endforeach

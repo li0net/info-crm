@@ -72,7 +72,7 @@ const app = new Vue({
     },
     data: function() {
         return {
-            message: 'Фотопортрет',
+            message: $('#js_photo').html(),
             image: '',
             filter_employee: 0,
             filter_service: 0,
@@ -84,8 +84,8 @@ const app = new Vue({
             transaction_items_count: 0,
             services_ctgs_options: '',
             storage_options: '',
-            service_name: 'Услуга не выбрана',
-            service_employee: 'Сотрудник не выбран'
+            service_name: $('#js_service_not_chosen').html(),
+            service_employee: $('#js_employee_not_chosen').html()
         }
     },
     methods: {
@@ -162,17 +162,22 @@ $(document).ready(function () {
     //отображаем не сразу чтобы vue мог заполнить счётчики
     $(".box-solid").find('.badge').css("display", "inline-block");
 
+    //locales
+    var women = $('#js_women').html();
+    var men   = $('#js_men').html();
+    var all   = $('#js_all').html();
+
     $("#service_categories_grid").jqGrid({
         url: '/serviceCategories/gridData',
         mtype: "GET",
         styleUI : 'Bootstrap',
         datatype: "json",
-        colNames:['Название', 'Название для онлайн регистрации', 'Пол','Управление'],
+        colNames:[$('#js_designation').html(), $('#js_designation_online').html(), $('#js_sex').html(),  $('#js_actions').html()],
         colModel: [
             { index: 'name', name: 'name', width: 130 },
             { index: 'online_reservation_name', name: 'online_reservation_name', width: 150 },
-            { index: 'gender', name: 'gender', width: 80, edittype:'select', formatter:'select', editoptions:{value:"1:Мужчины;0:Женщины;null:Все"},},
-            { index: 'service_category_id', name: 'service_category_id', key: true, width: 50, formatter:ServiceCategoryFormatEditColumn },
+            { index: 'gender', name: 'gender', width: 80, edittype:'select', formatter:'select', editoptions:{value:"1:"+men+";0:"+women+";null:"+all}},
+            { index: 'service_category_id', align:'center', name: 'service_category_id', key: true, width: 50, formatter:ServiceCategoryFormatEditColumn },
         ],
         sortname: 'name',
         sortorder: 'asc',
@@ -190,7 +195,7 @@ $(document).ready(function () {
         mtype: "GET",
         styleUI : 'Bootstrap',
         datatype: "json",
-        colNames:['Название', 'Категория услуг', 'Описание', 'Мин. цена', 'Макс. цена', 'Длительность','Управление'],
+        colNames:[$('#js_designation').html(), $('#js_category').html(), $('#js_description').html(), $('#js_min_price').html(), $('#js_max_price').html(), $('#js_duration').html(),$('#js_actions').html()],
         colModel: [
             { index: 'name', name: 'name', width: 110 },
             { index: 'service_category_id', name: 'service_category_id', width: 110 },
@@ -220,7 +225,7 @@ $(document).ready(function () {
             { index: 'name', name: 'name', width: 100 },
             { index: 'phone', name: 'phone', width: 100 },
             { index: 'email', name: 'email', width: 100 },
-            { index: 'user_id', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn }
+            { index: 'user_id', align: 'center', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn }
         ],
         sortname: 'name',
         sortorder: 'asc',
@@ -239,14 +244,14 @@ $(document).ready(function () {
             mtype: "GET",
             styleUI: 'Bootstrap',
             datatype: "json",
-            colNames: ['ID', 'Имя', 'Контакты', 'Продано', 'Скидка', 'Важность'],
+            colNames: ['ID', $('#js_name').html(), $('#js_contacts').html(), $('#js_sold').html(), $('#js_discount').html(), $('#js_importance').html()],
             colModel: [
                 {index: 'client_id', name: 'client_id', key: true, width: 60, hidden: true, search: false},
                 {index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
                 {index: 'phone', name: 'phone', width: 100, search: true, stype: 'text'},
-                {index: 'total_bought', align:'left', name: 'total_bought', width: 70, search: false},
-                {index: 'discount', align:'left', name: 'discount', width: 60, search: false},
-                {index: 'importance', name: 'importance', width: 50, search: true, hidden: true}
+                {index: 'total_bought', align:'center', name: 'total_bought', width: 70, search: false},
+                {index: 'discount', align:'center', name: 'discount', width: 60, search: false},
+                {index: 'importance', name: 'importance',align:'center', width: 50, search: true, hidden: true}
             ],
             sortname: 'name',
             sortorder: 'asc',
@@ -255,7 +260,7 @@ $(document).ready(function () {
             autowidth: true,
             shrinkToFit: true,
             rowNum: 10,
-            pager: "#clients_grid_pager",
+            pager: "#appclients_grid_pager",
             multiselect: true,
             onSelectRow: function(id, status, e){
                 //console.log(id, status, e);
@@ -448,7 +453,7 @@ $(document).ready(function () {
         mtype: "GET",
         styleUI : 'Bootstrap',
         datatype: "json",
-        colNames:['Категория', ' '],
+        colNames:[$('#js_category').html(), ' '],
         colModel: [
             { index: 'title', name: 'title', width: 100 },
             { index: 'cc_id', name: 'cc_id', key: true, width: 20, align: 'right', formatter:ClientCategoryFormatEditColumn }
@@ -865,7 +870,7 @@ function ServiceCategoryFormatEditColumn(cellvalue, options, rowObject)
         url = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
     }
     if (window.Settings.permissions_service_delete !== undefined && window.Settings.permissions_service_delete == 1) {
-        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
+        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/destroy/' + cellvalue + '" class="table-action-link danger-action"><i class="fa fa-trash-o"></i></a>';
     }
 
     return url + urlDel;
@@ -880,7 +885,7 @@ function ServiceFormatEditColumn(cellvalue, options, rowObject)
         url = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
     }
     if (window.Settings.permissions_service_delete !== undefined && window.Settings.permissions_service_delete == 1) {
-        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
+        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/destroy/' + cellvalue + '" class="table-action-link danger-action"><i class="fa fa-trash-o"></i></a>';
     }
 
     return url + urlDel;
@@ -895,7 +900,7 @@ function UserFormatEditColumn(cellvalue, options, rowObject)
 function ClientCategoryFormatEditColumn(cellvalue, options, rowObject)
 {
     var url = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
-    var urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
+    var urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/destroy/' + cellvalue + '" class="table-action-link danger-action"><i class="fa fa-trash-o"></i></a>';
 
     return  url + urlDel;
 }
