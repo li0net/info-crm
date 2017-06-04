@@ -300,7 +300,7 @@
                                 }}
                             </div>
                             <div class="col-md-12">
-                                <button type="button" id="delete-resource" class="btn btn-sm btn-white center-block">
+                                <button type="button" id="delete-resource" class="btn btn-sm btn-white center-block danger-action">
                                     <i class="fa fa-trash-o"></i>
                                 </button>
                             </div>

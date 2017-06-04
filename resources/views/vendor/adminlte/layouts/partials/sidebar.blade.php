@@ -78,7 +78,7 @@
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.electronic_cards') }}</a></li>--}}
                 </ul>
             </li>
-            <li class="treeview @if(in_array($page, array('home'))) activated @endif">
+            <li class="treeview @if(in_array($page, array('home','summary'))) activated @endif">
                 <a href="#"><i class='fa fa-newspaper-o'></i> <span>{{ trans('adminlte_lang::message.dashboard') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li  class="@if ($page == 'home') active @endif">

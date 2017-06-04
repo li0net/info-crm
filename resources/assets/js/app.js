@@ -177,7 +177,7 @@ $(document).ready(function () {
             { index: 'name', name: 'name', width: 130 },
             { index: 'online_reservation_name', name: 'online_reservation_name', width: 150 },
             { index: 'gender', name: 'gender', width: 80, edittype:'select', formatter:'select', editoptions:{value:"1:"+men+";0:"+women+";null:"+all}},
-            { index: 'service_category_id', name: 'service_category_id', key: true, width: 50, formatter:ServiceCategoryFormatEditColumn },
+            { index: 'service_category_id', align:'center', name: 'service_category_id', key: true, width: 50, formatter:ServiceCategoryFormatEditColumn },
         ],
         sortname: 'name',
         sortorder: 'asc',
@@ -225,7 +225,7 @@ $(document).ready(function () {
             { index: 'name', name: 'name', width: 100 },
             { index: 'phone', name: 'phone', width: 100 },
             { index: 'email', name: 'email', width: 100 },
-            { index: 'user_id', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn }
+            { index: 'user_id', align: 'center', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn }
         ],
         sortname: 'name',
         sortorder: 'asc',
@@ -870,7 +870,7 @@ function ServiceCategoryFormatEditColumn(cellvalue, options, rowObject)
         url = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
     }
     if (window.Settings.permissions_service_delete !== undefined && window.Settings.permissions_service_delete == 1) {
-        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
+        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/destroy/' + cellvalue + '" class="table-action-link danger-action"><i class="fa fa-trash-o"></i></a>';
     }
 
     return url + urlDel;
@@ -885,7 +885,7 @@ function ServiceFormatEditColumn(cellvalue, options, rowObject)
         url = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
     }
     if (window.Settings.permissions_service_delete !== undefined && window.Settings.permissions_service_delete == 1) {
-        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
+        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/destroy/' + cellvalue + '" class="table-action-link danger-action"><i class="fa fa-trash-o"></i></a>';
     }
 
     return url + urlDel;
@@ -900,7 +900,7 @@ function UserFormatEditColumn(cellvalue, options, rowObject)
 function ClientCategoryFormatEditColumn(cellvalue, options, rowObject)
 {
     var url = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
-    var urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
+    var urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/destroy/' + cellvalue + '" class="table-action-link danger-action"><i class="fa fa-trash-o"></i></a>';
 
     return  url + urlDel;
 }

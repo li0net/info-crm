@@ -360,3 +360,19 @@ body.skin-orange {
 #body_payments #payments_content #appointment_sum_block{
   border-bottom: 1px solid #FFF !important;
 }
+
+#service_categories_grid_service_category_id,
+#services_grid_service_id,
+#services_grid_duration,
+#services_grid_price_max,
+#services_grid_price_min,
+#clients_grid_total_bought,
+#users_grid_user_id,
+#clients_grid_discount{
+  div.ui-th-div{
+    text-align: center;
+  }
+}
+.inline-block{
+  display: inline-block;
+}

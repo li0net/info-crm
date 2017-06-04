@@ -99,7 +99,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-1 text-center" style="">
-                                                <button type="button" id="add-detailed-section" class="btn btn-remove">
+                                                <button type="button" id="add-detailed-section" class="btn btn-remove danger-action">
                                                     <i class="fa fa-plus-circle"></i>
                                                     <i class="fa fa-trash-o"></i>
                                                 </button>

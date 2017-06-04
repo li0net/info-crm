@@ -10,7 +10,7 @@
     <ol class="breadcrumb">
         <li><a href="/home"><i class="fa fa-home" aria-hidden="true"></i>{{ trans('adminlte_lang::message.home') }}</a></li>
         <li class="active">{{ trans('adminlte_lang::message.settings') }}</li>
-        <li class="active">{{ trans('adminlte_lang::message.resources') }}</li>
+        <li class="active text-center">{{ trans('adminlte_lang::message.resources') }}</li>
     </ol>
 </section>
 <div class="container-fluid">
@@ -32,7 +32,7 @@
 					<th class="text-center">#</th>
 					<th>{{ trans('adminlte_lang::message.resource_name') }}</th>
 					<th>{{ trans('adminlte_lang::message.description') }}</th>
-					<th class="text-left">{{ trans('adminlte_lang::message.actions') }}</th>
+					<th class="text-center">{{ trans('adminlte_lang::message.actions') }}</th>
 				</thead>
 				<tbody>
 					@foreach($resources as $resource)
@@ -40,13 +40,13 @@
 							<th class="text-center">{{ $resource->resource_id }}</th>
 							<td>{{ $resource->title }}</td>
 							<td>{{ $resource->description }}</td>
-							<td  class="text-left">
+							<td  class="text-center">
 								@if ($user->hasAccessTo('resource', 'edit', 0))
-									<a href="{{ route('resource.edit', $resource->resource_id) }}" id="resource_edit" class="table-action-link pull-left"><i class='fa fa-pencil'></i></a>
+									<a href="{{ route('resource.edit', $resource->resource_id) }}" id="resource_edit" class="table-action-link inline-block"><i class='fa fa-pencil'></i></a>
 								@endif
 
 								@if ($user->hasAccessTo('resource', 'delete', 0))
-									{!! Form::open(['route' => ['resource.destroy', $resource->resource_id], 'id' => 'form'.$resource->resource_id, 'class' => 'pull-left', 'method' => 'DELETE']) !!}
+									{!! Form::open(['route' => ['resource.destroy', $resource->resource_id], 'id' => 'form'.$resource->resource_id, 'class' => 'inline-block', 'method' => 'DELETE']) !!}
 										<a href="javascript: submitform('#form{{$resource->resource_id}}')" class="table-action-link danger-action"><i class='fa fa-trash-o'></i></a>
 									{!! Form::close() !!}
 								@endif
