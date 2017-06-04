@@ -70,6 +70,7 @@ class AppointmentsController extends Controller
             'storages' => $storages,
             'accounts' => $accounts,
             'clients' => $clients,
+            'dischargeItems' => [],
         ]);
     }
 
