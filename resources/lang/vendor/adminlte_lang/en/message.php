@@ -565,4 +565,15 @@ return [
     'select_employee'		    => 'Select employee',
     'goods_sale'		        => 'Sale of goods',
     'total'	                    => 'Total',
+    'designation'               => 'Name',
+    'designation_online'	    => 'Online registration name',
+    'sex'	                    => 'Sex',
+    'min_price'	                => 'Min.price',
+    'max_price'	                => 'Max.price',
+    'men'                       => 'Men',
+    'women'	                    => 'Women',
+    'name'	                    => 'Name',
+    'sold'	                    => 'Sold',
+    'importance'	            => 'Importance',
+
 ];
