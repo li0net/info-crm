@@ -142,10 +142,12 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">@lang('main.organization:id_label')</label>
-                        <label class="col-sm-9 control-label text-left fat">{{ $organization->super_organization_id }}</label>
-                    </div>
+                    @if (isset($organization))
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@lang('main.organization:id_label')</label>
+                            <label class="col-sm-9 control-label text-left fat">{{ $organization->super_organization_id }}</label>
+                        </div>
+                    @endif
 
                     <div class="form-group">
                         <label for="o_info" class="col-sm-3 control-label">@lang('main.organization:info_label')</label>
