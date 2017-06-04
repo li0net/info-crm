@@ -2,10 +2,14 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Creativeorange\Gravatar\Facades\Gravatar;
+use Illuminate\Support\Facades\Log;
+
 
 /**
  * App\User
@@ -371,5 +375,41 @@ class User extends Authenticatable
         }
 
         return $avatarUri;
+    }
+
+    /**
+     * Get the organization/branch id
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getOrganizationIdAttribute($value)
+    {
+        if (!\App::runningInConsole()) {
+            $branchId = Request::session()->get('branch_id', null);
+            if (is_null($branchId)) {
+                return $value;
+            }
+
+            // TODO: кешировать
+            $branchSoData = DB::select(
+                "SELECT super_organization_id, organization_id FROM organizations WHERE organization_id=:branchId OR organization_id=:orgId",
+                [':branchId' => $branchId, ':orgId' => $value]
+            );
+
+            if (count($branchSoData) > 0) {
+                $orgSorg = [];
+                foreach($branchSoData AS $row) {
+                    $orgSorg[$row->organization_id] = $row->super_organization_id;
+                }
+                //Log::debug('User orgSorg:'.print_r($orgSorg, TRUE));
+
+                if (isset($orgSorg[$value]) AND isset($orgSorg[$branchId])) {
+                    if ($orgSorg[$value] == $orgSorg[$branchId]) return $branchId;
+                }
+            }
+        }
+
+        return $value;
     }
 }

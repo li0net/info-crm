@@ -7,6 +7,7 @@ use App\Organization;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Illuminate\Support\MessageBag;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class OrganizationsController extends Controller
 {
@@ -48,14 +49,43 @@ class OrganizationsController extends Controller
         }
     }
 
-    // форма редактирования организации
     /**
+     * Форма создания филиала
+     *
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Request $request)
+    public function createBranch(Request $request)
     {
-        $org = Organization::find($request->user()->organization_id);
+        // TODO: check permissions to create branches
+
+        return view(
+            'adminlte::organizationform',
+            [
+                'businessAreasOptions' => $this->businessAreasOptions,
+                'timezonesOptions' => $this->timezonesOptions
+            ]
+        );
+    }
+
+    /**
+     * Форма редактирования организации
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(Request $request, $branchId = null)
+    {
+        if (is_null($branchId)) {
+            $org = Organization::find($request->user()->organization_id);
+        } else {
+            $suId = $request->user()->organization->superOrganization->super_organization_id;
+            $org = Organization::where('super_organization_id', $suId)->where('organization_id', $branchId)->first();
+        }
+
+        if (!$org) {
+            throw new HttpException('Invalid parameter given');
+        }
 
         // TODO: убрать и продолжить работать над редактированием организации
         //dd($this->timezonesOptions);
@@ -98,9 +128,16 @@ class OrganizationsController extends Controller
             }
         }
 
-
-
-        $organization = Organization::find($request->user()->organization_id);
+        $branchId = $request->input('branch_id');
+        if ($branchId) {
+            $suId = $request->user()->organization->superOrganization->super_organization_id;
+            $organization = Organization::where('super_organization_id', $suId)->where('organization_id', $branchId)->first();
+            if (!$organization) {
+                throw new HttpException('Invalid branch_id parameter given');
+            }
+        } else {
+            $organization = Organization::find($request->user()->organization_id);
+        }
 
         // Проверяем, действительно ли загруженный файл - изображение
         if(isset($_FILES["logo_image"]["tmp_name"]) AND trim($_FILES["logo_image"]["tmp_name"]) != '') {

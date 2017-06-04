@@ -133,7 +133,7 @@ Route::get('/service/employeeOptions', ['as' => 'service.employeeOptions', 'uses
 Route::get('/service/routingOptions', ['as' => 'service.routingOptions', 'uses' => 'ServicesController@populateRoutingOptions']);
 Route::get('/service/resourceOptions', ['as' => 'service.resourceOptions', 'uses' => 'ServicesController@populateResourceOptions']);
 
-Route::get('/organization/edit', ['as' => 'organization.edit', 'uses' => 'OrganizationsController@edit']);
+Route::get('/organization/edit/{branchId?}', ['as' => 'organization.edit', 'uses' => 'OrganizationsController@edit']);
 Route::post('/organization/save', ['as' => 'organization.save', 'uses' => 'OrganizationsController@save']);
 
 Route::get('/organization/info/edit', ['as' => 'info.edit', 'uses' => 'OrganizationsController@editInfo']);
@@ -237,3 +237,6 @@ Route::get('/employees/calculateWagesGridData/{empId}', function($empId)
 });
 Route::get('/employees/downloadPayroll/{cwId}', '\App\Http\Controllers\EmployeeController@getPayroll');
 Route::get('/employees/payWage/{cwId}', '\App\Http\Controllers\EmployeeController@payWage');
+
+// change branch
+Route::get('/changeBranch/{orgId}', '\App\Http\Controllers\Auth\LoginController@changeBranch');
