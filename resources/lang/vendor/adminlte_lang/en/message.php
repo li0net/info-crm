@@ -575,5 +575,6 @@ return [
     'name'	                    => 'Name',
     'sold'	                    => 'Sold',
     'importance'	            => 'Importance',
+	'branch_list'			  	=> 'Branches list',
 
 ];

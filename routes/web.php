@@ -32,6 +32,7 @@ Route::get('/services', 'ServicesController@index');
 Route::get('/users', 'UsersController@index');
 Route::get('/clients', 'ClientsController@index');
 Route::get('/clientCategories', 'ClientCategoriesController@index');
+Route::get('/branches', 'OrganizationsController@index');
 
 Route::resource('/employee', 'EmployeeController');
 Route::put('/employee', 'EmployeeController@store');
@@ -102,6 +103,10 @@ Route::get('/clientCategories/gridData', function()
 {
     GridEncoder::encodeRequestedData(new \App\GridRepositories\ClientsCategoriesGridRepository(), Input::all());
 });
+Route::get('/organizations/gridData', function()
+{
+    GridEncoder::encodeRequestedData(new \App\GridRepositories\OrganizationsGridRepository(), Input::all());
+});
 
 /*
  * Формы
@@ -133,6 +138,7 @@ Route::get('/service/employeeOptions', ['as' => 'service.employeeOptions', 'uses
 Route::get('/service/routingOptions', ['as' => 'service.routingOptions', 'uses' => 'ServicesController@populateRoutingOptions']);
 Route::get('/service/resourceOptions', ['as' => 'service.resourceOptions', 'uses' => 'ServicesController@populateResourceOptions']);
 
+Route::get('/organization/create', ['as' => 'organization.create', 'uses' => 'OrganizationsController@createBranch']);
 Route::get('/organization/edit/{branchId?}', ['as' => 'organization.edit', 'uses' => 'OrganizationsController@edit']);
 Route::post('/organization/save', ['as' => 'organization.save', 'uses' => 'OrganizationsController@save']);
 

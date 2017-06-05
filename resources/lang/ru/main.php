@@ -282,5 +282,9 @@ return [
     'employee:wage_scheme_label'       => 'Схема расчета зарплаты',
     'employee:wage_scheme_start_from_label' => 'Действует с',
 
-    'calculated_wage:grid_pay_link'    => 'Оплатить'
+    'calculated_wage:grid_pay_link'    => 'Оплатить',
+
+    'branch:list_page_header'               => 'Филиалы',
+    'branch:list_header'                    => 'Филиалы',
+    'branch:create_new_btn_label'           => 'Добавить филиал',
 ];

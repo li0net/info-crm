@@ -276,5 +276,9 @@ return [
     'employee:wage_scheme_label'                    => 'Wage scheme',
     'employee:wage_scheme_start_from_label'         => 'Valid from',
 
-    'calculated_wage:grid_pay_link'                 => 'Pay'
+    'calculated_wage:grid_pay_link'                 => 'Pay',
+
+    'branch:list_page_header'               => 'Branches',
+    'branch:list_header'                    => 'Branches',
+    'branch:create_new_btn_label'           => 'Add branch',
 ];

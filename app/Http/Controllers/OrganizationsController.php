@@ -50,6 +50,21 @@ class OrganizationsController extends Controller
     }
 
     /**
+     * Show the branch list
+     *
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        $newBranchUrl = action('OrganizationsController@createBranch');
+
+        return view('organization.index', [
+            'newBranchUrl' => $newBranchUrl,
+            'crmuser' => $request->user()
+        ]);
+    }
+
+    /**
      * Форма создания филиала
      *
      * @param Request $request

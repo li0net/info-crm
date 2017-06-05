@@ -244,7 +244,7 @@ $(document).ready(function () {
             mtype: "GET",
             styleUI: 'Bootstrap',
             datatype: "json",
-            colNames: ['ID', $('#js_name').html(), $('#js_contacts').html(), $('#js_sold').html(), $('#js_discount').html(), $('#js_importance').html()],
+            colNames: ['ID', $('#js_name').html(), $('#js_contacts').html(), $('#js_sold').html(), $('#js_discount').html()],
             colModel: [
                 {index: 'client_id', name: 'client_id', key: true, width: 60, hidden: true, search: false},
                 {index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
@@ -856,6 +856,36 @@ $(document).ready(function () {
         }
         $(this).removeClass('activated');
     });
+
+
+    if ($('#branches_grid').length ) {
+        $("#branches_grid").jqGrid({
+            url: '/organizations/gridData',
+            mtype: "GET",
+            styleUI: 'Bootstrap',
+            datatype: "json",
+            //colNames: ['ID', $('#js_name').html(), $('#js_contacts').html(), $('#js_sold').html(), $('#js_discount').html()],
+            colNames: ['ID', 'Name', 'Country', 'City', 'Address', 'Phone'],
+            colModel: [
+                {index: 'organization_id', name: 'organization_id', key: true, width: 60, hidden: true, search: false},
+                {index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
+                {index: 'country', name: 'country', width: 100, search: true, stype: 'text'},
+                {index: 'city', name: 'city', width: 100, search: true, stype: 'text'},
+                {index: 'address', name: 'address', width: 100, search: true, stype: 'text'},
+                {index: 'phone_1', name: 'phone_1', width: 100, search: true, stype: 'text'}
+            ],
+            sortname: 'organization_id',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: 550,
+            autowidth: true,
+            shrinkToFit: true,
+            rowNum: 15,
+            pager: "#branches_grid_pager",
+            multiselect: false
+        });
+    }
+
 
     return false;
 });
