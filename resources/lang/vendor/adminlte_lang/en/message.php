@@ -576,5 +576,13 @@ return [
     'sold'	                    => 'Sold',
     'importance'	            => 'Importance',
 	'branch_list'			  	=> 'Branches list',
+	'discount'					=> 'Discount',
+
+	'branch_name_column'		=> 'Name',
+	'branch_country_column'		=> 'Country',
+	'branch_city_column'		=> 'City',
+	'branch_address_column'		=> 'Address',
+	'branch_phone_column'		=> 'Phone',
+	'branch_manage_column'		=> 'Manage'
 
 ];

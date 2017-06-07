@@ -110,7 +110,8 @@ class OrganizationsController extends Controller
             [
                 'businessAreasOptions' => $this->businessAreasOptions,
                 'timezonesOptions' => $this->timezonesOptions,
-                'organization' => $org
+                'organization' => $org,
+                'crmuser' => $request->user()
             ]
         );
     }
@@ -143,6 +144,7 @@ class OrganizationsController extends Controller
             }
         }
 
+        // branch other than current can be edited
         $branchId = $request->input('branch_id');
         if ($branchId) {
             $suId = $request->user()->organization->superOrganization->super_organization_id;
@@ -199,7 +201,7 @@ class OrganizationsController extends Controller
 
         $organization->save();
 
-        return redirect()->to('/organization/edit')->with('status', 'Profile updated!');
+        return redirect()->to('/branches')->with('status', 'Profile updated!');
     }
 
     /**
