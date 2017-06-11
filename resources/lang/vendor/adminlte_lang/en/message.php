@@ -578,6 +578,7 @@ return [
 	'branch_list'			  	=> 'Branches list',
 	'discount'					=> 'Discount',
 
+	'branches'					=> 'Branches',
 	'branch_name_column'		=> 'Name',
 	'branch_country_column'		=> 'Country',
 	'branch_city_column'		=> 'City',

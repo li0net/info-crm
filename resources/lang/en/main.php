@@ -63,7 +63,7 @@ return [
     'organization:logo_btn'                 => 'Upload photo',
     'organization:info_label'               => 'Description',
     'organization:id_label'                 => 'Organization ID',
-
+    'organization:email_label'              => 'Email',
 
     'appointment:client_wait_tab_label'     => 'Ожидание клиента',
     'appointment:client_came_tab_label'     => 'Клиент пришел',

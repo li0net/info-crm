@@ -63,6 +63,7 @@ return [
     'organization:logo_btn'                 => 'Загрузить фото',
     'organization:info_label'               => 'Описание',
     'organization:id_label'                 => 'ID организации',
+    'organization:email_label'              => 'Email',
 
     'appointment:client_wait_tab_label'     => 'Ожидание клиента',
     'appointment:client_came_tab_label'     => 'Клиент пришел',

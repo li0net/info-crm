@@ -587,6 +587,7 @@ return [
     'importance'	            => 'Важность',
 	'branch_list'			  	=> 'Список филиалов',
 
+	'branches'					=> 'Филиалы',
 	'branch_name_column'		=> 'Название',
 	'branch_country_column'		=> 'Страна',
 	'branch_city_column'		=> 'Город',

@@ -16,11 +16,14 @@
 
         @include('partials.alerts')
 
-        <div class="row">
-            <div class="col-md-12 text-right m-b">
-                <a href="{{$newBranchUrl}}" class="btn btn-primary">@lang('main.branch:create_new_btn_label')</a>
+        @if ($crmuser->is_admin)
+            <div class="row">
+                <div class="col-md-12 text-right m-b">
+                    <a href="{{$newBranchUrl}}" class="btn btn-primary">@lang('main.branch:create_new_btn_label')</a>
+                </div>
             </div>
-        </div>
+        @endif
+
         <div class="row">
             <div class="col-md-12 clients-grid-block">
                 <table id="branches_grid" class="table table-hover table-condensed"></table>

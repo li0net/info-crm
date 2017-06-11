@@ -33,7 +33,10 @@
                             <label class="col-sm-3 control-label">@lang('main.organization:id_label')</label>
                             <label class="col-sm-9 control-label text-left fat">{{ $organization->organization_id }}</label>
                             <input type="hidden" name="branch_id" id="organization_branch_id" value="{{$organization->organization_id}}">
+                            <input type="hidden" name="action" id="organization_action" value="edit">
                         </div>
+                    @else
+                        <input type="hidden" name="action" id="organization_action" value="create">
                     @endif
 
                     <div class="form-group">
@@ -54,6 +57,25 @@
                             @endforeach
                         </div>
                     </div>
+                    @if (!isset($organization))
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="o_name">@lang('main.organization:email_label')</label>
+                            <div class="col-sm-9">
+                                <?php
+                                $old = old('email');
+                                if (!is_null($old)) {
+                                    $value = $old;
+                                } else {
+                                    $value = '';
+                                }?>
+                                <input type="text" name="email" id="o_email" value="{{$value}}" class="form-control">
+                                @foreach ($errors->get('email') as $message)
+                                    <?='<br/>'?>{{$message}}
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- business area here -->
                     <div class="form-group">
                         <label for="o_category"class="col-sm-3 control-label">@lang('main.organization:category_label')</label>
@@ -175,7 +197,11 @@
                         <div class="col-sm-12 text-center ">
                             <div class="logo-block">
                                 <div v-if="!image">
-                                    <img src="{{$organization->getLogoUri()}}">
+                                    @if (isset($organization))
+                                        <img src="{{$organization->getLogoUri()}}">
+                                    @else
+                                        <img src="{{asset('img/crm/avatar/logo200_50.png')}}">
+                                    @endif
                                 </div>
                                 <div v-else>
                                     <img :src="image"/>
