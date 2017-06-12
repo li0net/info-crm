@@ -45,4 +45,11 @@
     <div id="js_sold">{{ trans('adminlte_lang::message.sold') }}</div>
     <div id="js_discount">{{ trans('adminlte_lang::message.discount') }}</div>
     <div id="js_importance">{{ trans('adminlte_lang::message.discount') }}</div>
+
+    <div id="js_branch_name">{{ trans('adminlte_lang::message.branch_name_column') }}</div>
+    <div id="js_branch_country">{{ trans('adminlte_lang::message.branch_country_column') }}</div>
+    <div id="js_branch_city">{{ trans('adminlte_lang::message.branch_city_column') }}</div>
+    <div id="js_branch_address">{{ trans('adminlte_lang::message.branch_address_column') }}</div>
+    <div id="js_branch_phone">{{ trans('adminlte_lang::message.branch_phone_column') }}</div>
+    <div id="js_branch_manage">{{ trans('adminlte_lang::message.branch_manage_column') }}</div>
 </div>

@@ -585,6 +585,14 @@ return [
     'name'	                    => 'Имя',
     'sold'	                    => 'Продано',
     'importance'	            => 'Важность',
+	'branch_list'			  	=> 'Список филиалов',
 
+	'branches'					=> 'Филиалы',
+	'branch_name_column'		=> 'Название',
+	'branch_country_column'		=> 'Страна',
+	'branch_city_column'		=> 'Город',
+	'branch_address_column'		=> 'Адрес',
+	'branch_phone_column'		=> 'Телефон',
+	'branch_manage_column'		=> 'Управлять'
 
 ];

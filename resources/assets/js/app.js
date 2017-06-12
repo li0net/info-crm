@@ -244,7 +244,7 @@ $(document).ready(function () {
             mtype: "GET",
             styleUI: 'Bootstrap',
             datatype: "json",
-            colNames: ['ID', $('#js_name').html(), $('#js_contacts').html(), $('#js_sold').html(), $('#js_discount').html(), $('#js_importance').html()],
+            colNames: ['ID', $('#js_name').html(), $('#js_contacts').html(), $('#js_sold').html(), $('#js_discount').html(), 'Importance'],
             colModel: [
                 {index: 'client_id', name: 'client_id', key: true, width: 60, hidden: true, search: false},
                 {index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
@@ -857,6 +857,35 @@ $(document).ready(function () {
         $(this).removeClass('activated');
     });
 
+
+    if ($('#branches_grid').length ) {
+        $("#branches_grid").jqGrid({
+            url: '/organizations/gridData',
+            mtype: "GET",
+            styleUI: 'Bootstrap',
+            datatype: "json",
+            colNames: [$('#js_branch_name').html(), $('#js_branch_country').html(), $('#js_branch_city').html(), $('#js_branch_address').html(), $('#js_branch_phone').html(), $('#js_branch_manage').html()],
+            colModel: [
+                {index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
+                {index: 'country', name: 'country', width: 100, search: true, stype: 'text'},
+                {index: 'city', name: 'city', width: 100, search: true, stype: 'text'},
+                {index: 'address', name: 'address', width: 100, search: true, stype: 'text'},
+                {index: 'phone_1', name: 'phone_1', width: 90, search: true, stype: 'text'},
+                {index: 'organization_id', name: 'organization_id', key: true, width: 35, align: 'right', formatter:BranchFormatEditColumn}
+            ],
+            sortname: 'organization_id',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: 550,
+            autowidth: true,
+            shrinkToFit: true,
+            rowNum: 15,
+            pager: "#branches_grid_pager",
+            multiselect: false
+        });
+    }
+
+
     return false;
 });
 
@@ -903,6 +932,12 @@ function ClientCategoryFormatEditColumn(cellvalue, options, rowObject)
     var urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/destroy/' + cellvalue + '" class="table-action-link danger-action"><i class="fa fa-trash-o"></i></a>';
 
     return  url + urlDel;
+}
+
+function BranchFormatEditColumn(cellvalue, options, rowObject) {
+    var url = '<a href="' + window.location.protocol + '//' + window.location.host + '/organization/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
+
+    return  url;
 }
 
 /**

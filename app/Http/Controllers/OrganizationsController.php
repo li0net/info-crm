@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use App\Organization;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -37,16 +38,44 @@ class OrganizationsController extends Controller
             ]
         ];
 
+        $activeTimezones = [
+            'Europe/Moscow',
+            'Europe/Madrid',
+            'Europe/Kiev',
+            'Europe/Lisbon',
+            'Europe/Kaliningrad',
+            'Europe/Paris',
+            'Europe/Saratov',
+            'UTC'
+        ];
+
         $timezoneIds = \DateTimeZone::listIdentifiers();
         $currTimezone = date_default_timezone_get();
         foreach ($timezoneIds AS $timezoneId) {
-            $dt = new \DateTime('now', new \DateTimeZone($timezoneId));
-            $this->timezonesOptions[] = ['value' => $timezoneId, 'label' => $dt->format('H:i Y.m.d')];
-            if ($timezoneId == $currTimezone) {
-                // для дев машины - $currTimezone == UTC
-                $this->timezonesOptions[count($this->timezonesOptions)-1]['selected'] = true;
+            if (in_array($timezoneId, $activeTimezones)) {
+                $dt = new \DateTime('now', new \DateTimeZone($timezoneId));
+                $this->timezonesOptions[] = ['value' => $timezoneId, 'label' => $timezoneId . ' - ' . $dt->format('H:i Y.m.d')];
+                if ($timezoneId == $currTimezone) {
+                    // для дев машины - $currTimezone == UTC
+                    $this->timezonesOptions[count($this->timezonesOptions) - 1]['selected'] = true;
+                }
             }
         }
+    }
+
+    /**
+     * Show the branch list
+     *
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        $newBranchUrl = action('OrganizationsController@createBranch');
+
+        return view('organization.index', [
+            'newBranchUrl' => $newBranchUrl,
+            'crmuser' => $request->user()
+        ]);
     }
 
     /**
@@ -58,6 +87,9 @@ class OrganizationsController extends Controller
     public function createBranch(Request $request)
     {
         // TODO: check permissions to create branches
+        if (!$request->user()->is_admin) {
+            throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+        }
 
         return view(
             'adminlte::organizationform',
@@ -95,7 +127,8 @@ class OrganizationsController extends Controller
             [
                 'businessAreasOptions' => $this->businessAreasOptions,
                 'timezonesOptions' => $this->timezonesOptions,
-                'organization' => $org
+                'organization' => $org,
+                'crmuser' => $request->user()
             ]
         );
     }
@@ -108,7 +141,8 @@ class OrganizationsController extends Controller
             'timezone' => 'max:30',
             'country' => 'max:60',
             'city' => 'max:60',
-            'logo_image' => 'image'
+            'logo_image' => 'image',
+            'email' => 'max:70|email'
         ]);
 
         // Проверяем, что строка с timezone входит в список разрешенных значений
@@ -128,14 +162,28 @@ class OrganizationsController extends Controller
             }
         }
 
+        // branch other than current can be edited
         $branchId = $request->input('branch_id');
+        $action = $request->input('action');
+        $suId = $request->user()->organization->superOrganization->super_organization_id;
+
         if ($branchId) {
-            $suId = $request->user()->organization->superOrganization->super_organization_id;
             $organization = Organization::where('super_organization_id', $suId)->where('organization_id', $branchId)->first();
             if (!$organization) {
                 throw new HttpException('Invalid branch_id parameter given');
             }
-        } else {
+        } elseif ($action == 'create') {
+            if (!$request->user()->is_admin) {  // создания новых бранчей доступно только для админа
+                throw new AccessDeniedHttpException('You don\'t have permission to access this page');
+            }
+            $organization = new Organization();
+            $organization->super_organization_id = $suId;
+            $email = $request->input('email');
+            if (!empty($email)) {
+                $organization->email = $email;
+            }
+
+        } else {    // редактирования организации по умолчанию (1го бранча)
             $organization = Organization::find($request->user()->organization_id);
         }
 
@@ -184,7 +232,7 @@ class OrganizationsController extends Controller
 
         $organization->save();
 
-        return redirect()->to('/organization/edit')->with('status', 'Profile updated!');
+        return redirect()->to('/branches')->with('status', 'Profile updated!');
     }
 
     /**
