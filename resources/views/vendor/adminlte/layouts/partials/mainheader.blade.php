@@ -35,17 +35,17 @@
                      @endif
                  </a>
              @else
-                 <div class="dropdown branch-dropdown white">
-                     <button class="btn btn-default branch-toggle dropbtn" type="button" id="dropdownMenuBranch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                         <span class="caret">{{$user->organization->name}}</span>
+                 <div class="dropdown branch-dropdown">
+                     <button class="btn btn-default dropdown-toggle dropbtn" type="button" data-toggle="dropdown">
+                         {{$user->organization->name}}<span class="caret"></span>
                      </button>
-                     <div class="dropdown-content">
+                     <ul class="dropdown-menu">
                          @foreach ($branches as $org)
                              @if ($org->organization_id != $user->organization->organization_id)
-                                 <a href="/changeBranch/{{$org->organization_id}}">{{$org->name}}</a>
+                                 <li><a href="/changeBranch/{{$org->organization_id}}">{{$org->name}}</a></li>
                              @endif
                          @endforeach
-                     </div>
+                     </ul>
                  </div>
              @endif
 

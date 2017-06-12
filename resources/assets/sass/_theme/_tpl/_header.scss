@@ -43,6 +43,44 @@ body.skin-orange {
         }
         .branch-dropdown {
           float: right;
+          position: relative;
+          display: inline-block;
+          line-height: 58px;
+          .caret {
+            border-top: 6px dashed #fff;
+            margin-bottom: 0;
+            margin-left: 3px;
+          }
+          .dropbtn {
+            margin-top: 0;
+            height: 62px;
+            background: transparent;
+            color:$body-bg;
+            text-decoration: none;
+            border: none;
+          }
+          .dropdown-menu{
+            margin: 0;
+            li a{
+              color: #444;
+              font-size: 13pt;
+            }
+          }
+          &:hover {
+            .dropbtn {
+              background: transparent;
+              color:$brand-secondary;
+              text-decoration: none;
+              border: none;
+            }
+            .dropdown-content,
+            .dropdown-menu{
+              display: block;
+              li a{
+                text-decoration: none;
+              }
+            }
+          }
         }
         .login{
           height: 60px;
@@ -109,7 +147,8 @@ body.skin-orange {
               .dropbtn {
                 background-color: #3e8e41;
               }
-              .dropdown-content {
+              .dropdown-content,
+              .dropdown-menu{
                 display: block;
               }
             }
