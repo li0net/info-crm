@@ -96,8 +96,6 @@
                 </div>
             </div>
             <label class="col-sm-1 text-left">
-                <br>
-                <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
             </label>
         </div>
 
@@ -112,7 +110,6 @@
                 {{ Form::select('products_unit', ['rub' => '₽', 'pct' => '%'], 'rub', ['class' => 'js-select-basic-single', 'required' => '', 'maxlength' => '110']) }}
             </div>
             <label class="col-sm-1 text-left">
-                <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
             </label>
         </div>
         <div class="form-group">
@@ -161,8 +158,6 @@
                 </div>
             </div>
             <label class="col-sm-1 text-left">
-                <br>
-                <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
             </label>
         </div>
 
@@ -212,7 +207,6 @@
                 ['class' => 'js-select-basic-single', 'required' => '', 'maxlength' => '110']) }}
             </div>
             <label class="col-sm-1 text-left">
-                <a class="fa fa-info-circle" id="wage_rate" original-title="">&nbsp;</a>
             </label>
         </div>
 
@@ -223,7 +217,6 @@
                 {{ trans('adminlte_lang::message.consider_discount') }}
             </label>
             <label class="col-sm-1 text-left">
-                <a class="fa fa-info-circle" id="is_client_discount_counted" original-title="">&nbsp;</a>
             </label>
         </div>
 
@@ -234,7 +227,6 @@
                 {{ trans('adminlte_lang::message.consider_cost_of_materials') }}
             </label>
             <label class="col-sm-1 text-left">
-                <a class="fa fa-info-circle" id="is_material_cost_counted" original-title="">&nbsp;</a>
             </label>
         </div>
         <div class="col-sm-11 m-t text-right">

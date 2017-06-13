@@ -53,7 +53,6 @@
                     {{ Form::select('item_id', $items, null, ['class' => 'js-select-basic-single', 'required' => '']) }}
                 </div>
                 <label class="col-sm-1 text-left">
-                    <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                 </label>
             </div>
 
@@ -65,7 +64,6 @@
                     {{ Form::select('account_id', $accounts, null, ['class' => 'js-select-basic-single', 'required' => '']) }}
                 </div>
                 <label class="col-sm-1 text-left">
-                    <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                 </label>
             </div>
 
@@ -103,7 +101,6 @@
                     {{ Form::select('beneficiary_id', [''=>''], null, ['class' => 'js-select-basic-single', 'required' => '']) }}
                 </div>
                 <label class="col-sm-1 text-left">
-                    <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                 </label>
             </div>
 
@@ -115,7 +112,6 @@
                     {{ Form::text('sum', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '10']) }}
                 </div>
                 <label class="col-sm-1 text-left">
-                    <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                 </label>
             </div>
 
@@ -127,7 +123,6 @@
                     {{ Form::textarea('description', null, ['class' => 'form-control']) }}
                 </div>
                 <label class="col-sm-1 text-left">
-                    <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                 </label>
             </div>
 

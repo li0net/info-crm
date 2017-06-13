@@ -135,8 +135,6 @@
                         </div>
                     </div>
                     <label class="col-sm-1 text-center">
-                        <br>
-                        <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
                     </label>
                 </div>
                 <div class="form-group">
@@ -152,7 +150,6 @@
                         'maxlength' => '110']) }}
                     </div>
                     <label class="col-sm-1 text-center">
-                        <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
                     </label>
                 </div>
                 <div class="form-group">
@@ -236,8 +233,6 @@
                         </div>
                     </div>
                     <label class="col-sm-1 text-center">
-                        <br>
-                        <a class="fa fa-info-circle" id="products_unit" original-title="">&nbsp;</a>
                     </label>
                 </div>
                 <div class="form-group">
@@ -257,7 +252,6 @@
                         ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
                     </div>
                     <label class="col-sm-1 text-center">
-                        <a class="fa fa-info-circle" id="wage_rate" original-title="">&nbsp;</a>
                     </label>
                 </div>
 
@@ -268,7 +262,6 @@
                         {{ trans('adminlte_lang::message.consider_discount') }}
                     </label>
                     <label class="col-sm-1 text-center">
-                        <a class="fa fa-info-circle" id="is_client_discount_counted" original-title="">&nbsp;</a>
                     </label>
                 </div>
 
@@ -279,7 +272,6 @@
                         {{ trans('adminlte_lang::message.consider_cost_of_materials') }}
                     </label>
                     <label class="col-sm-1 text-center">
-                        <a class="fa fa-info-circle" id="is_material_cost_counted" original-title="">&nbsp;</a>
                     </label>
                 </div>
                 {{-- </div>						 --}}

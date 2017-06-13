@@ -19,7 +19,6 @@
         {{ trans('adminlte_lang::message.send_notes_phone_records') }}
     </label>
     <label class="col-sm-1 text-left">
-        <a class="fa fa-info-circle" id="phone_reg_notify" original-title="">&nbsp;</a>
     </label>
 </div>
 <div class="form-group">
@@ -29,7 +28,6 @@
         {{ trans('adminlte_lang::message.send_online_record_removal') }}
     </label>
     <label class="col-sm-1 text-left">
-        <a class="fa fa-info-circle" id="online_reg_notify_del" original-title="">&nbsp;</a>
     </label>
 </div>
 <div class="form-group">
@@ -39,7 +37,6 @@
         'placeholder' => trans('adminlte_lang::message.example').'7 495 123 45 67']) }}
     </div>
     <label class="col-sm-1 text-left">
-        <a class="fa fa-info-circle" id="phone_for_notify" original-title="">&nbsp;</a>
     </label>
 </div>
 <div class="form-group">
@@ -49,7 +46,6 @@
         'placeholder' => trans('adminlte_lang::message.example').'info@mail.com']) }}
     </div>
     <label class="col-sm-1 text-left">
-        <a class="fa fa-info-circle" id="email_for_notify" original-title="">&nbsp;</a>
     </label>
 </div>
 <div class="form-group">
@@ -59,7 +55,6 @@
         {{ trans('adminlte_lang::message.send_data_of_clients') }}
     </label>
     <label class="col-sm-1 text-left">
-        <a class="fa fa-info-circle" id="client_data_notify" original-title="">&nbsp;</a>
     </label>
 </div>
 <hr>
@@ -78,7 +73,6 @@
         </label>
     </div>
     <label class="col-sm-1 text-left">
-        <a class="fa fa-info-circle" id="reg_permitted" original-title="">&nbsp;</a>
     </label>
 </div>
 <div class="form-group">
@@ -144,7 +138,6 @@
         {{ trans('adminlte_lang::message.dissmissed') }}
     </label>
     <label class="col-sm-1 text-left">
-        <a class="fa fa-info-circle" id="is_rejected" original-title="">&nbsp;</a>
     </label>
 </div>
 <div class="form-group">
