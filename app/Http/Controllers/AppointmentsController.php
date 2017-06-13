@@ -136,7 +136,7 @@ class AppointmentsController extends Controller
             ->where('employee_settings.reg_permitted', 1)
             ->get();
         if ( $employees->count() != 0 ) {
-            // добавляем вариант "Мастер не важен"
+            // добавляем вариант "Любой"
             $anyEmployee = array(
                 'employee_id'   => 'any_employee',
                 'name'          => trans('main.widget:employee_doesnot_matter_text'),
@@ -144,7 +144,7 @@ class AppointmentsController extends Controller
                 'position_name' => '',
                 'description'   => ''
             );
-            // Мастер не важен на первом месте
+            // Любой на первом месте
             $employees = $employees->toArray();
             array_unshift($employees, (object)$anyEmployee);
         }
@@ -736,7 +736,7 @@ class AppointmentsController extends Controller
             ->get();
 
         if ( $employees->count() != 0 ) {
-            // добавляем вариант "Мастер не важен"
+            // добавляем вариант "Любой"
             $anyEmployee = array(
                 'employee_id'   => 'any_employee',
                 'name'          => trans('main.widget:employee_doesnot_matter_text'),
@@ -744,7 +744,7 @@ class AppointmentsController extends Controller
                 'position_name' => '',
                 'description'   => ''
             );
-            // Мастер не важен на первом месте
+            // Любой на первом месте
             $employees = $employees->toArray();
             array_unshift($employees, (object)$anyEmployee);
         } else {

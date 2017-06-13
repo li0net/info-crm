@@ -221,7 +221,7 @@ class BaseWidgetController extends Controller
             return $this->showEmptyInfoPage(trans('main.widget:error_employee_title'), trans('main.widget:error_employee_no'));
         }
 
-        // добавляем вариант "Мастер не важен"
+        // добавляем вариант "Любой"
         $anyEmployee = array(
             'employee_id'   => 'any_employee',
             'name'          => trans('main.widget:employee_doesnot_matter_text'),
@@ -229,7 +229,7 @@ class BaseWidgetController extends Controller
             'position_name' => '',
             'description'   => ''
         );
-        // Мастер не важен на первом месте
+        // Любой на первом месте
         $employees = $employees->toArray();
         array_unshift($employees, (object)$anyEmployee);
 
@@ -424,7 +424,7 @@ class BaseWidgetController extends Controller
         $endTs = strtotime($appStart.' + '.$sDurationHours.' hours '.$sDurationMinutes.' minutes');
         $appEnd = date('Y-m-d H:i:s', $endTs);
 
-        // если выбран вариант 'Мастер не важен', нужно по service_id и выбранному времени случайно отобрать работника (employee)
+        // если выбран вариант 'Любой', нужно по service_id и выбранному времени случайно отобрать работника (employee)
         if ($request->input('employee_id') == 'any_employee') {
             $timeIntervals = $service->getFreeTimeIntervals($appStart, $appEnd);
             if (count($timeIntervals) == 0) {
@@ -504,7 +504,7 @@ class BaseWidgetController extends Controller
         if (!empty($request->input('client_comment'))) {
             $appointment->note = $request->input('client_comment');
         }
-        // TODO: поменять, когда появится поддержка 'Мастер не важен'
+        // TODO: поменять, когда появится поддержка 'Любой'
         $appointment->is_employee_important = ($request->input('employee_id') == 'any_employee') ? 0 : 1;
         $appointment->source = 'widget';
 

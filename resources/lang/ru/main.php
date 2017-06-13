@@ -260,7 +260,7 @@ return [
     'widget:form_head'                      => 'Оформление',
     'widget:category_head'                  => 'Выбор категории услуги',
     'widget:day_head'                       => 'Выбор даты',
-    'widget:employee_doesnot_matter_text'   => 'Мастер не важен',
+    'widget:employee_doesnot_matter_text'   => 'Любой',
     'widget:name'                           => 'Ваше Имя',
     'widget:7_phone'                        => '+7 телефон',
     'widget:comment'                        => 'Комментарий',
