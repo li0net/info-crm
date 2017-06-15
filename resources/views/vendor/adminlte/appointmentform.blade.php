@@ -81,7 +81,7 @@
                     <!--                    <i class="fa fa-comments-o"></i> Уведомления </li>-->
                     <!--                <li class="modal-menu-l history_tab list-group-item" data-toggle="tab" data-target="#body_history" >-->
                     <!--                    <i class="fa fa-file-text"></i> История изменений</li>-->
-                    <li class="modal-menu-l goods_history_tab list-group-item last-item " data-toggle="tab" data-target="#goods_history" >
+                    <li class="modal-menu-l goods_history_tab list-group-item last-item " data-toggle="tab" data-target="#goods_history" id="goods_history_tab">
                         <i class="fa fa-cubes"></i> @lang('adminlte_lang::message.writeoff_goods')</li>
 
                     <li class="modal-menu-header client_header_tab nav-header">@lang('adminlte_lang::message.client')</li>
@@ -573,9 +573,18 @@
                 $('#app_call_description').val($('#tr_'+id).find('.td_description').text());
                 $('#app_call_id').val(id)
             });
+
+            // вкл/выкл использование технологической карты
+            $('.use_routing_card_block, .use_routing_card_block input, .use_routing_card_block .iCheck-helper').click(function() {
+                if( $('input[name=use_routing_card]').is(":checked") ) {
+                    $('#card-items').removeClass('disabled');
+                } else {
+                    $('#card-items').addClass('disabled');
+                }
+            });
             // обновляем вкладку оплаты данными с других форм
             $('#body_payments_tab').on('click', function() {
-                $('#body_payments_tab').addClass('loadingbox');
+                $('#body_payments').addClass('loadingbox');
 
                 // собираем обновлённый список услуг
                 var app = [];
@@ -679,7 +688,7 @@
                     $('#new-transaction-amount').val(goods_sum +  app['sum']);
 
                 }
-                $('#body_payments_tab').removeClass('loadingbox');
+                $('#body_payments').removeClass('loadingbox');
 
             });
         });

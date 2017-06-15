@@ -585,5 +585,6 @@ return [
 	'branch_city_column'		=> 'City',
 	'branch_address_column'		=> 'Address',
 	'branch_phone_column'		=> 'Phone',
-	'branch_manage_column'		=> 'Manage'
+	'branch_manage_column'		=> 'Manage',
+    'use_routing_card'		    => 'utilizar el carta tecnológica existente',
 ];

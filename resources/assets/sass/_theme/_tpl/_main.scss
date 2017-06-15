@@ -376,3 +376,17 @@ body.skin-orange {
 .inline-block{
   display: inline-block;
 }
+
+#card-items.disabled{
+  &:after{
+    text-align: center;
+    content: "";
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.7) ;
+    cursor: not-allowed;
+  }
+}

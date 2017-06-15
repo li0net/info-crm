@@ -593,6 +593,6 @@ return [
 	'branch_city_column'		=> 'Город',
 	'branch_address_column'		=> 'Адрес',
 	'branch_phone_column'		=> 'Телефон',
-	'branch_manage_column'		=> 'Управлять'
-
+	'branch_manage_column'		=> 'Управлять',
+	'use_routing_card'		    => 'Использовать существующую технологическую карту',
 ];

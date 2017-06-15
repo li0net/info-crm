@@ -167,7 +167,8 @@ class AppointmentsController extends Controller
         }
 
         // Если есть списания - отображем их, елси нет - пытаемся получить из технологической карты
-        // TODO добавить возможность подключать элементы изх карты на лету при создании и редактировании
+        // TODO добавить возможность подключать элементы из карты на лету при создании и редактировании
+        $cardItems = [];
         $dischargeItems = [];
         $dischargeTransactions = StorageTransaction::where('appointment_id', $appt->appointment_id)->where('type', 'discharge')->get();
         if ( count($dischargeTransactions) > 0 )
@@ -180,12 +181,12 @@ class AppointmentsController extends Controller
             if( ! empty($aptCardId)) {
                 $card = Card::find($aptCardId);
                 // get items of current card
-                $dischargeItems = array();
+                $cardItems = array();
                 if(null !== $card->card_items) {
                     $items = json_decode($card->card_items);
 
                     foreach ($items[0] as $key => $value) {
-                        $dischargeItems[] = array($value, $items[1][$key], $items[2][$key]);
+                        $cardItems[] = array($value, $items[1][$key], $items[2][$key]);
                     }
                 }
             }
@@ -231,6 +232,7 @@ class AppointmentsController extends Controller
             'accounts' => $accounts,
             'clients' => $clients,
             'dischargeItems' => $dischargeItems,
+            'cardItems' => $cardItems,
             'productNames' => $productNames,
             'service' => $appt->service,
 
@@ -471,42 +473,47 @@ class AppointmentsController extends Controller
 
             $transaction->save();
         }
-        // списание расходников
-        if ($request->card_storage_id AND count($request->card_storage_id) > 0){
-            for ($i = 0; $i < count($request->card_storage_id); $i++) {
-                if( ! empty($request->card_storage_id[$i]) AND ! empty($request->card_product_id[$i]) AND ! empty($request->card_amount[$i]) ) {
-                    $dischargeTransaction = new StorageTransaction;
-                    $dischargeTransaction->date = date_create($request->input('date-from') . $request->input('time-from'));
-                    date_format($dischargeTransaction->date, 'U = Y-m-d H:i:s');
 
-                    $dischargeTransaction->type = 'discharge';
+        // елси используется карта или елси использщуется список не из карты
+        if( ($request->use_routing_card_block AND $request->use_routing_card_block) OR ! $request->use_routing_card_block){
+            // списание расходников
+            if ($request->card_storage_id AND count($request->card_storage_id) > 0){
+                for ($i = 0; $i < count($request->card_storage_id); $i++) {
+                    if( ! empty($request->card_storage_id[$i]) AND ! empty($request->card_product_id[$i]) AND ! empty($request->card_amount[$i]) ) {
+                        $dischargeTransaction = new StorageTransaction;
+                        $dischargeTransaction->date = date_create($request->input('date-from') . $request->input('time-from'));
+                        date_format($dischargeTransaction->date, 'U = Y-m-d H:i:s');
 
-                    $dischargeTransaction->client_id = $appointment->client_id;
-                    $dischargeTransaction->employee_id = $appointment->employee_id;
-                    $dischargeTransaction->storage1_id = $request->card_storage_id[$i];
-                    $dischargeTransaction->storage2_id = 0;
-                    $dischargeTransaction->partner_id = 0;
-                    $dischargeTransaction->account_id = 0;
-                    $dischargeTransaction->appointment_id = $appointment->appointment_id;
-                    $dischargeTransaction->description = '';
-                    $dischargeTransaction->organization_id = $request->user()->organization_id;
+                        $dischargeTransaction->type = 'discharge';
 
-                    $dischargeTransaction->is_paidfor = false;
-                    $dischargeTransaction->product_id = $request->card_product_id[$i];
-                    $dischargeTransaction->price = 0;
-                    $dischargeTransaction->amount = $request->card_amount[$i];
-                    $dischargeTransaction->discount = 0;
-                    $dischargeTransaction->sum = 0;
-                    $dischargeTransaction->code = 0;
-                    $dischargeTransaction->transaction_items = '';
-                    $dischargeTransaction->save();
+                        $dischargeTransaction->client_id = $appointment->client_id;
+                        $dischargeTransaction->employee_id = $appointment->employee_id;
+                        $dischargeTransaction->storage1_id = $request->card_storage_id[$i];
+                        $dischargeTransaction->storage2_id = 0;
+                        $dischargeTransaction->partner_id = 0;
+                        $dischargeTransaction->account_id = 0;
+                        $dischargeTransaction->appointment_id = $appointment->appointment_id;
+                        $dischargeTransaction->description = '';
+                        $dischargeTransaction->organization_id = $request->user()->organization_id;
 
-                    $product = Product::find($request->card_product_id[$i]);
-                    $product->amount -= $request->card_amount[$i];
-                    $product->save();
+                        $dischargeTransaction->is_paidfor = false;
+                        $dischargeTransaction->product_id = $request->card_product_id[$i];
+                        $dischargeTransaction->price = 0;
+                        $dischargeTransaction->amount = $request->card_amount[$i];
+                        $dischargeTransaction->discount = 0;
+                        $dischargeTransaction->sum = 0;
+                        $dischargeTransaction->code = 0;
+                        $dischargeTransaction->transaction_items = '';
+                        $dischargeTransaction->save();
+
+                        $product = Product::find($request->card_product_id[$i]);
+                        $product->amount -= $request->card_amount[$i];
+                        $product->save();
+                    }
                 }
             }
         }
+
         echo json_encode(array('success' => true, 'error' => ''));
     }
 
