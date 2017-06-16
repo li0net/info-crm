@@ -441,6 +441,7 @@ class AppointmentsController extends Controller
         }
 
         $appointment->save();
+
         // продажа товаров
         for ($i = 0; $i < count($request->storage_id); $i++) {
             $transaction = new StorageTransaction;
@@ -766,6 +767,54 @@ class AppointmentsController extends Controller
         }
 
         echo json_encode($employeesOptions);
+    }
+
+    /**
+     * создаёт данные об оплате
+     * @param Request $request
+     * @return mixed
+     */
+    public function savePayment(Request $request){
+        $serviceId = $request->input('service_id');
+        $products = $request->input('products');
+        $productsSum = $request->input('products_sum');
+
+        //Cторнирование транзакций
+        $transactions = Transaction::where('organization_id', $request->input('organization_id'))->where('appointment_id', $request->input('organization_id'))->get();
+        foreach($transactions as $transaction) {
+            $transaction->delete();
+        }
+
+        // оплата услуги
+        if ( $serviceId != ''){
+            $transaction = new Transaction;
+            $transaction->organization_id = $request->input('organization_id');
+            $transaction->employee_id = $request->input('employee_id');
+            $transaction->product_id =
+            $transaction->appointment_id = $request->input('organization_id');
+            $transaction->amount = $request->input('service_sum');
+            $transaction->type = 'service payment';
+            $transaction->created_at = date('Y-m-d H:i:s');
+            $transaction->updated_at = date('Y-m-d H:i:s');
+            $transaction->service_id = $serviceId;
+            $transaction->save();
+        }
+        // продажа товара
+        if (count($products) > 0){
+            foreach($products as $k => $product){
+                $transaction = new Transaction;
+                $transaction->organization_id = $request->input('organization_id');
+                $transaction->employee_id = $request->input('employee_id');
+                $transaction->product_id = $product;
+                $transaction->appointment_id = $request->input('appointment_id');
+                $transaction->amount = $productsSum[$k];
+                $transaction->type = 'product payment';
+                $transaction->created_at = date('Y-m-d H:i:s');
+                $transaction->updated_at = date('Y-m-d H:i:s');
+                $transaction->save();
+            }
+        }
+        return response()->json(['result' => 1]);
     }
 
     /**

@@ -16,8 +16,8 @@
             $productsPrice += $transaction->price * $transaction->amount;
             $productsSum += $transaction->sum;
         }
-
     }
+    //TODO при загрузке таба отобразить реальные транзакции
 ?>
 <div class="record-body body_payments" id="neo_payments_div">
     <div id="payments_content" >
@@ -103,18 +103,41 @@
 
             <h3>@lang('adminlte_lang::message.payment_to_cashbox')</h3>
             <div class="row  form-horizontal">
-                <div class="col-sm-8">
-                    {{ Form::select('new-transaction-account-id', $accounts, null, ['class' => 'js-select-basic-single']) }}
-                    {{--<select id="new-transaction-account-id" class="js-select-basic-single" data-placeholder="@lang('adminlte_lang::message.choose')">--}}
-                        {{--<option value="87128">Основная касса</option>--}}
-                        {{--<option value="87129">Расчетный счет</option>--}}
-                    {{--</select>--}}
+                <div class="form-group">
+                    <label for="title" class="col-sm-4 control-label text-right">@lang('adminlte_lang::message.account_name'):</label>
+                    <div class="col-sm-8">
+                        {{ Form::select('new-transaction-account-id', $accounts, null, ['class' => 'js-select-basic-single']) }}
+                    </div>
                 </div>
-                <div class="col-sm-2">
-                    <input id="new-transaction-amount" class="form-control text-center" type="text" value="{{$paySum}}">
+
+                <div class="form-group">
+                    <label for="title" class="col-sm-4 control-label text-right">
+                        @lang('adminlte_lang::message.for_services'):
+                    </label>
+                    <div class="col-sm-8">
+                        <input id="new-transaction-services" class="form-control text-center" type="text" value="{{$appointment->service_sum}}" readonly>
+                    </div>
                 </div>
-                <div class="text-right col-sm-2">
-                    <button class="btn btn-primary" id="create-transaction-btn" data-record-id="15537667" data-visit-id="12413512" data-salon-id="62909">@lang('adminlte_lang::message.pay')</button>
+
+                <div class="form-group">
+                    <label for="title" class="col-sm-4 control-label text-right">
+                        @lang('adminlte_lang::message.for_products'):
+                    </label>
+                    <div class="col-sm-8">
+                        <input id="new-transaction-products" class="form-control text-center" type="text" value="{{$productsPrice}}" readonly>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label for="title" class="col-sm-4 control-label text-right">
+                        @lang('adminlte_lang::message.total'):
+                    </label>
+                    <div class="col-sm-8">
+                        <input id="new-transaction-amount" class="form-control text-center" type="text" value="{{$appointment->service_sum+$productsPrice}}" readonly>
+                    </div>
+                </div>
+                <div class="text-right col-sm-12">
+                    <div class="btn btn-info" id="create-transaction-btn">@lang('adminlte_lang::message.pay')</div>
                 </div>
             </div>
         </div></div>
