@@ -72,7 +72,7 @@ const app = new Vue({
     },
     data: function() {
         return {
-            message: 'Фотопортрет',
+            message: $('#js_photo').html(),
             image: '',
             filter_employee: 0,
             filter_service: 0,
@@ -84,8 +84,8 @@ const app = new Vue({
             transaction_items_count: 0,
             services_ctgs_options: '',
             storage_options: '',
-            service_name: 'Услуга не выбрана',
-            service_employee: 'Сотрудник не выбран'
+            service_name: $('#js_service_not_chosen').html(),
+            service_employee: $('#js_employee_not_chosen').html()
         }
     },
     methods: {
@@ -162,17 +162,22 @@ $(document).ready(function () {
     //отображаем не сразу чтобы vue мог заполнить счётчики
     $(".box-solid").find('.badge').css("display", "inline-block");
 
+    //locales
+    var women = $('#js_women').html();
+    var men   = $('#js_men').html();
+    var all   = $('#js_all').html();
+
     $("#service_categories_grid").jqGrid({
         url: '/serviceCategories/gridData',
         mtype: "GET",
         styleUI : 'Bootstrap',
         datatype: "json",
-        colNames:['Название', 'Название для онлайн регистрации', 'Пол','Управление'],
+        colNames:[$('#js_designation').html(), $('#js_designation_online').html(), $('#js_sex').html(),  $('#js_actions').html()],
         colModel: [
             { index: 'name', name: 'name', width: 130 },
             { index: 'online_reservation_name', name: 'online_reservation_name', width: 150 },
-            { index: 'gender', name: 'gender', width: 80, edittype:'select', formatter:'select', editoptions:{value:"1:Мужчины;0:Женщины;null:Все"},},
-            { index: 'service_category_id', name: 'service_category_id', key: true, width: 50, formatter:ServiceCategoryFormatEditColumn },
+            { index: 'gender', name: 'gender', width: 80, edittype:'select', formatter:'select', editoptions:{value:"1:"+men+";0:"+women+";null:"+all}},
+            { index: 'service_category_id', align:'center', name: 'service_category_id', key: true, width: 50, formatter:ServiceCategoryFormatEditColumn },
         ],
         sortname: 'name',
         sortorder: 'asc',
@@ -190,7 +195,7 @@ $(document).ready(function () {
         mtype: "GET",
         styleUI : 'Bootstrap',
         datatype: "json",
-        colNames:['Название', 'Категория услуг', 'Описание', 'Мин. цена', 'Макс. цена', 'Длительность','Управление'],
+        colNames:[$('#js_designation').html(), $('#js_category').html(), $('#js_description').html(), $('#js_min_price').html(), $('#js_max_price').html(), $('#js_duration').html(),$('#js_actions').html()],
         colModel: [
             { index: 'name', name: 'name', width: 110 },
             { index: 'service_category_id', name: 'service_category_id', width: 110 },
@@ -220,7 +225,7 @@ $(document).ready(function () {
             { index: 'name', name: 'name', width: 100 },
             { index: 'phone', name: 'phone', width: 100 },
             { index: 'email', name: 'email', width: 100 },
-            { index: 'user_id', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn }
+            { index: 'user_id', align: 'center', name: 'user_id', key: true, width: 60, formatter:UserFormatEditColumn }
         ],
         sortname: 'name',
         sortorder: 'asc',
@@ -239,14 +244,14 @@ $(document).ready(function () {
             mtype: "GET",
             styleUI: 'Bootstrap',
             datatype: "json",
-            colNames: ['ID', 'Имя', 'Контакты', 'Продано', 'Скидка', 'Важность'],
+            colNames: ['ID', $('#js_name').html(), $('#js_contacts').html(), $('#js_sold').html(), $('#js_discount').html(), 'Importance'],
             colModel: [
                 {index: 'client_id', name: 'client_id', key: true, width: 60, hidden: true, search: false},
                 {index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
                 {index: 'phone', name: 'phone', width: 100, search: true, stype: 'text'},
-                {index: 'total_bought', align:'left', name: 'total_bought', width: 70, search: false},
-                {index: 'discount', align:'left', name: 'discount', width: 60, search: false},
-                {index: 'importance', name: 'importance', width: 50, search: true, hidden: true}
+                {index: 'total_bought', align:'center', name: 'total_bought', width: 70, search: false},
+                {index: 'discount', align:'center', name: 'discount', width: 60, search: false},
+                {index: 'importance', name: 'importance',align:'center', width: 50, search: true, hidden: true}
             ],
             sortname: 'name',
             sortorder: 'asc',
@@ -255,7 +260,7 @@ $(document).ready(function () {
             autowidth: true,
             shrinkToFit: true,
             rowNum: 10,
-            pager: "#clients_grid_pager",
+            pager: "#appclients_grid_pager",
             multiselect: true,
             onSelectRow: function(id, status, e){
                 //console.log(id, status, e);
@@ -448,7 +453,7 @@ $(document).ready(function () {
         mtype: "GET",
         styleUI : 'Bootstrap',
         datatype: "json",
-        colNames:['Категория', ' '],
+        colNames:[$('#js_category').html(), ' '],
         colModel: [
             { index: 'title', name: 'title', width: 100 },
             { index: 'cc_id', name: 'cc_id', key: true, width: 20, align: 'right', formatter:ClientCategoryFormatEditColumn }
@@ -505,9 +510,12 @@ $(document).ready(function () {
     // Appointment form submit
     $("#appointment_form").on("submit", function (e) {
         e.preventDefault();
+        
+        // clear alerts
+        clearFormAlerts();
 
         if($('#app_client_id').val() == 'null' || $('#app_service_id').val() == 'null'){
-            alert('At least Client and Service should be chosen!');
+            showFormError('At least Client and Service should be chosen!');
             return false;
         }
 
@@ -546,67 +554,44 @@ $(document).ready(function () {
             data: $("#appointment_form").serialize(),
             dataType: "json",
             beforeSend: function() {
-                //$('#result').html('<img src="loading.gif" />');
-                var btn = $('#btn_submit_app_form');
-                btnLabel = $(btn).val();
-                $(btn).prop('disabled', true);
-                $(btn).val("Сохранение...");	// localize
+                $('#appointment_form_container').addClass('loadingbox');
             },
             success: function(data) {
-                //$('#result').html(data);
-                var btn = $('#btn_submit_app_form');
-                $(btn).val(btnLabel);
-                $(btn).prop('disabled', false);
-
-                var errorContainers = [
-                    'client_name_error',
-                    'client_phone_error',
-                    'client_email_error',
-                    'service_id_error',
-                    'note_error',
-                    'employee_id_error',
-                    'date_from_error',
-                    'time_from_error',
-                    'duration_hours_error',
-                    'duration_minutes_error'
-                ];
-                for (var i = 0; i < errorContainers.length; i++) {
-                    $('#' + errorContainers[i]).html('');
-                }
+                console.log('SUCCESS DATA');
+                console.log(data);
 
                 if (data.success) {
-                    alert("Saved");
+                    console.log('success');
+                    showFormSuccess('Changes successfully saved');                    
                 } else {
+                    console.log('error');
                     if (data.validation_errors !== undefined) {
+                        var errorMsg = '';
                         for (var field_name in data.validation_errors) {
                             if (data.validation_errors.hasOwnProperty(field_name)) {
-                                if (data.validation_errors[field_name] instanceof Array) {
-                                    var errorMsg = data.validation_errors[field_name].join('<br/>');
-                                } else {
-                                    var errorMsg = data.validation_errors[field_name];
-                                }
-
-                                $('#' + field_name + '_error').html(errorMsg);
+                                errorMsg += data.validation_errors[field_name]+'<br/>';
                             }
                         }
+                        if(errorMsg !=''){
+                            showFormError(errorMsg);                            
+                        }
                     }
-
                     if (data.error !== undefined) {
-                        alert("Error:" + data.error);
+                        showFormError(data.error);
                     }
                 }
-                window.location.href = '/home';
+                // window.location.href = '/home';
             },
             error: function(data) {
-                var btn = $('#btn_submit_app_form');
-                $(btn).val(btnLabel);
-                $(btn).prop('disabled', false);
-                alert("Error");
+                console.log('ERROR DATA');
+                console.log(data);
             }
         });
+
+        $('#appointment_form_container').removeClass('loadingbox');
+
         return false;
     });
-
     /** SELECT2 SELECT INIT **/
     $(".js-select-basic-multiple").select2({
         templateResult: formatClientCatColor,
@@ -695,7 +680,12 @@ $(document).ready(function () {
         if( $(this).hasClass('btn-add') ) {
             $('#card-items').append($('#card-items-tpl').html());
             $('#card-items .wrap-it:last-of-type select[name="storage_id[]"]').removeClass('form-control').addClass('js-select-basic-single-alt');
+            // $('#card-items .wrap-it:last-of-type select[name="storage_id[]"]').prepend('<option id="storage_id_empty" selected value="null">'+$('#select_storage-placeholder-tpl').html()+'</option>');
             $('#card-items .wrap-it:last-of-type select[name="product_id[]"]').removeClass('form-control').addClass('js-select-basic-single-alt');
+
+            $('#card-items .wrap-it:last-of-type select[name="card_storage_id[]"]').removeClass('form-control').addClass('js-select-basic-single-alt');
+            // $('#card-items .wrap-it:last-of-type select[name="card_storage_id[]"]').prepend('<option id="storage_id_empty" selected value="null">'+$('#select_storage-placeholder-tpl').html()+'</option>');
+            $('#card-items .wrap-it:last-of-type select[name="card_product_id[]"]').removeClass('form-control').addClass('js-select-basic-single-alt');
 
             $('#card-items .wrap-it:last-of-type .js-select-basic-single-alt').select2({
                 theme: "alt-control",
@@ -704,7 +694,6 @@ $(document).ready(function () {
                 $('.select2-results__options').niceScroll({cursorcolor:"#969696", cursorborder: "1px solid #787878", cursorborderradius: "0", cursorwidth: "10px", zindex: "100000", cursoropacitymin:0.9, cursoropacitymax:1, boxzoom:true, autohidemode:false});
             });
             app.card_items_count++;
-
 
             $(this).addClass('btn-remove').removeClass('btn-add');
             $(this).off();
@@ -868,6 +857,35 @@ $(document).ready(function () {
         $(this).removeClass('activated');
     });
 
+
+    if ($('#branches_grid').length ) {
+        $("#branches_grid").jqGrid({
+            url: '/organizations/gridData',
+            mtype: "GET",
+            styleUI: 'Bootstrap',
+            datatype: "json",
+            colNames: [$('#js_branch_name').html(), $('#js_branch_country').html(), $('#js_branch_city').html(), $('#js_branch_address').html(), $('#js_branch_phone').html(), $('#js_branch_manage').html()],
+            colModel: [
+                {index: 'name', name: 'name', width: 120, search: true, stype: 'text'},
+                {index: 'country', name: 'country', width: 100, search: true, stype: 'text'},
+                {index: 'city', name: 'city', width: 100, search: true, stype: 'text'},
+                {index: 'address', name: 'address', width: 100, search: true, stype: 'text'},
+                {index: 'phone_1', name: 'phone_1', width: 90, search: true, stype: 'text'},
+                {index: 'organization_id', name: 'organization_id', key: true, width: 35, align: 'right', formatter:BranchFormatEditColumn}
+            ],
+            sortname: 'organization_id',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: 550,
+            autowidth: true,
+            shrinkToFit: true,
+            rowNum: 15,
+            pager: "#branches_grid_pager",
+            multiselect: false
+        });
+    }
+
+
     return false;
 });
 
@@ -881,7 +899,7 @@ function ServiceCategoryFormatEditColumn(cellvalue, options, rowObject)
         url = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
     }
     if (window.Settings.permissions_service_delete !== undefined && window.Settings.permissions_service_delete == 1) {
-        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
+        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/serviceCategories/destroy/' + cellvalue + '" class="table-action-link danger-action"><i class="fa fa-trash-o"></i></a>';
     }
 
     return url + urlDel;
@@ -896,7 +914,7 @@ function ServiceFormatEditColumn(cellvalue, options, rowObject)
         url = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
     }
     if (window.Settings.permissions_service_delete !== undefined && window.Settings.permissions_service_delete == 1) {
-        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
+        urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/services/destroy/' + cellvalue + '" class="table-action-link danger-action"><i class="fa fa-trash-o"></i></a>';
     }
 
     return url + urlDel;
@@ -911,7 +929,30 @@ function UserFormatEditColumn(cellvalue, options, rowObject)
 function ClientCategoryFormatEditColumn(cellvalue, options, rowObject)
 {
     var url = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
-    var urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/destroy/' + cellvalue + '" class="table-action-link"><i class="fa fa-trash-o"></i></a>';
+    var urlDel = '<a href="' + window.location.protocol + '//' + window.location.host + '/clientCategories/destroy/' + cellvalue + '" class="table-action-link danger-action"><i class="fa fa-trash-o"></i></a>';
 
     return  url + urlDel;
 }
+
+function BranchFormatEditColumn(cellvalue, options, rowObject) {
+    var url = '<a href="' + window.location.protocol + '//' + window.location.host + '/organization/edit/' + cellvalue + '" class="table-action-link"><i class="fa fa-pencil"></i></a>';
+
+    return  url;
+}
+
+/**
+ * Actions with form alerts
+ */
+function showFormSuccess(msg){
+    $('#alerts_block').html('<div class="alert alert-success">'+msg+'</div>');
+    $('#alerts_block').find('.alert').show();
+}
+function showFormError(msg){
+    $('#alerts_block').html('<div class="alert alert-danger">'+msg+'</div>');
+    $('#alerts_block').find('.alert').show();
+}
+function clearFormAlerts(){
+    $('#alerts_block').html('');
+    $('#alerts_block').find('.alert').hide();
+}
+

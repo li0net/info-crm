@@ -50,7 +50,6 @@
 																	['class' => 'form-control', 'required' => '']) }}
 							</div>
 							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" original-title="">&nbsp;</a>
 							</label>
 						</div>
 						<div class="transaction-type-content">
@@ -63,7 +62,6 @@
 										{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '']) }}
 									</div>
 									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
 									</label>
 								</div>
 
@@ -75,7 +73,6 @@
 										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
 									</div>
 									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
 									</label>
 								</div>
 							@elseif ($transaction->type == 'expenses')
@@ -87,7 +84,6 @@
 										{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '']) }}
 									</div>
 									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
 									</label>
 								</div>
 
@@ -99,7 +95,6 @@
 										{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '']) }}
 									</div>
 									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
 									</label>
 								</div>
 
@@ -111,7 +106,6 @@
 										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
 									</div>
 									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
 									</label>
 								</div>
 							@elseif ($transaction->type == 'discharge')
@@ -123,7 +117,6 @@
 										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
 									</div>
 									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
 									</label>
 								</div>
 							@else
@@ -135,7 +128,6 @@
 										{{ Form::select('storage1_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
 									</div>
 									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
 									</label>
 								</div>
 								<div class="form-group">
@@ -146,7 +138,6 @@
 										{{ Form::select('storage2_id', $storages, null, ['class' => 'form-control', 'required' => '']) }}
 									</div>
 									<label class="col-sm-1 text-left">
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
 									</label>
 								</div>
 							@endif
@@ -246,7 +237,6 @@
 								Оплачено
 							</label>
 							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="is_paidfor" original-title="">&nbsp;</a>
 							</label>
 						</div>
 
@@ -258,7 +248,6 @@
 								{{ Form::textarea('description', null, ['class' => 'form-control']) }}
 							</div>
 							<label class="col-sm-1 text-left">
-								<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
 							</label>
 						</div>
 					</div>
@@ -298,7 +287,6 @@
 										{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 'required' => '']) }} \
 									</div> \
 									<label class="col-sm-1 text-left"> \
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
 									</label> \
 								</div> \
 								\
@@ -310,7 +298,6 @@
 										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
 									</div> \
 									<label class="col-sm-1 text-left"> \
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
 									</label> \
 								</div>');
 				} else if ($(this).val() == 'expenses') {
@@ -323,7 +310,6 @@
 										{{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required' => '']) }} \
 									</div> \
 									<label class="col-sm-1 text-left"> \
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
 									</label> \
 								</div> \
 								\
@@ -335,7 +321,6 @@
 										{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required' => '']) }} \
 									</div> \
 									<label class="col-sm-1 text-left"> \
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
 									</label> \
 								</div> \
 								\
@@ -347,7 +332,6 @@
 										{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
 									</div> \
 									<label class="col-sm-1 text-left"> \
-										<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
 									</label> \
 								</div>');
 				} else if ($(this).val() == 'discharge') {
@@ -360,7 +344,6 @@
 											{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
 										</div> \
 										<label class="col-sm-1 text-left"> \
-											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
 										</label> \
 									</div>');
 				} else {
@@ -373,7 +356,6 @@
 											{{ Form::select('storage_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
 										</div> \
 										<label class="col-sm-1 text-left"> \
-											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
 										</label> \
 									</div> \
 									<div class="form-group"> \
@@ -384,7 +366,6 @@
 											{{ Form::select('storage2_id', $storages, null, ['class' => 'form-control', 'required' => '']) }} \
 										</div> \
 										<label class="col-sm-1 text-left"> \
-											<a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a> \
 										</label> \
 									</div>');
 				}

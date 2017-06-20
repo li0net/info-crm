@@ -47,7 +47,6 @@
                         {{ Form::text('article', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
                     </div>
                     <label class="col-sm-1 text-left">
-                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                     </label>
                 </div>
 
@@ -59,7 +58,6 @@
                         {{ Form::text('barcode', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
                     </div>
                     <label class="col-sm-1 text-left">
-                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                     </label>
                 </div>
 
@@ -71,7 +69,6 @@
                         {{ Form::select('category_id', $categories, $product->category_id, ['class' => 'js-select-basic-single', 'required' => '']) }}
                     </div>
                     <label class="col-sm-1 text-left">
-                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                     </label>
                 </div>
 
@@ -83,7 +80,6 @@
                         {{ Form::select('storage_id', $storages, $product->storage_id, ['class' => 'js-select-basic-single', 'required' => '']) }}
                     </div>
                     <label class="col-sm-1 text-left">
-                        <a class="fa fa-info-circle" id="storage_id" original-title="">&nbsp;</a>
                     </label>
                 </div>
 
@@ -95,7 +91,6 @@
                         {{ Form::text('price', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '110']) }}
                     </div>
                     <label class="col-sm-1 text-left">
-                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                     </label>
                 </div>
 
@@ -125,7 +120,6 @@
                         ['class' => 'js-select-basic-single', 'required' => '', 'maxlength' => '110']) }}
                     </div>
                     <label class="col-sm-1 text-left">
-                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                     </label>
                 </div>
 
@@ -138,7 +132,6 @@
                         </div>
                     </div>
                     <label class="col-sm-1 text-left">
-                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
                     </label>
                 </div>
 
@@ -160,7 +153,7 @@
                         </div>
                     </div>
                     <label class="col-sm-1 text-left">
-                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+
                     </label>
                 </div>
 
@@ -170,7 +163,7 @@
                         {{ Form::textarea('description', null, ['class' => 'form-control']) }}
                     </div>
                     <label class="col-sm-1 text-left">
-                        <a class="fa fa-info-circle" id="service_unit" original-title="">&nbsp;</a>
+
                     </label>
                 </div>
             </div>

@@ -39,7 +39,7 @@
 					</div>
 				</div>
 				<div class="col-sm-4">
-					{{ Form::select('category_id', $categories, null, ['class' => 'form-control', 
+					{{ Form::select('category_id', $categories, null, ['class' => 'js-select-basic-single',
 																	   'required' => '', 
 																	   'id' => 'category_id', 
 																	   'placeholder' => trans('adminlte_lang::message.categories')]) }}
@@ -47,20 +47,20 @@
 			</div>
 			<div class="row m-b">
 				<div class="col-sm-4">
-					{{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 
+					{{ Form::select('employee_id', $employees, null, ['class' => 'js-select-basic-single',
 																	  'required' => '', 
 																	  'id' => 'employee_id', 
 																	  'placeholder' => trans('adminlte_lang::message.employees')]) }}			
 				</div>
 				<div class="col-sm-4">
-					{{ Form::select('partner_id', $partners, null, ['class' => 'form-control', 
+					{{ Form::select('partner_id', $partners, null, ['class' => 'js-select-basic-single',
 																	'required' => '', 
 																	'id' => 'partner_id', 
 																	'placeholder' => trans('adminlte_lang::message.partners')]) }}
 				</div>
 				<div class="form-inline">
 					<div class="col-sm-4">
-						<select name="editable_length" aria-controls="editable" class="form-control input-sm">
+						<select name="editable_length" aria-controls="editable" class="js-select-basic-single">
 							<option selected="" value="25">25</option>
 							<option value="50">50</option>
 							<option value="100">100</option>
@@ -70,7 +70,7 @@
 			</div>
 			<div class="row m-b ">
 				<div class="col-sm-2 col-sm-offset-10">
-					<input type="button" class="btn btn-success btn-sm pull-right" value={{ trans('adminlte_lang::message.show') }} id='form_submit'>
+					<input type="button" class="btn btn-primary pull-right" value={{ trans('adminlte_lang::message.show') }} id='form_submit'>
 				</div>
 			</div>
 		</fieldset>

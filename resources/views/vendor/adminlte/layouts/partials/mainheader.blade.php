@@ -23,14 +23,33 @@
                  </div>
              </div>
              <a href="/home" class="logo"><img src="/img/landing/logo.svg"></a>
-             <a href="/organization/edit" class="org-logo white">
-                 @if ($user->organization->logo_image != '')
-                    <img src="{{$user->organization->getLogoUri()}}">
-                 @else
-                    {{ $user->organization->name }}
-                 @endif
-             </a>
-            <ul class="nav navbar-nav" style="display: none">
+
+             <!-- Org name/logo of branches dropdown -->
+             <?php $branches = $user->organization->superOrganization->organizations;?>
+             @if (count($branches) == 1)
+                 <a href="/organization/edit" class="org-logo white">
+                     @if ($user->organization->logo_image != '')
+                         <img src="{{$user->organization->getLogoUri()}}">
+                     @else
+                         {{ $user->organization->name }}
+                     @endif
+                 </a>
+             @else
+                 <div class="dropdown branch-dropdown">
+                     <button class="btn btn-default dropdown-toggle dropbtn" type="button" data-toggle="dropdown">
+                         {{$user->organization->name}}<span class="caret"></span>
+                     </button>
+                     <ul class="dropdown-menu">
+                         @foreach ($branches as $org)
+                             @if ($org->organization_id != $user->organization->organization_id)
+                                 <li><a href="/changeBranch/{{$org->organization_id}}">{{$org->name}}</a></li>
+                             @endif
+                         @endforeach
+                     </ul>
+                 </div>
+             @endif
+
+             <ul class="nav navbar-nav" style="display: none">
                 @if (Auth::guest())
                     <li><a href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>
                     <li><a href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>

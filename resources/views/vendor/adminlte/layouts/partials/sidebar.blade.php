@@ -78,7 +78,7 @@
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.electronic_cards') }}</a></li>--}}
                 </ul>
             </li>
-            <li class="treeview @if(in_array($page, array('home'))) activated @endif">
+            <li class="treeview @if(in_array($page, array('home','summary'))) activated @endif">
                 <a href="#"><i class='fa fa-newspaper-o'></i> <span>{{ trans('adminlte_lang::message.dashboard') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li  class="@if ($page == 'home') active @endif">
@@ -198,7 +198,7 @@
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.settings') }}</a></li>--}}
                 {{--</ul>--}}
             {{--</li>--}}
-            <li class="treeview @if(in_array($page, array('organization','serviceCategories','services','resource','employee','position','users'))) activated @endif">
+            <li class="treeview @if(in_array($page, array('organization','serviceCategories','services','resource','employee','position','users','branches'))) activated @endif">
                 <a href="#"><i class='fa fa-cogs'></i> <span>{{ trans('adminlte_lang::message.settings') }}</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li  class="@if ($page == 'organization') active @endif">
@@ -228,6 +228,9 @@
                     </li>
                     <li  class="@if ($page == 'users') active @endif">
                         <a href="{{ url('/users')}}">{{ trans('adminlte_lang::message.users') }}</a>
+                    </li>
+                    <li  class="@if ($page == 'branches') active @endif">
+                        <a href="{{ url('/branches')}}">{{ trans('adminlte_lang::message.branches') }}</a>
                     </li>
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.notifications') }}</a></li>--}}
                     {{--<li><a href="/stub">{{ trans('adminlte_lang::message.actions') }}</a></li>--}}

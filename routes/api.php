@@ -38,3 +38,8 @@ Route::get('/v1/mobile/appointmentsForDate', 'Mobile\ApiController@getAppointmen
 Route::get('/v1/mobile/branchesData', 'Mobile\ApiController@getBranches')->middleware('auth:api');
 Route::get('/v1/mobile/branchEmployees', 'Mobile\ApiController@getBranchEmployees')->middleware('auth:api');
 Route::post('/v1/mobile/appointment', 'Mobile\ApiController@createAppointment')->middleware('auth:api');
+Route::get('/v1/mobile/employeeFreeTime', 'Mobile\ApiController@getEmployeeFreeTime')->middleware('auth:api');
+Route::get('/v1/mobile/branchServices', 'Mobile\ApiController@getServicesForOrganization')->middleware('auth:api');
+Route::get('/v1/mobile/dailyStatistics', 'Mobile\ApiController@getDailyStatistics')->middleware('auth:api');
+Route::post('/v1/mobile/client', 'Mobile\ApiController@createClient')->middleware('auth:api');
+Route::post('/v1/mobile/editClient', 'Mobile\ApiController@editClient')->middleware('auth:api');

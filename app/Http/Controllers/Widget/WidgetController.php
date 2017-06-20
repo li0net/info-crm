@@ -256,7 +256,7 @@ class WidgetController extends Controller
     public function getEmployees(Request $request)
     {
         // отображение сотрудников оказывающих эту услугу
-        // + вариант "Мастер не важен"
+        // + вариант "Любой"
 
         $serviceId = $request->input('service_id');                                     // post параметр service_id - service id
 
@@ -296,7 +296,7 @@ class WidgetController extends Controller
         $contents = $view->render();
         return $contents;
 //        return $employees->getResults();
-        // TODO: добавить вариант "Мастер не важен"
+        // TODO: добавить вариант "Любой"
         // TODO: во view также передаем service_id и пишем его в скрытое поле
     }
 

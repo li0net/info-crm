@@ -63,6 +63,7 @@ return [
     'organization:logo_btn'                 => 'Загрузить фото',
     'organization:info_label'               => 'Описание',
     'organization:id_label'                 => 'ID организации',
+    'organization:email_label'              => 'Email',
 
     'appointment:client_wait_tab_label'     => 'Ожидание клиента',
     'appointment:client_came_tab_label'     => 'Клиент пришел',
@@ -259,7 +260,7 @@ return [
     'widget:form_head'                      => 'Оформление',
     'widget:category_head'                  => 'Выбор категории услуги',
     'widget:day_head'                       => 'Выбор даты',
-    'widget:employee_doesnot_matter_text'   => 'Мастер не важен',
+    'widget:employee_doesnot_matter_text'   => 'Любой',
     'widget:name'                           => 'Ваше Имя',
     'widget:7_phone'                        => '+7 телефон',
     'widget:comment'                        => 'Комментарий',
@@ -282,5 +283,9 @@ return [
     'employee:wage_scheme_label'       => 'Схема расчета зарплаты',
     'employee:wage_scheme_start_from_label' => 'Действует с',
 
-    'calculated_wage:grid_pay_link'    => 'Оплатить'
+    'calculated_wage:grid_pay_link'    => 'Оплатить',
+
+    'branch:list_page_header'               => 'Филиалы',
+    'branch:list_header'                    => 'Филиалы',
+    'branch:create_new_btn_label'           => 'Добавить филиал',
 ];

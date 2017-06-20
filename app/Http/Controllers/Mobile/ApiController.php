@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Config;
+use Illuminate\Validation\Rule;
 
 use \App\Http\Controllers\Controller;
 
@@ -300,11 +301,11 @@ class ApiController extends Controller
         $clientEmail = ($request->input('client_email')) ? $request->user()->normalizeEmail($request->input('client_email')) : '';
 
         // Ищем клиента по телефону и email
-        $client = Client::where('organization_id', $request->input('organization_id'))
+        $client = Client::where('organization_id', $request->user()->organization_id)
             ->where('phone', $clientPhone)
             ->first();
         if (is_null($client) AND !empty($clientEmail)) {
-            $client = Client::where('organization_id', $request->input('organization_id'))
+            $client = Client::where('organization_id', $request->user()->organization_id)
                 ->where('email', $clientEmail)
                 ->first();
         }
@@ -401,9 +402,327 @@ class ApiController extends Controller
             $appointment->remind_by_email_in = 0;
         }
         $appointment->state = 'created';  // пока поддерживаем только создание
+        $appointment->source = 'other';   // пока используем это значение, чтобы отличать от записей созданных через сайт или виджет
 
         $appointment->save();
 
         return response()->json(array('success' => true, 'error' => ''));
+    }
+
+    /*
+    Получить свободное для записи время у работника
+    Ответ: json объект [{'work_start' => '2017-02-20 10:00:00', 'work_end' => '2017-02-20 16:30:00'}, ...] / Ошибка
+    */
+    public function getEmployeeFreeTime(Request $request) {
+        // employee_id, service_id
+        $emplId = $request->input('employee_id');
+        //$serviceId = $request->input('service_id');
+
+        if (is_null($emplId)) {
+            return response('Invalid request data', 403);
+        }
+
+        $employee = Employee::where('employee_id', $emplId)->where('organization_id', $request->user()->organization_id)->first();
+        if (!$employee) {
+            return response('Invalid employee id', 403);
+        }
+
+        $freeIntervals = $employee->getFreeTimeIntervals();     // from current time to end of month
+        return response()->json($freeIntervals);
+    }
+
+    /*
+    Получить услуги для подразделения
+    Ответ: json объект / Ошибка
+    */
+    public function getServicesForOrganization(Request $request) {
+        $orgId = $request->input('branch_id');
+        if (is_null($orgId)) {
+            return response('Invalid request data', 403);
+        }
+
+        $services = DB::table('services')
+            ->join('service_categories', 'services.service_category_id', '=', 'service_categories.service_category_id')
+            ->join('organizations', 'organizations.organization_id', '=', 'service_categories.organization_id')
+            ->select('services.*')
+            ->where('organizations.organization_id', $request->user()->organization_id)
+            ->get();
+
+        if ($services->count() == 0) {
+            return [];
+        }
+
+        $services = $services->toArray();
+        $serviceData = [];
+        foreach($services AS $service) {
+            $servObj = Service::with('employees')->where('service_id', $service->service_id)->first();
+            $serviceData[] = [
+                'service_id'    => $service->service_id,
+                'name'          => $service->name,
+                'description'   => $service->description,
+                'price'         => round($service->price_min, 2),
+                'duration'      => $service->duration,
+                'employees'     => []
+            ];
+
+            foreach($servObj->employees AS $emp) {
+                $serviceData[count($serviceData)-1]['employees'][] = [
+                    'employee_id'   => $emp->employee_id,
+                    'name'          => $emp->name,
+                ];
+            }
+        }
+
+        return response()->json($serviceData);
+    }
+
+    /*
+    Для мобильного приложения в идеале по максимуму нужна следующая статистика за конкретную дату:
+    1) Кол-во клиентов за день, чел;
+    2) Средняя заполненность по мастерам, % = общее время оказания услуг/общее рабочее время мастеров *100% ;
+    3) Записей на сумму, руб;
+    4) Оказано услуг на сумму, руб.
+    5) Поступлений в кассу, руб.
+    6) Средний чек, руб.
+    */
+    public function getDailyStatistics(Request $request) {
+        //http://infogroup.online/v1/mobile/dailyStatistics?day=2017-05-15
+
+        $day = $request->input('day');      // 2017-05-15
+        if (!preg_match('/^\d\d\d\d-\d\d-\d\d$/', $day)) {
+            return response('Invalid day format', 403);
+        }
+
+        $dayStart = $day.' 00:00:00';
+        $dayEnd = $day.' 23:59:59';
+
+        $statistics = ['employee_stats' => []];
+        $emplData = [];
+        $clientsCount = 0;
+        $serviceSum = 0;
+        $apptsSum = 0;
+
+        // 1) Кол-во клиентов за день, чел;
+        // 2) Средняя заполненность по мастерам, % = общее время оказания услуг/общее рабочее время мастеров *100% ;
+        // 4) Оказано услуг на сумму, руб.
+        //  общее время оказания услуг:
+        $appointments = DB::select(
+            "SELECT employee_id, SUM( TIMESTAMPDIFF(MINUTE, start, end) ) AS total_service_time, count(*) AS clients_count, SUM(IFNULL(service_sum,0)) AS service_sum ".
+            "FROM appointments ".
+            "WHERE organization_id=:orgId ".
+            "AND `start` BETWEEN :dayStart AND :dayEnd ".
+            "AND `state`='finished' ".
+            "AND start IS NOT NULL AND end IS NOT NULL ".
+            "AND end>start ".
+            "GROUP BY employee_id",
+            ['orgId' => $request->user()->organization_id, 'dayStart' => $dayStart, 'dayEnd' => $dayEnd]
+        );
+        foreach ($appointments AS $appt) {
+            $clientsCount += $appt->clients_count;
+            $serviceSum += $appt->service_sum;
+            $emplData[$appt->employee_id] = [
+                'service_time' => $appt->total_service_time
+            ];
+        }
+
+        //  общее рабочее время мастеров:
+        $schedules = DB::select(
+            "SELECT schedules.employee_id, SUM( TIMESTAMPDIFF(MINUTE, work_start, (CASE WHEN work_end > :dayEnd THEN :dayEnd2 ELSE work_end END)) ) AS total_work_time ".
+            "FROM schedules ".
+            "JOIN employees ON employees.employee_id = schedules.employee_id ".
+            "WHERE employees.organization_id=:orgId AND ".
+            "(".
+                "(work_start >= :dayStart AND work_end <= :dayEnd3)  OR ".     // не отбираем записи которые начились до рассматриваемого периода и закончились в нем
+                "(work_start >= :dayStart2 AND work_start<:dayEnd4 AND work_end > :dayEnd5) ".
+            ") ".
+            "GROUP BY schedules.employee_id",
+            [
+                'orgId' => $request->user()->organization_id,
+                'dayStart' => $dayStart,
+                'dayStart2' => $dayStart,
+                'dayEnd' => $dayEnd,
+                'dayEnd2' => $dayEnd,
+                'dayEnd3' => $dayEnd,
+                'dayEnd4' => $dayEnd,
+                'dayEnd5' => $dayEnd
+            ]
+		);
+        foreach ($schedules AS $schedule) {
+            $emplData[$schedule->employee_id]['work_time'] = $schedule->total_work_time;
+
+            if (!isset($emplData[$schedule->employee_id]['service_time'])) {
+                $statistics['employee_stats'][$schedule->employee_id]['utilization'] = 0;
+            } else {
+                $statistics['employee_stats'][$schedule->employee_id]['utilization'] = round($emplData[$schedule->employee_id]['service_time']/$schedule->total_work_time, 2) * 100;
+            }
+        }
+        Log::debug(__METHOD__." emplData:".print_r($emplData, TRUE));
+
+        // 3) Записей на сумму, руб;
+        $appointments = DB::select(
+            "SELECT SUM(IFNULL(service_sum,0)) AS appt_sum ".
+            "FROM appointments ".
+            "WHERE organization_id=:orgId ".
+            "AND `start` BETWEEN :dayStart AND :dayEnd ".
+            //"AND `state`!='failed' ".
+            "AND start IS NOT NULL AND end IS NOT NULL ".
+            "AND end>start",
+            ['orgId' => $request->user()->organization_id, 'dayStart' => $dayStart, 'dayEnd' => $dayEnd]
+        );
+        foreach ($appointments AS $appt) {
+            $apptsSum += $appt->appt_sum;
+        }
+
+        // TODO: 5) Поступлений в кассу, руб.
+        // ?? выборка из transactions
+        // пока что сделаю равным 4) Оказано услуг на сумму, руб.
+
+        $statistics['clients_count'] = $clientsCount;   //1) Кол-во клиентов за день, чел;
+        $statistics['appointments_sum'] = $apptsSum;    //3) Записей на сумму, руб;
+        $statistics['services_sum'] = $serviceSum;      //4) Оказано услуг на сумму, руб.
+        $statistics['payed_sum'] = $serviceSum;         //5) Поступлений в кассу, руб. ??? ПОКА ЧТО РАВНО 4
+        $statistics['average_receipt'] = ($clientsCount == 0) ? 0 : round($serviceSum/$clientsCount, 2); //6) Средний чек, руб.
+
+        return response()->json($statistics);
+    }
+
+    /*
+    Создать клиента:  имя+фамилия+номер
+    Ответ: Создан/не создан
+    */
+    public function createClient(Request $request)
+    {
+        /*
+        array:10 [
+            "name" => "Имечко фамилия"
+            "phone" => "986463466"
+            "email" => "dfdffd"
+        ]
+        */
+
+        //Log::info(__METHOD__ . ' before validation');
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:120',
+            'email' => 'email',
+            'phone' => 'required|phone_crm'
+        ]);
+        if ($validator->fails()) {
+            $errs = $validator->messages();
+            //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
+
+            return response()->json([
+                'success' => false,
+                'validation_errors' => $errs
+            ]);
+        }
+
+        // Создать или найти клиента по client_phone и client_email
+        $clientName = $request->user()->normalizeUserName($request->input('name'));
+        $clientPhone = $request->user()->normalizePhoneNumber($request->input('phone'));
+        $clientEmail = ($request->input('email')) ? $request->user()->normalizeEmail($request->input('email')) : '';
+
+        // Ищем клиента по телефону и email
+        $client = Client::where('organization_id', $request->user()->organization_id)
+            ->where('phone', $clientPhone)
+            ->first();
+        if (is_null($client) AND !empty($clientEmail)) {
+            $client = Client::where('organization_id', $request->user()->organization_id)
+                ->where('email', $clientEmail)
+                ->first();
+        }
+        // если такой клиент уже есть (поиск по номеру телефона) - добавляем ему email, если не было, иначе не апдейтим его
+        if (is_null($client)) {
+            $client = new Client();
+            $client->name = $clientName;
+            $client->phone = $clientPhone;
+            if ($request->input('client_email')) {
+                $client->email = $clientEmail;
+            }
+            $client->organization_id = $request->user()->organization_id;
+            $client->save();
+        } else {
+            if (empty($client->email) AND !empty($request->input('client_email'))) {
+                $client->email = $clientEmail;
+                $client->save();
+            }
+        }
+
+        return response()->json([
+            'success'   => true
+        ]);
+    }
+
+    /*
+    Редактировать клиента
+    Запрос: передаю токен в хедере + айди клиента + новые данные по имени/фамилии/номеру
+    Ответ:Ок/Ошибка
+    */
+    public function editClient(Request $request)
+    {
+        /*
+        array:10 [
+            "client_id" => "122",
+            "name" => "Имечко фамилия"
+            "phone" => "986463466"
+            "email" => "dfdffd"
+        ]
+        */
+
+        $validationRules = [
+            'client_id' => 'required',
+            'name' => 'max:120',
+            'email' => [
+                'email',
+                Rule::unique('clients', 'email')->ignore($request->input('client_id'), 'client_id'),
+            ]
+        ];
+
+        // Если у юзера нет права на просмотр телефонов клиентов, то считаем что менять их ему тоже нельзя
+        $processPhone = FALSE;
+        if ($request->user()->hasAccessTo('client_phone', 'view', 0)) {
+            $validationRules['phone'] = [
+                'phone_crm',
+                Rule::unique('clients', 'phone')->ignore($request->input('client_id'), 'client_id'),
+            ];
+            $processPhone = TRUE;
+        }
+
+        $validator = Validator::make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            $errs = $validator->messages();
+            //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
+
+            return response()->json([
+                'success' => false,
+                'validation_errors' => $errs
+            ]);
+        }
+
+        // Создать или найти клиента по client_phone и client_email
+        $clientName = $request->input('name') ? $request->user()->normalizeUserName($request->input('name')) : null;
+        $clientPhone = $request->input('phone') ? $request->user()->normalizePhoneNumber($request->input('phone')) : null;
+        $clientEmail = ($request->input('email')) ? $request->user()->normalizeEmail($request->input('email')) : null;
+
+        // Ищем клиента по id
+        $client = Client::where('organization_id', $request->user()->organization_id)
+            ->where('client_id', $$request->input('client_id'))
+            ->first();
+        if (is_null($client)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Client with given id not found'
+            ]);
+        }
+
+        if (empty($client->email) AND !empty($request->input('client_email'))) {
+            if (!is_null($clientName)) $client->name = $clientName;
+            if (!is_null($clientEmail)) $client->email = $clientEmail;
+            if (!is_null($clientPhone) AND $processPhone) $client->phone = $clientEmail;
+            $client->save();
+        }
+
+        return response()->json([
+            'success'   => true
+        ]);
     }
 }

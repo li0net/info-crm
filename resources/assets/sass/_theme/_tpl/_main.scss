@@ -294,6 +294,11 @@ body.skin-orange {
     background: transparent;
     font-size: $font-size;
     line-height: 17pt;
+    &.alert-inline{
+      border: 0;
+      margin-bottom: 0;
+      margin-top: 9px;
+    }
     i.fa-info-circle{
       font-size: 15pt;
       margin-right: 5px;
@@ -319,12 +324,25 @@ body.skin-orange {
     &.alert-error .close {
       color: $red-color !important;
       background: transparent !important;
+      border: 1px solid $red-color;
+      &.alert-inline{
+        border: 0;
+        margin-bottom: 0;
+        margin-top: 9px;
+      }
     }
     &.alert-success,
     &.alert-success span,
     &.alert-success .close {
       background: transparent !important;
       color: #75AD4C !important;
+      border: 1px solid #75AD4C;
+      padding: 5px;
+      &.alert-inline{
+        border: 0;
+        margin-bottom: 0;
+        margin-top: 9px;
+      }
     }
   }
 
@@ -351,5 +369,39 @@ body.skin-orange {
     left: 0;
     right: 0;
     background: rgba(255, 255, 255, 0.8) url("/img/widget/ajax-loader2.gif") no-repeat scroll 50% 50%;
+  }
+}
+
+#body_payments #payments_content #appointment_sum_block{
+  border-bottom: 1px solid #FFF !important;
+}
+
+#service_categories_grid_service_category_id,
+#services_grid_service_id,
+#services_grid_duration,
+#services_grid_price_max,
+#services_grid_price_min,
+#clients_grid_total_bought,
+#users_grid_user_id,
+#clients_grid_discount{
+  div.ui-th-div{
+    text-align: center;
+  }
+}
+.inline-block{
+  display: inline-block;
+}
+
+#card-items.disabled{
+  &:after{
+    text-align: center;
+    content: "";
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.7) ;
+    cursor: not-allowed;
   }
 }

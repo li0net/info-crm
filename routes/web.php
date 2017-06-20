@@ -32,6 +32,7 @@ Route::get('/services', 'ServicesController@index');
 Route::get('/users', 'UsersController@index');
 Route::get('/clients', 'ClientsController@index');
 Route::get('/clientCategories', 'ClientCategoriesController@index');
+Route::get('/branches', 'OrganizationsController@index');
 
 Route::resource('/employee', 'EmployeeController');
 Route::put('/employee', 'EmployeeController@store');
@@ -102,6 +103,10 @@ Route::get('/clientCategories/gridData', function()
 {
     GridEncoder::encodeRequestedData(new \App\GridRepositories\ClientsCategoriesGridRepository(), Input::all());
 });
+Route::get('/organizations/gridData', function()
+{
+    GridEncoder::encodeRequestedData(new \App\GridRepositories\OrganizationsGridRepository(), Input::all());
+});
 
 /*
  * Формы
@@ -133,7 +138,8 @@ Route::get('/service/employeeOptions', ['as' => 'service.employeeOptions', 'uses
 Route::get('/service/routingOptions', ['as' => 'service.routingOptions', 'uses' => 'ServicesController@populateRoutingOptions']);
 Route::get('/service/resourceOptions', ['as' => 'service.resourceOptions', 'uses' => 'ServicesController@populateResourceOptions']);
 
-Route::get('/organization/edit', ['as' => 'organization.edit', 'uses' => 'OrganizationsController@edit']);
+Route::get('/organization/create', ['as' => 'organization.create', 'uses' => 'OrganizationsController@createBranch']);
+Route::get('/organization/edit/{branchId?}', ['as' => 'organization.edit', 'uses' => 'OrganizationsController@edit']);
 Route::post('/organization/save', ['as' => 'organization.save', 'uses' => 'OrganizationsController@save']);
 
 Route::get('/organization/info/edit', ['as' => 'info.edit', 'uses' => 'OrganizationsController@editInfo']);
@@ -145,12 +151,12 @@ Route::get('/appointments/create', ['as' => 'appointments.create', 'uses' => 'Ap
 Route::get('/appointments/edit/{appt}', ['as' => 'appointments.edit', 'uses' => 'AppointmentsController@edit']);
 Route::post('/appointments/save', 'AppointmentsController@save');
 Route::get('/appointments/destroy/{appt}', ['as' => 'appointments.destroy', 'uses' => 'AppointmentsController@destroy']);
-Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
-Route::get('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForServices');
+Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsController@getEmployeesForService');
 
 Route::post('/appointments/findClient', 'AppointmentsController@findClient');
 Route::get('/appointments/getClientStats', 'AppointmentsController@getClientStats');
 Route::post('/appointments/saveCall', 'AppointmentsController@saveCall');
+Route::post('/appointments/savePayment', 'AppointmentsController@savePayment');
 Route::get('/appointments/getCalls', 'AppointmentsController@getCalls');
 
 Route::post('/appointments/getAvailableDays', 'AppointmentsController@getAvailableDays');
@@ -238,3 +244,6 @@ Route::get('/employees/calculateWagesGridData/{empId}', function($empId)
 });
 Route::get('/employees/downloadPayroll/{cwId}', '\App\Http\Controllers\EmployeeController@getPayroll');
 Route::get('/employees/payWage/{cwId}', '\App\Http\Controllers\EmployeeController@payWage');
+
+// change branch
+Route::get('/changeBranch/{orgId}', '\App\Http\Controllers\Auth\LoginController@changeBranch');

@@ -300,7 +300,7 @@
                                 }}
                             </div>
                             <div class="col-md-12">
-                                <button type="button" id="delete-resource" class="btn btn-sm btn-white center-block">
+                                <button type="button" id="delete-resource" class="btn btn-sm btn-white center-block danger-action">
                                     <i class="fa fa-trash-o"></i>
                                 </button>
                             </div>
@@ -337,7 +337,7 @@
             sel = $('.employee-content').children('.row').first().children('.col-sm-3').children('select[name="service-routing[]"]').first();
             sel.html(window.routingOptions);
 
-            $(".employee-content .js-select-basic-single").select2({
+            $(".employee-content .js-select-basic-single-alt").select2({
                 theme: "alt-control",
                 placeholder: "choose one",
                 minimumResultsForSearch: Infinity
@@ -355,7 +355,7 @@
             sel = $('.resource-content').children('.row').first().children('.col-sm-6').children('select[name="service-resource[]"]').first();
             sel.html($('#resource-options').val());
 
-            $(".resource-content .js-select-basic-single").select2({
+            $(".resource-content .js-select-basic-single-alt").select2({
                 theme: "alt-control",
                 placeholder: "choose one",
                 minimumResultsForSearch: Infinity
