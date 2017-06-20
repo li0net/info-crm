@@ -587,4 +587,6 @@ return [
 	'branch_phone_column'		=> 'Phone',
 	'branch_manage_column'		=> 'Manage',
     'use_routing_card'		    => 'utilizar el carta tecnológica existente',
+    'select_account'		    => 'Please select an account',
+    'payment_done'		        => 'Payment successfully done',
 ];

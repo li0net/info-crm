@@ -449,10 +449,13 @@
             });
             //оплата визита
             $('#create-transaction-btn').on('click', function() {
-                //$('#body_payments').addClass('loadingbox');
+                $('#body_payments').addClass('loadingbox');
+                $('#payment_message').html('');
+                $('#payment_message .alert').hide();
 
                 var service_id = $('#app_service_id option:selected').val();
-                var service_sum = $('#service_sum').val();
+                var account_id = $('select[name="new-transaction-account-id"] option:selected').val();
+                var service_sum = $('#new-transaction-services').val();
                 var organization_id = $('#organization_id').val();
                 var appointment_id = $('#app_appointment_id').val();
                 var employee_id = $('#app_employee_id').val();
@@ -463,22 +466,27 @@
                         products.push($(this).find('option:selected').val())
                     }
                 });
+
                 var products_sum = [];
-                $.each( $('select[name="sum[]"]') , function( key, value ) {
-                    if($(this).find('option:selected').val() != undefined){
-                        products.push($(this).find('option:selected').val())
-                    }
+                $.each( $('input[name="sum[]"]') , function( key, value ) {
+                    products_sum .push($(this).val());
                 });
 
+                if (account_id == undefined || account_id == ''){
+                    $('#payment_message').html('<div class="alert alert-inline alert-error" role="alert"><strong>@lang("main.general_error"):</strong> @lang("adminlte_lang::message.select_account")</div>');
+                    $('#payment_message .alert').show();
+                    $('#body_payments').removeClass('loadingbox');
+                    return;
+                }
 
-
-                // елси есть услуги и продукты для оплаты
+                // если есть услуги и продукты для оплаты
                 if( products.length > 0 || service_id != undefined && service_id != ''){
                     $.ajax({
                         type: "POST",
                         url: "/appointments/savePayment/",
                         data: {
                             service_id: service_id,
+                            account_id: account_id,
                             service_sum: service_sum,
                             organization_id: organization_id,
                             appointment_id: appointment_id,
@@ -487,6 +495,10 @@
                             products_sum: products_sum,
                         },
                         success: function(data) {
+                            if(data.result){
+                                $('#payment_message').html('<div class="alert alert-inline alert-success" role="alert"><strong>@lang("adminlte_lang::message.success"):</strong> @lang("adminlte_lang::message.payment_done")</div>');
+                                $('#payment_message .alert').show();
+                            }
                             console.log(data);
                             //TODO перезагрузить остатки на табе
                         },

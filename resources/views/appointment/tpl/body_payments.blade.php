@@ -106,7 +106,7 @@
                 <div class="form-group">
                     <label for="title" class="col-sm-4 control-label text-right">@lang('adminlte_lang::message.account_name'):</label>
                     <div class="col-sm-8">
-                        {{ Form::select('new-transaction-account-id', $accounts, null, ['class' => 'js-select-basic-single']) }}
+                        {{ Form::select('new-transaction-account-id', $accounts, null, ['class' => 'js-select-basic-single', 'placeholder'=> trans('adminlte_lang::message.account_name') ]) }}
                     </div>
                 </div>
 
@@ -136,7 +136,10 @@
                         <input id="new-transaction-amount" class="form-control text-center" type="text" value="{{$appointment->service_sum+$productsPrice}}" readonly>
                     </div>
                 </div>
-                <div class="text-right col-sm-12">
+                <div class="text-right col-sm-10" id="payment_message">
+
+                </div>
+                <div class="text-right col-sm-2">
                     <div class="btn btn-info" id="create-transaction-btn">@lang('adminlte_lang::message.pay')</div>
                 </div>
             </div>
