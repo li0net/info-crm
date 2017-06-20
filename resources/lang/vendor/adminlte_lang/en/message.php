@@ -588,4 +588,7 @@ return [
     'use_routing_card'		    => 'Use existing routing card',
     'select_account'		    => 'Please select an account',
     'payment_done'		        => 'Payment successfully done',
+
+    'consultant'                => 'Your consultant',
+    'activity_log'              => 'Activity log'
 ];
