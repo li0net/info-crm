@@ -82,7 +82,6 @@ class AppointmentsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
     public function edit(Request $request, Appointment $appt) {
-        // TODO: выводить ошибку в красивом шаблоне
         if ($request->user()->organization_id != $appt->employee->organization_id) {
             return 'You don\'t have access to this item';
         }
@@ -91,6 +90,20 @@ class AppointmentsController extends Controller
 
         $durationSelects = $this->prepareDurationSelects();
         $transactions = StorageTransaction::where('appointment_id', $appt->appointment_id)->where('type', 'expenses')->get();
+
+        $payments = Transaction::where('appointment_id', $appt->appointment_id)->get();
+        $productPayments = [];
+        $servicePayments = [];
+        foreach ($payments as $payment) {
+            if( $payment->service_id != '' && $payment->service_id != null){
+                $servicePayments[$payment->service_id] = $payment->amount;
+            }
+            if( $payment->product_id != '' && $payment->product_id != null){
+                $productPayments[$payment->product_id] = $payment->amount;
+            }
+
+        }
+
 
         $products = Storage::where('organization_id', $request->user()->organization_id)
             ->orderBy('title')
@@ -227,6 +240,8 @@ class AppointmentsController extends Controller
             'transactionEmployeesOptions' => $transactionEmployeesOptions,
             'employees' => $employees,
             'transactions'=> $transactions,
+            'servicePayments'=> $servicePayments,
+            'productPayments'=> $productPayments,
             'storages'=> $storages,
             'products'=> $products,
             'user' => $request->user(),
@@ -782,9 +797,8 @@ class AppointmentsController extends Controller
         $productsSum = $request->input('products_sum');
         $serviceSum = ($request->input('service_sum')) ? $request->input('service_sum') : 0;
 
-        //TODO починить раскрытие товаров
-        //TODO добавить списание со счёта
         //TODO добавить списание со складда. Убить списание в осномном сабмите
+        //TODO добавить пересчёт на лету
 
         $account = Account::find($accountId);
         if( ! is_null($account) ){

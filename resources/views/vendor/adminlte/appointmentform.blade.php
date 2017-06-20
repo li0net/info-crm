@@ -439,7 +439,8 @@
                $('#app_duration_minutes').prop("disabled", false);
             });
 
-            $('.toggle-info').on('click', function() {
+            $('body').on('click', '.toggle-info', function() {
+//            $('.toggle-info').on('click', function() {
                 var id = $(this).data('id');
                 $("#info-section-"+id).toggle();
                 console.log("#info-section-"+id);
@@ -500,7 +501,8 @@
                                 $('#payment_message .alert').show();
                             }
                             console.log(data);
-                            //TODO перезагрузить остатки на табе
+                            setTimeout("location.reload();", 1000);
+
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
                             alert('Server error:'+textStatus);
@@ -646,8 +648,16 @@
                 }
             });
             // обновляем вкладку оплаты данными с других форм
-            $('#body_payments_tab').on('click', function() {
+            $('a#body_payments_tab').on('click', function() {
                 $('#body_payments').addClass('loadingbox');
+
+                var serviceSumWanted = 0;
+                var serviceSumPaid = 0;
+                var productsSumWanted = 0;
+                var productsSumPaid = 0;
+                var productsCount = 0;
+                var totalSumWanted = 0;
+                var totalSumPaid = 0;
 
                 // собираем обновлённый список услуг
                 var app = [];
