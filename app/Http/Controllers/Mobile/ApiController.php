@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Config;
+use Illuminate\Validation\Rule;
 
 use \App\Http\Controllers\Controller;
 
@@ -300,11 +301,11 @@ class ApiController extends Controller
         $clientEmail = ($request->input('client_email')) ? $request->user()->normalizeEmail($request->input('client_email')) : '';
 
         // Ищем клиента по телефону и email
-        $client = Client::where('organization_id', $request->input('organization_id'))
+        $client = Client::where('organization_id', $request->user()->organization_id)
             ->where('phone', $clientPhone)
             ->first();
         if (is_null($client) AND !empty($clientEmail)) {
-            $client = Client::where('organization_id', $request->input('organization_id'))
+            $client = Client::where('organization_id', $request->user()->organization_id)
                 ->where('email', $clientEmail)
                 ->first();
         }
@@ -583,5 +584,145 @@ class ApiController extends Controller
         $statistics['average_receipt'] = ($clientsCount == 0) ? 0 : round($serviceSum/$clientsCount, 2); //6) Средний чек, руб.
 
         return response()->json($statistics);
+    }
+
+    /*
+    Создать клиента:  имя+фамилия+номер
+    Ответ: Создан/не создан
+    */
+    public function createClient(Request $request)
+    {
+        /*
+        array:10 [
+            "name" => "Имечко фамилия"
+            "phone" => "986463466"
+            "email" => "dfdffd"
+        ]
+        */
+
+        //Log::info(__METHOD__ . ' before validation');
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:120',
+            'email' => 'email',
+            'phone' => 'required|phone_crm'
+        ]);
+        if ($validator->fails()) {
+            $errs = $validator->messages();
+            //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
+
+            return response()->json([
+                'success' => false,
+                'validation_errors' => $errs
+            ]);
+        }
+
+        // Создать или найти клиента по client_phone и client_email
+        $clientName = $request->user()->normalizeUserName($request->input('name'));
+        $clientPhone = $request->user()->normalizePhoneNumber($request->input('phone'));
+        $clientEmail = ($request->input('email')) ? $request->user()->normalizeEmail($request->input('email')) : '';
+
+        // Ищем клиента по телефону и email
+        $client = Client::where('organization_id', $request->user()->organization_id)
+            ->where('phone', $clientPhone)
+            ->first();
+        if (is_null($client) AND !empty($clientEmail)) {
+            $client = Client::where('organization_id', $request->user()->organization_id)
+                ->where('email', $clientEmail)
+                ->first();
+        }
+        // если такой клиент уже есть (поиск по номеру телефона) - добавляем ему email, если не было, иначе не апдейтим его
+        if (is_null($client)) {
+            $client = new Client();
+            $client->name = $clientName;
+            $client->phone = $clientPhone;
+            if ($request->input('client_email')) {
+                $client->email = $clientEmail;
+            }
+            $client->organization_id = $request->user()->organization_id;
+            $client->save();
+        } else {
+            if (empty($client->email) AND !empty($request->input('client_email'))) {
+                $client->email = $clientEmail;
+                $client->save();
+            }
+        }
+
+        return response()->json([
+            'success'   => true
+        ]);
+    }
+
+    /*
+    Редактировать клиента
+    Запрос: передаю токен в хедере + айди клиента + новые данные по имени/фамилии/номеру
+    Ответ:Ок/Ошибка
+    */
+    public function editClient(Request $request)
+    {
+        /*
+        array:10 [
+            "client_id" => "122",
+            "name" => "Имечко фамилия"
+            "phone" => "986463466"
+            "email" => "dfdffd"
+        ]
+        */
+
+        $validationRules = [
+            'client_id' => 'required',
+            'name' => 'max:120',
+            'email' => [
+                'email',
+                Rule::unique('clients', 'email')->ignore($request->input('client_id'), 'client_id'),
+            ]
+        ];
+
+        // Если у юзера нет права на просмотр телефонов клиентов, то считаем что менять их ему тоже нельзя
+        $processPhone = FALSE;
+        if ($request->user()->hasAccessTo('client_phone', 'view', 0)) {
+            $validationRules['phone'] = [
+                'phone_crm',
+                Rule::unique('clients', 'phone')->ignore($request->input('client_id'), 'client_id'),
+            ];
+            $processPhone = TRUE;
+        }
+
+        $validator = Validator::make($request->all(), $validationRules);
+        if ($validator->fails()) {
+            $errs = $validator->messages();
+            //Log::info(__METHOD__.' validation errors:'.print_r($errs, TRUE));
+
+            return response()->json([
+                'success' => false,
+                'validation_errors' => $errs
+            ]);
+        }
+
+        // Создать или найти клиента по client_phone и client_email
+        $clientName = $request->input('name') ? $request->user()->normalizeUserName($request->input('name')) : null;
+        $clientPhone = $request->input('phone') ? $request->user()->normalizePhoneNumber($request->input('phone')) : null;
+        $clientEmail = ($request->input('email')) ? $request->user()->normalizeEmail($request->input('email')) : null;
+
+        // Ищем клиента по id
+        $client = Client::where('organization_id', $request->user()->organization_id)
+            ->where('client_id', $$request->input('client_id'))
+            ->first();
+        if (is_null($client)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Client with given id not found'
+            ]);
+        }
+
+        if (empty($client->email) AND !empty($request->input('client_email'))) {
+            if (!is_null($clientName)) $client->name = $clientName;
+            if (!is_null($clientEmail)) $client->email = $clientEmail;
+            if (!is_null($clientPhone) AND $processPhone) $client->phone = $clientEmail;
+            $client->save();
+        }
+
+        return response()->json([
+            'success'   => true
+        ]);
     }
 }
