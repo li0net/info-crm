@@ -526,7 +526,7 @@ return [
     'no_such_employees'         => 'Нет сотрудников с указанными параметрами',
     'you_can_add_employee'      => 'Вы можете добавить нового сотрудника',
     'summary'                   => 'Сводка',
-    'organization_id'           => 'ID организации',
+    'organization_id'           => 'Идентификатор организации',
     'select_client'			    => 'Выберите клиента',
     'visit_status'			    => 'Статус визита',
     'visit_payment'			    => 'Оплата визита',
@@ -568,4 +568,6 @@ return [
     'create'	                => 'Создать',
     'from_storage'  	  	  	=> 'Со склада',
     'to_storage'  	  	  	    => 'На склад',
+    'consultant'                => 'Ваш консультант',
+    'activity_log'              => 'Лента активности',
 ];

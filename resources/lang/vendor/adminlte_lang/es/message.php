@@ -561,4 +561,6 @@ return [
     'create'	                => 'Crear',
     'from_storage'  	  	  	=> 'franco almacén',
     'to_storage'  	  	  	    => 'El almacén',
+    'consultant'                => 'A su consejero',
+    'activity_log'              => 'Feed de actividad'
 ];

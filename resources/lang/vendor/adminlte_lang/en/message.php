@@ -559,4 +559,6 @@ return [
     'create'	                => 'Create',
     'from_storage'  	  	  	=> 'From storage',
     'to_storage'  	  	  	    => 'To storage',
+    'consultant'                => 'Your consultant',
+    'activity_log'              => 'Activity log'
 ];
