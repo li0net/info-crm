@@ -603,7 +603,7 @@ class ApiController extends Controller
         //Log::info(__METHOD__ . ' before validation');
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:120',
-            'email' => 'email',
+            'email' => 'email|unique:clients,email',
             'phone' => 'required|phone_crm'
         ]);
         if ($validator->fails()) {
@@ -635,13 +635,13 @@ class ApiController extends Controller
             $client = new Client();
             $client->name = $clientName;
             $client->phone = $clientPhone;
-            if ($request->input('client_email')) {
+            if ($request->input('email')) {
                 $client->email = $clientEmail;
             }
             $client->organization_id = $request->user()->organization_id;
             $client->save();
         } else {
-            if (empty($client->email) AND !empty($request->input('client_email'))) {
+            if (empty($client->email) AND !empty($request->input('email'))) {
                 $client->email = $clientEmail;
                 $client->save();
             }
@@ -705,7 +705,7 @@ class ApiController extends Controller
 
         // Ищем клиента по id
         $client = Client::where('organization_id', $request->user()->organization_id)
-            ->where('client_id', $$request->input('client_id'))
+            ->where('client_id', $request->input('client_id'))
             ->first();
         if (is_null($client)) {
             return response()->json([
@@ -714,12 +714,10 @@ class ApiController extends Controller
             ]);
         }
 
-        if (empty($client->email) AND !empty($request->input('client_email'))) {
-            if (!is_null($clientName)) $client->name = $clientName;
-            if (!is_null($clientEmail)) $client->email = $clientEmail;
-            if (!is_null($clientPhone) AND $processPhone) $client->phone = $clientEmail;
-            $client->save();
-        }
+        if (!is_null($clientName)) $client->name = $clientName;
+        if (!is_null($clientEmail)) $client->email = $clientEmail;
+        if (!is_null($clientPhone) AND $processPhone) $client->phone = $clientPhone;
+        $client->save();
 
         return response()->json([
             'success'   => true
