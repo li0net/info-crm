@@ -42,6 +42,8 @@ class AppointmentsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create(Request $request) {
+        $appt = false;
+
         $servicesOptions = $this->prepareServicesSelectData($request);
         $timeOptions = $this->prepareTimesSelectData();
         $durationSelects = $this->prepareDurationSelects();
@@ -63,6 +65,7 @@ class AppointmentsController extends Controller
             ->pluck('title', 'storage_id');
 
         return view('adminlte::appointmentform', [
+            'appointment' => NULL,
             'servicesOptions' => $servicesOptions,
             'timeOptions' => [],
             'hoursOptions' => $durationSelects['hours'],
@@ -72,6 +75,7 @@ class AppointmentsController extends Controller
             'accounts' => $accounts,
             'clients' => $clients,
             'dischargeItems' => [],
+            'cardItems' => []
         ]);
     }
 
@@ -87,7 +91,6 @@ class AppointmentsController extends Controller
         }
         $servicesOptions = $this->prepareServicesSelectData($request);
 
-
         $durationSelects = $this->prepareDurationSelects();
         $transactions = StorageTransaction::where('appointment_id', $appt->appointment_id)->where('type', 'expenses')->get();
 
@@ -101,9 +104,7 @@ class AppointmentsController extends Controller
             if( $payment->product_id != '' && $payment->product_id != null){
                 $productPayments[$payment->product_id] = $payment->amount;
             }
-
         }
-
 
         $products = Storage::where('organization_id', $request->user()->organization_id)
             ->orderBy('title')

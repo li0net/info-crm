@@ -1,11 +1,15 @@
 <?php
-    $serviceSumWanted = ($appointment->service_sum) ? $appointment->service_sum : 0;
-    $serviceSumPaid = isset($servicePayments[$appointment->service->service_id]) ? $servicePayments[$appointment->service->service_id] : 0;
+    if(isset($appointment)) {
+        $serviceSumWanted = ($appointment->service_sum) ? $appointment->service_sum : 0;
+        $serviceSumPaid = isset($servicePayments[$appointment->service->service_id]) ? $servicePayments[$appointment->service->service_id] : 0;
+    } else {
+        $serviceSumWanted = 0;
+        $serviceSumPaid = 0;
+    }
 
     $productsSumWanted = 0;
     $productsSumPaid = 0;
     $productsCount = 0;
-
 
     $totalSumWanted = $serviceSumWanted;
     $totalSumPaid = $serviceSumPaid;
