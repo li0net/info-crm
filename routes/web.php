@@ -156,6 +156,7 @@ Route::post('/appointments/getEmployeesForService/{service}', 'AppointmentsContr
 Route::post('/appointments/findClient', 'AppointmentsController@findClient');
 Route::get('/appointments/getClientStats', 'AppointmentsController@getClientStats');
 Route::post('/appointments/saveCall', 'AppointmentsController@saveCall');
+Route::post('/appointments/savePayment', 'AppointmentsController@savePayment');
 Route::get('/appointments/getCalls', 'AppointmentsController@getCalls');
 
 Route::post('/appointments/getAvailableDays', 'AppointmentsController@getAvailableDays');

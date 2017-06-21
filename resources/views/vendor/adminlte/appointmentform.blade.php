@@ -75,14 +75,14 @@
                         <i class="fa fa-calendar"></i> @lang('adminlte_lang::message.service')</li>
                     <li class="modal-menu-l visit_tab list-group-item" data-toggle="tab" data-target="#body_status">
                         <i class="fa fa-clock-o"></i> @lang('adminlte_lang::message.visit_status')</li>
+                    <li class="modal-menu-l goods_history_tab list-group-item last-item " data-toggle="tab" data-target="#goods_history" id="goods_history_tab">
+                        <i class="fa fa-cubes"></i> @lang('adminlte_lang::message.writeoff_goods')</li>
                     <li class="modal-menu-l payments_tab list-group-item" data-toggle="tab" data-target="#body_payments" id="body_payments_tab" >
                         <i class="fa fa-usd"></i> @lang('adminlte_lang::message.visit_payment')</li>
                     <!--                <li class="modal-menu-l reminds_tab list-group-item" data-toggle="tab" data-target="#body_reminds" >-->
                     <!--                    <i class="fa fa-comments-o"></i> Уведомления </li>-->
                     <!--                <li class="modal-menu-l history_tab list-group-item" data-toggle="tab" data-target="#body_history" >-->
                     <!--                    <i class="fa fa-file-text"></i> История изменений</li>-->
-                    <li class="modal-menu-l goods_history_tab list-group-item last-item " data-toggle="tab" data-target="#goods_history" id="goods_history_tab">
-                        <i class="fa fa-cubes"></i> @lang('adminlte_lang::message.writeoff_goods')</li>
 
                     <li class="modal-menu-header client_header_tab nav-header">@lang('adminlte_lang::message.client')</li>
 
@@ -439,12 +439,77 @@
                $('#app_duration_minutes').prop("disabled", false);
             });
 
-            $('.toggle-info').on('click', function() {
+            $('body').on('click', '.toggle-info', function() {
+//            $('.toggle-info').on('click', function() {
                 var id = $(this).data('id');
                 $("#info-section-"+id).toggle();
                 console.log("#info-section-"+id);
                 $(this).find('.fa-caret-down').toggle();
                 $(this).find('.fa-caret-up').toggle();
+
+            });
+            //оплата визита
+            $('#create-transaction-btn').on('click', function() {
+                $('#body_payments').addClass('loadingbox');
+                $('#payment_message').html('');
+                $('#payment_message .alert').hide();
+
+                var service_id = $('#app_service_id option:selected').val();
+                var account_id = $('select[name="new-transaction-account-id"] option:selected').val();
+                var service_sum = $('#new-transaction-services').val();
+                var organization_id = $('#organization_id').val();
+                var appointment_id = $('#app_appointment_id').val();
+                var employee_id = $('#app_employee_id').val();
+
+                var products = [];
+                $.each( $('select[name="product_id[]"]') , function( key, value ) {
+                    if($(this).find('option:selected').val() != undefined){
+                        products.push($(this).find('option:selected').val())
+                    }
+                });
+
+                var products_sum = [];
+                $.each( $('input[name="sum[]"]') , function( key, value ) {
+                    products_sum .push($(this).val());
+                });
+
+                if (account_id == undefined || account_id == ''){
+                    $('#payment_message').html('<div class="alert alert-inline alert-error" role="alert"><strong>@lang("main.general_error"):</strong> @lang("adminlte_lang::message.select_account")</div>');
+                    $('#payment_message .alert').show();
+                    $('#body_payments').removeClass('loadingbox');
+                    return;
+                }
+
+                // если есть услуги и продукты для оплаты
+                if( products.length > 0 || service_id != undefined && service_id != ''){
+                    $.ajax({
+                        type: "POST",
+                        url: "/appointments/savePayment/",
+                        data: {
+                            service_id: service_id,
+                            account_id: account_id,
+                            service_sum: service_sum,
+                            organization_id: organization_id,
+                            appointment_id: appointment_id,
+                            employee_id: employee_id,
+                            products: products,
+                            products_sum: products_sum,
+                        },
+                        success: function(data) {
+                            if(data.result){
+                                $('#payment_message').html('<div class="alert alert-inline alert-success" role="alert"><strong>@lang("adminlte_lang::message.success"):</strong> @lang("adminlte_lang::message.payment_done")</div>');
+                                $('#payment_message .alert').show();
+                            }
+                            console.log(data);
+                            setTimeout("location.reload();", 1000);
+
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('Server error:'+textStatus);
+                        }
+                    });
+                }
+                $('#body_payments').removeClass('loadingbox');
 
             });
             $('#add_good_transaction').on('click', function() {
@@ -583,8 +648,16 @@
                 }
             });
             // обновляем вкладку оплаты данными с других форм
-            $('#body_payments_tab').on('click', function() {
+            $('a#body_payments_tab').on('click', function() {
                 $('#body_payments').addClass('loadingbox');
+
+                var serviceSumWanted = 0;
+                var serviceSumPaid = 0;
+                var productsSumWanted = 0;
+                var productsSumPaid = 0;
+                var productsCount = 0;
+                var totalSumWanted = 0;
+                var totalSumPaid = 0;
 
                 // собираем обновлённый список услуг
                 var app = [];

@@ -17,6 +17,7 @@ use App\Product;
 use App\Service;
 use App\Storage;
 use App\StorageTransaction;
+use App\Transaction;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Illuminate\Support\Facades\Log;
 
@@ -41,6 +42,8 @@ class AppointmentsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create(Request $request) {
+        $appt = false;
+
         $servicesOptions = $this->prepareServicesSelectData($request);
         $timeOptions = $this->prepareTimesSelectData();
         $durationSelects = $this->prepareDurationSelects();
@@ -62,6 +65,7 @@ class AppointmentsController extends Controller
             ->pluck('title', 'storage_id');
 
         return view('adminlte::appointmentform', [
+            'appointment' => NULL,
             'servicesOptions' => $servicesOptions,
             'timeOptions' => [],
             'hoursOptions' => $durationSelects['hours'],
@@ -71,6 +75,7 @@ class AppointmentsController extends Controller
             'accounts' => $accounts,
             'clients' => $clients,
             'dischargeItems' => [],
+            'cardItems' => []
         ]);
     }
 
@@ -81,15 +86,25 @@ class AppointmentsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
     public function edit(Request $request, Appointment $appt) {
-        // TODO: выводить ошибку в красивом шаблоне
         if ($request->user()->organization_id != $appt->employee->organization_id) {
             return 'You don\'t have access to this item';
         }
         $servicesOptions = $this->prepareServicesSelectData($request);
 
-
         $durationSelects = $this->prepareDurationSelects();
         $transactions = StorageTransaction::where('appointment_id', $appt->appointment_id)->where('type', 'expenses')->get();
+
+        $payments = Transaction::where('appointment_id', $appt->appointment_id)->get();
+        $productPayments = [];
+        $servicePayments = [];
+        foreach ($payments as $payment) {
+            if( $payment->service_id != '' && $payment->service_id != null){
+                $servicePayments[$payment->service_id] = $payment->amount;
+            }
+            if( $payment->product_id != '' && $payment->product_id != null){
+                $productPayments[$payment->product_id] = $payment->amount;
+            }
+        }
 
         $products = Storage::where('organization_id', $request->user()->organization_id)
             ->orderBy('title')
@@ -226,6 +241,8 @@ class AppointmentsController extends Controller
             'transactionEmployeesOptions' => $transactionEmployeesOptions,
             'employees' => $employees,
             'transactions'=> $transactions,
+            'servicePayments'=> $servicePayments,
+            'productPayments'=> $productPayments,
             'storages'=> $storages,
             'products'=> $products,
             'user' => $request->user(),
@@ -441,6 +458,7 @@ class AppointmentsController extends Controller
         }
 
         $appointment->save();
+
         // продажа товаров
         for ($i = 0; $i < count($request->storage_id); $i++) {
             $transaction = new StorageTransaction;
@@ -766,6 +784,93 @@ class AppointmentsController extends Controller
         }
 
         echo json_encode($employeesOptions);
+    }
+
+    /**
+     * создаёт данные об оплате
+     * @param Request $request
+     * @return mixed
+     */
+    public function savePayment(Request $request){
+        $serviceId = $request->input('service_id');
+        $accountId = $request->input('account_id');
+        $products = $request->input('products');
+        $productsSum = $request->input('products_sum');
+        $serviceSum = ($request->input('service_sum')) ? $request->input('service_sum') : 0;
+
+        //TODO добавить списание со складда. Убить списание в осномном сабмите
+        //TODO добавить пересчёт на лету
+
+        $account = Account::find($accountId);
+        if( ! is_null($account) ){
+            //удаление транзакций, возврат средств на счета
+            $transactions = Transaction::where('organization_id', $request->input('organization_id'))->where('appointment_id', $request->input('appointment_id'))->get();
+            foreach ($transactions as $transaction) {
+                // back money to account balance
+
+                if( $transaction->account_id == $accountId){
+                    DB::table('accounts')
+                        ->where('account_id', $accountId)
+                        ->update(['balance' => $account->balance + $transaction->amount]);
+
+//                    $account->balance = $account->balance + $transaction->amount;
+//                    $account->save;
+                }
+                $transaction->delete();
+            }
+
+            // оплата услуги
+            if ( $serviceId != ''){
+                $transaction = new Transaction;
+                $transaction->organization_id = $request->input('organization_id');
+                $transaction->employee_id = $request->input('employee_id');
+                $transaction->appointment_id = $request->input('appointment_id');
+                $transaction->amount = $serviceSum;
+                $transaction->type = 'expenses';
+                $transaction->created_at = date('Y-m-d H:i:s');
+                $transaction->updated_at = date('Y-m-d H:i:s');
+                $transaction->service_id = $serviceId;
+                $transaction->account_id = $accountId;
+                $transaction->save();
+
+                //списание по счёта
+//                $account->balance = $account->balance - $serviceSum;
+//                $account->save;
+
+                DB::table('accounts')
+                    ->where('account_id', $accountId)
+                    ->update(['balance' => $account->balance - $serviceSum]);
+
+            }
+
+            // продажа товара
+            if (count($products) > 0){
+                foreach($products as $k => $product){
+                    $transaction = new Transaction;
+                    $transaction->organization_id = $request->input('organization_id');
+                    $transaction->employee_id = $request->input('employee_id');
+                    $transaction->product_id = $product;
+                    $transaction->appointment_id = $request->input('appointment_id');
+                    $transaction->amount = $productsSum[$k];
+                    $transaction->type = 'expenses';
+                    $transaction->created_at = date('Y-m-d H:i:s');
+                    $transaction->updated_at = date('Y-m-d H:i:s');
+                    $transaction->account_id = $accountId;
+                    $transaction->save();
+
+                    //списание по счёта
+//                    $account->balance = $account->balance - $productsSum[$k];
+//                    $account->save;
+                    DB::table('accounts')
+                        ->where('account_id', $accountId)
+                        ->update(['balance' => $account->balance - $productsSum[$k]]);
+                }
+            }
+            return response()->json(['result' => 1]);
+        } else {
+            return response()->json(['result' => 0]);
+        }
+
     }
 
     /**
