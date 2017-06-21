@@ -648,7 +648,8 @@ class ApiController extends Controller
         }
 
         return response()->json([
-            'success'   => true
+            'success'   => true,
+            'error'     => ''
         ]);
     }
 
@@ -720,7 +721,8 @@ class ApiController extends Controller
         $client->save();
 
         return response()->json([
-            'success'   => true
+            'success'   => true,
+            'error'     => ''
         ]);
     }
 }
