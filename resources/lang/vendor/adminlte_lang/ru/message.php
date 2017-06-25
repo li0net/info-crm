@@ -595,9 +595,11 @@ return [
 	'branch_phone_column'		=> 'Телефон',
 	'branch_manage_column'		=> 'Управлять',
 	'use_routing_card'		    => 'Использовать существующую технологическую карту',
+	'no_routing_cards'		    => 'Технологические карты отсутствуют',
 	'select_account'		    => 'Выберите счёт',
 	'payment_done'		        => 'Платёж совершён',
 
     'consultant'                => 'Ваш консультант',
     'activity_log'              => 'Лента активности',
+    'or'                        => 'или',
 ];

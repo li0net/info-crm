@@ -1,3 +1,4 @@
+<input type="hidden" name="app_need_save_status" id="app_need_save_status" value="1">
 <div class="col-sm-12">
     <div class="row m-b alt-control-bar">
         <div class="col-sm-3">
@@ -20,9 +21,9 @@
     <div class="row m-b alt-control-bar">
         <div class="col-sm-3">
             @if(isset($appointment))
-            {{ Form::label('', $appointment->service->name, ['id' => 'service_name']) }}
+                {{ Form::label('', $appointment->service->name, ['id' => 'service_name']) }}
             @else
-            {{ Form::label('', trans('adminlte_lang::message.employee_not_chosen'), ['id' => 'service_name']) }}
+                {{ Form::label('', trans('adminlte_lang::message.employee_not_chosen'), ['id' => 'service_name']) }}
             @endif
         </div>
         <div class="col-sm-3">
@@ -130,7 +131,7 @@
                                 ) }}
                             </div>
                             <div class="col-sm-4 text-right">
-                                <button id="remove_good_transaction" class="btn btn-danger" ><i class="fa fa-trash-o"></i></button>
+                                <div id="remove_good_transaction" class="btn btn-danger"><i class="fa fa-trash-o"></i></div>
                             </div>
                         </div>
                     </div>
@@ -139,7 +140,7 @@
             @endif
         </div>
         <div class="text-right">
-            <input type="button" id="add_good_transaction" class="btn btn-primary" value="@lang('adminlte_lang::message.add_product')">
+            <input type="button" id="add_good_transaction" class="btn btn-info" value="@lang('adminlte_lang::message.add_product')">
         </div>
     </div>
 </div>

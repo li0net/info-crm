@@ -1,3 +1,6 @@
+<div class="col-sm-12">
+    <div class="sub-form-messages" id="app_service_message"></div>
+</div>
 <div class="form-group">
     <label for="app_service_id">@lang('main.appointment:service_id_label')</label>
     <select name="service_id" id="app_service_id" class = "js-select-basic-single-search">

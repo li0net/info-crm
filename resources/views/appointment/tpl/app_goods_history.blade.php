@@ -1,3 +1,4 @@
+<input type="hidden" name="app_need_save_history" id="app_need_save_history" value="1">
 @if (count($dischargeItems) > 0)
     <input type="hidden" name="use_routing_card_block" val="0"/>
     {{--отображаем списанные товары--}}
@@ -101,6 +102,12 @@
 
         @include('appointment.tpl.templates')
 
+    </div>
+@else
+    <div class="form-group col-sm-12">
+        <h4>
+            {{ trans('adminlte_lang::message.no_routing_cards') }}
+        </h4>
     </div>
 @endif
 

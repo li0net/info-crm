@@ -26,7 +26,6 @@
             }
         }
     }
-    //TODO при загрузке таба отобразить реальные транзакции
 ?>
 <div class="record-body body_payments" id="neo_payments_div">
     <div id="payments_content" >
@@ -72,7 +71,7 @@
                     <tbody id="info-section-2" class="info-section" data-id="2">
                         @foreach($transactions as $transaction)
                             <?php
-                                $productPaid = $productPayments[$transaction->product_id] ? : 0;
+                                $productPaid = ! empty($productPayments[$transaction->product_id]) ? $productPayments[$transaction->product_id] : 0;
                             ?>
                             <tr class="details-row toggle-info-section" data-section-id="2">
                                 <td class="col-xs-3">{{$productNames[$transaction->product_id]}}</td>

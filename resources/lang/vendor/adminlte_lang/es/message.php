@@ -587,9 +587,11 @@ return [
 	'branch_phone_column'		=> 'Phone',
 	'branch_manage_column'		=> 'Manage',
     'use_routing_card'		    => 'utilizar el carta tecnológica existente',
+    'no_routing_cards'		    => 'No existing routing card',
     'select_account'		    => 'Please select an account',
     'payment_done'		        => 'Payment successfully done',
 
     'consultant'                => 'A su consejero',
-    'activity_log'              => 'Feed de actividad'
+    'activity_log'              => 'Feed de actividad',
+    'or'                        => 'or',
 ];

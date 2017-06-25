@@ -586,9 +586,11 @@ return [
 	'branch_phone_column'		=> 'Phone',
 	'branch_manage_column'		=> 'Manage',
     'use_routing_card'		    => 'Use existing routing card',
+    'no_routing_cards'		    => 'No existing routing card',
     'select_account'		    => 'Please select an account',
     'payment_done'		        => 'Payment successfully done',
 
     'consultant'                => 'Your consultant',
-    'activity_log'              => 'Activity log'
+    'activity_log'              => 'Activity log',
+    'or'                        => 'or',
 ];

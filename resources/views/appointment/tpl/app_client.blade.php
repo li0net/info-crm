@@ -1,5 +1,8 @@
 <div class="row ">
     <div class="col-sm-12">
+        <div class="sub-form-messages" id="app_client_message"></div>
+    </div>
+    <div class="col-sm-12">
         <ul class="nav nav-tabs">
             <li class="active">
                 <a data-toggle="tab" href="#menu1"><i class="fa fa-users" aria-hidden="true"></i>@lang('adminlte_lang::message.existing_client')</a>

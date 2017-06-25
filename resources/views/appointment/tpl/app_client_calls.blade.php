@@ -19,8 +19,6 @@
             <button type="button" id='save_call_info' class="btn btn-info">@lang('adminlte_lang::message.save_call')</button>
         </div>
     </div>
-    <div class="col-sm-7" id="app_calls_history">
-
-    </div>
+    <div class="col-sm-7" id="app_calls_history"></div>
 
 </div>
